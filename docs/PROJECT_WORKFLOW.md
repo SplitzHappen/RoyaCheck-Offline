@@ -1,6 +1,6 @@
 # Project Workflow
 
-This repository follows a stage-gated development process for the WBG Small AI for Development Hackathon 2026.
+This repository follows a stage-gated development process for the Small AI for Development Hackathon 2026.
 
 ## Operating rules
 
