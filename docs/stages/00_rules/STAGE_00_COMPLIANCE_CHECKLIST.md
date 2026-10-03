@@ -4,40 +4,40 @@
 **Status:** In review  
 **Purpose:** Establish one authoritative compliance checklist for the Small AI for Development Hackathon 2026 before later stages create technical or submission artifacts.
 
-This document is a compliance control, not a product specification. It records what the available official/public competition materials establish, what remains unresolved at the participant-platform level, and how later stages must enforce each requirement.
+This document is a compliance control, not a product specification. It records what the available official/public competition materials establish, what the authenticated participant submission surface establishes, what remains unresolved, and how later stages must enforce each requirement.
 
 ---
 
 ## 1. Source authority
 
-The following sources govern this checklist.
-
-| ID | Source | Authority / use |
+| ID | Source | Authority / pinpoint |
 |---|---|---|
 | **S1** | Official Global AI & Digital Summit / Small AI Hackathon Challenge page: https://www.worldbank.org/en/events/2026/10/19/global-ai-and-digital-summit-2026 | Primary public organizer source for eligibility, competition structure, sector choice, submission conditions, rights, branding restrictions, English-language requirement, judging framing, and competition window. |
 | **S2** | Official Small AI for Development Hackathon FAQ PDF: https://thedocs.worldbank.org/en/doc/a2d80d7a647019e16e7265a3563ce416-0320012026/original/Small-AI-for-Development-Hackathon-FAQs.pdf | Primary public organizer FAQ for sector scope, eligibility, team size, ownership, competition dates, and expectation that participants build/demonstrate during the competition period. |
-| **S3** | Official Hack-Nation 7th Global AI Hackathon Luma event page: https://luma.com/z3za7zow | Primary event-host surface for the **9:00 AM ET, 4 October 2026** project-submission deadline and general event schedule. |
-| **S4** | Hack-Nation Global AI Hackathon page: https://hack-nation.ai/hackathon | Official Hack-Nation event surface for event identity, dates, format, and general participation context. |
-| **S5** | Official Hack-Nation participant kickoff materials shown during the 3 October competition kickoff | Participant-source authority for submission mechanics not exposed on the public pages: app submission + Google Form backup; Demo Video; Tech Video; Team Video; public GitHub repository; live demo; team/submission mechanics; challenge notification; general judging criteria. |
-| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Participant-source authority for Small AI constraints, sector-specific obligations, human-in-the-loop requirements, uncertainty/fail-safe behavior, local-language interaction, data disclosure requirements, AI-value explanation, working-prototype expectations, and the WBG 2–5 minute video requirement. |
+| **S3** | Official Hack-Nation 7th Global AI Hackathon Luma event page: https://luma.com/z3za7zow | Primary event-host source for the 4 October 2026, 9:00 AM ET project-submission deadline and general event schedule. |
+| **S4** | Hack-Nation Global AI Hackathon page: https://hack-nation.ai/hackathon | Official event-host surface for event identity, dates, format, and participation context. |
+| **S5** | Official 3 October Hack-Nation kickoff materials | Pinpoints used here: “Rules 1/2”; “Rules 2/2 — submission checklist”; team/submission mechanics; judging-criteria slide. Supports platform + Google Form submission, public GitHub, live demo, Demo/Tech/Team video obligations, team mechanics, Discord challenge declaration, and general judging criteria. |
+| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Pinpoint anchors used here: the device/offline/model/local-language rule block; human-in-the-loop/uncertainty guardrail block; data-source and dataset-disclosure block; Agriculture annex challenge/dataset block; 2–5 minute challenge-video instruction. |
+| **S7** | Authenticated Hack-Nation “Team & Submission” participant page captured 3 October 2026 | Page/field pinpoints: admission = accepted and deadline/grace information (p.1); two-submission notice, project/challenge fields and edit window (p.2); GitHub, live URL, team photo, team-introduction field (p.3); product-demo and technical-walkthrough fields (p.4). |
 
 ### Source-use rule
 
-- A **confirmed requirement** must be supported by S1–S6.
-- Participant-platform details that are not visible in accessible official materials remain **unresolved** rather than inferred.
-- Sponsor/tool availability is **not** treated as proof of unrestricted tool permission.
-- Secondary web summaries are not authoritative for compliance when S1–S6 cover the point.
+- A **confirmed requirement** must be supported by S1–S7.
+- Participant-platform details not shown on an inspected official surface remain **unresolved** rather than inferred.
+- Sponsor/tool availability is **not** proof of unrestricted tool permission.
+- Secondary web summaries are not authoritative where S1–S7 cover the point.
+- Where official surfaces conflict, the **earliest deadline / stricter submission condition controls** unless an official clarification says otherwise.
 
 ---
 
 ## 2. Status vocabulary
 
-- **CONFIRMED** — directly supported by an official/public or official participant source.
-- **CONFIRMED — PARTICIPANT MATERIAL** — supported by official participant kickoff/brief material that is not publicly indexed.
-- **UNRESOLVED PLATFORM DETAIL** — organizer states that a rule/detail exists on the participant platform, but the exact text was not located in the accessible sources.
-- **PROJECT POLICY** — a conservative implementation rule adopted to avoid relying on silence as permission.
-- **OWNER ACTION REQUIRED** — a confirmed or unresolved issue requiring an explicit owner decision before Stage 0 closes.
-- **NOT APPLICABLE** — does not apply to the solo entry as currently scoped.
+- **CONFIRMED** — directly supported by an official/public or authenticated official participant source.
+- **CONFIRMED — PARTICIPANT MATERIAL** — supported by official participant material that is not publicly indexed.
+- **UNRESOLVED PLATFORM DETAIL** — expected participant-platform detail not shown on the inspected official surfaces.
+- **PROJECT POLICY** — conservative project control adopted to avoid relying on silence as permission.
+- **OWNER ACTION REQUIRED** — a confirmed issue that needs owner action before Stage 0 can close.
+- **NOT APPLICABLE** — does not apply to the solo entry as scoped.
 
 ---
 
@@ -45,145 +45,165 @@ The following sources govern this checklist.
 
 | # | Requirement / issue | Source | Status | Interpretation | Enforcing stage | Evidence required |
 |---:|---|---|---|---|---|---|
-| 1 | Build for one sector: Health, Agriculture, or Tourism | S1, S2, S6 | CONFIRMED | Entry uses exactly one selected sector. Current route is Agriculture. | 3, 6, 10 | Public product scope and final submission sector selection agree. |
-| 2 | Small AI must be targeted and use-case driven | S1, S6 | CONFIRMED | AI should solve one bounded problem, not become a broad general assistant. | 3, 4, 7, 10 | Product scope, architecture, demo, README. |
-| 3 | Demonstrate value under constrained conditions | S1, S6 | CONFIRMED | The entry must show why the intervention fits real connectivity/device/infrastructure constraints. | 1, 4, 8, 9 | Problem evidence, architecture, offline proof, limitations. |
-| 4 | Individual/solo entry is allowed | S1, S2, S5 | CONFIRMED | A team of one is permitted. | 0, 10 | Platform team/submission entry shows the entrant only. |
-| 4A | Entrant must be a registered and accepted participant with access to the designated competition submission flow | S1 | CONFIRMED | Registration alone is not the competition entry; accepted participants must use the designated portal during the competition window. | 0, 10 | Owner confirms active participant/submission access on the Hack-Nation platform. |
-| 5 | Team size is at most four; each team member must be registered | S1, S2, S5 | CONFIRMED | Not a constraint for the solo route beyond ensuring no undeclared team member is added. | 0, 10 | Platform team state. |
-| 6 | Participant age eligibility is 18–35 | S1, S2 | CONFIRMED | Entrant must satisfy privately; personal eligibility evidence need not be reproduced in the public repository. | 0 | Owner attestation / platform eligibility. |
-| 7 | Participant must be from a World Bank member country | S1, S2 | CONFIRMED | Entrant must satisfy privately. | 0 | Owner/platform eligibility. |
-| 8 | Active World Bank Group staff, consultants, and interns are ineligible | S1 | CONFIRMED | Entrant must not fall in an excluded category. | 0 | Owner attestation / platform eligibility. |
-| 9 | Competition materials/submission must be in English | S1 | CONFIRMED | Judge-facing submission text and required videos must be in English. Product UI may also include the required local-language interaction. | 8, 10 | Submission fields, README, videos. |
-| 10 | Competition window is 3–4 October 2026 | S1, S2, S3, S4 | CONFIRMED | Definitive competition implementation/submission occurs in this window. | 0, 6, 10 | Repository history and submission receipt. |
-| 11 | Project submission deadline is **4 October 2026, 9:00 AM ET** | S3, S5 | CONFIRMED | This is the controlling project-submission deadline unless the participant platform itself shows a contradictory later instruction. | 0, 10 | Deadline recorded in roadmap; submission receipt before deadline. |
-| 12 | Late/incomplete/improperly submitted entries are not eligible | S1, S5 | CONFIRMED | Submission completion is a hard requirement; no feature work may consume the protected buffer. | 10 | Platform + backup confirmation/receipt. |
-| 13 | Entry must be submitted through the designated competition portal and confirmed received | S1 | CONFIRMED | A local repo or video alone is not an entry. | 10 | Platform confirmation/receipt. |
-| 14 | Hack-Nation participant submission is required on **app.hack-nation.ai** | S5 | CONFIRMED — PARTICIPANT MATERIAL | Primary Hack-Nation submission surface. | 10 | Successful platform submission. |
-| 15 | A Google Form backup of the submission is also required | S5 | CONFIRMED — PARTICIPANT MATERIAL | Submission must be duplicated in the backup form. Exact form URL/fields remain to be captured. | 10 | Form confirmation/receipt. |
-| 16 | Referral code **WBGSmallAIGADS** is required by the organizer entry route | S1 | CONFIRMED | Use where the designated competition submission asks for it. | 10 | Submission field / screenshot if applicable. |
-| 17 | Public GitHub repository is required | S5 | CONFIRMED — PARTICIPANT MATERIAL | Repository must be publicly accessible to judges. | 10 | Public URL tested in logged-out/incognito session. |
-| 18 | Live demo is required | S5 | CONFIRMED — PARTICIPANT MATERIAL | A publicly reachable product demo must exist. Named hosts in kickoff material are examples; exclusivity was not established. | 7, 8, 10 | Public URL tested from clean session. |
-| 19 | Demo Video is required | S5 | CONFIRMED — PARTICIPANT MATERIAL | Separate Hack-Nation submission item unless platform proves it can be combined with another field. | 10 | Video link/upload. |
-| 20 | Tech Video is required | S5 | CONFIRMED — PARTICIPANT MATERIAL | Separate Hack-Nation submission item. | 10 | Video link/upload. |
-| 21 | Team Video is required | S5 | CONFIRMED — PARTICIPANT MATERIAL | For a solo entry, this becomes a concise entrant introduction. | 10 | Video link/upload. |
-| 22 | WBG challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | Do not assume this is identical to the Hack-Nation Demo Video until the submission fields/limits prove it. | 10 | Required WBG video placed in the correct field. |
-| 23 | Exact Demo/Tech/Team video duration caps and upload fields | S5 | UNRESOLVED PLATFORM DETAIL | Current accessible official sources do not expose the exact limits. | 10 | Read participant submission form before recording final cuts. |
-| 24 | Whether one video can satisfy multiple required fields | S5, S6 | UNRESOLVED PLATFORM DETAIL | Default policy: prepare logically separate deliverables until the platform proves overlap is allowed. | 10 | Field inspection / platform instructions. |
-| 25 | Whether a submitted entry can be edited after first submission | S1, S5 | UNRESOLVED PLATFORM DETAIL | Do not rely on editability. Submit a complete valid package before the protected buffer; update only if platform explicitly permits it. | 10 | Platform behavior/instructions. |
-| 26 | Challenge selection should be communicated in Discord | S5 | CONFIRMED — PARTICIPANT MATERIAL | Kickoff instructions asked participants to identify their selected challenge in Discord. Current completion status must be confirmed by the owner. | 0 | Owner confirmation / Discord action if still pending. |
-| 27 | Solo participant must be represented correctly in “team & submission” | S5 | CONFIRMED — PARTICIPANT MATERIAL | Team state should show one entrant and no undeclared collaborator. | 0, 10 | Platform team state. |
-| 28 | Working prototype is expected | S2, S6 | CONFIRMED | Documentation alone is insufficient. | 7, 8, 10 | Live working user-value loop. |
-| 29 | Entry must explain what AI capability is used | S6 | CONFIRMED — PARTICIPANT MATERIAL | State that the core learned capability is computer vision/pattern recognition. | 4, 7, 10 | README/tech video/submission. |
-| 30 | Entry must explain why AI adds value beyond simpler digital tools | S1, S6 | CONFIRMED | AI must perform a distinct task that a form/spreadsheet/search alone cannot. | 1, 3, 10 | Problem/value explanation. |
-| 31 | Proof that the AI works on the chosen sector is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | Show measured image classification/abstention behavior, not only architecture diagrams. | 7, 9, 10 | Evaluation + demo evidence. |
-| 32 | Core feature must work offline | S5, S6 | CONFIRMED — PARTICIPANT MATERIAL | Core rust proposal must not depend on a live network. | 4, 7, 8, 9 | Hard-reload offline test and network evidence. |
-| 33 | Solution should run on a device the intended user can realistically access | S1, S6 | CONFIRMED | Device assumptions must be stated and tested honestly. | 1, 4, 9 | Device/browser evidence + limitation. |
-| 34 | Model files must be small enough to side-load / transfer over weak connectivity | S6 | CONFIRMED — PARTICIPANT MATERIAL | Report actual model/runtime/cached-bundle size rather than using “small” rhetorically. | 4, 7, 9 | Byte/MB measurement. |
-| 35 | At least one local-language interaction is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | Current product policy: Spanish text interaction at minimum. | 8, 10 | Visible Spanish UI interaction in demo. |
-| 36 | Human makes the final call | S6 | CONFIRMED — PARTICIPANT MATERIAL | AI proposal cannot silently become the formal observation. | 4, 8, 9 | Separate AI/human fields + authority tests. |
-| 37 | Tool must flag uncertainty / fail safely | S6 | CONFIRMED — PARTICIPANT MATERIAL | `not sure` and human-review routing are first-class requirements. | 4, 7, 8, 9 | Abstention rule + challenge tests. |
-| 38 | Tool must not autonomously act on the user’s behalf | S6 | CONFIRMED — PARTICIPANT MATERIAL | No autonomous spraying, selling, contacting, or formal diagnosis. | 3, 8, 9 | UX/action audit. |
-| 39 | Avoid hallucinated agronomy | S6 | CONFIRMED — PARTICIPANT MATERIAL | No generative treatment/advisory content in the rust decision loop. | 3, 8, 10 | Product exclusions + demo inspection. |
-| 40 | Cite problem/gap data | S6 | CONFIRMED — PARTICIPANT MATERIAL | Public factual development claims need source, year/context, and limitations where material. | 1, 9, 10 | Source citations/evidence table. |
-| 41 | Name every learning/evaluation dataset, source, license, size, and coverage limits | S6 | CONFIRMED — PARTICIPANT MATERIAL | Dataset limitations are part of the evidence, not optional caveats. | 4, 7, 9, 10 | Dataset record/evidence table. |
-| 42 | Provided datasets are suggestions, not necessarily a closed mandatory list | S6 | CONFIRMED — PARTICIPANT MATERIAL | Better external/public data may be used if terms are checked. | 4, 7 | Dataset decision + license verdict. |
-| 43 | Third-party rights must be held for submitted materials | S1 | CONFIRMED | Code, images, models, datasets, music/video assets, and other materials must not knowingly infringe third-party rights. | 4, 7, 10 | License/attribution records. |
-| 44 | Participants retain ownership of their submissions | S1, S2 | CONFIRMED | Entrant keeps ownership subject to competition terms. | 0 | No further action. |
-| 45 | Submission grants the organizer a broad non-exclusive, royalty-free license for competition/education/promotion/knowledge sharing | S1 | CONFIRMED | Do not submit assets for which this downstream use would violate third-party terms. | 4, 7, 10 | License compatibility check. |
-| 46 | Privacy/confidentiality/third-party rights must be respected | S1 | CONFIRMED | Do not expose personal/confidential data or unlicensed images. | 4, 8, 9, 10 | Privacy/data audit. |
-| 47 | Organizer/partner names, acronyms, logos, or branding may not be used on independently produced materials without written consent | S1 | CONFIRMED | **Immediate compliance risk:** the current repository name contains the organizer acronym. No organizer logo/branding should be used. Repository/title naming should be repaired or explicitly cleared before Stage 0 closes. | 0 | Owner decision + repository/material naming review. |
-| 48 | Exact participant-platform originality rule | S1 | UNRESOLVED PLATFORM DETAIL | S1 states that entries must comply with originality requirements published on Hack-Nation, but accessible official materials do not expose the detailed rule text. | 0, 6, 10 | Owner disposition; recheck if platform text appears. |
-| 49 | Exact AI coding-assistant / AI-assisted-development rule | S1, S5 | UNRESOLVED PLATFORM DETAIL | Tool sponsors/resources exist, but that does not itself prove unrestricted use. | 0, 6, 10 | Conservative disclosure of AI-assisted development; stop/modify if contradictory rule appears. |
-| 50 | Exact outside non-team review/audit rule | S1 | UNRESOLVED PLATFORM DETAIL | No accessible official text located that forbids AI-assisted review. Sole entrant remains accountable; no undeclared human team member is added. | 0, 6, 10 | Conservative disclosure; recheck if platform text appears. |
-| 51 | Exact rule for pre-existing project-specific implementation/boilerplate | S1, S2 | UNRESOLVED PLATFORM DETAIL | S2 says participants are expected to build/demonstrate during the competition period. Project policy is therefore to keep definitive project-specific implementation in the competition build and use external/open-source dependencies only under license and attribution. | 0, 6, 10 | Repository history, disclosure, dependency licenses. |
-| 52 | Pretrained model use | S6 | PROJECT POLICY / PLATFORM DETAIL UNRESOLVED | Pretrained compact encoders may be used only if their license permits the intended use/redistribution and no later platform rule forbids them. | 4, 7 | Model license verdict + disclosure. |
-| 53 | Cloud/API use | S6 | CONFIRMED CORE CONSTRAINT + PROJECT POLICY | The core feature must work offline; auxiliary online services cannot be necessary for the rust/no-rust/not-sure inference. | 4, 7, 8, 9 | Architecture + offline proof. |
-| 54 | Repository must carry an explicit open-source license | S1, S5 | UNRESOLVED / PROJECT POLICY | A public repo is required; an explicit repo license was not found as a specific competition rule. Project policy is to add a compatible explicit LICENSE before final submission. | 7, 10 | LICENSE file + dependency compatibility. |
-| 55 | Judging includes technical merit/depth | S1, S5 | CONFIRMED | Technical credibility matters, but not at the expense of Small AI fit or completion. | 7, 9, 10 | Working evidence and technical explanation. |
-| 56 | Judging includes development relevance, design, and inclusivity | S1 | CONFIRMED | Development problem fit and inclusion are first-order judging dimensions. | 1, 3, 10 | Problem/value narrative and localization. |
-| 57 | Generic Hack-Nation judging also emphasizes communication and innovation/creativity | S5 | CONFIRMED — PARTICIPANT MATERIAL | Video/documentation quality and a clear differentiated story matter. | 9, 10 | README/video/pitch quality. |
-| 58 | Exact scoring weights | S1, S5 | UNRESOLVED PLATFORM DETAIL | Do not invent numeric weights. | 10 | None unless platform publishes them. |
-| 59 | Only official submission channels count | S1 | CONFIRMED | Email/social-media/direct outreach is not a valid entry submission. | 10 | Platform/form receipts. |
-| 60 | Submission receipt evidence should be retained | S1 | PROJECT POLICY FROM CONFIRMED RULE | Because only entries confirmed received are eligible, save confirmation screenshots/receipts for both required submission surfaces. | 10 | Receipt evidence. |
+| 1 | Build for one sector: Health, Agriculture, or Tourism | S1, S2, S6 | CONFIRMED | Entry uses exactly one selected sector. Current route is Agriculture. | 3, 6, 10 | Product scope and final submission sector agree. |
+| 2 | Small AI must be targeted and use-case driven | S1, S6 | CONFIRMED | AI solves one bounded problem, not a broad general-assistant problem. | 3, 4, 7, 10 | Scope, architecture, demo, README. |
+| 3 | Demonstrate value under constrained conditions | S1, S6 | CONFIRMED | Explain and prove fit with realistic connectivity/device/infrastructure constraints. | 1, 4, 8, 9 | Problem evidence, architecture, offline proof, limitations. |
+| 4 | Individual/solo entry is allowed | S1, S2, S5, S7 | CONFIRMED | A team of one is permitted. | 0, 10 | Participant page/team state. |
+| 4A | Entrant must be accepted and have access to the competition submission flow | S1, S7 | CONFIRMED | Owner confirmed current Team & Submission access; S7 shows admission status **accepted**. | 0, 10 | Authenticated platform state. |
+| 5 | Team size is 1–4 and members must be represented on the platform | S2, S5, S7 | CONFIRMED | Solo route uses one member; no undeclared team member is added. | 0, 10 | Team state. |
+| 6 | Participant age eligibility is 18–35 | S1, S2 | CONFIRMED | Satisfied privately; do not publish personal eligibility documents. | 0 | Owner/platform eligibility. |
+| 7 | Participant must be from a World Bank member country | S1, S2 | CONFIRMED | Satisfied privately. | 0 | Owner/platform eligibility. |
+| 8 | Active World Bank Group staff, consultants, and interns are ineligible | S1 | CONFIRMED | Entrant must not fall into an excluded category. | 0 | Owner attestation/platform eligibility. |
+| 9 | Judge-facing competition submission must be in English | S1 | CONFIRMED | Submission text/videos in English; product also includes required local-language interaction. | 8, 10 | Submission fields, README, videos. |
+| 10 | Competition window is 3–4 October 2026 | S1–S4 | CONFIRMED | Definitive competition implementation/submission occurs in this window. | 0, 6, 10 | Repository/submission evidence. |
+| 11 | Project deadline is **4 Oct 2026, 9:00 AM ET / 9:00 AM EDT / 13:00 UTC** | S3, S5, S7 | CONFIRMED | 9:00 AM is the controlling deadline. S7 shows GMT−4. If official surfaces conflict, the earliest controls. | 0, 10 | Submission receipt before 9:00 AM deadline. |
+| 12 | Platform keeps uploads/edits/submission open for a 15-minute grace period | S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 shows activity remains open until 09:15 in the displayed GMT−4 zone. **Project policy: do not rely on this grace as the deadline.** | 10 | Submit before 9:00 AM; grace is recovery-only. |
+| 13 | Late/incomplete/improperly submitted entries are not eligible | S1, S5 | CONFIRMED | Completion is a hard requirement; protected buffer cannot be consumed by feature work. | 10 | Both submission receipts. |
+| 14 | Entry must be formally submitted and confirmed received through the designated portal | S1 | CONFIRMED | A repo/video alone is not an entry. | 10 | Platform confirmation. |
+| 15 | Hack-Nation participant submission on app.hack-nation.ai is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Primary platform submission surface. | 10 | Successful platform submission. |
+| 16 | A Google Form backup submission is also required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 explicitly says **two submissions are required** and shows a Google Form link. Target URL/fields are not visible in the captured PDF and remain unresolved. | 0, 10 | Capture Google Form target/fields when opened; submit and retain private receipt. |
+| 17 | Referral code `WBGSmallAIGADS` is part of the organizer registration route | S1 | CONFIRMED | Treat as registration evidence; enter again only if a submission field explicitly asks for it. | 0, 10 | Accepted participant status; field use only if requested. |
+| 18 | Public GitHub repository is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 has a GitHub repository field. Repository must be publicly accessible. | 10 | Logged-out public URL test. |
+| 19 | Live project URL is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 has a Live project URL field. | 7, 8, 10 | Clean-session live URL test. |
+| 20 | Team photo is required to submit | S7 | CONFIRMED — PARTICIPANT MATERIAL | JPG/PNG/WebP, maximum 10 MB. | 10 | Valid uploaded team photo. |
+| 21 | Team introduction video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
+| 22 | Product demo video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
+| 23 | Technical walkthrough video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
+| 24 | WBG challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | S7 exposes only the three 60-second Hack-Nation video sections; no 2–5 minute challenge-video field is visible in the captured submission page. Destination remains unresolved. | 10 | Separate compliant 2–5 minute cut unless an official field/rule explicitly maps it elsewhere. |
+| 25 | Whether the 2–5 minute video can satisfy any Hack-Nation video field | S6, S7 | UNRESOLVED PLATFORM DETAIL | The visible platform fields have 60-second limits, so a 2–5 minute file cannot fit those fields as displayed. Keep it separate until the challenge-specific destination is identified. | 6, 10 | Challenge/rules/Google Form field inspection. |
+| 26 | Project details are editable before the deadline | S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 says project details can be edited until the deadline and shows a Save draft action; S7 also says uploads/edits/submissions remain open through the 15-minute grace. | 10 | Platform behavior. Do not rely on post-9:00 grace for normal work. |
+| 27 | Challenge selection should be declared in Discord | S5 | CONFIRMED — PARTICIPANT MATERIAL | Owner confirmed Agriculture / Challenge 4 was already declared. | 0 | **Complete — owner confirmation.** |
+| 28 | Solo participant must be represented correctly in Team & Submission | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 shows one member on the active team. | 0, 10 | Team state. |
+| 29 | Working prototype is expected | S2, S6 | CONFIRMED | Documentation alone is insufficient. | 7, 8, 10 | Live working loop. |
+| 30 | Entry must explain what AI capability is used | S6 | CONFIRMED — PARTICIPANT MATERIAL | Core learned capability: computer vision / pattern recognition. | 4, 7, 10 | README/technical walkthrough/submission. |
+| 31 | Entry must explain why AI adds value beyond simpler tools | S1, S6 | CONFIRMED | AI must perform a distinct visual-inference task a form/spreadsheet/search alone cannot. | 1, 3, 10 | Problem/value explanation. |
+| 32 | Proof the AI works on the selected sector is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | Show measured classification/abstention behavior, not only architecture. | 7, 9, 10 | Evaluation + demo evidence. |
+| 33 | Core feature must work offline | S6 | CONFIRMED — PARTICIPANT MATERIAL | Core rust proposal must not depend on a live network. | 4, 7, 8, 9 | Hard-reload offline test + network evidence. |
+| 34 | Solution should run on a device the intended user can realistically access | S1, S6 | CONFIRMED | State/test device assumptions honestly. | 1, 4, 9 | Device/browser evidence + limitation. |
+| 35 | Model files must be small enough to side-load / transfer over weak connectivity | S6 | CONFIRMED — PARTICIPANT MATERIAL | Report actual model/runtime/cached-bundle bytes rather than using “small” rhetorically. | 4, 7, 9 | Size measurement + transfer path. |
+| 36 | At least one local-language interaction is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | S6’s local-language rule permits voice or text; project policy is Spanish text at minimum for the selected target context. | 8, 10 | Visible Spanish interaction. |
+| 37 | Human makes the final call | S6 | CONFIRMED — PARTICIPANT MATERIAL | AI proposal cannot silently become the formal observation. | 4, 8, 9 | Separate AI/human fields + tests. |
+| 38 | Tool must flag uncertainty / fail safely | S6 | CONFIRMED — PARTICIPANT MATERIAL | `not sure` and human-review routing are first-class requirements. | 4, 7, 8, 9 | Abstention + challenge tests. |
+| 39 | Tool must not autonomously act on the user’s behalf | S6 | CONFIRMED — PARTICIPANT MATERIAL | No autonomous spraying, selling, contacting, or formal diagnosis. | 3, 8, 9 | UX/action audit. |
+| 40 | Avoid hallucinated agronomy | S6 | CONFIRMED — PARTICIPANT MATERIAL | No generative treatment/advisory content in the rust decision loop. | 3, 8, 10 | Exclusions + demo inspection. |
+| 41 | Cite problem/gap data | S6 | CONFIRMED — PARTICIPANT MATERIAL | Material development claims need source/year/context/limitations. | 1, 9, 10 | Citations/evidence table. |
+| 42 | Name every learning/evaluation dataset, source, license, size, and coverage limits | S6 | CONFIRMED — PARTICIPANT MATERIAL | Dataset limitations are evidence, not optional caveats. | 4, 7, 9, 10 | Dataset record/evidence table. |
+| 43 | Provided datasets are suggestions rather than a closed mandatory list | S6 | CONFIRMED — PARTICIPANT MATERIAL | Other public data may be used if terms are checked. | 4, 7 | Dataset decision + license verdict. |
+| 44 | Third-party rights must be held for submitted materials | S1 | CONFIRMED | Code, images, models, datasets, music/video assets, fonts and footage must not knowingly infringe rights. | 4, 7, 10 | Rights/attribution records. |
+| 45 | Participants retain ownership of their submissions | S1, S2 | CONFIRMED | Entrant keeps ownership subject to competition terms. | 0 | No further action. |
+| 46 | Submission grants the organizer a broad non-exclusive, royalty-free license for competition/education/promotion/knowledge sharing | S1 | CONFIRMED | Third-party content appearing in the repo, live demo, videos or submission must be licensed compatibly with the organizer’s stated downstream uses, with required attribution. Otherwise exclude or replace it. | 4, 7, 10 | Organizer-license compatibility verdict + Stage 10 asset inventory recheck. |
+| 47 | Privacy/confidentiality/third-party rights must be respected | S1 | CONFIRMED | Do not expose personal/confidential data or unlicensed material. | 4, 8, 9, 10 | Privacy/data audit. |
+| 48 | Organizer/partner naming and branding restriction | S1 | OWNER ACTION REQUIRED | S1 covers organizer/partner **names, titles, acronyms, logos and other branding** on independently produced entry materials without written consent. Project policy: no organizer/partner logos or visual branding; no acronyms; competition names only as minimum plain-text factual identification where genuinely required, without implying endorsement. Repository rename to product-only name has been authorized and remains required before closure. | 0, 8, 10 | Product-only repo name/description + Stage 8/10 naming/branding sweep across README, UI, live-demo metadata, videos, thumbnails and submission-facing materials. |
+| 49 | Exact participant-platform originality rule | S1 | UNRESOLVED PLATFORM DETAIL | Authenticated Team & Submission page (S7) was inspected and does not display the originality rule text. Do not infer permission. | 0, 6, 10 | Recheck official rules/FAQ/challenge surfaces if exposed; conservative project policy applies. |
+| 50 | Exact AI coding-assistant / AI-assisted-development rule | S1, S5 | UNRESOLVED PLATFORM DETAIL | S7 does not display this rule. Sponsor/tool presence is not permission. | 0, 6, 10 | Conservative disclosure; stop/modify if contrary official text appears. |
+| 51 | Exact outside non-team review/audit rule | S1 | UNRESOLVED PLATFORM DETAIL | Rule text not located; treated as unresolved. | 0, 6, 10 | Independent AI review disclosed with other AI/tooling assistance; recheck official participant rules if surfaced. |
+| 52 | Exact rule for pre-existing project-specific implementation/boilerplate | S1, S2 | UNRESOLVED PLATFORM DETAIL | S7 does not display this rule. S2 expects participants to build/demonstrate during the competition period. | 0, 6, 10 | Definitive project-specific code/UI/trained artifacts/deployment created during competition window; external dependencies licensed/disclosed. |
+| 53 | Pretrained compact encoder use | S6 | PROJECT POLICY | Allowed only if the selected component’s license supports intended use/redistribution and no later platform rule forbids it. S6 establishes small/on-device model constraints; it does not by itself establish unrestricted pretrained-model permission. | 4, 7 | Model license verdict + disclosure. |
+| 54 | Cloud/API use | S6 | CONFIRMED | Core feature must work offline; no auxiliary online service may be necessary for rust/no-rust/not-sure inference. | 4, 7, 8, 9 | Architecture + offline proof. |
+| 55 | Explicit repository LICENSE | S1, S5 | PROJECT POLICY | Public repo is required; an explicit repository license was not found as a standalone competition rule. Add a compatible LICENSE before final submission. | 7, 10 | LICENSE + dependency compatibility. |
+| 56 | Judging includes technical merit/depth | S1, S5 | CONFIRMED | Technical credibility matters without undermining Small AI fit or completion. | 7, 9, 10 | Working evidence + technical explanation. |
+| 57 | Judging includes development relevance, design, and inclusivity | S1 | CONFIRMED | Development problem fit and inclusion are first-order criteria. | 1, 3, 10 | Problem/value narrative + localization. |
+| 58 | Generic Hack-Nation judging includes communication and innovation/creativity | S5 | CONFIRMED — PARTICIPANT MATERIAL | Video/documentation quality and differentiated story matter. | 9, 10 | README/video/pitch quality. |
+| 59 | Exact scoring weights | S1, S5 | UNRESOLVED PLATFORM DETAIL | Do not invent numeric weights. | 10 | Use only if officially published. |
+| 60 | Only official submission channels count | S1 | CONFIRMED | Email/social/direct outreach is not a valid entry submission. | 10 | Platform + Google Form receipts. |
+| 61 | Submission receipt evidence is retained privately | S1 | PROJECT POLICY | Because confirmed receipt matters and screenshots may expose account data, keep raw receipts private; publish only a redacted statement if useful. | 10 | Private receipt evidence. |
+| 62 | Freeze the judged repository state after the deadline unless official rules explicitly permit changes | S1 | PROJECT POLICY | Avoid ambiguity about what was judged. Tag/reference the submitted commit where possible. | 10 | Submitted commit SHA/tag + no default-branch pushes during judging absent permission. |
+| 63 | Keep the live demo available through the judging period | S3 | PROJECT POLICY | Avoid a submission that becomes unavailable after the deadline. | 10 | Live URL monitoring/check. |
+| 64 | Owner remains available for any officially announced finalist step | S3 | PROJECT POLICY | Follow official finalist instructions if selected. | 10 | Owner confirmation if applicable. |
 
 ---
 
 # 4. Submission-mechanics matrix
 
-| Artifact / action | Required? | Known format / length | Destination | Can overlap? | Current Stage 0 status |
+| Artifact / action | Required? | Known format / length | Destination | Can overlap? | Stage 0 status |
 |---|---|---|---|---|---|
-| Challenge selection | Yes | Agriculture | Hack-Nation platform / Discord notification per kickoff | N/A | **Owner confirmation needed** that Discord notification is complete. |
-| Public GitHub repository | Yes | Public URL | Hack-Nation submission + backup form | N/A | Repository exists; **branding/name compliance requires review**. |
-| Live demo | Yes | Public URL; kickoff named Vercel/Replit/Lovable as examples | Hack-Nation submission + backup form | N/A | Not built yet. |
-| Demo Video | Yes | Exact cap not exposed | Hack-Nation submission + backup form | Unknown | Required; final cap/field must be inspected before recording. |
-| Tech Video | Yes | Exact cap not exposed | Hack-Nation submission + backup form | Unknown | Required; final cap/field must be inspected before recording. |
-| Team Video | Yes | Exact cap not exposed | Hack-Nation submission + backup form | Unknown | Required; solo entrant intro. |
-| WBG challenge video | Yes | **2–5 minutes** | Correct participant submission field still to be confirmed | Possibly Demo Video, but **do not assume** | Produce a separate compliant cut unless platform explicitly permits overlap. |
-| Hack-Nation platform submission | Yes | English | app.hack-nation.ai | No | Must be completed and confirmed received before 9:00 AM ET. |
-| Google Form backup | Yes | Exact fields/link not captured in accessible sources | Official Hack-Nation Google Form | No | Must be completed and confirmed received. |
-| Submission receipt evidence | Project-required | Screenshot/confirmation | Repository/private evidence package | N/A | Capture after both submissions. |
+| Challenge selection | Yes | Agriculture | Platform / Discord instruction | N/A | **Complete:** owner confirmed Agriculture / Challenge 4 declared in Discord. |
+| Accepted participant/submission access | Yes | Active Team & Submission area | app.hack-nation.ai | N/A | **Complete:** owner confirmed access; S7 shows admission accepted. |
+| Project name | Yes | Text field | Hack-Nation platform | N/A | Required field visible in S7. |
+| Challenge | Yes | Challenge selector | Hack-Nation platform | N/A | Required field visible in S7. |
+| Public GitHub repository | Yes | Repository URL | Hack-Nation platform + backup submission | N/A | Exists; **product-only rename still required**. |
+| Live project URL | Yes | URL | Hack-Nation platform + backup submission | N/A | Not built yet. |
+| Team photo | Yes | JPG / PNG / WebP, max 10 MB | Hack-Nation platform | N/A | Required; not yet produced. |
+| Team introduction | Yes | MP4/MOV, max **60 sec**, max **1 GB** | Hack-Nation platform | Separate required field | Format resolved from S7. |
+| Product demo | Yes | MP4/MOV, max **60 sec**, max **1 GB** | Hack-Nation platform | Separate required field | Format resolved from S7. |
+| Technical walkthrough | Yes | MP4/MOV, max **60 sec**, max **1 GB** | Hack-Nation platform | Separate required field | Format resolved from S7. |
+| Small AI challenge video | Yes | **2–5 minutes** | Challenge-specific destination not visible on captured Team & Submission page | Cannot fit the visible 60-sec fields as displayed | Keep separate cut; identify destination from challenge/rules/Google Form. |
+| Hack-Nation platform submission | Yes | Editable before deadline; page shows 15-min technical grace | app.hack-nation.ai | No | Active and accepted. **Project policy: submit by 9:00 AM, do not rely on grace.** |
+| Google Form backup | Yes | Link visibly present; target URL/fields not captured in the PDF | Official Google Form | No | Link exists; target/fields still require capture when opened. |
+| Submission receipt evidence | Project-required | Private screenshot/confirmation | Private evidence | N/A | Capture after both submissions. |
 
 ---
 
-# 5. Current owner dispositions under remaining rule silence
-
-The following policies apply unless a contradictory official participant rule appears.
+# 5. Owner dispositions under remaining rule silence
 
 ## 5.1 AI-assisted development
 
-- The entrant remains the sole human team member and accountable author.
-- AI systems may be used as development/review tools under entrant control.
-- AI/tooling assistance will be disclosed conservatively in the final repository/submission.
+- José Antonio remains the sole human team member and accountable entrant.
+- AI systems may be used as development/review tools under entrant control under the current conservative policy.
+- AI/tooling assistance, including independent AI review, will be disclosed conservatively.
 - Sponsor/tool availability is not cited as proof of unlimited permission.
-- If a later official rule restricts this workflow, stop and conform to the rule.
+- If a later official rule restricts the workflow, stop and conform.
 
 ## 5.2 Originality / implementation
 
-- Do not rely on an unverified interpretation that silence permits prebuilt project-specific implementation.
-- Definitive competition code, trained/fitted submission artifacts, UI, and deployment are created/accepted within the competition build process.
-- External libraries, pretrained components, and public datasets may be used only with compatible licenses and attribution.
-- Repository history and technical evidence should make the definitive implementation path auditable without inventing unsupported chronology.
+- Do not rely on silence as permission for prebuilt project-specific implementation.
+- Definitive project-specific code, trained/fitted artifacts, UI, and deployment are **created during the competition window**.
+- Third-party libraries, pretrained components, and public datasets may be used only under compatible terms and with disclosure/attribution.
+- Repository history and evidence must support the definitive implementation without inventing unsupported process-history claims.
 
 ## 5.3 Outside review
 
-- Independent AI review may be used as quality assurance under entrant control.
+- Independent AI review may be used as quality assurance under entrant control under the current conservative policy.
+- Independent AI review is included in the AI/tooling disclosure.
 - No undeclared human contributor becomes a team member or author.
 - If participant-platform rules later restrict outside review, stop/modify immediately.
 
-## 5.4 Submission editability
+## 5.4 Submission timing/editability
 
-- Assume the final submission is **not editable** unless the platform explicitly says otherwise.
-- Submit a complete, honestly limited package before the protected buffer where feasible.
-- Any later update is allowed only if the platform explicitly permits it.
+- S7 confirms project details can be edited before the deadline and shows a 15-minute technical grace period.
+- The project still treats **9:00 AM ET / 13:00 UTC** as the deadline.
+- The grace period is recovery-only, not scheduled work time.
+- Submit a complete, honestly limited package before the protected buffer ends.
 
-## 5.5 Video overlap
+## 5.5 Video mapping
 
-- Treat Demo Video, Tech Video, Team Video, and the 2–5 minute challenge video as separate obligations until the platform proves that one upload can satisfy more than one field.
+- Team introduction, product demo, and technical walkthrough are three separate platform fields, each capped at 60 seconds.
+- The separate 2–5 minute challenge video does not fit those visible fields as displayed.
+- Keep a separate 2–5 minute cut until its official destination is identified.
 
-## 5.6 Repository license
+## 5.6 Repository license and third-party content
 
-- Even though an explicit LICENSE was not located as a specific competition rule, the final public repository will carry an explicit compatible license.
-- Third-party asset/model/data terms are checked independently.
+- Add an explicit compatible repository LICENSE before final submission.
+- For every third-party asset that appears in the repo, live demo or video, verify compatibility not only with our use but also with the organizer’s stated downstream uses.
+- Exclude/replace any asset whose terms do not permit that submission context.
+
+## 5.7 Branding
+
+- Use a product-only repository name and neutral product description.
+- Do not use organizer/partner logos or visual branding.
+- Avoid organizer/partner acronyms.
+- Use competition/organization names only as minimum factual identification where necessary for a citation or submission context; do not imply endorsement or official status.
+- Re-run a naming/branding sweep in Stages 8 and 10.
 
 ---
 
-# 6. Immediate compliance risk: organizer branding/name use
+# 6. Branding/name remediation
 
-S1 states that participants may not use the organizer/partner names, titles, acronyms, logos, or other branding elements on independently produced entry materials without prior written consent.
+The product-only target is:
 
-The current public repository name contains the organizer acronym.
+- repository: **`SplitzHappen/RoyaCheck-Offline`**
+- description: **“Offline-first, browser-local coffee-leaf observation prototype with human review.”**
 
-**Stage 0 therefore cannot be considered fully closed until the owner decides how to resolve this.**
+The owner explicitly authorized this rename and description change.
 
-Recommended conservative repair:
+**Current execution status:** rename remains pending because the connected GitHub actions available to the builder do not expose repository-settings/rename mutation. Stage 0 therefore remains open until the owner performs the repository-settings rename or another authorized GitHub surface with repository-administration mutation becomes available.
 
-1. rename the public repository to remove organizer/partner names and acronyms;
-2. avoid organizer logos and visual branding entirely;
-3. keep only the minimum factual source attribution necessary to identify the competition and cite official rules;
-4. do not imply endorsement, partnership, or official status.
+After rename:
 
-This Stage 0 PR does **not** rename the repository because repository renaming was not included in the authorized change scope.
+1. do not recreate a repository under the old name;
+2. use the new product-only URL in later materials;
+3. remove organizer/partner acronyms from independent entry-material titles/headings as those files are touched within their authorized stage scope;
+4. run a complete branding sweep again in Stages 8 and 10.
 
 ---
 
@@ -191,22 +211,20 @@ This Stage 0 PR does **not** rename the repository because repository renaming w
 
 | Risk | Current status | Control |
 |---|---|---|
-| Missed 9:00 AM ET deadline | Controlled by roadmap but high consequence | 5:30 AM ET protected buffer; early complete submission. |
-| Missing one of two submission surfaces | Open until Stage 10 | Submit to both platform and Google Form; retain receipts. |
-| Missing required video field | Open | Final participant-form inspection before video recording. |
-| Incorrect video duration / WBG mapping | Open | Do not assume overlap; keep 2–5 minute cut available. |
-| Non-public repo | Controlled | Public repo exists; test logged-out access before submission. |
+| Missed 9:00 AM ET / 13:00 UTC deadline | Controlled but high consequence | Protected buffer; earliest official deadline controls; 15-min grace is recovery-only. |
+| Missing one of two submission surfaces | Open until Stage 10 | Platform + Google Form; private receipts. |
+| Google Form target/fields not captured | **Open Stage 0 detail** | Open the platform link and record target/fields before closure if available. |
+| Missing required video field | Reduced | Three platform video fields/caps now resolved; 2–5 minute challenge-video destination still unresolved. |
+| Product repo naming/branding violation | **OWNER ACTION REQUIRED** | Product-only rename/description; no organizer/partner visual branding; later sweeps. |
 | Broken live demo | Open | Deploy early; last-known-good deploy; clean-session test. |
-| Organizer branding/name violation | **OWNER ACTION REQUIRED** | Remove names/acronyms/branding from independently produced materials unless cleared. |
-| Undisclosed/impermissible AI assistance | Rule detail unresolved | Conservative disclosure; recheck official platform rules if they appear. |
-| Originality conflict | Rule detail unresolved | Keep definitive implementation in competition build; no unsupported permission claims. |
-| Unlicensed dataset/model/runtime/assets | Open technical gate | Stage 4/7 license verdicts; stop/swap on unclear/incompatible terms. |
-| Third-party privacy/confidentiality violation | Controlled by design | Public/licensed data; no personal images/data unless rights/consent established. |
-| Core offline claim not actually proven | Open technical gate | Hard-reload offline protocol before claiming it. |
-| Human-final-authority claim not enforced | Open technical gate | Explicit schema + no-prefill + save-block + summary tests. |
-| Unsupported development/field-impact claim | Controlled by claims policy | Evidence table and prohibited-claim list. |
-| Challenge/sector mismatch | Controlled | Agriculture locked; Stage 6 recheck. |
-| No proof of receipt | Open | Capture confirmation for both submission surfaces. |
+| Undisclosed/impermissible AI assistance | Rule text unresolved | Conservative disclosure; recheck official rule surface if shown. |
+| Originality conflict | Rule text unresolved | Definitive implementation created during competition window; no unsupported permission claims. |
+| Unlicensed/incompatible dataset/model/runtime/assets | Open technical gate | Stage 4/7 rights verdict including organizer-license compatibility. |
+| Privacy/confidentiality violation | Controlled by design | Public/licensed data; no unnecessary personal data; receipts kept private. |
+| Offline claim not proven | Open technical gate | Hard-reload offline protocol before claim. |
+| Human-final-authority claim not enforced | Open technical gate | Explicit schema/no-prefill/save-block/summary tests. |
+| Unsupported development/field-impact claim | Controlled | Evidence table + prohibited-claim list. |
+| Post-deadline ambiguity | Controlled by project policy | Tag/reference submitted commit; no default-branch pushes during judging absent permission. |
 
 ---
 
@@ -214,10 +232,11 @@ This Stage 0 PR does **not** rename the repository because repository renaming w
 
 | Requirement family | Primary enforcing stage(s) |
 |---|---|
-| Rules, deadline, submission surfaces, branding | Stage 0, rechecked Stage 6 and Stage 10 |
+| Rules, deadline, submission surfaces | Stage 0, rechecked Stage 6 and Stage 10 |
+| Naming / branding | Stage 0, Stage 8, Stage 10 |
 | Development relevance / AI necessity | Stages 1 and 3 |
 | Product scope / human authority / exclusions | Stages 3 and 4 |
-| Dataset/model/runtime licensing | Stages 4 and 7 |
+| Dataset/model/runtime licensing and organizer-license compatibility | Stages 4, 7 and 10 |
 | Offline/device/model-size constraints | Stages 4, 7, 8, 9 |
 | Local-language interaction | Stage 8 |
 | Uncertainty/OOD/fail-safe behavior | Stages 4, 7, 8, 9 |
@@ -235,66 +254,60 @@ This Stage 0 PR does **not** rename the repository because repository renaming w
 
 The following are sufficiently established to govern the build:
 
-- one sector;
-- Agriculture route is permitted;
-- solo entry is allowed;
+- one sector and Agriculture eligibility;
+- solo entry and accepted participant access;
 - English judge-facing submission;
 - 3–4 October competition window;
-- **4 October, 9:00 AM ET** submission deadline;
-- designated platform submission + backup Google Form;
-- public GitHub repository;
-- live demo;
-- Demo Video;
-- Tech Video;
-- Team Video;
-- 2–5 minute challenge video;
+- **4 October, 9:00 AM ET / 13:00 UTC** deadline;
+- 15-minute platform grace exists but is not the project deadline;
+- platform + Google Form backup;
+- public GitHub + live URL;
+- required team photo;
+- required 60-second Team Introduction, Product Demo, and Technical Walkthrough uploads;
+- separate 2–5 minute Small AI challenge video requirement;
 - targeted Small AI;
-- realistic device constraint;
+- realistic-device constraint;
 - offline core;
-- small/sideloadable model files;
+- small/sideloadable model;
 - local-language interaction;
 - human final call;
 - uncertainty/fail-safe behavior;
 - data attribution/limitations;
 - AI-value explanation;
 - working prototype;
-- responsible-AI/privacy discipline;
-- third-party rights/IP obligations;
-- submission receipt requirement;
-- organizer-branding restriction.
+- responsible-AI/privacy;
+- third-party rights;
+- organizer-license compatibility requirement;
+- naming/branding restriction;
+- Discord challenge declaration complete.
 
-## Rule silence / unresolved participant-platform detail
+## Unresolved participant-platform detail
 
-Still unresolved in the accessible official sources:
+Still not visible on the inspected Team & Submission page:
 
 - exact originality rule text;
-- exact AI coding-assistant policy;
-- exact outside non-team review rule;
-- exact pre-existing boilerplate rule;
-- exact Demo/Tech/Team video duration caps;
-- exact mapping between the 2–5 minute challenge video and Hack-Nation fields;
-- exact Google Form URL/fields;
-- submission editability;
+- exact AI coding-assistant rule;
+- exact outside-review rule;
+- exact pre-existing-code/boilerplate rule;
 - exact scoring weights;
-- whether an explicit repository LICENSE is mandatory versus project best practice.
+- target URL/fields of the Google Form link;
+- destination of the separate 2–5 minute challenge video;
+- whether an explicit repository LICENSE is a competition rule versus project policy.
 
-These are **not** treated as permission. The owner dispositions in Section 5 govern unless a contradictory official rule appears.
+These are **not** treated as permission. Section 5 controls unless contrary official text appears.
 
-## Owner actions required before Stage 0 closure
+## Owner action still required before Stage 0 closure
 
-1. **Participant submission access:** confirm that the current Hack-Nation account exposes the active competition team/submission flow for this entrant.
-2. **Branding/name risk:** decide whether to rename the public repository and remove organizer/partner names/acronyms from independent entry materials.
-3. **Discord challenge notification:** confirm whether Agriculture / Challenge 4 has already been declared as instructed; if not, perform the notification.
-4. Confirm continued acceptance of the conservative rule-silence dispositions in Section 5 after the independent Stage 0 audit.
+1. Complete the product-only repository rename and description change.
+2. If available, open/capture the Google Form target and any challenge/rules/FAQ surface that displays the remaining rule text.
+3. After the focused re-audit, confirm continued acceptance of the conservative Section 5 dispositions.
 
 ---
 
 # 10. Stage 0 conclusion
 
-The competition route remains viable under the confirmed technical and submission requirements.
+The route remains viable and the authenticated participant page resolves the most important submission-mechanics uncertainty: accepted participant status, the active Team & Submission flow, the three required 60-second platform videos, the required team photo, required GitHub/live URLs, editability, and the 15-minute platform grace.
 
-The primary new compliance issue surfaced by the current verification is the organizer-branding restriction, because the current repository name contains the organizer acronym. This requires an explicit owner disposition before Stage 0 closes.
+The remaining closure blocker is the product-only repository rename/description remediation. Remaining rule silence is explicitly identified and controlled conservatively rather than treated as permission.
 
-All remaining participant-platform unknowns have conservative operating policies and are mapped to later recheck points. None should be converted into an unsupported claim of permission.
-
-**Stage 0 status: IN REVIEW — Tier A audit required before owner closure decision.**
+**Stage 0 status: IN REVIEW — focused Tier A re-audit required after the authorized repair pass.**
