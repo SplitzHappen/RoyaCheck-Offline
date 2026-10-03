@@ -1,7 +1,7 @@
 # Stage 4 — Technical Pre-Registration
 
 **Stage:** 4  
-**Status:** In review — Tier A audit repairs owner-approved; narrow confirmation pending  
+**Status:** In review — Stage 3 simplification reconciled; Claude confirmation complete; N2 false-alarm cap awaiting owner lock  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling product lock:** `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`  
@@ -965,16 +965,20 @@ No later result may silently rewrite these rules.
 
 # 23. Stage 4 gate
 
-The Stage 4 owner-decision gate and Tier A repair authorization are complete.
+The Stage 4 owner-decision gate, Tier A audit, major/minor repair pass, and Claude narrow confirmation are complete.
+
+Claude's confirmation returned **PASS WITH MINOR REPAIRS** with 0 new blockers and 0 new majors. N1 is repaired. N2 is structurally repaired except for one confirmation-required **owner-chosen degraded-mode false-alarm-share cap**.
 
 Stage 4 remains **In review** until:
 
-1. Claude performs the narrow confirmation of M1–M10 and the repaired minors;
-2. confirmation findings are reconciled;
-3. any consequential new issue returns to José Antonio;
+1. José Antonio fixes that N2 numerical cap;
+2. the cap is recorded consistently in D4-20 / ROADMAP / reconciliation;
+3. the bounded coherence check remains clean;
 4. José Antonio explicitly authorizes Stage 4 closure/merge.
 
-Until those gates pass:
+No further full Claude audit is required for the N1/N2 repairs or for the owner-directed Stage 3 assumption simplification, provided no substantive change is made to D4-05 through D4-13 or D4-18 through D4-20 beyond the already-authorized N1/N2 rule completion.
+
+Until Stage 4 closes:
 
 - no definitive training;
 - no validation-result-driven design outside the pre-registered Stage 7 rules;
@@ -982,4 +986,4 @@ Until those gates pass:
 - no external readout;
 - no challenge-set result.
 
-**Current status: In review — Stage 3 simplification reconciled; Claude confirmation N1 repaired; N2 false-alarm cap awaiting owner lock.**
+**Current status: In review — Claude confirmation complete; Stage 3 simplification reconciled; N2 false-alarm cap awaiting owner lock.**
