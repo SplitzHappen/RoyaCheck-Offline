@@ -47,9 +47,9 @@ At the time of this audit:
 - no final evidence package exists yet;
 - no stage has been publicly marked closed in this repository.
 
-The roadmap itself contains the public provenance/chronology statement that governs how pre-event planning summaries and competition-window implementation will be distinguished.
+The roadmap defines the project's public stage structure, decision gates, and evidence expectations.
 
-For this audit, use only the public artifact and the context in this package. Do not speculate about unseen/private working materials.
+For this audit, use only `ROADMAP.md` and the context in this package. Do not infer facts or evidence that are not supported by the artifacts under review.
 
 ---
 
@@ -196,13 +196,13 @@ The roadmap defines these stages:
 - **Stage 9 — Hardening, evidence, and claims audit**
 - **Stage 10 — Final repository, videos, red team, and submission**
 
-The public chronology distinguishes:
+The roadmap organizes the project into:
 
-- Stages 0–5: pre-event research/planning summaries reconstructed into the public repository with explicit provenance;
-- Stage 6: competition-window greenlight and official-brief reconciliation;
-- Stages 7–10: definitive competition implementation, evaluation, hardening, and submission work.
+- Stages 0–3: rules, problem definition, concept screening, and route selection;
+- Stages 4–6: product/technical specification, readiness, and implementation greenlight;
+- Stages 7–10: technical proof, MVP implementation, validation, hardening, and submission.
 
-Audit whether this division is clear, defensible, and operationally useful.
+Audit whether this sequencing is clear, defensible, and operationally useful.
 
 ---
 
@@ -222,19 +222,16 @@ Test whether:
 
 Identify any stage whose current gate is too vague to be auditable.
 
-### B. Provenance and chronology integrity
+### B. Stage-record and traceability integrity
 
 Test whether:
 
-- the roadmap makes planning-vs-implementation chronology clear;
-- a reviewer could mistakenly infer that all work originated after repository creation;
-- pre-event planning disclosure is sufficient but not over-dominant;
-- competition-window implementation can be distinguished from reconstructed planning;
-- the audit trail avoids rewriting history.
-
-Do **not** speculate about, identify, or expose non-public working repositories, private source locations, internal preparation systems, or unseen materials.
-
-If provenance is material to a finding, assess only whether the **public disclosure in `ROADMAP.md`** is adequate.
+- each stage has a clear purpose, output, and closure condition;
+- a reviewer can distinguish planned, in-progress, and completed work;
+- document existence is not treated as evidence that a gate passed;
+- decisions and evidence are traceable to the stage that depends on them;
+- stage-status language is unambiguous;
+- the audit trail remains concise enough to support rather than obscure the build.
 
 ### C. Competition compliance
 
@@ -342,7 +339,7 @@ Flag process detail that obscures rather than strengthens the competition story.
 A finding is blocking if it creates a material risk of:
 
 - disqualification;
-- false/misleading provenance;
+- a false or misleading project record;
 - unsafe product authority;
 - invalid core evaluation;
 - inability to complete a qualifying submission;
@@ -437,11 +434,9 @@ Use the same five-part structure.
 
 Assess stage ordering, closure gates, recovery logic, and owner-control integrity.
 
-## Provenance / chronology review
+## Stage-record / traceability review
 
-Assess only the public roadmap disclosure.
-
-Do not discuss or expose non-public source locations, private working repositories, private preparation systems, or unseen materials.
+Assess whether the roadmap makes stage status, evidence dependencies, and closure conditions clear and auditable.
 
 ## Competition-compliance review
 
@@ -503,9 +498,7 @@ Claude should **not**:
 - act as a hidden co-builder;
 - fabricate rules or evidence;
 - claim to have inspected artifacts it was not given;
-- speculate about private work;
-- expose or discuss private working sources in GitHub comments/reviews;
-- restate private provenance history beyond what the public roadmap already discloses.
+- infer evidence or project facts that are not present in the reviewed artifacts.
 
 If a GitHub comment or review is used, keep it focused on the public artifact under review and the findings. Detailed reasoning should live in the formal audit artifact if one is created.
 
