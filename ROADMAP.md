@@ -19,29 +19,17 @@ The process is deliberately stage-gated. Each stage has:
 - an evidence standard;
 - explicit stop/go criteria;
 - a distinction between facts, assumptions, inferences, and claims;
-- a provenance label showing whether the work was performed before or during the competition window.
+- a clear record of stage outputs, evidence, and decisions.
 
 The goal is not to maximize feature count. The goal is to build and evidence the smallest credible Small AI system that addresses a concrete agricultural workflow under realistic connectivity, device, safety, and data constraints.
 
 ---
 
-# Provenance and chronology
+# How to read this roadmap
 
-## Pre-event preparation
+The roadmap is organized as a sequential project process. Stages 0–6 establish requirements, problem framing, concept selection, product/technical specification, readiness, and implementation authorization. Stages 7–10 cover technical proof, MVP implementation, validation, hardening, and submission.
 
-Stages 0–5 summarize legitimate research, planning, concept evaluation, architecture thinking, risk analysis, and build-readiness work completed before the official competition window.
-
-Those stages are being reconstructed into this public repository during the competition window for transparency and reviewer usability.
-
-They must **not** be interpreted as competition implementation work.
-
-No claim is made that these planning artifacts originated after this repository was created.
-
-## Competition-window work
-
-Stage 6 records the official competition greenlight and final scope after reviewing the challenge materials and accepting residual rule uncertainty.
-
-Stages 7–10 contain the definitive competition implementation, model/data processing, evaluation, product build, hardening, evidence package, videos, and submission work.
+Each stage should produce a judge-readable artifact, satisfy its stated gate, and leave a clear record of the evidence and decisions needed for the next stage.
 
 ---
 
@@ -80,7 +68,6 @@ The system is not a treatment engine, autonomous diagnosis system, or replacemen
 
 # Stage 0 — Rules, challenge scope, and compliance frame
 
-**Provenance:** Pre-event research, summarized publicly during the competition window.
 
 ## Objective
 
@@ -116,7 +103,6 @@ Stage 0 is complete when the project has a defensible rules interpretation and n
 
 # Stage 1 — Agriculture problem-space research
 
-**Provenance:** Pre-event research, summarized publicly during the competition window.
 
 ## Objective
 
@@ -153,7 +139,6 @@ Stage 1 is complete when the problem is specific enough to support a narrow user
 
 # Stage 2 — Concept portfolio and elimination
 
-**Provenance:** Pre-event planning, summarized publicly during the competition window.
 
 ## Objective
 
@@ -203,7 +188,6 @@ Stage 2 is complete when only concepts with credible development relevance, evid
 
 # Stage 3 — Concept selection and route lock
 
-**Provenance:** Pre-event planning plus competition-window official-brief reconciliation.
 
 ## Objective
 
@@ -253,7 +237,6 @@ Stage 3 is complete when the concept, user, AI job, claim ceiling, and major exc
 
 # Stage 4 — Product, data, model, architecture, and evaluation specification
 
-**Provenance:** Pre-event planning, summarized publicly during the competition window.
 
 ## Objective
 
@@ -351,7 +334,6 @@ Stage 4 is complete when the project has an implementable specification with a m
 
 # Stage 5 — Hackathon readiness and fallback planning
 
-**Provenance:** Pre-event planning, summarized publicly during the competition window.
 
 ## Objective
 
@@ -407,7 +389,6 @@ Stage 5 is complete when the entrant can begin implementation without unresolved
 
 # Stage 6 — Official challenge overlay and implementation greenlight
 
-**Provenance:** Competition-window control stage.
 
 ## Objective
 
@@ -444,7 +425,6 @@ The definitive build must:
 Where detailed participant rules remained silent after reasonable checking, the owner authorized proceeding under conservative disclosure:
 
 - disclose AI assistance;
-- disclose pre-event planning;
 - use public/open datasets and pretrained components only with attribution and license checks;
 - stop if a contradictory official rule later appears.
 
@@ -456,7 +436,6 @@ Stage 6 is complete when the route is locked and implementation is authorized.
 
 # Stage 7 — Definitive AI technical proof
 
-**Provenance:** Competition-window implementation.
 
 ## Objective
 
@@ -526,7 +505,6 @@ If it fails, narrow the model/claim rather than hiding the failure.
 
 # Stage 8 — Minimum complete MVP
 
-**Provenance:** Competition-window implementation.
 
 ## Objective
 
@@ -567,7 +545,6 @@ No stretch features are added before this gate passes.
 
 # Stage 9 — Hardening, evidence, and claims audit
 
-**Provenance:** Competition-window implementation and testing.
 
 ## Objective
 
@@ -640,7 +617,6 @@ Stage 9 closes when the prototype, evidence, README claims, and demo language ar
 
 # Stage 10 — Final repository, videos, red team, and submission
 
-**Provenance:** Competition-window submission work.
 
 ## Objective
 
@@ -655,7 +631,6 @@ Required public-facing materials should include:
 - architecture explanation;
 - data/model attribution;
 - AI/tooling disclosure;
-- pre-event planning disclosure;
 - evidence and limitations;
 - responsible-AI section;
 - reproducibility/run instructions;
@@ -707,7 +682,7 @@ The repository will be populated in a controlled sequence so its history reflect
 
 Planned order:
 
-1. `ROADMAP.md` — project process and provenance.
+1. `ROADMAP.md` — project process and stage structure.
 2. Stage 0 rules/compliance summary.
 3. Stage 1 problem research.
 4. Stage 2 concept screening.
@@ -720,7 +695,7 @@ Planned order:
 11. Stage 9 hardening and evidence.
 12. Stage 10 final documentation and submission package.
 
-The first six stages will be reconstructed from legitimate pre-event planning with explicit provenance. Implementation artifacts will be created and recorded during the competition window.
+Stages 0–6 establish the documented decision path and implementation gate. Stages 7–10 create and validate the definitive technical implementation and submission package.
 
 ---
 
@@ -728,13 +703,13 @@ The first six stages will be reconstructed from legitimate pre-event planning wi
 
 | Stage | Status |
 |---|---|
-| 0 — Rules & compliance | Ready to reconstruct from pre-event planning |
-| 1 — Agriculture problem research | Ready to reconstruct from pre-event planning |
-| 2 — Concept portfolio | Ready to reconstruct from pre-event planning |
-| 3 — Concept selection | Ready to reconstruct from pre-event planning + official brief |
-| 4 — Product/data/model/evaluation specification | Ready to reconstruct from pre-event planning |
-| 5 — Hackathon readiness | Ready to reconstruct from pre-event planning |
-| 6 — Official challenge overlay / greenlight | Ready to reconstruct from competition-window records |
+| 0 — Rules & compliance | Ready to document |
+| 1 — Agriculture problem research | Ready to document |
+| 2 — Concept portfolio | Ready to document |
+| 3 — Concept selection | Ready to document |
+| 4 — Product/data/model/evaluation specification | Ready to document |
+| 5 — Hackathon readiness | Ready to document |
+| 6 — Official challenge overlay / greenlight | Ready to document |
 | 7 — Definitive AI technical proof | Not started in this clean repository |
 | 8 — Minimum complete MVP | Not started |
 | 9 — Hardening / evidence / claims audit | Not started |
@@ -744,6 +719,6 @@ The first six stages will be reconstructed from legitimate pre-event planning wi
 
 # Immediate next action
 
-Publish the Stage 0 rules/compliance package and provenance disclosure, then proceed sequentially through Stages 1–6 before beginning the definitive Stage 7 technical proof.
+Publish the Stage 0 rules/compliance package, then proceed sequentially through Stages 1–6 before beginning the definitive Stage 7 technical proof.
 
 No model training, definitive UI work, deployment, or additional product features should be treated as canonical before the repository reaches the Stage 6 greenlight.
