@@ -46,9 +46,13 @@ The technical design must preserve:
 10. image retention is Noor opt-in at save time;
 11. reviewer image display requires separate Noor consent;
 12. reviewer-visible payload excludes `ai_score`, treatment, yield/income/price claims, location, and unnecessary profile data;
-13. the handoff is user-initiated, in-person, on-device, at a qualifying extension encounter when the household smartphone is present;
-14. Lugisu is the current named local-language interaction, with Bududa/south-Bugisu human validation required before final public strings;
-15. Uganda/Bugisu is an evidence anchor only, never Noor's fictional location.
+13. RoyaCheck is designed for **intermittent, shared or assisted smartphone access** and does not assume continuous personal possession or independent operation by Noor;
+14. capture/select a **current eligible coffee-leaf image** when the household smartphone and any needed assistance are available; no weekend, daughter-operated, original-plant, attached-leaf, backing-card, preservation, transport, or detachment protocol is a mandatory product invariant;
+15. the handoff remains user-initiated, in-person and on-device at a qualifying human-review opportunity when the household smartphone is present;
+16. Lugisu remains the current named prototype localization direction, but qualified human validation gates a **validated-localized-usability claim**, not technical MVP progress; without validation, any Lugisu strings are explicitly an unvalidated prototype draft and English remains available;
+17. Uganda/Bugisu is an evidence anchor only, never Noor's fictional location.
+
+The daughter/weekend scenario remains a case-faithful demo example of intermittent assisted use, not the only valid operating path.
 
 ---
 
@@ -307,9 +311,10 @@ The browser implementation must use the same semantic transform and be covered b
 Capture guidance:
 
 - keep the complete target leaf inside the framing guide;
-- do not require detachment;
-- subject to Stage 7A confirmation of BRACOL acquisition metadata, gently turn the attached leaf so the **lower/abaxial side** faces the camera;
-- a plain backing card may be placed behind the attached leaf where practical.
+- do not require detachment, preservation, transport, re-identification of the originally noticed plant, or a backing card;
+- do not require the leaf to remain attached as a product invariant;
+- subject to Stage 7A train-only inspection and acquisition metadata, the UI may recommend an evidence-supported leaf side/orientation, but that guidance must not exceed what the data actually support;
+- a plain backing card may be explored only as an **optional experimental aid**, never as required product behavior.
 
 ### Training-only augmentation
 
@@ -331,9 +336,11 @@ Pre-register the evidence domains:
 |---|---|---|
 | BRACOL internal | detached, lower/abaxial side, white/controlled background | internal task evidence |
 | RoCoLe external | on-plant field capture, natural background, mixed leaf side, Robusta | external transfer stress test |
-| Stage 3 preferred workflow | on-plant, lower/abaxial side, backing card where practical | **not directly measured as a complete condition** |
+| Stage 3 product capture envelope | current eligible coffee-leaf image when device/assistance are available; no mandatory detachment/attachment/backing-card/original-plant protocol | **not directly validated as one complete field condition** |
 
-If the RoCoLe claim-reduction trigger fires, withdraw field/general-transfer claims and return the Stage 3 on-plant workflow to the owner before final submission.
+The MVP does not pretend BRACOL directly validates natural-field operation.
+
+If the RoCoLe claim-reduction trigger fires, withdraw field/general-transfer claims and return the capture/workflow claim to the owner before final submission.
 
 # 8. Split, leakage, and quarantine rules
 
@@ -576,7 +583,13 @@ Eligible categories may include:
 
 Expected route: `not sure`.
 
-Use **at least 20 examples per reported U category where feasible**.
+For every reported U category with **at least 20 frozen examples**, the pre-registered target is:
+
+> **≥70% routed to `not sure`.**
+
+If a U category with at least 20 examples falls below 70%, make **no fail-safe/OOD claim for that category**.
+
+Use at least 20 examples per reported U category where feasible.
 
 If a category has fewer than 20 examples:
 
@@ -702,13 +715,15 @@ Validation record:
 - accepted/corrected result;
 - final string.
 
-If no qualified validator is available by the Stage 8/9 localization cutoff:
+If no qualified validator is already available by the Stage 8/9 localization cutoff:
 
-- Lugisu strings may appear only as an explicitly **unvalidated prototype draft**;
+- **technical MVP work continues**;
+- do not spend the competition clock sourcing a specialist solely to satisfy this self-created dependency;
+- Lugisu strings may appear only as an explicitly **unvalidated prototype localization draft**;
 - English remains available;
 - the submission may not claim validated/localized usability.
 
-Any proposed public naming change from Lugisu to Lumasaaba returns to José Antonio.
+Any proposed public naming change from Lugisu to Lumasaaba, or any different named-language implementation, returns to José Antonio.
 
 # 17. Common-data binding
 
@@ -879,7 +894,27 @@ Pre-authorized degraded safety mode:
 
 > **Disable `no visible rust`. High-confidence rust may still route to `visible rust`; every other learned outcome routes to `not sure`.**
 
-That degraded mode must be disclosed and cannot be presented as the full three-state Stage 3 performance claim.
+Trigger:
+
+- A0 and, if the preregistered clock permits, A1 must both fail the **full D4-11 validation gate**.
+
+Selection rule:
+
+- `T_healthy` is disabled;
+- select `T_rust` on validation only from the existing 0.50–0.95 grid;
+- maximize `|R→VR|` subject to a **pre-set false-alarm-share cap** on `|(H∪O)→VR| / |→VR|`;
+- ties go to the higher `T_rust`;
+- if no threshold satisfies the owner-fixed cap, there is **no learned proposal**.
+
+The exact false-alarm-share cap is an unresolved owner value and must be fixed **before Stage 4 closes and before any validation result is produced**. Claude's confirmation intentionally left this as an owner-chosen share; this record does not invent one.
+
+The degraded artifact must:
+
+- pass the same Stage 7D FP32-ONNX/browser-preprocessing parity gate;
+- use the same one-shot Stage 7E internal and Stage 7F external readout discipline;
+- report `R→VR`, `H→VR`, and `O→VR` counts and exact confidence intervals.
+
+The degraded mode must be disclosed and cannot be presented as the full three-state Stage 3 performance claim.
 
 # 21. Decisions deliberately left open until Stage 7A/7B
 
@@ -947,4 +982,4 @@ Until those gates pass:
 - no external readout;
 - no challenge-set result.
 
-**Current status: In review — Tier A audit repairs owner-approved; narrow confirmation pending.**
+**Current status: In review — Stage 3 simplification reconciled; Claude confirmation N1 repaired; N2 false-alarm cap awaiting owner lock.**
