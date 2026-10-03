@@ -85,6 +85,8 @@ A stage closes only when:
 
 If a non-blocking documentation stage exceeds its time box, prose expansion stops and residual gaps are recorded. A true rules, license, safety, or evaluation-integrity blocker remains blocking regardless of schedule pressure.
 
+To avoid serial waiting across stage PRs, work on stage N+1 may begin once the owner decision for stage N is recorded, with the approved merge following promptly. Two hard gates remain strict: Stage 4 pre-registration must be fixed before any training/validation result or held-out readout is produced, and Stage 6 greenlight must be recorded before definitive Stage 7 implementation begins. The protected submission buffer is never consumed by stage overruns.
+
 ## Repository communication rule
 
 GitHub comments, reviews, PR bodies, and public documents should discuss only the public artifact, its evidence, its decisions, and its risks. They should not expose private working context that is not necessary to understand or evaluate the project.
