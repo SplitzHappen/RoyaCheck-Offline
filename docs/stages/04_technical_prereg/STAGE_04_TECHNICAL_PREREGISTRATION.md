@@ -1,7 +1,7 @@
 # Stage 4 — Technical Pre-Registration
 
 **Stage:** 4  
-**Status:** In progress — technical recommendations awaiting owner approval  
+**Status:** In review — owner-approved pre-registration; Tier A audit pending  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling product lock:** `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`  
@@ -18,7 +18,7 @@ This file distinguishes:
 - **Verified external facts** — supported by primary/authoritative sources.
 - **Project constraints** — inherited from the closed case/product contract.
 - **Technical hypotheses** — plausible but not yet measured.
-- **Recommendations** — proposed Stage 4 decisions awaiting explicit owner approval.
+- **Owner-approved pre-registration decisions** — D4-01 through D4-20 explicitly accepted by José Antonio on 2026-10-03, subject to the stated license gates and later evidence requirements.
 - **Later evidence** — measurements that may only be produced after the authorized Stage 7 sequence.
 
 Nothing in this document is a training result.
@@ -70,6 +70,7 @@ Primary source: https://data.mendeley.com/datasets/yy2k5y8mxg/1
 
 ### Recommendation D4-01
 
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 Use **only the original whole-leaf BRACOL images** as the first development candidate.
 
 Do **not** use the cropped symptom dataset in the first path because:
@@ -97,6 +98,7 @@ Data article: https://doi.org/10.1016/j.dib.2019.104414
 
 ### Recommendation D4-02
 
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 Make **RoCoLe v2 the primary quarantined external-transfer readout**, not development data.
 
 Reason:
@@ -125,6 +127,7 @@ Primary source: https://data.mendeley.com/datasets/mfpxg4y65r/2
 
 ### Recommendation D4-03
 
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 Keep Saposoa v2 as an **optional second quarantined external readout** only if time permits after the primary RoCoLe readout.
 
 It must not become another tuning set.
@@ -145,6 +148,7 @@ Primary source: https://data.mendeley.com/datasets/pmkbyjpf6k/1
 
 ### Recommendation D4-04
 
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 Use only a **small frozen licensed subset** of BRACOT as an out-of-distribution/scene-complexity challenge source if its mapping can be defined before any result is viewed.
 
 Do not call BRACOT a classification test set for the single-leaf task unless a defensible instance-to-input mapping is frozen first.
@@ -663,15 +667,17 @@ The core compatibility measurement must use ONNX Runtime Web WASM.
 
 WebGPU measurements may be supplementary only.
 
-### Device evidence level — unresolved owner input
+### Primary physical browser/device evidence target — owner resolved
 
-The project record currently does **not** identify an exact smartphone available to José Antonio for testing.
+José Antonio has identified the primary available physical test environment as:
 
-Therefore Stage 4 may not claim smartphone validation yet.
+> **Apple iPhone 17 Pro Max + Safari**
 
-Before Stage 4 closes, the owner must name an actual available smartphone + browser for the primary evidence target, **or** explicitly accept a weaker evidence level such as desktop Chrome/mobile emulation only.
+Stage 7/9 browser evidence for the primary physical-device path must therefore record the actual iPhone 17 Pro Max, Safari version, iOS version, ONNX Runtime Web execution provider used, measured model/runtime bytes, and measured inference latency.
 
-If only emulation/desktop evidence exists, the submission must not claim affordable-phone or real-phone validation.
+This is a **real-device compatibility/performance evidence target**, not a proxy for Noor's unknown household smartphone and not evidence of affordable/basic-phone performance. Because the iPhone 17 Pro Max is a high-end device, successful measurements on it may support claims that the system works on that tested phone/browser, but must **not** be generalized to low-cost smartphones without separate evidence.
+
+If the primary iPhone/Safari path fails the required WASM compatibility or budget, the failure must be recorded and the pre-approved fallback path invoked; desktop/mobile emulation may supplement but not replace the disclosed physical-device result.
 
 ---
 
@@ -760,9 +766,9 @@ The rules for deciding them are pre-registered here; their values come later.
 
 ---
 
-# 22. Proposed Stage 4 owner-lock set
+# 22. Owner-approved Stage 4 lock set
 
-The following require explicit owner approval before Stage 4 closes:
+José Antonio explicitly approved D4-01 through D4-20 on 2026-10-03, subject to the stated license gates and later evidence requirements:
 
 - **D4-01** BRACOL whole-leaf development role
 - **D4-02** RoCoLe primary external role
@@ -781,7 +787,7 @@ The following require explicit owner approval before Stage 4 closes:
 - **D4-15** privacy/shared-device data contract
 - **D4-16** localization-validation contract
 - **D4-17** common-data design binding
-- **D4-18** binary/latency budgets + target-device evidence rule
+- **D4-18** binary/latency budgets + target-device evidence rule, with **iPhone 17 Pro Max + Safari** as the primary physical evidence target
 - **D4-19** Stage 7 hard kill time
 - **D4-20** fallback ladder
 
@@ -789,14 +795,17 @@ The following require explicit owner approval before Stage 4 closes:
 
 # 23. Stage 4 gate
 
-Stage 4 remains **In progress** until:
+The substantive owner-decision gate is complete:
 
-1. the owner approves/modifies D4-01 through D4-20;
-2. the exact available target test device/evidence level is resolved;
-3. the pre-registration is checked for internal consistency;
-4. the Tier A Claude audit is completed;
-5. material findings are reconciled;
-6. the owner explicitly authorizes Stage 4 closure/merge.
+- D4-01 through D4-20 are owner approved;
+- the primary physical evidence target is resolved as **iPhone 17 Pro Max + Safari**.
+
+Stage 4 remains **In review** until:
+
+1. the pre-registration is independently audited under the Tier A Claude gate;
+2. material findings are reconciled without silently changing an owner-approved technical rule;
+3. any consequential repair returns to José Antonio for explicit approval;
+4. the owner explicitly authorizes Stage 4 closure/merge.
 
 Until those gates pass:
 
@@ -806,4 +815,4 @@ Until those gates pass:
 - no external readout;
 - no challenge-set result.
 
-**Current status: In progress — technical recommendations awaiting owner approval.**
+**Current status: In review — owner-approved pre-registration; Tier A audit pending.**
