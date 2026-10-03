@@ -95,3 +95,33 @@ The remaining control sequence is:
 4. only then may Stage 4 be opened.
 
 **Current status: In review — audit reconciled; narrow confirmation pending.**
+
+---
+
+## 7. Narrow confirmation traceability
+
+Claude's narrow confirmation returned **PASS WITH MINOR REPAIRS** at PR #11 head `8f0b72cdb69792bc5b4cec9f698fd2917ed573ff`.
+
+Confirmation result:
+
+- all 10 requested repairs (M1–M3 and m1–m7) were confirmed;
+- 0 new blocking findings;
+- 0 new major findings;
+- 1 new minor finding, **N1**, limited to record traceability;
+- no additional Claude audit is required before Stage 3 closure review after N1 is recorded;
+- nothing requires reopening Stages 0–2.
+
+### N1 — D3-10 action-route terminology traceability
+
+During the authorized audit-repair pass, D3-10's reviewer-visible payload bullet was renamed from **"review-priority route"** to **"action route (`Review first` / `Retake or request review` / `Record and monitor`)"**.
+
+This was a **terminology-only consistency correction** aligning D3-10 with the already owner-approved D3-14 action-based routing. It did **not** change the information visible to the reviewer, the payload boundary, or the substance of D3-10.
+
+José Antonio explicitly acknowledged and approved this neutral traceability correction on 2026-10-03.
+
+Claude's narrow confirmation is preserved verbatim at:
+
+`docs/audits/stage-03/STAGE_03_CONFIRMATION.md`
+
+Stage 3 remains **In review**. Closure, Ready-for-Review, merge, and Stage 4 remain subject to separate explicit owner authorization.
+
