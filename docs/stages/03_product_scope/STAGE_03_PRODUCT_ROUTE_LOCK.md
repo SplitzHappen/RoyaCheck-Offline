@@ -1,7 +1,7 @@
 # Stage 3 — Product Scope and Route Lock
 
 **Stage:** 3  
-**Status:** In review — owner decisions accepted; audit pending  
+**Status:** In review — audit reconciled; narrow confirmation pending  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling case:** `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`  
@@ -220,7 +220,7 @@ The reviewer sees only:
 - AI proposal, explicitly labeled as an AI proposal;
 - uncertainty / `not sure` state where applicable;
 - human disposition;
-- review-priority route;
+- action route (`Review first` / `Retake or request review` / `Record and monitor`);
 - optional short farmer note;
 - optional on-device image, only after explicit consent.
 
@@ -383,4 +383,4 @@ Before closure:
 4. return any consequential change to José Antonio for explicit approval;
 5. only then request owner authorization to close/merge Stage 3.
 
-**Stage 3 status: In review — owner decisions accepted; audit pending.**
+**Stage 3 status: In review — audit reconciled; narrow confirmation pending.**
