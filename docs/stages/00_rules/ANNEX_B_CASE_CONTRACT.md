@@ -1,7 +1,7 @@
 # Annex B Agriculture Case Contract
 
 **Authority:** Official Small AI for Development Challenge Brief supplied to participants, especially pp. 5–11 and Annex B, pp. 16–17.  
-**Status:** Controlling problem specification for the Agriculture entry; current foundation status **Reopened — in review** pending owner re-closure.  
+**Status:** Controlling problem specification for the Agriculture entry; foundation **Closed — owner approved (PR #9)**. Stage 3 decisions explicitly identified in this contract remain unresolved until Stage 3.  
 **Purpose:** Keep every later product, technical, evidence, UX, and pitch decision traceable to Noor’s stated case rather than to a generic agriculture problem.
 
 This file paraphrases the controlling case and project implications. It does not reproduce the participant brief.
