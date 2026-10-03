@@ -777,7 +777,7 @@ If the external dataset remains feasible and appropriately mapped, run the froze
 
 Do not tune anything from the result.
 
-Frame it as external transfer evidence, not Dominican field validation.
+Frame it as external transfer evidence, not field validation for Noor or any specific deployment context.
 
 ## 7G — Exported browser artifact
 
@@ -814,7 +814,7 @@ Build the smallest complete user-value loop around the frozen technical core.
 
 ## Required MVP components
 
-- Spanish UI;
+- the Stage 3 named local-language UI interaction;
 - image capture/upload;
 - browser-local inference;
 - visible-rust / no-visible-rust / not-sure output;
@@ -825,7 +825,9 @@ Build the smallest complete user-value loop around the frozen technical core.
 - `confirmed_by_role`;
 - structured local record;
 - IndexedDB or equivalent local storage;
-- deterministic extension summary based on human disposition;
+- deterministic extension/cooperative handoff summary based on human disposition;
+- store-now/review-later behavior that does not require a live connection;
+- no UX claim that Noor carries the smartphone on the slope all day;
 - clear limitation/safety language;
 - local-record deletion path.
 
@@ -949,7 +951,7 @@ Do not claim:
 - farmer adoption;
 - field deployment;
 - superior diagnostic accuracy versus experts;
-- robustness on Dominican farms;
+- robustness on Noor’s farm or any specific farm/geography without direct evidence;
 - replacement of extension officers.
 
 ## Gate
