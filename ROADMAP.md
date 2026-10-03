@@ -1,9 +1,9 @@
 # RoyaCheck Offline — End-to-End Project Roadmap
 
-**Competition:** World Bank Group Small AI for Development Hackathon 2026  
+**Competition:** Small AI for Development Hackathon 2026  
 **Challenge:** Challenge 4 — Small AI for Development  
 **Sector:** Agriculture  
-**Submission deadline:** 4 October 2026, 9:00 AM ET — Stage 0 must reconfirm this against the official submission source  
+**Submission deadline:** 4 October 2026, 9:00 AM ET / 13:00 UTC — confirmed by Stage 0; platform shows a 15-minute technical grace period that is recovery-only  
 **Entrant:** José Antonio Tamburini Martínez — sole human entrant
 
 ---
@@ -222,7 +222,9 @@ Stage 0 closes when:
 - every listed compliance item has a source and status;
 - every confirmed requirement is mapped to a later enforcing stage/evidence item;
 - any unresolved rule silence has an explicit owner disposition;
-- the deadline and submission surfaces are reconfirmed.
+- the deadline and submission surfaces are reconfirmed;
+- any active naming/branding compliance issue is repaired;
+- authenticated participant submission fields that are visible at Stage 0 are captured rather than deferred.
 
 **Review:** Tier A.
 
@@ -325,7 +327,7 @@ Freeze the public product definition, authority boundary, and exclusions so late
 
 ## Locked route
 
-**WBG Challenge 4 → Agriculture → RoyaCheck Offline**
+**Challenge 4 — Small AI for Development → Agriculture → RoyaCheck Offline**
 
 ## Primary value unit
 
@@ -460,7 +462,8 @@ The verdict must cover:
 - training/use permission;
 - redistribution of derived weights, embeddings, or reference sets through the public repo/live demo;
 - attribution obligations;
-- compatibility with the chosen repository license.
+- compatibility with the chosen repository license;
+- compatibility of any third-party content that appears in the repository, live demo, videos, or submission with the organizer's stated downstream uses and required attribution.
 
 If a required license is incompatible or materially unclear, stop that path and switch dataset/encoder/runtime **before** opening held-out or external evidence.
 
@@ -797,6 +800,8 @@ Build the smallest complete user-value loop around the frozen technical core.
 
 Stage 8 closes when the full user-value loop works end to end on the defined target browser/device evidence level and all human-authority controls behave as specified.
 
+Before Stage 8 closes, UI strings and live-demo metadata must pass the Stage 0 naming/branding policy.
+
 No stretch feature is added before this gate passes.
 
 **Review:** Tier B unless implementation changes a locked safety/architecture boundary.
@@ -956,7 +961,9 @@ Before the protected buffer begins:
 - live demo is already deployed and rechecked;
 - required video matrix from Stage 0 is resolved;
 - both submission destinations/forms have been dry-run as far as the platform permits;
-- all links have been tested from a clean browser/session.
+- all links have been tested from a clean browser/session;
+- all public repository documents, repository name/description, README, live-demo metadata, UI strings, video title cards/thumbnails, and submission-facing materials pass a naming/branding sweep;
+- the final third-party asset inventory has been rechecked for organizer-license compatibility.
 
 If the platform permits edits after initial submission, submit a complete honestly limited version **before** the protected buffer and update only if safe.
 
@@ -973,7 +980,10 @@ One final Tier A audit covers:
 - human-authority integrity;
 - responsible-AI/privacy language;
 - repository completeness;
-- video/submission consistency.
+- video/submission consistency;
+- naming/branding compliance;
+- third-party asset compatibility with the organizer's submission licence;
+- submitted-commit integrity and live-demo availability through judging.
 
 Material blockers must be repaired or explicitly accepted only where they are genuinely non-blocking.
 
@@ -986,6 +996,10 @@ Capture evidence that each required submission was received, such as:
 - confirmation page;
 - receipt;
 - timestamped screenshot.
+
+Keep raw receipt evidence private if it exposes account identifiers or personal information. If a public record is useful, publish only a redacted statement.
+
+Tag or otherwise record the submitted commit SHA. Absent explicit organizer permission, do not push new judged-default-branch changes after the deadline while judging is active.
 
 ## Gate
 
@@ -1024,8 +1038,8 @@ The stage order is a dependency structure for the project record. Public artifac
 
 | Stage | Status |
 |---|---|
-| Roadmap/process architecture | In review |
-| 0 — Rules & compliance | Not started |
+| Roadmap/process architecture | Closed — owner approved (PR #2) |
+| 0 — Rules & compliance | In review |
 | 1 — Agriculture problem research | Not started |
 | 2 — Concept comparison | Not started |
 | 3 — Product scope / route lock | Not started |
@@ -1041,4 +1055,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Complete the independent roadmap audit reconciliation, obtain owner approval for the repaired roadmap, and then begin Stage 0 as the first stage PR.
+Bring the fully repaired Stage 0 package to the owner for final closure/merge approval. No further Stage 0 audit is required.
