@@ -1,7 +1,7 @@
 # Stage 1 — Annex B Agriculture Problem Research
 
 **Stage:** 1  
-**Status:** Reopened — in review  
+**Status:** Closed — owner approved (PR #9)  
 **Sector:** Agriculture  
 **Product direction:** RoyaCheck Offline  
 **Controlling source:** Official Small AI for Development Challenge Brief, Annex B (Agriculture), read with the common rules/data sections.
@@ -380,4 +380,4 @@ Stage 1 is aligned only if:
 - the local/home-language versus national/vehicular-language choice is deferred explicitly to Stage 3;
 - claims remain proximal and measurable.
 
-**Stage 1 status: Reopened — in review. The independent case-alignment audit is complete and its findings are reconciled in PR #9 pending owner re-closure.**
+**Stage 1 status: Closed — owner approved (PR #9). The independent case-alignment audit is complete, its findings are reconciled, and the repaired problem frame is approved.**
