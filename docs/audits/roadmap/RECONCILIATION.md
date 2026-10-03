@@ -3,7 +3,7 @@
 **Audit PR:** #1 — `Audit: adversarial review of project roadmap`  
 **Audit verdict:** FAIL / BLOCKED  
 **Audit counts:** 2 blocking, 11 major, 6 minor  
-**Reconciliation status:** Builder reconciliation complete; owner decision pending  
+**Reconciliation status:** Builder reconciliation complete, focused re-audit completed, final owner decision pending  
 **Artifacts repaired on this branch:** `ROADMAP.md`, `docs/PROJECT_WORKFLOW.md`
 
 This reconciliation treats the audit as independent red-team input, not as an automatic decision. Each material finding is accepted, partially accepted, or rejected based on the project’s locked goals, competition clock, and owner-selected stage-by-stage public process.
@@ -103,4 +103,19 @@ After the repairs on this branch:
 - OOD claims require measured evidence or downgraded wording;
 - submission completion has a protected buffer and receipt requirement.
 
-The repaired roadmap should receive one focused independent recheck before owner acceptance and merge.
+The repaired roadmap received a focused independent re-audit in PR #1. Claude's re-audit verdict was **PASS WITH MAJOR REPAIRS** with one major residual (R-1) and three minor residuals (R-2 to R-4). Those four residuals have now been applied on this branch. Final owner acceptance and merge remain pending.
+
+---
+
+# Focused re-audit residual reconciliation
+
+| Residual | Disposition | Final repair |
+|---|---|---|
+| **R-1 — budget not anchored to clock times** | **ACCEPTED** | Added fixed latest end times in ET, a hard **5:30 AM ET** buffer start, explicit cross-stage overrun behavior, Stage 8/9 freeze rules, and permission to begin stage N+1 after owner decision while merge follows. Stage 4 pre-registration and Stage 6 greenlight remain hard gates. |
+| **R-2 — split manifest timing inconsistent** | **ACCEPTED** | Stage 4 now pre-registers the split procedure; Stage 7B commits the generated manifest before any training or validation result is produced. |
+| **R-3 — license verdict omitted derived reference data** | **ACCEPTED** | License gate now covers redistribution of derived weights, embeddings, and reference sets. |
+| **R-4 — duplicate Stage 6 / Stage 7 compliance recheck** | **ACCEPTED** | Stage 6 recheck satisfies the Stage 7-start recheck unless official materials change between them; Stage 10 retains the final recheck. |
+
+## Final builder assessment
+
+With R-1 through R-4 applied, no known blocking or major roadmap finding remains unreconciled. The repaired process is ready for owner acceptance, subject to a final scope/merge guard check.
