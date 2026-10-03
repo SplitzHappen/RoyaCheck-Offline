@@ -48,13 +48,19 @@ For each project stage:
 14. **Protect the final submission buffer.**  
     The roadmap defines a minimum protected recovery/submission buffer. Feature work stops when that buffer begins.
 
+15. **Treat the official sector annex as the controlling problem specification.**  
+    For Agriculture, Annex B / Noor controls the user, scenario, sector constraints, and allowed problem space. Generic research may add context but may not redefine the case. If a later artifact drifts away from the annex, the artifact is repaired rather than the case being rewritten.
+
+16. **Preserve unsolved case branches explicitly.**  
+    Solving one better agricultural decision does not authorize implying that the entry solves Noor’s other problems. The selected RoyaCheck route must keep the market-price branch, farmer-registry precondition, and broader yield-cause/advisory problem visible as out of scope or external dependencies.
+
 ## Review tiers
 
 ### Tier A — independent adversarial review
 
 Required for:
 
-- roadmap/process architecture;
+- roadmap/process architecture, including a material official-case realignment;
 - Stage 0 — compliance;
 - Stage 4 — technical/evaluation pre-registration;
 - Stage 7 — technical/evidence readout;
@@ -70,7 +76,7 @@ A Tier B stage escalates to Tier A only if it creates a new material compliance,
 
 ## Standard stage flow
 
-`stage artifact → stage PR → review according to tier → reconciliation if needed → owner decision → merge → stage close`
+`official case/rules → stage artifact → stage PR → review according to tier → reconciliation if needed → owner decision → merge → stage close`
 
 Stage 9 performs the internal evidence/claims check. The independent final claims/compliance red team happens once in Stage 10 rather than duplicating the same independent audit twice.
 
@@ -92,3 +98,5 @@ To avoid serial waiting across stage PRs, work on stage N+1 may begin once the o
 GitHub comments, reviews, PR bodies, and public documents should discuss only the public artifact, its evidence, its decisions, and its risks. They should not expose private working context that is not necessary to understand or evaluate the project.
 
 Stage artifacts should read as decision records rather than narrative diaries. They should state evidence and conclusions directly and should not make unsupported process-history claims.
+
+For case-based challenges, public artifacts should make clear which part of the official case they solve, which parts remain unsolved, and which infrastructure preconditions sit outside the prototype.
