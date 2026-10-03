@@ -108,6 +108,8 @@ Later stages, the README, demo, and videos must reference this single claim ceil
 - field validation, “works on real farms,” or Noor-specific/geography-specific robustness without direct evidence;
 - Noor’s nationality, real location, or local/national language as fact;
 - BRACOL as proof of field accuracy;
+- showing or describing Noor as carrying the daughter's smartphone on the slope, or as always having that smartphone available, when the case states that Noor is on the slope while the phone is at the house and smartphone use is mainly weekend-assisted;
+- presenting a reviewer role not named by Annex B (for example, a cooperative technician) as a case fact rather than an explicit project assumption;
 - universal device support, feature-phone support, or “fully offline” without the initial asset-cache caveat;
 - scale to large populations without registry, device, trust, extension-capacity, and institutional prerequisites.
 
@@ -201,6 +203,8 @@ It does **not** prove:
 - transfer across cultivars/geographies/devices;
 - causal relevance to Noor’s yield decline.
 
+The challenge brief explicitly warns that image performance under controlled, studio-like, or plain-background conditions may not transfer to ordinary field photos. Stage 4 must therefore record acquisition setting and field-photo coverage for every image dataset used, and must treat any mismatch as a limitation on claims rather than as implied field validation. If maize/bean challenge examples are used only where licensed examples are available, any licensing-driven omission must be disclosed in the challenge-set record.
+
 ### Common layer
 
 The project must also use at least one relevant common-data source to ground a real implementation constraint such as:
@@ -240,7 +244,7 @@ The organizer’s required problem-statement template is:
 
 > **Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence].**
 
-Stage 3 must instantiate this template only after the agricultural next-step decision and assisted/weekend workflow are owner-locked. The **“we know because”** clause must cite real evidence; the fictional scenario by itself is not empirical proof of the development claim.
+Stage 3 must instantiate this template only after the agricultural next-step decision, assisted/weekend workflow, and handoff are owner-locked. The **“we know because”** clause must cite real evidence; the fictional scenario by itself is not empirical proof of the development claim.
 
 Until Stage 3, no final judge-facing value statement is locked.
 

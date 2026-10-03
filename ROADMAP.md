@@ -22,7 +22,7 @@ The official participant challenge brief, especially Annex B, is the controlling
 
 Generic Agriculture research may contextualize the case but may not redefine it. If a generic assumption conflicts with Annex B, Annex B controls.
 
-The entry is built for **Noor, a smallholder coffee farmer**, under the case constraints of extension access only about twice a year at best, manual/delayed service workflows, Noor’s own basic phone, her daughter’s weekend-assisted smartphone access, weak-connectivity conditions, and explicit scale preconditions such as farmer registries, phone access, and institutional trust.
+The entry is built for **Noor, a smallholder coffee farmer**, under the case constraints of extension access only about twice a year at best, manual/delayed service workflows, Noor’s own phone, her daughter’s weekend-assisted smartphone access, weak-connectivity conditions, and explicit scale preconditions such as farmer registries, phone access, and institutional trust.
 
 The challenge-level unit of value is **one better agricultural decision**. RoyaCheck selects only the crop-observation/documentation/extension-handoff branch. It does not claim to explain Noor’s yield decline, solve her market-price problem, create a farmer registry, or replace extension capacity.
 
@@ -70,9 +70,9 @@ The system is not a treatment engine, autonomous diagnosis system, or replacemen
 
 ---
 
-## Canonical exclusions
+## Product-scope exclusions and canonical claims pointer
 
-The public product must not expand into:
+The public product must not expand into these out-of-scope product features:
 
 - pesticide recommendations;
 - fungicide recommendations;
@@ -89,24 +89,11 @@ The public product must not expand into:
 - dashboards;
 - LLM features in the rust decision;
 - market-price prediction or market-price-reference features in the MVP;
-- claims that rust explains Noor’s seasonal yield decline;
-- farmer-registry or extension-capacity features;
-- unsupported country-specific field-validation claims;
-- claims that `no visible rust` means “healthy,” “all clear,” or “no disease”;
-- general farm/crop diagnosis claims;
-- improved yield, income, or market-price claims;
-- claims that RoyaCheck gets Noor a better price;
-- automatic extension/cooperative notification or real-time expert-advice claims;
-- claims that the prototype creates/solves a farmer registry;
-- claims about Noor’s nationality, real location, or language as fact;
-- “field validated,” “works on real farms,” or BRACOL-as-field-proof claims without direct evidence;
-- “fully offline” wording without the initial asset-cache caveat;
-- universal/feature-phone support claims;
-- scale-to-millions claims without registry, device, trust, extension-capacity, and institutional prerequisites.
+- farmer-registry or extension-capacity features.
 
 Simple prerecorded or human-voiced accessibility prompts are **not** excluded if Stage 3 later justifies them.
 
-All later stage documents should reference this **canonical prohibited-claims list** rather than create competing lists.
+The **single authoritative prohibited-claims ceiling** is `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md` §4. This roadmap must point to that ceiling rather than duplicate or paraphrase it.
 
 ---
 
@@ -417,7 +404,7 @@ Other disease/stress without visible rust is routed to **not sure**, not silentl
 
 Public UI and summaries must explicitly avoid equating “no visible rust” with “healthy leaf.” On a leaf Noor herself flagged as suspicious, the human-review option must remain prominent after a `no visible rust` proposal.
 
-These label semantics do **not** silently decide the action mapping. Stage 3 must lock the final label-to-action routing.
+These label semantics do **not** silently decide the action mapping. Stage 3 must lock the final label-to-action routing. The three routes must differ meaningfully in **priority and/or urgency** rather than collapsing into the same action, while human review may still remain available and prominent after a `no visible rust` proposal.
 
 ## Gate
 
@@ -524,6 +511,10 @@ Every dataset used must document:
 - class mapping;
 - coverage limitations;
 - exact role: training / validation / test / external / challenge set.
+
+The Stage 4 dataset record must explicitly guard against the challenge brief's acquisition-setting warning: performance on controlled, studio-like, or plain-background imagery must not be presented as evidence of robustness on ordinary field photos. Dataset acquisition conditions and any field-photo coverage must therefore be recorded as a claim-limiting factor.
+
+If maize or bean examples are included in the later challenge set only where licensed examples are available, the final challenge-set record must disclose any such licensing-driven omission rather than imply complete crop-set coverage.
 
 Full third-party datasets are not re-hosted unless their terms and the competition rules clearly permit it.
 
@@ -862,6 +853,7 @@ Build the smallest complete user-value loop around the frozen technical core.
 - structured local record;
 - IndexedDB or equivalent local storage;
 - deterministic extension/cooperative handoff summary based on human disposition;
+- the **Stage-3-locked, user-initiated handoff** itself, using the locked channel, consent step, and reviewer-visible payload rather than an implied or autonomous integration;
 - store-now/review-later behavior that does not require a live connection;
 - no UX claim that Noor carries the smartphone on the slope all day;
 - clear limitation/safety language;
@@ -876,7 +868,8 @@ Build the smallest complete user-value loop around the frozen technical core.
 - self-hosted runtime/model assets needed for the core;
 - local persistence;
 - no geolocation collection;
-- no raw image retention by default.
+- no raw image retention by default;
+- if Stage 3 locks a handoff in which the image travels, retaining that image until the user-initiated handoff requires explicit consent and the local deletion path must cover the retained image as well as its record.
 
 ## Gate
 
@@ -915,6 +908,16 @@ At minimum:
 2. `human_disposition` must not be pre-filled from the AI proposal;
 3. a `not sure` AI proposal must require explicit human disposition or review request;
 4. deterministic summary output must not silently substitute an AI-only disposition for a human one.
+
+## Handoff / consent tests
+
+Using whatever Stage 3 locks, verify that:
+
+1. the handoff requires an explicit user action and uses only the locked channel;
+2. the reviewer receives only the locked reviewer-visible payload;
+3. if an image travels, image inclusion cannot proceed without the locked consent step;
+4. any image retained until handoff is removed by the local deletion path when the user deletes the associated local material;
+5. no test or UI state implies autonomous sending, automatic notification, or institutional integration.
 
 ## Offline proof protocol
 
@@ -978,9 +981,9 @@ At minimum capture:
 
 ## Claims gate
 
-Stage 9 does **not** create a second prohibited-claims list. It audits every README/demo/video phrase against the canonical prohibited-claims list near the top of this roadmap and the corresponding canonical list in `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`.
+Stage 9 does **not** create or rely on a second prohibited-claims list. It audits every README/demo/video phrase against the **single authoritative claims ceiling** in `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md` §4.
 
-A claim may move above that ceiling only if a later authorized evidence gate directly supports it and the owner explicitly approves the wording. Otherwise the canonical prohibition remains controlling.
+A claim may move above that ceiling only if a later authorized evidence gate directly supports it and the owner explicitly approves the wording. Otherwise the Contract §4 prohibition remains controlling.
 
 ## Gate
 
@@ -1149,4 +1152,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-The Annex B / Noor foundation has been owner approved for re-closure and merge in PR #9. After PR #9 is merged, the next project action is to begin **Stage 3 — Product scope / route lock** and resolve the explicitly deferred owner decisions recorded in the case contract and reconciliation. Stage 3 remains **Not started** until that post-merge work begins.
+PR #9 is merged and the repaired Annex B / Noor foundation has received an independent post-reconciliation verdict of **PASS WITH MINOR REPAIRS**: all six original major findings are resolved and no new blocker or major finding remains. PR #10 is the bounded cleanup/verification PR for the residual minor findings.
+
+**Do not begin Stage 3 yet under the owner's stricter control gate.** First complete the authorized PR #10 minor repairs and obtain the planned narrow Claude confirmation of those repairs. Stage 3 remains **Not started** until that confirmation is returned, reconciled, and the owner authorizes progression.
