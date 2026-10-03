@@ -1,7 +1,7 @@
 # Stage 4 — Technical Pre-Registration
 
 **Stage:** 4  
-**Status:** In review — owner-approved pre-registration; Tier A audit pending  
+**Status:** In review — Tier A audit repairs owner-approved; narrow confirmation pending  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling product lock:** `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`  
@@ -54,462 +54,544 @@ The technical design must preserve:
 
 # 3. Data-source dossier
 
-## 3.1 BRACOL — proposed development source
+## 3.1 BRACOL — owner-approved development source
 
 **Primary source:** Mendeley Data, DOI `10.17632/yy2k5y8mxg.1`  
-**License shown by source:** CC BY 4.0  
+**License shown by source:** CC BY 4.0; re-check exact downloaded archive and attribution obligations at Stage 7A  
 **Crop/species:** Arabica coffee  
-**Published:** 2019  
-**Image count:** 1,747 original whole-leaf images; 2,147 cropped symptom images also exist  
-**Capture devices:** multiple smartphones  
-**Acquisition:** leaves photographed from the abaxial/lower side under partially controlled conditions on a white background  
-**Labels:** healthy and major coffee biotic stresses, including rust, leaf miner, brown leaf spot, and cercospora leaf spot; whole-leaf labels describe predominant stress/severity  
-**Stage 4 assessment:** strong task relevance, weak evidence for ordinary field-photo robustness.
-
-Primary source: https://data.mendeley.com/datasets/yy2k5y8mxg/1
+**Geography:** Espírito Santo, Brazil  
+**Collection:** 1,747 leaves collected; **1,685 labelled**; 62 excluded by the authors because predominant stress was not distinguishable  
+**Additional symptom crops:** 2,147 cropped symptom images exist but are excluded from the preferred path  
+**Capture devices reported by the source/publication:** ASUS Zenfone 2, Xiaomi Redmi 5A, Xiaomi S2, Samsung Galaxy S8, iPhone 6S  
+**Acquisition:** detached leaves, lower/abaxial side, partially controlled, white background  
+**Published label metadata:** `predominant_stress` plus per-stress presence flags including `rust`  
+**Coverage limitation:** strong task relevance; no direct evidence of ordinary on-plant field robustness.
 
 ### Recommendation D4-01
 
-**Owner status:** Accepted by José Antonio on 2026-10-03.
-Use **only the original whole-leaf BRACOL images** as the first development candidate.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Do **not** use the cropped symptom dataset in the first path because:
+Use only the **1,685 labelled whole-leaf records** for the preferred development path.
 
-- the final product consumes a whole-leaf photograph;
-- symptom crops create a larger train/deployment acquisition mismatch;
-- derivative crops can complicate leakage control if related originals cross partitions.
+Exclude:
 
-License verdict at Stage 4: **provisional pass for evaluation/training planning; re-check exact downloaded archive and attribution obligations at Stage 7A before use or redistribution.**
+- all 62 author-excluded/unlabelled leaves from every partition;
+- all cropped symptom images from the preferred path.
+
+Stage 7A must confirm that the downloaded archive contains the expected per-stress metadata before Stage 7B. If the expected rust-presence metadata are missing or materially inconsistent, stop and return to the owner before any definitive training.
+
+License verdict at Stage 4: **provisional pass for planning only**; exact archive, attribution, and redistribution obligations remain a Stage 7A gate.
 
 ---
 
-## 3.2 RoCoLe v2 — proposed primary external-transfer source
+## 3.2 RoCoLe v2 — owner-approved sole planned external-transfer source for this submission
 
 **Primary source:** Mendeley Data, DOI `10.17632/c5yvn32dzg.2`  
-**License shown by source:** CC BY 4.0  
+**License shown by source:** CC BY 4.0; re-check archive-level terms at Stage 7A  
 **Crop/species:** Robusta coffee  
-**Image count:** 1,560  
-**Acquisition:** smartphone images obtained in real-world conditions in a coffee field  
-**Labels:** healthy/unhealthy with coffee-rust spots and red-mite structures; disease severity annotations are also available  
-**Stage 4 assessment:** useful field-capture transfer stress test, but species and label semantics differ from BRACOL.
-
-Primary source: https://data.mendeley.com/datasets/c5yvn32dzg/2  
-Data article: https://doi.org/10.1016/j.dib.2019.104414
+**Geography:** Manabí, Ecuador  
+**Images:** 1,560, reported as four images per plant across 390 plants  
+**Acquisition:** on-plant smartphone field capture, natural backgrounds, mixed upper/back leaf views and mixed resolutions  
+**Published labels:** healthy, rust levels 1–4, and red-spider-mite structures; eight state/classification conflicts were identified by the Tier A audit and must be re-confirmed at Stage 7A  
+**Coverage limitation:** a multiply shifted transfer source: species, field capture, leaf side, resolution, geography, and plant clustering differ from BRACOL.
 
 ### Recommendation D4-02
 
-**Owner status:** Accepted by José Antonio on 2026-10-03.
-Make **RoCoLe v2 the primary quarantined external-transfer readout**, not development data.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Reason:
+RoCoLe v2 is the **sole planned external-transfer readout for the 2026 submission**.
 
-- it is materially closer to real-world smartphone capture than BRACOL;
-- the Robusta/Arabica mismatch makes it a legitimate transfer stress test rather than a disguised second validation set;
-- failure can honestly constrain field-generalization claims.
+Freeze the metadata-only map before viewing evaluation images:
 
-No RoCoLe image may be used for training, threshold selection, preprocessing selection, OOD design, model choice, or fallback choice before the one-shot external readout.
+- rust levels 1–4 → `R`;
+- healthy → `H`;
+- red-spider-mite → `O-unseen`, reported separately and excluded from rust/healthy metrics;
+- the eight reported state/classification conflicts → exclude and disclose if confirmed at Stage 7A.
 
-License verdict: **provisional CC BY 4.0 pass; confirm archive-level terms at Stage 7A.**
+No RoCoLe image may influence model choice, preprocessing, threshold selection, fallback choice, OOD design, or any other design decision before the one-shot external readout.
+
+Frame any result as **cross-dataset transfer under species + acquisition-domain shift**, never field validation for Noor, Uganda, or low-cost devices.
 
 ---
 
-## 3.3 Saposoa Arabica v2 — proposed secondary external source
+## 3.3 Saposoa Arabica v2 — future candidate only
 
-**Primary source:** Mendeley Data, DOI `10.17632/mfpxg4y65r.2`  
-**License shown by source:** CC BY 4.0  
-**Published:** 18 September 2026  
-**Crop/species:** Arabica coffee  
-**Images:** 1,500 total; 500 healthy, 500 rust, 500 coffee leaf spot  
-**Acquisition:** plantation-origin leaves collected under a uniform protocol with controlled camera-to-leaf distance, homogeneous natural light, focus requirements, and exclusion of blurred/occluded/poorly exposed images  
-**Stage 4 assessment:** strong cross-geography/species-aligned external source, but its curated acquisition protocol is less useful than RoCoLe for stressing ordinary field capture.
+Saposoa is **removed from the active 2026 evidence path**.
 
-Primary source: https://data.mendeley.com/datasets/mfpxg4y65r/2
+The current record may retain it as a future external candidate, but:
+
+- it will not be read conditionally after RoCoLe;
+- it will not influence Stage 7 decisions;
+- its recent Mendeley metadata, licence, acquisition protocol, and leaf-spot pathogen identity must be independently re-verified before any future use.
+
+This supersedes the earlier ROADMAP default that named Saposoa as the primary external readout.
 
 ### Recommendation D4-03
 
-**Owner status:** Accepted by José Antonio on 2026-10-03.
-Keep Saposoa v2 as an **optional second quarantined external readout** only if time permits after the primary RoCoLe readout.
+**Owner status:** Modified and accepted by José Antonio after Tier A audit.
 
-It must not become another tuning set.
+For this submission, **do not use Saposoa as an external readout**. This removes a selective-reporting channel and keeps one external source.
 
 ---
 
-## 3.4 BRACOT — proposed field-scene challenge source
+## 3.4 BRACOT — optional unknown/scene-complexity challenge source
 
 **Primary source:** Mendeley Data, DOI `10.17632/pmkbyjpf6k.1`  
-**License:** CC BY 4.0  
+**License shown by source:** CC BY 4.0; re-check at Stage 7A  
 **Crop/species:** Arabica coffee  
-**Images:** 300 field photographs containing 1,662 annotated leaf instances  
-**Acquisition:** smartphone photographs taken in a coffee plantation  
-**Content:** healthy and diseased leaves on coffee trees, including rust and other stresses  
-**Stage 4 assessment:** useful as a field-scene / multi-leaf challenge source; not directly equivalent to the single-leaf classifier input.
-
-Primary source: https://data.mendeley.com/datasets/pmkbyjpf6k/1
+**Geography:** same Espírito Santo region/lab lineage as BRACOL  
+**Images:** 300 field photographs with 1,662 annotated leaf instances  
+**Acquisition:** on-tree smartphone field scenes  
+**Annotation limitation:** per-leaf disease labels are not relied upon by this project.
 
 ### Recommendation D4-04
 
-**Owner status:** Accepted by José Antonio on 2026-10-03.
-Use only a **small frozen licensed subset** of BRACOT as an out-of-distribution/scene-complexity challenge source if its mapping can be defined before any result is viewed.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Do not call BRACOT a classification test set for the single-leaf task unless a defensible instance-to-input mapping is frozen first.
+BRACOT may be used only as a frozen **unknown/scene-complexity** challenge source.
 
----
+If used:
+
+- select the subset by seeded file-list sampling without browsing images;
+- expected product route is `not sure`;
+- do not create project-authored disease labels;
+- do not present BRACOT as an independent rust/no-rust test set;
+- disclose its shared lab/locality relationship with BRACOL.
 
 # 4. Source-class and product-output mapping
 
-## Recommendation D4-05 — five-way learned head, three-way user output
+## Recommendation D4-05 — rust-presence-priority five-way head → three product outputs
 
-Where BRACOL labels support it, train/evaluate the learned head on source-level classes:
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
+
+Use the BRACOL published per-stress metadata to construct source truth.
+
+Define:
+
+- `R` = every labelled leaf with `rust flag = 1`, regardless of predominant stress;
+- `H` = labelled leaf with all supported stress flags absent;
+- `O` = non-rust other-condition leaf, defined only where `rust flag = 0`, then separated by predominant non-rust class.
+
+The five learned source classes are:
 
 1. healthy;
-2. rust;
-3. leaf miner;
-4. brown leaf spot / source-equivalent class;
-5. cercospora leaf spot.
+2. rust-present;
+3. leaf miner without rust;
+4. brown leaf spot / source-equivalent class without rust;
+5. cercospora without rust.
 
-The public user output remains only:
+A rust-bearing mixed-stress leaf is therefore **never** trained or scored as a safe non-rust case.
+
+The public product outputs remain exactly:
 
 - `visible rust`;
 - `no visible rust`;
 - `not sure`.
 
-Mapping:
+Routing:
 
-- model top class = rust **and** rust operating-point rule passes → `visible rust`;
-- model top class = healthy **and** healthy operating-point rule passes → `no visible rust`;
+- model top class = rust-present and rust threshold passes → `visible rust`;
+- model top class = healthy and healthy threshold passes → `no visible rust`;
 - model top class = any supported non-rust disease → `not sure`;
 - low-confidence/abstaining eligible image → `not sure`;
-- image failing deterministic eligibility checks → `not sure`.
+- deterministic eligibility failure → `not sure`.
 
-Why this is preferred over a binary rust/non-rust head:
+All rust safety metrics use the **rust-presence truth**, not predominant-stress truth.
 
-- a binary model encourages other visible disease/stress to collapse into “no rust”;
-- a source-level multi-class head lets known non-rust disease patterns route safely to `not sure`;
-- the user still receives only the narrow three-state product contract.
-
-No other-disease label may become an agronomic diagnosis in the UI.
-
----
+No non-rust source class becomes a diagnosis in the UI or reviewer payload.
 
 # 5. Candidate learned model
 
 ## Verified candidate facts
 
-MobileNetV3-Small is explicitly designed for low-resource/mobile image classification.
+MobileNetV3-Small remains the preferred model family.
 
-TorchVision's current documentation reports the standard MobileNetV3-Small architecture at approximately:
+TorchVision reports the standard MobileNetV3-Small family at roughly:
 
 - 2.54 million parameters;
-- 0.06 GFLOPs under its documented configuration;
-- about 9.8 MB for its ImageNet-1K FP32 weight file;
-- 224×224 crop input.
+- 0.057–0.06 GFLOPs under its documented configuration;
+- about 9.8 MB for the standard ImageNet-1K FP32 weight file.
 
-Reference: https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.mobilenet_v3_small.html
+## Recommendation D4-06 — MobileNetV3-Small first family
 
-## Recommendation D4-06 — preferred architecture family
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Preferred first candidate:
+Preferred A0 architecture:
 
-> **MobileNetV3-Small, 224×224 input, frozen visual backbone initially, coffee-specific five-way linear classifier head.**
+> **MobileNetV3-Small 1.0, pooled 576-dimensional pre-classifier features, five-way linear head.**
 
-Initial training policy:
+The backbone is frozen in A0.
 
-1. freeze the backbone;
-2. train only the five-way classifier head;
-3. make threshold/coverage decisions using validation only;
-4. if the frozen-head path cannot meet the pre-registered validation gate, invoke the pre-approved fallback sequence rather than broad hyperparameter search.
+A1 may unfreeze only the final MobileNetV3 backbone block plus head, under the fixed training plan in D4-19/D4-20.
 
-A narrowly pre-authorized fallback may unfreeze only the final backbone block **before any test/external readout**, using train/validation evidence only.
+No broad hyperparameter search is permitted.
 
-### Pretrained-weight license warning
+### Pretrained-weight licence/provenance standard
 
-Do **not** treat a framework code license as sufficient clearance for pretrained weights.
+The exact pretrained artifact remains license-gated.
 
-TorchVision explicitly warns that pretrained models may inherit separate licenses/terms from their training data.
+The project explicitly acknowledges that:
 
-The Hugging Face model card for `timm/mobilenetv3_small_100.lamb_in1k` displays Apache-2.0 and a 2.5M-parameter MobileNetV3-Small model, but the upstream `timm` repository separately warns that ImageNet-trained weights may remain subject to ImageNet-related terms.
+- framework/code licensing does not by itself clear pretrained weights;
+- TorchVision/timm warn that pretrained weights may inherit or implicate source-dataset terms;
+- ImageNet access terms are non-commercial research/education terms.
 
-Therefore:
+José Antonio accepts the residual provenance/licensing risk for an ImageNet-pretrained MobileNetV3 artifact **only for this non-commercial hackathon/research entry** and only if all of the following hold:
 
-> **The architecture is recommended; the exact pretrained weight artifact remains license-gated and is NOT yet owner-locked for redistribution/use in the public entry.**
+- exact artifact source and SHA-256 are pinned;
+- code licence and ImageNet provenance are disclosed;
+- no commercial-use claim is made for the pretrained weights or derived model;
+- raw ImageNet is not redistributed;
+- the raw upstream pretrained artifact is not unnecessarily re-hosted;
+- Stage 6 rechecks compatibility with the organizer's submission/promotion licence before Stage 7C;
+- any clear incompatibility blocks the pretrained path and returns to the owner.
 
-Sources:
-- https://huggingface.co/timm/mobilenetv3_small_100.lamb_in1k
-- https://github.com/huggingface/pytorch-image-models
-- https://docs.pytorch.org/vision/master/models.html
-
-If no pretrained weight source passes the Stage 7A license gate, fall back before training to a clearly permitted weight source or to the pre-approved lower-claim path.
-
----
+This is project risk acceptance, **not a legal determination of licence compatibility**.
 
 # 6. Browser runtime and offline architecture
 
-## Verified runtime facts
+## Recommendation D4-07 — ONNX Runtime Web WASM compatibility path
 
-ONNX Runtime Web supports in-browser inference with WebAssembly and other execution providers.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Its current browser support documentation shows WebAssembly support across major desktop/mobile browsers, while WebGPU support is narrower. ONNX Runtime's own WebGPU guidance recommends WASM for very lightweight models when a small, broadly compatible path is desired.
+Required runtime:
 
-ONNX Runtime is MIT licensed.
+> **`onnxruntime-web` 1.30.0, WebAssembly-only core path, `numThreads = 1`.**
 
-Sources:
-- https://onnxruntime.ai/docs/tutorials/web/
-- https://onnxruntime.ai/docs/get-started/with-javascript/web.html
-- https://onnxruntime.ai/docs/tutorials/web/ep-webgpu.html
-- https://github.com/microsoft/onnxruntime
+WebGPU may be explored only as optional non-core acceleration and must not be required for the user-value loop.
 
-## Recommendation D4-07
+Do not use WebGL as the preferred path.
 
-Lock the **core runtime target** as:
-
-> **ONNX Runtime Web + WebAssembly CPU execution provider as the required compatibility path.**
-
-Optional acceleration:
-
-> WebGPU may be used when available, but the product must not require WebGPU for the core loop or make a claim that excludes browsers/devices supported only through WASM.
-
-Do not use WebGL as the preferred path; ONNX Runtime documents it as maintenance mode.
-
-Core architecture:
+Core architecture remains:
 
 - static web application / PWA;
 - self-hosted app/runtime/model assets;
 - one connected first-load/cache step allowed;
-- after core assets are cached, capture/select → inference → human disposition → local record → review-card generation requires no network;
 - no server-side rust inference;
 - no cloud LLM;
-- no account/login requirement for the MVP;
-- no background sync or push dependency.
+- no account/login requirement;
+- no background-sync or push dependency;
+- after required assets are cached, capture/select → inference → human disposition → local record → review-card generation requires no network.
 
----
+Primary physical evidence context:
+
+> **iPhone 17 Pro Max → Safari → Add to Home Screen → standalone PWA**
+
+Call `navigator.storage.persist()` where supported and record the returned value.
+
+Do not assume storage created in a Safari tab is shared with the installed Home Screen app.
+
+Public limitation:
+
+> **Local browser storage is not guaranteed to persist indefinitely; records may be lost through browser/device storage policy, storage pressure, user clearing of site data, or app removal.**
+
+No short hackathon persistence test may be presented as proof of multi-month durability.
 
 # 7. Preprocessing and capture contract
 
-## Recommendation D4-08
+## Recommendation D4-08 — full-frame 224×224 transform
 
-Pre-register the candidate model preprocessing as:
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-1. accept a decodable color image;
-2. reject/route to `not sure` if either decoded dimension is below 224 pixels;
-3. re-encode the working image in-browser before persistence/export so EXIF/location metadata are removed;
-4. resize using the selected encoder's frozen inference transform;
-5. use a 224×224 model input;
-6. preserve the same normalization constants and interpolation in training, validation, test, external readout, and browser inference.
+Use one identical full-frame transform for development evaluation, internal test, external readout, and browser inference:
 
-For the current MobileNetV3-Small candidate, the initial transform recommendation is:
+1. decode a color image;
+2. require both decoded dimensions ≥224 px;
+3. preserve the entire decoded frame;
+4. resize directly to **224×224 using bilinear interpolation**;
+5. apply the frozen encoder normalization constants;
+6. **do not center crop**.
 
-- resize to 256 on the shorter side;
-- center crop to 224×224;
-- normalize with the selected pretrained encoder's published transform.
+The browser implementation must use the same semantic transform and be covered by the validation-only parity test in D4-11.
 
-Capture guidance inherited from Stage 3:
+Capture guidance:
 
-- on-plant;
-- no required detachment;
-- ordinary backing card/sheet where practical;
-- exact leaf-side/orientation remains unselected until Stage 7A data inspection confirms what the development data actually support.
+- keep the complete target leaf inside the framing guide;
+- do not require detachment;
+- subject to Stage 7A confirmation of BRACOL acquisition metadata, gently turn the attached leaf so the **lower/abaxial side** faces the camera;
+- a plain backing card may be placed behind the attached leaf where practical.
 
-### Training-only augmentation recommendation
+### Training-only augmentation
 
-Keep augmentation deliberately mild:
+Freeze before Stage 7C:
 
-- random rotation: ±15°;
-- horizontal/vertical flips if source semantics permit;
-- mild scale/crop variation;
+- flips;
+- random rotation ±15°;
 - mild brightness/contrast variation;
+- mild scale variation;
+- no random crop removing more than 20% of the original frame;
 - no heavy hue shift;
 - no synthetic lesion generation.
 
-The exact augmentation implementation must be frozen in Stage 7B before any validation result is used.
+### Capture-condition evidence map
 
----
+Pre-register the evidence domains:
+
+| Evidence source / workflow | Capture condition | Claim role |
+|---|---|---|
+| BRACOL internal | detached, lower/abaxial side, white/controlled background | internal task evidence |
+| RoCoLe external | on-plant field capture, natural background, mixed leaf side, Robusta | external transfer stress test |
+| Stage 3 preferred workflow | on-plant, lower/abaxial side, backing card where practical | **not directly measured as a complete condition** |
+
+If the RoCoLe claim-reduction trigger fires, withdraw field/general-transfer claims and return the Stage 3 on-plant workflow to the owner before final submission.
 
 # 8. Split, leakage, and quarantine rules
 
 ## Recommendation D4-09
 
-### Development split hierarchy
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-After Stage 7A archive inspection:
+### Development split
 
-1. **Prefer a publisher-provided train/validation/test split** only if it is explicit, whole-leaf, and does not mix derivative crops/originals across partitions.
-2. Otherwise build a deterministic **70% / 15% / 15%** stratified split from whole-leaf images.
+Use the 1,685 labelled BRACOL records only.
 
-Fallback split seed:
+Unless Stage 7A discovers an authoritative publisher split that satisfies the same rust-presence truth and leakage controls, use a deterministic **70% / 15% / 15%** stratified split under the D4-05 class construction.
 
-`20261003`
+Seed: `20261003`.
 
 ### Near-duplicate grouping
 
-If no source-level leaf/group identifier exists:
+Before partition assignment:
 
 - compute exact file hashes;
-- compute a perceptual hash on decoded images;
-- group obvious/near duplicates before assigning partitions;
-- initial pre-registered pHash rule: Hamming distance ≤ 5 is treated as a duplicate candidate requiring same-partition grouping or manual inspection;
-- disclose residual leakage risk.
+- compute `imagehash.phash`, hash size 8 / 64 bits;
+- treat Hamming distance ≤5 as a duplicate-candidate edge;
+- form components transitively using union-find;
+- record the largest component;
+- if any component exceeds **2%** of the labelled dataset, perform a logged same-leaf yes/no review before assignment;
+- assign each component wholly to one partition.
+
+Manual inspection is limited to that same-leaf grouping decision and occurs before partition assignment.
+
+Disclose residual leakage and possible over-grouping risk.
 
 ### Quarantine
 
-Before any training/validation result:
+Before Stage 7C:
 
-- internal test file identifiers are frozen;
-- RoCoLe external identifiers are frozen;
-- optional Saposoa identifiers are frozen;
-- challenge-set identifiers are frozen;
-- none of those assets may be inspected for model/preprocessing/threshold/OOD decisions after designation.
+- freeze internal-test identifiers;
+- freeze RoCoLe external identifiers and metadata map;
+- freeze challenge identifiers;
+- do not inspect quarantined evaluation images for model, preprocessing, threshold, fallback, OOD, or augmentation decisions.
 
-If any quarantined partition influences a design decision, it is burned and relabeled development evidence.
+If a quarantined partition influences a design decision, preserve the original readout, burn the partition, relabel it development evidence, and make no later held-out claim from it.
 
----
+BRACOL leaf-side inspection, if required at Stage 7A, may use **training-partition images only after the split is frozen** and may not use internal test images.
 
 # 9. Operating-point and abstention rule
 
 ## Recommendation D4-10
 
-Use source-class probabilities from the five-way head.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Two thresholds are permitted:
+Use probabilities from the five-way head.
+
+Thresholds:
 
 - `T_rust`;
 - `T_healthy`.
 
 Routing:
 
-- if top class is rust and `P(rust) >= T_rust` → `visible rust`;
-- if top class is healthy and `P(healthy) >= T_healthy` → `no visible rust`;
-- if top class is a supported non-rust disease → `not sure`;
+- rust-present top class and `P(rust) >= T_rust` → `visible rust`;
+- healthy top class and `P(healthy) >= T_healthy` → `no visible rust`;
+- supported non-rust disease → `not sure`;
 - otherwise → `not sure`.
 
-Thresholds are chosen from validation only.
+Search threshold pairs from **0.50 through 0.95 inclusive in 0.01 increments**, using validation only.
 
-### Deterministic selection rule
+Among feasible threshold pairs:
 
-Search threshold values from **0.50 to 0.95 inclusive in 0.01 increments**.
+1. minimize confident-miss **count**;
+2. maximize target-class coverage;
+3. maximize accepted rust recall;
+4. prefer higher `T_healthy`;
+5. then prefer higher `T_rust`.
 
-A threshold pair is feasible only if validation satisfies all safety constraints below.
-
-Among feasible pairs:
-
-1. minimize confident-miss rate;
-2. then maximize overall coverage;
-3. then maximize rust recall on accepted rust cases;
-4. then choose the higher thresholds as the final tie-break.
-
-No test, external, or challenge-set result may affect the selected thresholds.
-
----
+No held-out, external, or challenge result may affect threshold selection.
 
 # 10. Pre-registered validation gate
 
 ## Recommendation D4-11
 
-The preferred learned path survives validation only if all of the following are met:
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-| Metric | Proposed validation criterion |
-|---|---:|
-| Overall coverage | **≥ 50%** |
-| Rust-class coverage | **≥ 50%** |
-| Healthy-class coverage | **≥ 50%** |
-| Selective accuracy on accepted eligible cases | **≥ 85%** |
-| Rust recall on accepted rust cases | **≥ 90%** |
-| Specificity on accepted clearly healthy cases | **≥ 80%** |
-| Confident-miss rate: true rust → `no visible rust` | **≤ 5%** |
-| Supported other-disease → `no visible rust` | **≤ 10%** |
+Let:
 
-These are engineering acceptance thresholds, not published claims.
+- `R` = rust-bearing leaves;
+- `H` = healthy leaves;
+- `O` = non-rust other-condition leaves;
+- `VR` = route `visible rust`;
+- `NVR` = route `no visible rust`;
+- `NS` = route `not sure`.
 
-Report exact numerators/denominators and 95% intervals where sample size supports them.
+Pre-registered engineering gates:
 
-If no threshold pair satisfies the gate, do not inspect the test partition. Invoke the pre-approved fallback ladder.
+| Metric | Definition | Gate |
+|---|---|---:|
+| Target-class coverage | `|(R∪H)→{VR,NVR}| / |R∪H|` | ≥50% |
+| Rust coverage | `|R→{VR,NVR}| / |R|` | ≥50% |
+| Healthy coverage | `|H→{VR,NVR}| / |H|` | ≥50% |
+| Selective accuracy | `(|R→VR| + |H→NVR|) / |(R∪H)→{VR,NVR}|` | ≥85% |
+| Accepted rust recall | `|R→VR| / |R→{VR,NVR}|` | ≥90% |
+| Accepted healthy specificity | `|H→NVR| / |H→{VR,NVR}|` | ≥80% |
+| Confident-miss rate | `|R→NVR| / |R|` | ≤5% |
+| Other-condition → NVR | `|O→NVR| / |O|` | ≤10% |
 
----
+Report but do not gate on:
+
+- overall abstention;
+- `O→VR`;
+- accepted-rust miss rate;
+- class counts.
+
+At Stage 7B, use the frozen manifest to convert every percentage gate into its exact integer pass/fail condition and commit the relevant `n_R`, `n_H`, and `n_O`.
+
+For every gated/headline rate:
+
+- report exact numerator/denominator;
+- report exact two-sided 95% Clopper–Pearson interval;
+- report a one-sided 95% upper confidence bound for confident miss and `O→NVR`.
+
+The ≤5% confident-miss threshold is an **engineering survival gate**, not proof that the true miss probability is ≤5%.
+
+Public wording such as **reliable** or **robust** rust triage is allowed only if the internal held-out test one-sided 95% upper bound for confident miss is ≤10%.
+
+Otherwise use count-and-interval language only.
+
+Pre-registered reduced-claim template:
+
+> **On BRACOL held-out leaves, the prototype produced a confident `no visible rust` on X of N rust-bearing leaves (observed rate Y%; 95% CI A–B). This is a proof-of-concept measurement, not evidence of reliable field rust triage.**
+
+Maintain a ledger of every configuration evaluated on validation.
+
+### Browser/artifact parity gate before held-out readout
+
+Before any internal/external readout:
+
+- export and freeze the exact **FP32 ONNX** artifact;
+- freeze the browser preprocessing implementation;
+- run a validation-only parity check against the development evaluation pipeline;
+- require **≥99% route agreement**;
+- record maximum absolute probability difference;
+- fix any parity issue from validation evidence only.
+
+The exact frozen ONNX artifact and preprocessing path that pass parity are the artifacts used for the one-shot internal and external readouts.
 
 # 11. Internal one-shot test readout
 
-After validation acceptance and freeze:
+After validation acceptance, parity acceptance, and freeze:
 
-- run internal test once;
-- report all mandatory ROADMAP metrics;
-- do not retune;
-- preserve all failures.
-
-The test readout is evidence, not a second optimization set.
+- run the internal test exactly once using the exact frozen FP32 ONNX artifact and frozen preprocessing path;
+- report all mandatory Stage 4 metrics;
+- preserve failures;
+- do not retune.
 
 ### Claim-reduction trigger
 
-If the internal test's confident-miss rate exceeds **10%** or rust recall on accepted rust cases falls below **75%**, do not make a robust rust-triage performance claim. The product may continue only under an explicitly reduced proof-of-concept claim if the owner accepts that reduction.
+If internal-test confident miss exceeds **10%** or accepted rust recall falls below **75%**, do not make a robust rust-triage performance claim.
+
+Even if the point trigger passes, the words **reliable** or **robust** require the one-sided 95% upper bound for confident miss to be ≤10%.
+
+Otherwise use only the pre-registered count-and-interval proof-of-concept wording.
 
 No post-test tuning is allowed without burning the partition.
 
----
-
 # 12. External-transfer readout
 
-## Recommendation D4-12
+## Recommendation D4-12 — RoCoLe-only external readout
 
-Primary external: **RoCoLe v2**.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Report, where labels support it:
+Primary and sole planned 2026 external source: **RoCoLe v2**.
+
+Frozen metadata-only mapping, subject to Stage 7A confirmation:
+
+- rust levels 1–4 → `R`;
+- healthy → `H`;
+- red-spider-mite → `O-unseen`, reported separately;
+- eight state/classification conflicts → exclude and disclose if confirmed.
+
+Report where labels permit:
 
 - rust recall;
 - healthy specificity;
 - confident-miss rate;
-- coverage;
+- target-class coverage;
 - abstention rate;
-- confusion/routing counts.
+- routing counts;
+- exact intervals.
+
+Where plant IDs are recoverable, disclose the four-images-per-plant clustering and avoid presenting ordinary image-level intervals as cluster-independent evidence without qualification.
 
 Frame the result as:
 
-> **cross-dataset transfer evidence under a different coffee species/capture domain, not field validation for Noor or Uganda.**
+> **cross-dataset transfer evidence under species and acquisition-domain shift, not field validation for Noor or Uganda.**
 
-### External claim-reduction trigger
+If RoCoLe confident miss exceeds **10%** or accepted rust recall is below **75%**:
 
-If RoCoLe confident-miss rate exceeds **10%** or accepted rust recall is below **75%**:
+- withdraw field/general-transfer claims;
+- make the controlled/background limitation prominent;
+- do not retune from RoCoLe;
+- return the Stage 3 on-plant workflow to the owner for a final claim/workflow decision before submission.
 
-- no claim of field/general cross-domain reliability;
-- field-photo language is reduced;
-- the backing-card / controlled-capture limitation becomes prominent;
-- no retuning from the RoCoLe result.
+Saposoa is not an active 2026 external readout.
 
-Optional Saposoa v2 may be read only after the system is frozen and only if time permits.
-
----
-
-# 13. OOD / challenge-set rule
+# 13. Q / K / U safety evaluation
 
 ## Recommendation D4-13
 
-The project will **not** claim that softmax confidence alone is a general OOD detector.
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-A frozen challenge set should include, where licensed:
+Do **not** present a blended OOD/fail-safe score.
 
-- non-coffee objects/images;
-- maize leaves;
-- bean leaves;
-- other coffee disease/stress;
-- blurred/low-quality coffee-leaf images;
-- field-scene/multi-leaf examples.
+Keep three families separate.
 
-The challenge set is not used for threshold selection.
+### Q — image quality
 
-### Proposed fail-safe targets
+Deterministic eligibility checks for this submission are limited to:
 
-| Challenge category | Target routed to `not sure` |
-|---|---:|
-| Blurry/unreadable image-quality cases | **≥ 90%** |
-| Other visible coffee disease/stress | **≥ 80%** |
-| Non-coffee / maize / bean inputs | **≥ 70%** |
-| All challenge cases combined | **≥ 75%** |
+- image decodes successfully;
+- both dimensions are at least 224 px.
 
-If these targets fail:
+No deterministic blur detector is claimed unless a separate quality rule is pre-registered before evaluation.
 
-- preserve every failure;
-- remove or narrow any public OOD/fail-safe claim;
-- do not tune against the challenge set;
-- keep `not sure` claims limited to behavior actually demonstrated.
+Deliberately blurred/poor-quality images may be reported descriptively, but there is no ≥90% blur-detection target.
 
----
+### K — known non-rust coffee disease
+
+Measure known non-rust disease behavior on the internal BRACOL test using `O→NVR` and related routing counts.
+
+Do not double-use quarantined external sources to manufacture a K challenge set.
+
+### U — unknown / OOD
+
+Eligible categories may include:
+
+- non-coffee;
+- maize;
+- bean;
+- BRACOT multi-leaf/scene inputs;
+- other properly licensed unknown inputs not drawn from quarantined external sets.
+
+Expected route: `not sure`.
+
+Use **at least 20 examples per reported U category where feasible**.
+
+If a category has fewer than 20 examples:
+
+- report counts and exact intervals descriptively;
+- make no category target claim.
+
+For BRACOT:
+
+- seeded file-list sampling only;
+- no image browsing for subset choice;
+- no project-authored disease labels.
+
+Freeze every challenge identifier before Stage 7C.
+
+No combined Q/K/U target is permitted.
 
 # 14. Simple baseline
 
@@ -536,77 +618,82 @@ Unless a real human baseline study is conducted, the final entry must say that s
 
 ## Recommendation D4-15
 
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
+
 Local record fields:
 
 - `record_id`;
 - `capture_date`;
 - `crop = coffee`;
 - `ai_proposal`;
-- `ai_score` (local technical/audit field only; not reviewer-visible);
-- `not_sure_reason` where available;
+- `ai_score` — local technical/audit field only, not reviewer-visible;
+- `not_sure_reason`;
 - `human_disposition`;
 - `confirmed_by_role`;
 - `action_route`;
 - optional farmer note;
 - `image_retained`;
-- `status`.
+- `status`;
+- optional local `model_version` for auditability.
 
-Do not collect:
+`not_sure_reason` is non-diagnostic and restricted to values such as:
 
-- geolocation;
-- farmer name;
-- phone number;
-- account identifier;
-- farm identifier;
-- price/yield profile.
+- `image_ineligible`;
+- `low_confidence`;
+- `other_condition_possible`.
+
+Do not collect geolocation, farmer name, phone number, account ID, farm ID, or yield/price profile.
 
 Image rules:
 
-- raw image is not persisted by default;
-- explicit Noor opt-in is required to retain an image;
-- retained image is a metadata-stripped re-encoded derivative;
-- reviewer card is text-only if no image was retained;
-- showing retained image requires a separate Noor confirmation;
+- raw image not persisted by default;
+- explicit Noor opt-in required for retention;
+- retained image is re-encoded before storage;
+- reviewer card is text-only if no image retained;
+- showing retained image requires separate Noor consent;
 - delete cascades to structured record + retained image;
-- no image is placed in the service-worker/app cache.
+- user images are not placed in the service-worker/app cache.
+
+Stage 9 must verify metadata removal on any retained derivative using an actual metadata inspection rather than assuming re-encoding succeeded.
 
 Shared-device rule:
 
-> The MVP does **not** claim private multi-user isolation on the daughter's phone.
+> **The MVP does not claim private multi-user isolation on the daughter's phone.**
 
-Therefore the saved-record screen must avoid unnecessary identity/profile data, and the final limitations must state that locally stored records may be visible to another person who can access the same browser profile/device.
-
-No fake PIN/security control is added unless it is actually implemented and tested.
-
----
+Stored records may be visible to someone with access to the same browser/app storage context.
 
 # 16. Localization-validation contract
 
 ## Recommendation D4-16
 
-Before Stage 8 closes, freeze a **small critical-string inventory** only.
+**Owner status:** Accepted originally on 2026-10-03 and repaired with explicit owner approval after Tier A audit.
 
-Required semantic concepts:
+Freeze a small, fixed critical-string inventory before Stage 8 closes.
+
+Required semantic concepts include:
 
 1. capture/select coffee-leaf photo;
-2. AI proposal;
+2. **AI proposal — not a diagnosis and not treatment advice**;
 3. visible rust;
 4. no visible rust;
-5. not sure;
-6. retake photo;
-7. request/review first;
-8. record and monitor;
-9. confirm/correct;
-10. save record;
-11. show photo to reviewer;
-12. delete record/photo;
-13. privacy/consent prompt.
+5. **no visible rust does not mean healthy; review remains available**;
+6. not sure;
+7. retake photo;
+8. request/review first;
+9. record and monitor;
+10. confirm/correct;
+11. save record;
+12. **keep photo with record** consent;
+13. **show photo to reviewer** consent;
+14. delete record/photo;
+15. privacy/shared-device warning;
+16. every `confirmed_by_role` option label.
 
-Stage 4 chooses **no Lugisu translation**.
+Stage 4 approves **no Lugisu translation**.
 
-The final pack requires a human validator familiar with the targeted Bududa/south-Bugisu variety and the orthographic convention actually used.
+The final pack requires a human validator familiar with the targeted Bududa/south-Bugisu variety and orthographic convention.
 
-Validation record must contain:
+Validation record:
 
 - source string;
 - candidate Lugisu string;
@@ -615,204 +702,249 @@ Validation record must contain:
 - accepted/corrected result;
 - final string.
 
-If human validation shows the public label should be Lumasaaba rather than Lugisu, return that naming decision to José Antonio before finalization.
+If no qualified validator is available by the Stage 8/9 localization cutoff:
 
----
+- Lugisu strings may appear only as an explicitly **unvalidated prototype draft**;
+- English remains available;
+- the submission may not claim validated/localized usability.
+
+Any proposed public naming change from Lugisu to Lumasaaba returns to José Antonio.
 
 # 17. Common-data binding
 
 ## Verified external figure
 
-GSMA's *State of Mobile Internet Connectivity 2025 — Trends in Mobile Internet Connectivity*, Figure 15 (PDF p. 31), reports Uganda 2024 smartphone ownership of:
+The project records the GSMA *State of Mobile Internet Connectivity 2025 — Trends in Mobile Internet Connectivity*, Figure 15, PDF p. 31, as reverified on **2026-10-03** for Uganda 2024 smartphone ownership:
 
 - **33% urban**
 - **20% rural**
 
-Source: https://www.gsma.com/somic/wp-content/uploads/2025/09/The-State-of-Mobile-Internet-Connectivity-2025-Trends-in-Mobile-Internet-Connectivity.pdf
+The Stage 4 Tier A auditor could not independently reach GSMA and did not contradict the figure.
 
 ## Recommendation D4-17
 
-Bind the **20% rural smartphone-ownership figure** to this concrete architecture parameter:
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
-> **The core RoyaCheck loop must work on one intermittently available/shared household smartphone and must not require a second personal smartphone, login/account sync, cloud inference, background push, or live network after required assets are cached.**
+Bind the **20% rural smartphone-ownership figure** only to this design rule:
 
-This is the common-data-to-design binding.
+> **The core RoyaCheck loop must work on one intermittently available/shared household smartphone and must not require a second personal smartphone, account sync, cloud inference, background push, or live network after required assets are cached.**
 
-The figure does **not** justify a bandwidth number or claim Noor personally has/does not have a smartphone.
+The household-sharing premise itself comes from the Noor case, not from the 20% statistic.
 
----
+Do not derive bandwidth, model-size, phone-performance, or Noor-specific ownership claims from this figure.
 
 # 18. Technical budgets
 
 ## Recommendation D4-18
 
-### Cache / binary budget
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-- serialized learned model: **≤ 12 MB**
-- preferred serialized model after safe optimization/quantization: **≤ 5 MB**
-- model + runtime + critical core assets required after first load: **≤ 30 MB**
-- no network required for the core loop after those assets are cached
+### Model/core asset budget
 
-These are engineering budgets, not figures derived from Uganda bandwidth data.
+- preferred artifact: **FP32 ONNX**;
+- serialized model hard budget: **≤12 MB**;
+- required core cached assets, including WASM runtime + model + critical app assets: **≤30 MB uncompressed stored bytes**;
+- no ≤5 MB optimized-model requirement;
+- no post-held-out quantization.
 
-### Latency budget
+Pin `onnxruntime-web` **1.30.0**, WASM-only for the required core path, `numThreads = 1`.
 
-On the actual Stage 4 target smartphone/browser:
+WebGPU, if explored, is a separate optional/non-core path.
 
-- median single-image inference: **≤ 2.0 s**
-- p95 single-image inference: **≤ 4.0 s**
-- hard unusable threshold: **> 5.0 s median**
+### Measurement protocol
 
-The core compatibility measurement must use ONNX Runtime Web WASM.
+Record:
 
-WebGPU measurements may be supplementary only.
+- iOS version;
+- Safari version;
+- ONNX Runtime Web version;
+- execution provider;
+- uncompressed stored runtime/model/core asset bytes;
+- cold session-creation/load time separately;
+- preprocessing + `session.run` latency;
+- one warm-up run followed by **at least 30 timed runs**.
 
-### Primary physical browser/device evidence target — owner resolved
+Primary physical evidence target:
 
-José Antonio has identified the primary available physical test environment as:
+> **iPhone 17 Pro Max + Safari, installed to Home Screen as a standalone PWA.**
 
-> **Apple iPhone 17 Pro Max + Safari**
+### Latency engineering targets
 
-Stage 7/9 browser evidence for the primary physical-device path must therefore record the actual iPhone 17 Pro Max, Safari version, iOS version, ONNX Runtime Web execution provider used, measured model/runtime bytes, and measured inference latency.
+On that actual target:
 
-This is a **real-device compatibility/performance evidence target**, not a proxy for Noor's unknown household smartphone and not evidence of affordable/basic-phone performance. Because the iPhone 17 Pro Max is a high-end device, successful measurements on it may support claims that the system works on that tested phone/browser, but must **not** be generalized to low-cost smartphones without separate evidence.
+- median preprocessing + inference ≤2.0 s;
+- p95 ≤4.0 s;
+- >5.0 s median = unusable for the preferred path.
 
-If the primary iPhone/Safari path fails the required WASM compatibility or budget, the failure must be recorded and the pre-approved fallback path invoked; desktop/mobile emulation may supplement but not replace the disclosed physical-device result.
+These are engineering go/no-go budgets, not evidence-derived claims.
 
----
+Success on this device supports only a claim that the tested high-end iPhone/Safari environment works; it is not affordable/basic-phone evidence.
 
-# 19. Stage 7 technical kill time
+### Persistence/offline protocol
+
+For the primary physical proof:
+
+1. first connected load/cache;
+2. request `navigator.storage.persist()` where supported and record result;
+3. terminate app;
+4. enable airplane/offline state;
+5. relaunch from Home Screen;
+6. run a fresh inference;
+7. save a record;
+8. close/reopen;
+9. confirm record persistence.
+
+No multi-month durability claim follows from this short test.
+
+# 19. Stage 7 development clock
 
 ## Recommendation D4-19
 
-From the start of definitive Stage 7 technical work:
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-- Candidate A frozen-head path: maximum **90 minutes**
-- first fallback path: maximum additional **45 minutes**
-- second fallback path: maximum additional **30 minutes**
-- **hard learned-path kill time: 3 hours after Stage 7 begins**
+At Stage 7 start, commit explicit **absolute ET timestamps**.
 
-The remaining Stage 7 budget is reserved for:
+Preserve the ROADMAP Stage 7 latest end of **10:00 PM ET on 3 October 2026**.
+
+Reserve at least the final **30 minutes before the Stage 7 latest end** for:
 
 - freeze;
+- exact-artifact parity completion;
 - one-shot internal readout;
-- external readout if still feasible;
-- ONNX export;
-- browser measurement;
-- evidence capture.
+- external readout if feasible;
+- browser evidence/export record.
 
-No sunk-cost extension beyond the hard kill time without an explicit owner decision that also protects the submission buffer.
+Stage 7.0 / 7A / 7B occur before the A0 development clock and receive their own bounded caps in the Stage 5 readiness plan.
+
+No development rung may start unless its full cap fits before the reserved evidence window.
 
 ---
 
-# 20. Fallback ladder
+# 20. Deterministic fallback ladder
 
 ## Recommendation D4-20
 
-### A — preferred
+**Owner status:** Repaired and accepted by José Antonio after Tier A audit.
 
-MobileNetV3-Small-class encoder + five-way coffee head + validation-selected abstention + ONNX Runtime Web WASM.
+### A0 — preferred
 
-### B — lower-training-risk
+MobileNetV3-Small 1.0:
 
-Frozen encoder + fixed embeddings + simple linear/prototype classifier, using the same product-output mapping and abstention rules.
+- frozen backbone;
+- pooled 576-dimensional pre-classifier features;
+- five-way linear head;
+- AdamW;
+- learning rate 1e-3;
+- weight decay 1e-4;
+- batch size 32;
+- class-weighted cross-entropy;
+- maximum 30 epochs;
+- retain checkpoint with lowest validation loss;
+- seed 20261003;
+- maximum Stage 7C development time: **60 minutes**.
 
-Entry trigger:
+### A1 — only if A0 fails and clock permits
 
-- head training instability;
-- time overrun;
-- no validation-feasible operating point after the A budget.
+Initialize from A0:
 
-Claim reduction:
+- unfreeze only final MobileNetV3 backbone block plus head;
+- AdamW;
+- learning rate 1e-4;
+- weight decay 1e-4;
+- batch size 32;
+- same loss and seed;
+- maximum 15 epochs;
+- retain lowest-validation-loss checkpoint;
+- maximum additional development time: **30 minutes**.
 
-- emphasize transfer-learning/embedding triage rather than task-specific feature learning.
+### C — runtime-only architecture fallback
 
-### C — smaller/runtime path
+Trigger only if the primary architecture fails the Stage 7.0 runtime/model budget **before definitive training**.
 
-Smaller browser-compatible encoder with the same three-way product mapping.
+Candidate:
 
-Entry trigger:
+> **MobileNetV3-Small 0.50-class architecture**, exact artifact still subject to the same licence/provenance gate.
 
-- model/runtime exceeds the Stage 4 binary or latency budget.
+No runtime fallback may be selected because of internal-test or external performance.
 
 ### D — stop/reduce
 
-If no learned path meets the safety + coverage gate before the Stage 7 hard kill time:
+If no accepted learned path meets the safety gate within the available clock:
 
 - do not substitute decorative AI;
-- preserve the human workflow;
-- reduce the visual-AI claim;
-- return to owner for a bounded submission-scope decision.
+- do not inspect extra held-out/external evidence to choose a rescue path;
+- stop the full three-state learned claim.
 
----
+Pre-authorized degraded safety mode:
+
+> **Disable `no visible rust`. High-confidence rust may still route to `visible rust`; every other learned outcome routes to `not sure`.**
+
+That degraded mode must be disclosed and cannot be presented as the full three-state Stage 3 performance claim.
 
 # 21. Decisions deliberately left open until Stage 7A/7B
 
-Stage 4 should **not** falsely lock facts that require archive inspection or a real runtime smoke test.
+Stage 4 does not fabricate values that require archive inspection or runtime evidence.
 
-These remain conditional even after owner approval:
+Still conditional:
 
-- exact BRACOL file/class counts after download;
-- whether publisher split files are structurally usable;
-- exact near-duplicate groups;
-- exact leaf-side instruction;
-- exact pretrained weight artifact until its license verdict passes;
-- exact quantization path;
-- exact actual-phone latency;
-- actual validation-selected thresholds;
-- actual external/challenge performance.
+- exact downloaded archive hashes/count verification;
+- confirmation that BRACOL archive metadata match the expected per-stress CSV;
+- exact pHash duplicate components;
+- exact integer validation caps from the frozen manifest;
+- exact pretrained artifact and SHA-256, subject to Stage 6 risk recheck;
+- actual iOS/Safari runtime behavior;
+- actual `persist()` result;
+- actual validation-selected `T_rust` and `T_healthy`;
+- actual held-out/external/challenge results.
 
-The rules for deciding them are pre-registered here; their values come later.
-
----
+The **rules** for resolving these values are pre-registered; their actual values come later.
 
 # 22. Owner-approved Stage 4 lock set
 
-José Antonio explicitly approved D4-01 through D4-20 on 2026-10-03, subject to the stated license gates and later evidence requirements:
+José Antonio originally approved D4-01 through D4-20 on 2026-10-03 and explicitly approved the Tier A repairs on the same date.
 
-- **D4-01** BRACOL whole-leaf development role
-- **D4-02** RoCoLe primary external role
-- **D4-03** Saposoa optional secondary external role
-- **D4-04** BRACOT optional challenge role
-- **D4-05** five-way source head → three product outputs
-- **D4-06** MobileNetV3-Small first model family and frozen-head-first training rule
-- **D4-07** ONNX Runtime Web WASM required runtime path
-- **D4-08** preprocessing/capture contract
-- **D4-09** split/leakage/quarantine rules
-- **D4-10** threshold/abstention selection rule
-- **D4-11** numerical validation gate
-- **D4-12** external-transfer readout/claim reduction
-- **D4-13** challenge/OOD targets
-- **D4-14** symptom-guide baseline framing
-- **D4-15** privacy/shared-device data contract
-- **D4-16** localization-validation contract
-- **D4-17** common-data design binding
-- **D4-18** binary/latency budgets + target-device evidence rule, with **iPhone 17 Pro Max + Safari** as the primary physical evidence target
-- **D4-19** Stage 7 hard kill time
-- **D4-20** fallback ladder
+The controlling repaired decisions are now:
 
----
+- D4-01: BRACOL 1,685 labelled whole-leaf development source, rust-presence truth;
+- D4-02: RoCoLe sole planned 2026 external-transfer source;
+- D4-03: Saposoa future candidate only;
+- D4-04: BRACOT unknown/scene challenge only;
+- D4-05: rust-presence-priority five-way head → three product outputs;
+- D4-06: MobileNetV3-Small first family + explicit ImageNet residual-risk standard;
+- D4-07: ORT Web 1.30.0 WASM-only required path, standalone iPhone PWA evidence context;
+- D4-08: full-frame direct resize 224×224, no center crop;
+- D4-09: deterministic split/pHash/quarantine rules;
+- D4-10: two-threshold deterministic selection rule;
+- D4-11: target-class metrics, exact intervals, claim-language ceiling, exact-artifact parity;
+- D4-12: RoCoLe-only external readout and claim-reduction trigger;
+- D4-13: separate Q/K/U safety evaluation;
+- D4-14: printed symptom guide baseline framing unchanged;
+- D4-15: privacy/shared-device/non-diagnostic reason codes;
+- D4-16: expanded localization-validation inventory + validator fallback;
+- D4-17: GSMA common-data architecture binding;
+- D4-18: FP32 ONNX ≤12 MB model, ≤30 MB core, pinned ORT/WASM measurement protocol;
+- D4-19: absolute-clock reservation;
+- D4-20: deterministic A0 → A1 / runtime-C → D ladder with degraded safety mode.
+
+No later result may silently rewrite these rules.
 
 # 23. Stage 4 gate
 
-The substantive owner-decision gate is complete:
-
-- D4-01 through D4-20 are owner approved;
-- the primary physical evidence target is resolved as **iPhone 17 Pro Max + Safari**.
+The Stage 4 owner-decision gate and Tier A repair authorization are complete.
 
 Stage 4 remains **In review** until:
 
-1. the pre-registration is independently audited under the Tier A Claude gate;
-2. material findings are reconciled without silently changing an owner-approved technical rule;
-3. any consequential repair returns to José Antonio for explicit approval;
-4. the owner explicitly authorizes Stage 4 closure/merge.
+1. Claude performs the narrow confirmation of M1–M10 and the repaired minors;
+2. confirmation findings are reconciled;
+3. any consequential new issue returns to José Antonio;
+4. José Antonio explicitly authorizes Stage 4 closure/merge.
 
 Until those gates pass:
 
 - no definitive training;
-- no validation result used for design;
-- no internal test readout;
+- no validation-result-driven design outside the pre-registered Stage 7 rules;
+- no internal held-out readout;
 - no external readout;
 - no challenge-set result.
 
-**Current status: In review — owner-approved pre-registration; Tier A audit pending.**
+**Current status: In review — Tier A audit repairs owner-approved; narrow confirmation pending.**
