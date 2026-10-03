@@ -22,7 +22,7 @@ The official participant challenge brief, especially Annex B, is the controlling
 
 Generic Agriculture research may contextualize the case but may not redefine it. If a generic assumption conflicts with Annex B, Annex B controls.
 
-The entry is built for **Noor, a smallholder coffee farmer**, under the case constraints of infrequent extension access, manual/delayed service workflows, shared/intermittent smartphone access, weak-connectivity conditions, and explicit scale preconditions such as farmer registries, phone access, and institutional trust.
+The entry is built for **Noor, a smallholder coffee farmer**, under the case constraints of extension access only about twice a year at best, manual/delayed service workflows, Noor’s own basic phone, her daughter’s weekend-assisted smartphone access, weak-connectivity conditions, and explicit scale preconditions such as farmer registries, phone access, and institutional trust.
 
 The challenge-level unit of value is **one better agricultural decision**. RoyaCheck selects only the crop-observation/documentation/extension-handoff branch. It does not claim to explain Noor’s yield decline, solve her market-price problem, create a farmer registry, or replace extension capacity.
 
@@ -46,18 +46,21 @@ RoyaCheck Offline is an offline-first coffee-leaf observation and extension-hand
 
 The target user loop is:
 
-1. Noor uses an available household/assisted smartphone to capture or select a suspicious coffee-leaf image; the product does not assume she carries a smartphone on the slope all day.
-2. A compact browser-local visual system proposes:
+1. Noor notices a suspicious coffee leaf under her ordinary farm workflow; the product does **not** assume a smartphone is with her on the slope.
+2. During the daughter-smartphone assisted session that Stage 3 must lock, the leaf image is captured or selected using the owner-approved physical workflow.
+3. A compact browser-local visual system proposes:
    - **visible rust**;
    - **no visible rust**; or
    - **not sure**.
-3. Noor or another responsible human explicitly confirms, corrects, or requests extension/cooperative review.
-4. Only the human disposition becomes the formal observation.
-5. The observation is stored locally and can produce a deterministic handoff-ready summary for later human review.
+4. Noor or another responsible human explicitly confirms, corrects, or requests human review.
+5. Only the human disposition becomes the formal observation.
+6. The observation is stored locally and can support the **Stage-3-locked, user-initiated** handoff for later human review.
 
-The supported case-level decision is:
+The exact supported agricultural decision is **not yet owner-locked**. Stage 3 must lock a real next-step prioritization decision in which the visual proposal materially affects what is prioritized for review.
 
-> **Should this suspicious leaf observation be documented and flagged for human extension/cooperative review rather than treated as a confident model answer or left only to memory?**
+Candidate direction to evaluate:
+
+> **Does this suspicious coffee leaf show enough visible evidence consistent with rust that Noor should prioritize it for human review, or should she record that no visible rust was observed while keeping review available if concern remains?**
 
 Canonical technical contract:
 
@@ -79,16 +82,31 @@ The public product must not expand into:
 - generic crop diagnosis;
 - weather features;
 - maps;
-- voice;
-- WhatsApp integration;
+- speech recognition;
+- generative voice advisory;
+- voice-agent workflows;
+- automatic/direct WhatsApp integration (ordinary user-initiated sharing remains a Stage 3 option, not a locked decision);
 - dashboards;
 - LLM features in the rust decision;
 - market-price prediction or market-price-reference features in the MVP;
 - claims that rust explains Noor’s seasonal yield decline;
 - farmer-registry or extension-capacity features;
-- unsupported country-specific field-validation claims.
+- unsupported country-specific field-validation claims;
+- claims that `no visible rust` means “healthy,” “all clear,” or “no disease”;
+- general farm/crop diagnosis claims;
+- improved yield, income, or market-price claims;
+- claims that RoyaCheck gets Noor a better price;
+- automatic extension/cooperative notification or real-time expert-advice claims;
+- claims that the prototype creates/solves a farmer registry;
+- claims about Noor’s nationality, real location, or language as fact;
+- “field validated,” “works on real farms,” or BRACOL-as-field-proof claims without direct evidence;
+- “fully offline” wording without the initial asset-cache caveat;
+- universal/feature-phone support claims;
+- scale-to-millions claims without registry, device, trust, extension-capacity, and institutional prerequisites.
 
-All later stage documents should reference this list rather than create competing exclusion lists.
+Simple prerecorded or human-voiced accessibility prompts are **not** excluded if Stage 3 later justifies them.
+
+All later stage documents should reference this **canonical prohibited-claims list** rather than create competing lists.
 
 ---
 
@@ -359,11 +377,22 @@ Freeze the Annex B-specific product definition, one-better-decision statement, d
 
 **Challenge 4 — Small AI for Development → Annex B Agriculture / Noor → RoyaCheck Offline**
 
-Before Stage 3 closes it must also lock:
+Before Stage 3 closes it must lock all of the following owner decisions:
 
 - the exact judge-facing one-better-agricultural-decision statement;
-- the household/shared-smartphone usage story;
-- one named real prototype localization language, explicitly labeled as an implementation choice rather than a fact about Noor’s fictional location;
+- the exact assisted/weekend user-day workflow: who operates the daughter’s smartphone, when, and where;
+- whether/how the leaf is detached, brought to the phone, or photographed another way;
+- the observation-to-capture delay;
+- the role, if any, of Noor’s own calls/messages/mobile-money phone;
+- the reviewer role, explicitly labeling any role not stated in Annex B as a project assumption;
+- the handoff channel;
+- whether the leaf image travels with the record;
+- the explicit consent rule for image inclusion;
+- what the reviewer sees;
+- one coherent real-world implementation evidence anchor, explicitly not Noor’s fictional location;
+- the actual prototype language: either a real local/home language in the anchor context with reasoning, or an explicitly weaker national/vehicular-language choice;
+- the pre-committed answer to how the tool would fare in a less-supported language;
+- the final label-to-action routing for **visible rust / no visible rust / not sure**;
 - the explicit non-solution of the price-reference and farmer-registry branches.
 
 ## Primary value unit
@@ -386,7 +415,9 @@ The user-facing labels are defined as:
 
 Other disease/stress without visible rust is routed to **not sure**, not silently treated as healthy.
 
-Public UI and summaries must explicitly avoid equating “no visible rust” with “healthy leaf.”
+Public UI and summaries must explicitly avoid equating “no visible rust” with “healthy leaf.” On a leaf Noor herself flagged as suspicious, the human-review option must remain prominent after a `no visible rust` proposal.
+
+These label semantics do **not** silently decide the action mapping. Stage 3 must lock the final label-to-action routing.
 
 ## Gate
 
@@ -459,14 +490,17 @@ Controls:
 - image metadata is stripped on ingest before any image/derivative is exported or retained;
 - service-worker/app caches contain application/model assets, not user images;
 - deletion removes the local structured record and any retained user-image derivative associated with it;
-- any future export path must be explicit and user initiated.
+- shared-device privacy is explicit: Stage 4 must address the fact that records stored on the daughter’s smartphone may be visible to other users of that device;
+- the Stage-3-locked handoff path must be explicit and user initiated;
+- no autonomous sending or automatic notification is permitted;
+- if an image travels with the record, image inclusion requires an explicit consent step and the reviewer-visible payload must match the Stage 3 lock.
 
 ## Data plan
 
 The data plan has two required layers:
 
 1. **Sector/task data** for the learned leaf-image component. BRACOL is the preferred first candidate because the official Agriculture annex identifies it as directly relevant to Noor’s crop.
-2. **Common/context data** for at least one real implementation constraint (device/connectivity/inclusion/language). The source, year, and real country/context must be recorded and must not be presented as Noor’s fictional location.
+2. **Common/context data** for at least one real implementation constraint (device/connectivity/inclusion/language). Stage 3 first selects one coherent real-world evidence anchor; the source, year, and real country/context must be recorded and must not be presented as Noor’s fictional location. Stage 4 must make at least one common-data figure bind an actual design parameter such as first-load/model/bundle size or language support.
 
 Preferred development dataset order:
 
@@ -578,7 +612,9 @@ Before OOD/fail-safe results are reported:
 
 - freeze a small licensed challenge set;
 - record source/license/counts;
-- include non-coffee images, other disease/stress, and blurry/low-quality images;
+- include non-coffee images, **maize and bean leaves from the case crop set where licensed examples are available**, other disease/stress, and blurry/low-quality images;
+- define and justify the required coffee-leaf capture side/orientation after the development-data acquisition characteristics are verified; do not assume a leaf-side workflow without evidence;
+- report low confidence, OOD/non-coffee, other disease/stress, and image-quality routes to `not sure` separately where the design supports those distinctions;
 - report every case, including failures;
 - pre-register the target share that should route to `not sure`.
 
@@ -940,19 +976,11 @@ At minimum capture:
 - known failure modes;
 - dataset geography/domain limitations.
 
-## Claims that remain prohibited without direct evidence
+## Claims gate
 
-Do not claim:
+Stage 9 does **not** create a second prohibited-claims list. It audits every README/demo/video phrase against the canonical prohibited-claims list near the top of this roadmap and the corresponding canonical list in `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`.
 
-- improved yield;
-- improved income;
-- reduced pesticide use;
-- treatment correctness;
-- farmer adoption;
-- field deployment;
-- superior diagnostic accuracy versus experts;
-- robustness on Noor’s farm or any specific farm/geography without direct evidence;
-- replacement of extension officers.
+A claim may move above that ceiling only if a later authorized evidence gate directly supports it and the owner explicitly approves the wording. Otherwise the canonical prohibition remains controlling.
 
 ## Gate
 
@@ -970,17 +998,23 @@ Finish the judge-facing package early enough to survive deployment, upload, and 
 
 ## Judge-facing alignment
 
-Before final packaging, map the submission to the official challenge-brief rubric:
+Before final packaging, map the submission to the official challenge-brief **questions as well as the weights**:
 
-- Small AI fidelity — 25%;
-- development relevance and impact — 20%;
-- data grounding — 15%;
-- evidence it works — 15%;
-- clarity/design/inclusivity and AI value — 15%;
-- scalability/replicability/next steps — 10%;
-- responsible AI/data/safety — pass/fail.
+| Criterion | Weight / gate | Official question |
+|---|---:|---|
+| The built solution (Small AI fidelity) | 25% | **Does the tool work end to end within the constraints of the sector?** |
+| Development relevance and impact | 20% | **Is this a real problem from the sector briefs, and does the outcome matter to the person it is built for?** |
+| Data grounding | 15% | **Does the tool help address an identified gap in the data, is the data modeling sound?** |
+| Evidence it works | 15% | **Does the solution fit the challenges identified in the sector, does it add other constraints?** |
+| Clarity, design and inclusivity / Value proposition for AI | 15% | **What the tool does with AI (machine learning, computer vision, language, generative), and would a simpler tool (SMS, a spreadsheet, a search) do the same job?** |
+| Scalability, replicability and what happens next | 10% | **Could another setting reuse this innovation?** |
+| Responsible AI, data and safety | Pass/fail | **Are the limits respected, and the account of privacy, consent, bias, and human oversight credible?** |
 
-The 2–5 minute challenge video must also contain the organizer’s required user/action/time/evidence problem sentence, AI-vs-simpler-tool explanation, guardrails, end-to-end demo, user-day placement, relevant stack details, and localization reflection.
+The 2–5 minute challenge video is shortlist-gating: **entries without it will not make the shortlist**. It must use the organizer’s exact problem-sentence structure:
+
+> **Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence].**
+
+It must also contain the AI-vs-simpler-tool explanation, guardrails, end-to-end demo, truthful user-day placement and “what happens next,” relevant stack details, and localization reflection.
 
 ## Repository completion
 
@@ -1098,10 +1132,10 @@ The stage order is a dependency structure for the project record. Public artifac
 
 | Stage | Status |
 |---|---|
-| Roadmap/process architecture | Reopened — Annex B alignment audit pending |
-| 0 — Rules & compliance | Reopened — Annex B alignment audit pending |
-| 1 — Agriculture problem research | Reopened — Annex B alignment audit pending |
-| 2 — Concept comparison | Reopened — Annex B alignment audit pending |
+| Roadmap/process architecture | Reopened — in review |
+| 0 — Rules & compliance | Reopened — in review |
+| 1 — Agriculture problem research | Reopened — in review |
+| 2 — Concept comparison | Reopened — in review |
 | 3 — Product scope / route lock | Not started |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
@@ -1115,4 +1149,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Complete the Annex B / Noor case-alignment repair across the roadmap and Stages 0–2, then run one independent adversarial audit of the complete repaired package. Do not begin Stage 3 until material audit findings are reconciled and the owner re-closes the repaired foundation.
+Complete owner review of the reconciled Annex B / Noor foundation in PR #9. The independent audit is preserved in `docs/audits/noor-case-alignment/CLAUDE_AUDIT.md` and the finding-by-finding disposition is in `docs/audits/noor-case-alignment/RECONCILIATION.md`. No second full independent audit round is required by the audit disposition. **Do not begin Stage 3 until the owner re-closes the repaired foundation; do not merge PR #9 without explicit authorization.**
