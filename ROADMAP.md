@@ -46,15 +46,17 @@ RoyaCheck Offline is an offline-first coffee-leaf observation and extension-hand
 
 The target user loop is:
 
-1. Noor notices a suspicious coffee leaf under her ordinary farm workflow; the product does **not** assume a smartphone is with her on the slope.
-2. During the daughter-smartphone assisted session that Stage 3 must lock, the leaf image is captured or selected using the owner-approved physical workflow.
+1. Noor has a suspicious coffee-leaf concern under her ordinary farm workflow; the product does **not** assume a smartphone is continuously with her.
+2. When the household smartphone and any needed assistance are available, a current eligible coffee-leaf image is captured or selected. The product does not require a weekend, a daughter-operated session, an attached-leaf protocol, a backing card, or re-identification of the originally noticed plant.
 3. A compact browser-local visual system proposes:
    - **visible rust**;
    - **no visible rust**; or
    - **not sure**.
-4. Noor or another responsible human explicitly confirms, corrects, or requests human review.
+4. Noor explicitly confirms, corrects, or requests human review; assistance with device operation does not transfer agricultural authority.
 5. Only the human disposition becomes the formal observation.
 6. The observation is stored locally and can support the **Stage-3-locked, user-initiated** handoff for later human review.
+
+The daughter/weekend scenario remains a case-faithful demo example of intermittent assisted access, not a mandatory technical protocol.
 
 The exact supported agricultural decision is **not yet owner-locked**. Stage 3 must lock a real next-step prioritization decision in which the visual proposal materially affects what is prioritized for review.
 
@@ -358,7 +360,7 @@ Stage 2 closes when the comparison record and elimination rationale are present 
 
 ## Objective
 
-Freeze the Annex B-specific product definition, one-better-decision statement, device-access story, named prototype localization language, authority boundary, unsolved case branches, and exclusions so later technical work cannot silently expand the intervention.
+Freeze the Annex B-specific product definition, one-better-decision statement, **intermittent/shared/assisted device-access invariant**, named prototype localization direction, authority boundary, unsolved case branches, and exclusions so later technical work cannot silently expand the intervention. Do not convert case examples such as daughter/weekend assistance into unnecessary mandatory choreography.
 
 ## Locked route
 
@@ -367,9 +369,9 @@ Freeze the Annex B-specific product definition, one-better-decision statement, d
 Before Stage 3 closes it must lock all of the following owner decisions:
 
 - the exact judge-facing one-better-agricultural-decision statement;
-- the exact assisted/weekend user-day workflow: who operates the daughter’s smartphone, when, and where;
-- whether/how the leaf is detached, brought to the phone, or photographed another way;
-- the observation-to-capture delay;
+- the controlling device-access invariant, including intermittent/shared/assisted smartphone use without assuming continuous personal possession;
+- the product-level capture contract, while leaving evidence-conditioned framing/side/orientation guidance to the technical/data stage;
+- the rule that capture occurs when a suitable household smartphone and any needed assistance are available, without making delay itself a requirement;
 - the role, if any, of Noor’s own calls/messages/mobile-money phone;
 - the reviewer role, explicitly labeling any role not stated in Annex B as a project assumption;
 - the handoff channel;
@@ -405,6 +407,15 @@ Other disease/stress without visible rust is routed to **not sure**, not silentl
 Public UI and summaries must explicitly avoid equating “no visible rust” with “healthy leaf.” On a leaf Noor herself flagged as suspicious, the human-review option must remain prominent after a `no visible rust` proposal.
 
 These label semantics do **not** silently decide the action mapping. Stage 3 must lock the final label-to-action routing. The three routes must differ meaningfully in **priority and/or urgency** rather than collapsing into the same action, while human review may still remain available and prominent after a `no visible rust` proposal.
+
+### Owner-directed simplification note — 2026-10-03
+
+The controlling Stage 3 amendment clarifies that:
+
+- intermittent/shared/assisted smartphone access is the invariant;
+- weekend/daughter/on-slope/backing-card details are examples or evidence-conditioned guidance, not mandatory product protocol;
+- Lugisu remains the named prototype localization direction, but qualified human validation gates **validated-localized-usability claims**, not technical MVP progress;
+- the product's development value is better allocation of scarce human-review attention, not faster extension access or additional extension capacity.
 
 ## Gate
 
@@ -1139,8 +1150,8 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | Closed — owner approved (PR #11) |
-| 4 — Product/data/model/evaluation pre-registration | Not started |
+| 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
+| 4 — Product/data/model/evaluation pre-registration | In review (PR #13) |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
@@ -1152,6 +1163,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stage 3's owner decisions, independent Claude audit, bounded reconciliation, and narrow confirmation are complete. Claude's narrow confirmation verified all 10 requested repairs, found no new blocker or major, and required only the now-recorded N1 traceability entry. José Antonio has explicitly authorized **Stage 3 closure and guarded merge of PR #11**.
+Stage 3 is **Closed — owner approved (PR #11)** and has an owner-directed simplification amendment in PR #15 that reduces implementation choreography without changing safety, human authority, privacy, routing, or the selected concept.
 
-Stage 3 is therefore **Closed — owner approved (PR #11)** for the closure/merge sequence. PR #11 must still pass the authorized fresh GitHub guards and merge successfully before Stage 4 can be opened. **Stage 4 remains unauthorized** pending that successful merge and a separate owner-control authorization.
+Stage 4 is already active in draft PR #13. After PR #15 merges, PR #13 must reconcile its product-assumption wrapper to the simplified Stage 3 invariants and apply Claude's remaining N1/N2 confirmation repairs. No definitive training or held-out/external/challenge readout is authorized until Stage 4 legitimately closes and the later Stage 6 greenlight is satisfied.
