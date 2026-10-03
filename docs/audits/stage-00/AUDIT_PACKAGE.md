@@ -49,7 +49,7 @@ In any GitHub file, PR body, review, issue, or comment:
 - do not mention private repositories;
 - do not mention private note systems or internal orchestration;
 - do not speculate about where existing knowledge originally came from;
-- do not discuss private preparation history;
+- do not discuss non-public working context that is unnecessary to evaluate the public artifact;
 - do not invent chronology or timestamps.
 
 Audit the public Stage 0 artifact and the official sources it cites.
