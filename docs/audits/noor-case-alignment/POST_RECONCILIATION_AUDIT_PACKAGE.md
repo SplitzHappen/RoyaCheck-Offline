@@ -174,3 +174,14 @@ Be adversarial. Do not reward intent, effort, or documentation volume. Judge whe
 A finding should count as resolved only when the relevant control is present in the correct canonical location and is not contradicted elsewhere.
 
 Do not invent facts from outside the supplied repository unless needed to identify an explicit factual mismatch. If outside verification is needed, flag it separately rather than silently substituting external assumptions.
+
+## Verification outcome
+
+Claude completed this verification against merged `main` at PR #9 merge commit `88f598bcda20926e12c0051f08ae613ece0c11a4` and returned **PASS WITH MINOR REPAIRS**.
+
+The full report is preserved at:
+
+- `docs/audits/noor-case-alignment/POST_RECONCILIATION_AUDIT.md`
+
+The owner authorized one bounded PR #10 cleanup of M3, m3, m5, m8, and N1–N4, followed by a **narrow Claude confirmation** before PR #10 may merge or Stage 3 may begin.
+
