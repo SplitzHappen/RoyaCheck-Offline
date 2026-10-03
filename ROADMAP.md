@@ -374,7 +374,7 @@ A suspicious coffee-leaf observation is converted into:
 2. explicit uncertainty where appropriate;
 3. a human-reviewed disposition;
 4. a structured local record;
-5. an extension-ready deterministic summary.
+5. a deterministic extension/cooperative handoff-ready summary.
 
 ## Label semantics
 
