@@ -1039,8 +1039,8 @@ The stage order is a dependency structure for the project record. Public artifac
 | Stage | Status |
 |---|---|
 | Roadmap/process architecture | Closed — owner approved (PR #2) |
-| 0 — Rules & compliance | In review |
-| 1 — Agriculture problem research | Not started |
+| 0 — Rules & compliance | Closed — owner approved (PR #3) |
+| 1 — Agriculture problem research | In progress |
 | 2 — Concept comparison | Not started |
 | 3 — Product scope / route lock | Not started |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
