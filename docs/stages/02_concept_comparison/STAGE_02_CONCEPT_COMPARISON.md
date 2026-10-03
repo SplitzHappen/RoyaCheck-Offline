@@ -1,7 +1,7 @@
 # Stage 2 — Annex B Agriculture Concept Comparison and Elimination Record
 
 **Stage:** 2  
-**Status:** Reopened — Annex B case-alignment audit pending  
+**Status:** Reopened — in review  
 **Sector:** Agriculture  
 **Selected route:** RoyaCheck Offline  
 **Controlling problem specification:** Annex B / Noor Agriculture case
@@ -71,7 +71,7 @@ These are design judgments for this entry, not universal rankings of development
 
 **Case branch:** crop uncertainty + field-observation documentation + extension-service next step.
 
-**Noor action:** capture/select a suspicious coffee-leaf image when the household smartphone is available; receive a bounded offline proposal; explicitly confirm/correct/request review; retain a structured record for later human review.
+**Noor action:** during the daughter-smartphone assisted workflow that Stage 3 must lock, capture/select a suspicious coffee-leaf image; receive a bounded offline proposal; explicitly confirm/correct/request review; retain a structured record for a later, user-initiated human handoff.
 
 **AI task:** visual pattern recognition with abstention.
 
@@ -89,6 +89,8 @@ Why it remains strong:
 - the end-to-end loop is demonstrable;
 - the safety boundary can exclude treatment advice;
 - the output can be measured honestly.
+
+**Audit condition:** the route remains selected only if Stage 3 turns the visual proposal into a real agricultural next-step prioritization decision and locks the weekend-assisted capture/handoff story. Documentation alone is not enough.
 
 ---
 
@@ -137,7 +139,32 @@ Those dependencies are heavier than the selected visual task within the competit
 
 ---
 
-### D. Weather/crop-timing assistant
+### D. Voice/local-language advisory
+
+**Case branch:** localized advice under literacy or screen-literacy constraints.
+
+**Possible tool:** a bounded voice/local-language advisory interaction using approved content.
+
+**AI task candidate:** speech recognition, speech synthesis, vernacular intent matching, or grounded retrieval.
+
+**Strongest simple baseline:** prerecorded human-voiced prompts, IVR/menu prompts, translated fixed guidance, or text with assisted use.
+
+**Disposition:** **DOWNGRADED**
+
+Reason:
+
+Annex B explicitly identifies voice-based local-language advisory as promising where literacy or screen literacy is a constraint, so it must be evaluated rather than excluded by fiat. However, as the primary hackathon route it adds heavier dependencies:
+
+- a real local-language choice and usable speech resources;
+- authoritative agronomic content and applicability governance;
+- reliable speech behavior under the selected device/runtime;
+- a defensible advantage over prerecorded or fixed human-reviewed prompts.
+
+RoyaCheck therefore remains the selected visual route. The MVP excludes speech recognition, generative voice advisory, and voice-agent workflows unless later re-scoped; simple prerecorded or human-voiced accessibility prompts remain available as a non-AI accessibility option if Stage 3 justifies them.
+
+---
+
+### E. Weather/crop-timing assistant
 
 **Case branch:** timing a farming activity is explicitly allowed by the challenge.
 
@@ -155,7 +182,7 @@ The route can fit the case, but a deterministic rules engine may perform most of
 
 ---
 
-### E. Visual produce-quality grading
+### F. Visual produce-quality grading
 
 **Case branch:** improve quality/value addition before sale.
 
@@ -180,7 +207,7 @@ Those dependencies are less directly supported by the supplied case than the cof
 
 ---
 
-### F. Farmer registry / enrollment / reach infrastructure
+### G. Farmer registry / enrollment / reach infrastructure
 
 **Case branch:** Annex B explicitly notes that a missing farmer registry may be the binding constraint.
 
@@ -202,18 +229,18 @@ RoyaCheck therefore treats registry/reach infrastructure as a scaling preconditi
 
 ## 4. Comparative matrix
 
-| Dimension | RoyaCheck | Price reference | Advisory retrieval | Weather/timing | Quality grading | Registry/enrollment |
-|---|---|---|---|---|---|---|
-| Direct Annex B fit | **Strong** | Strong | Strong | Strong | Moderate–Strong | Strong as precondition |
-| Distinct AI value | **Strong** | Weak–Moderate | Moderate–Strong | Weak–Moderate | Strong | Weak–Moderate |
-| Offline / Small AI fit | **Strong** | Strong | Moderate–Strong | Strong | Strong | Strong |
-| Noor workflow realism | **Strong** if shared-phone access is respected | Strong | Moderate | Moderate | Moderate | Moderate |
-| Measurable in hackathon | **Strong** | Strong | Strong | Moderate | Moderate | Strong |
-| Data grounding | **Moderate–Strong** | Moderate–Strong | Moderate | Moderate–Strong | Weak–Moderate | Moderate |
-| Human/safety tractability | **Strong** with no treatment advice | Strong | Moderate | Moderate | Strong | Strong |
-| Solo-build reliability | **Strong** | Strong | Moderate | Strong | Moderate | Strong |
-| AI-vs-simple-tool case | **Strong** | Weak | Moderate | Weak–Moderate | Strong | Weak |
-| Critical dependency | field-like image transfer/OOD | fresh local reference | authoritative corpus | validated action rules | standards + buyer incentives | institutional adoption/registry governance |
+| Dimension | RoyaCheck | Price reference | Advisory retrieval | Voice/local-language advisory | Weather/timing | Quality grading | Registry/enrollment |
+|---|---|---|---|---|---|---|---|
+| Direct Annex B fit | **Strong** | Strong | Strong | Strong | Strong | Moderate–Strong | Strong as precondition |
+| Distinct AI value | **Strong** | Weak–Moderate | Moderate–Strong | Moderate–Strong | Weak–Moderate | Strong | Weak–Moderate |
+| Offline / Small AI fit | **Strong** | Strong | Moderate–Strong | Moderate | Strong | Strong | Strong |
+| Noor workflow realism | **Moderate–Strong pending Stage 3 weekend-assisted lock** | Strong | Moderate | **Strong in principle** under screen-literacy constraints | Moderate | Moderate | Moderate |
+| Measurable in hackathon | **Strong** | Strong | Strong | Moderate | Moderate | Moderate | Strong |
+| Data grounding | **Moderate–Strong** | Moderate–Strong | Moderate | Moderate | Moderate–Strong | Weak–Moderate | Moderate |
+| Human/safety tractability | **Strong** with no treatment advice | Strong | Moderate | Moderate | Moderate | Strong | Strong |
+| Solo-build reliability | **Strong** | Strong | Moderate | Weak–Moderate | Strong | Moderate | Strong |
+| AI-vs-simple-tool case | **Strong if Stage 3 routing differs materially by proposal** | Weak | Moderate | Moderate | Weak–Moderate | Strong | Weak |
+| Critical dependency | field/domain transfer + weekend-assisted workflow + handoff | fresh local reference | authoritative corpus | local speech/language resources + authoritative content | validated action rules | standards + buyer incentives | institutional adoption/registry governance |
 
 **Interpretation:** This matrix is a bounded decision aid. It does not claim RoyaCheck is universally superior to the other interventions.
 
@@ -251,12 +278,15 @@ That matters because the brief does not give Noor Wi-Fi or continuous smartphone
 
 ### 5.5 The decision can remain safe and bounded
 
-RoyaCheck can help Noor decide whether an observation should be documented/reviewed without:
+RoyaCheck must ultimately help Noor **prioritize a real human-review next step** using the bounded visual proposal; merely deciding whether to save a record is not sufficient AI value.
+
+The exact decision wording and label-to-action routing remain for Stage 3. They must remain safe and bounded without:
 
 - claiming the cause of her yield decline;
 - prescribing treatment;
 - autonomously contacting an extension service;
-- making a market decision for her.
+- making a market decision for her;
+- treating `no visible rust` as healthy/all-clear/no-disease.
 
 ### 5.6 The evidence can be proximal
 
@@ -281,9 +311,11 @@ The selected route tests one visible coffee-leaf condition.
 
 It does not establish why Noor’s yields fell.
 
-### Smartphone access is intermittent/shared
+### Smartphone access is weekend-assisted/shared
 
-The demo must not present Noor as having a personal smartphone in hand all day.
+The demo must preserve that Noor’s daughter boards in the district town and that Noor mainly uses the daughter’s smartphone on weekends with her help. That is both a device-access and screen-literacy constraint.
+
+The demo must not present Noor as having a personal smartphone in hand all day. Stage 3 must lock the operator, timing, leaf location/capture path, observation-to-capture delay, and role of Noor’s own phone.
 
 ### A registry may still matter for scale
 
@@ -327,9 +359,11 @@ It does not silently authorize switching to an unrelated product concept.
 
 > **RoyaCheck Offline — a small, offline-capable coffee-leaf observation aid that helps Noor structure a suspicious leaf observation and prepare it for human review, with explicit uncertainty and human final authority.**
 
-**Selected case-level decision:**
+**Provisional case-level decision direction — final wording remains a Stage 3 owner decision:**
 
-> **Should this suspicious leaf observation be documented and flagged for human extension/cooperative review rather than treated as a confident answer or left only to memory?**
+> **Does this suspicious coffee leaf show enough visible evidence consistent with rust that Noor should prioritize it for human review, or should she record that no visible rust was observed while keeping review available if concern remains?**
+
+Stage 3 must lock the exact wording and label-to-action routing so the three AI proposals do not collapse into the same action.
 
 **Explicitly unsolved Annex B branches:**
 
@@ -351,4 +385,4 @@ It combines:
 
 while leaving the price and infrastructure branches honestly out of scope.
 
-**Stage 2 status: REOPENED — ready for independent case-alignment audit.**
+**Stage 2 status: Reopened — in review. The independent case-alignment audit is complete and its findings are reconciled in PR #9 pending owner re-closure.**
