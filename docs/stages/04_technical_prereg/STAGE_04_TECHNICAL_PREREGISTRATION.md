@@ -1,7 +1,7 @@
 # Stage 4 — Technical Pre-Registration
 
 **Stage:** 4  
-**Status:** In review — Stage 3 simplification reconciled; Claude confirmation complete; N2 false-alarm cap awaiting owner lock  
+**Status:** Closed — owner approved (PR #13)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling product lock:** `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`  
@@ -902,11 +902,15 @@ Selection rule:
 
 - `T_healthy` is disabled;
 - select `T_rust` on validation only from the existing 0.50–0.95 grid;
-- maximize `|R→VR|` subject to a **pre-set false-alarm-share cap** on `|(H∪O)→VR| / |→VR|`;
-- ties go to the higher `T_rust`;
-- if no threshold satisfies the owner-fixed cap, there is **no learned proposal**.
+- maximize `|R→VR|` subject to the owner-approved false-alarm-share cap:
 
-The exact false-alarm-share cap is an unresolved owner value and must be fixed **before Stage 4 closes and before any validation result is produced**. Claude's confirmation intentionally left this as an owner-chosen share; this record does not invent one.
+  `|(H∪O)→VR| / |→VR| ≤ 20%`;
+
+- equivalently, at least **80% of validation `visible rust` routes must be rust-bearing** under the frozen Stage 4 truth map;
+- ties go to the higher `T_rust`;
+- if no threshold satisfies the 20% cap, there is **no learned proposal**.
+
+José Antonio fixed the degraded-mode false-alarm-share cap at **20% on 2026-10-03**, before any validation result was produced.
 
 The degraded artifact must:
 
@@ -965,25 +969,30 @@ No later result may silently rewrite these rules.
 
 # 23. Stage 4 gate
 
-The Stage 4 owner-decision gate, Tier A audit, major/minor repair pass, and Claude narrow confirmation are complete.
+The Stage 4 owner-decision gate, Tier A audit, major/minor repair pass, Claude narrow confirmation, owner-directed Stage 3 simplification delta, N1 repair, and N2 repair are complete.
 
-Claude's confirmation returned **PASS WITH MINOR REPAIRS** with 0 new blockers and 0 new majors. N1 is repaired. N2 is structurally repaired except for one confirmation-required **owner-chosen degraded-mode false-alarm-share cap**.
+Claude's confirmation returned **PASS WITH MINOR REPAIRS** with 0 new blockers and 0 new majors and explicitly required no further full audit after the narrow repairs.
 
-Stage 4 remains **In review** until:
+José Antonio fixed the remaining N2 degraded-mode false-alarm-share cap at **20%** on 2026-10-03, before any validation result was produced.
 
-1. José Antonio fixes that N2 numerical cap;
-2. the cap is recorded consistently in D4-20 / ROADMAP / reconciliation;
-3. the bounded coherence check remains clean;
-4. José Antonio explicitly authorizes Stage 4 closure/merge.
+The final bounded coherence check found no contradiction with:
 
-No further full Claude audit is required for the N1/N2 repairs or for the owner-directed Stage 3 assumption simplification, provided no substantive change is made to D4-05 through D4-13 or D4-18 through D4-20 beyond the already-authorized N1/N2 rule completion.
+- Stage 3 human-final authority and three-way full-model routing;
+- BRACOL truth mapping;
+- RoCoLe quarantine;
+- D4-11 metric definitions;
+- FP32 ONNX/browser-preprocessing parity;
+- one-shot internal/external readout discipline;
+- privacy/localization limits;
+- runtime budgets and clock protection.
 
-Until Stage 4 closes:
+José Antonio explicitly authorized Stage 4 closure and guarded PR #13 merge if that coherence check remained clean.
 
-- no definitive training;
-- no validation-result-driven design outside the pre-registered Stage 7 rules;
+Until the separate Stage 6 implementation greenlight is recorded:
+
+- no definitive Stage 7 training;
 - no internal held-out readout;
 - no external readout;
 - no challenge-set result.
 
-**Current status: In review — Claude confirmation complete; Stage 3 simplification reconciled; N2 false-alarm cap awaiting owner lock.**
+**Current status: Closed — owner approved (PR #13).**
