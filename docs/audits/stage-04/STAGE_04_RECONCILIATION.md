@@ -4,7 +4,7 @@
 **Audit verdict:** PASS WITH MAJOR REPAIRS  
 **Findings:** 0 blocking / 10 major / 9 minor  
 **Owner authorization:** José Antonio explicitly approved one bounded reconciliation of M1–M10 and the listed minor repairs on 2026-10-03.  
-**Stage status:** In review — original Tier A repairs confirmed; owner-directed Stage 3 simplification reconciled; N1 repaired; N2 cap awaiting owner lock.
+**Stage status:** Closed — owner approved (PR #13); all Tier A/narrow-confirmation findings reconciled.
 
 ---
 
@@ -182,7 +182,7 @@ The combined Q/K/U target remains removed.
 
 ## 10. N2 reconciliation
 
-**Status: Partially repaired; one owner numerical lock remains.**
+**Status: Repaired and owner locked.**
 
 The degraded-mode rule now fixes:
 
@@ -190,19 +190,18 @@ The degraded-mode rule now fixes:
 - `T_healthy` disabled;
 - `T_rust` selected from the existing 0.50–0.95 validation grid only;
 - objective: maximize `|R→VR|`;
+- false-alarm-share cap:
+
+  `|(H∪O)→VR| / |→VR| ≤ 20%`;
+
+- equivalently, at least **80% of validation `visible rust` routes must be rust-bearing** under the frozen Stage 4 truth map;
 - tie-break: higher `T_rust`;
 - no feasible threshold → no learned proposal;
 - same Stage 7D exact-artifact parity;
 - same Stage 7E/7F one-shot discipline;
 - required R→VR, H→VR, O→VR counts and exact intervals.
 
-Claude's confirmation requires a **pre-set owner-chosen false-alarm-share cap** on:
-
-`|(H∪O)→VR| / |→VR|`
-
-The confirmation did not fix the numeric share. The repository therefore intentionally does **not invent one**.
-
-That cap must be owner-locked before Stage 4 closure and before any validation result is produced.
+José Antonio explicitly approved the **20%** cap on 2026-10-03 before any validation result was produced.
 
 ---
 
@@ -223,5 +222,28 @@ Current delta does not alter:
 
 The Stage 3 simplification reduces implementation assumptions and removes a localization build dependency without expanding product scope.
 
-**Only unresolved Stage 4 decision:** N2 false-alarm-share cap for degraded safety mode.
+**No unresolved Stage 4 preregistration decision remains.**
+
+---
+
+## 12. Final closure reconciliation
+
+The final bounded coherence check after the 20% N2 lock confirmed that the Stage 4 record remains consistent with:
+
+- the simplified Stage 3 intermittent/shared/assisted access invariant;
+- human-final authority and user-initiated review;
+- BRACOL rust-presence truth;
+- RoCoLe quarantine and one-shot external role;
+- D4-11 validation metrics and claim ceilings;
+- exact FP32 ONNX/browser-preprocessing parity before held-out readout;
+- Q/K/U separation and the ≥70% U-category `not sure` target for n ≥ 20;
+- privacy/localization limits;
+- runtime/model/cache budgets;
+- deterministic fallback and clock protections.
+
+No model training, validation-result-driven redesign, internal held-out readout, external readout, or challenge-set result occurred before closure.
+
+José Antonio explicitly authorized Stage 4 closure and guarded PR #13 merge once this coherence condition was satisfied.
+
+**Final Stage 4 status: Closed — owner approved (PR #13).**
 
