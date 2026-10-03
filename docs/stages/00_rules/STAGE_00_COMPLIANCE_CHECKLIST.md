@@ -69,7 +69,7 @@ This document is a compliance control, not a product specification. It records w
 | 21 | Team introduction video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
 | 22 | Product demo video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
 | 23 | Technical walkthrough video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
-| 24 | WBG challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | S7 exposes only the three 60-second Hack-Nation video sections; no 2–5 minute challenge-video field is visible in the captured submission page. Destination remains unresolved. | 10 | Separate compliant 2–5 minute cut unless an official field/rule explicitly maps it elsewhere. |
+| 24 | Small AI challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | S7 exposes only the three 60-second Hack-Nation video sections; no 2–5 minute challenge-video field is visible in the captured submission page. Destination remains unresolved. | 10 | Separate compliant 2–5 minute cut unless an official field/rule explicitly maps it elsewhere. |
 | 25 | Whether the 2–5 minute video can satisfy any Hack-Nation video field | S6, S7 | UNRESOLVED PLATFORM DETAIL | The visible platform fields have 60-second limits, so a 2–5 minute file cannot fit those fields as displayed. Keep it separate until the challenge-specific destination is identified. | 6, 10 | Challenge/rules/Google Form field inspection. |
 | 26 | Project details are editable before the deadline | S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 says project details can be edited until the deadline and shows a Save draft action; S7 also says uploads/edits/submissions remain open through the 15-minute grace. | 10 | Platform behavior. Do not rely on post-9:00 grace for normal work. |
 | 27 | Challenge selection should be declared in Discord | S5 | CONFIRMED — PARTICIPANT MATERIAL | Owner confirmed Agriculture / Challenge 4 was already declared. | 0 | **Complete — owner confirmation.** |
@@ -93,7 +93,7 @@ This document is a compliance control, not a product specification. It records w
 | 45 | Participants retain ownership of their submissions | S1, S2 | CONFIRMED | Entrant keeps ownership subject to competition terms. | 0 | No further action. |
 | 46 | Submission grants the organizer a broad non-exclusive, royalty-free license for competition/education/promotion/knowledge sharing | S1 | CONFIRMED | Third-party content appearing in the repo, live demo, videos or submission must be licensed compatibly with the organizer’s stated downstream uses, with required attribution. Otherwise exclude or replace it. | 4, 7, 10 | Organizer-license compatibility verdict + Stage 10 asset inventory recheck. |
 | 47 | Privacy/confidentiality/third-party rights must be respected | S1 | CONFIRMED | Do not expose personal/confidential data or unlicensed material. | 4, 8, 9, 10 | Privacy/data audit. |
-| 48 | Organizer/partner naming and branding restriction | S1 | OWNER ACTION REQUIRED | S1 covers organizer/partner **names, titles, acronyms, logos and other branding** on independently produced entry materials without written consent. Project policy: no organizer/partner logos or visual branding; no acronyms; competition names only as minimum plain-text factual identification where genuinely required, without implying endorsement. Repository rename to product-only name has been authorized and remains required before closure. | 0, 8, 10 | Product-only repo name/description + Stage 8/10 naming/branding sweep across README, UI, live-demo metadata, videos, thumbnails and submission-facing materials. |
+| 48 | Organizer/partner naming and branding restriction | S1 | CONFIRMED | S1 covers organizer/partner **names, titles, acronyms, logos and other branding** on independently produced entry materials without written consent. Project policy: no organizer/partner logos or visual branding; no unnecessary acronyms; competition names only as minimum plain-text factual identification where genuinely required, without implying endorsement. The repository is now product-only and the neutral description has been verified on live GitHub metadata. | 0, 8, 10 | Canonical repo `SplitzHappen/RoyaCheck-Offline` + neutral description + Stage 8/10 naming/branding sweep across all public repository documents, README, UI, live-demo metadata, videos, thumbnails and submission-facing materials. |
 | 49 | Exact participant-platform originality rule | S1 | UNRESOLVED PLATFORM DETAIL | Authenticated Team & Submission page (S7) was inspected and does not display the originality rule text. Do not infer permission. | 0, 6, 10 | Recheck official rules/FAQ/challenge surfaces if exposed; conservative project policy applies. |
 | 50 | Exact AI coding-assistant / AI-assisted-development rule | S1, S5 | UNRESOLVED PLATFORM DETAIL | S7 does not display this rule. Sponsor/tool presence is not permission. | 0, 6, 10 | Conservative disclosure; stop/modify if contrary official text appears. |
 | 51 | Exact outside non-team review/audit rule | S1 | UNRESOLVED PLATFORM DETAIL | Rule text not located; treated as unresolved. | 0, 6, 10 | Independent AI review disclosed with other AI/tooling assistance; recheck official participant rules if surfaced. |
@@ -121,7 +121,7 @@ This document is a compliance control, not a product specification. It records w
 | Accepted participant/submission access | Yes | Active Team & Submission area | app.hack-nation.ai | N/A | **Complete:** owner confirmed access; S7 shows admission accepted. |
 | Project name | Yes | Text field | Hack-Nation platform | N/A | Required field visible in S7. |
 | Challenge | Yes | Challenge selector | Hack-Nation platform | N/A | Required field visible in S7. |
-| Public GitHub repository | Yes | Repository URL | Hack-Nation platform + backup submission | N/A | Exists; **product-only rename still required**. |
+| Public GitHub repository | Yes | Repository URL | Hack-Nation platform + backup submission | N/A | **Complete:** canonical repository is `https://github.com/SplitzHappen/RoyaCheck-Offline`; neutral description verified. |
 | Live project URL | Yes | URL | Hack-Nation platform + backup submission | N/A | Not built yet. |
 | Team photo | Yes | JPG / PNG / WebP, max 10 MB | Hack-Nation platform | N/A | Required; not yet produced. |
 | Team introduction | Yes | MP4/MOV, max **60 sec**, max **1 GB** | Hack-Nation platform | Separate required field | Format resolved from S7. |
@@ -196,13 +196,16 @@ The product-only target is:
 
 The owner explicitly authorized this rename and description change.
 
-**Current execution status:** rename remains pending because the connected GitHub actions available to the builder do not expose repository-settings/rename mutation. Stage 0 therefore remains open until the owner performs the repository-settings rename or another authorized GitHub surface with repository-administration mutation becomes available.
+**Current execution status:** completed and independently verified.
 
-After rename:
+- canonical repository: `https://github.com/SplitzHappen/RoyaCheck-Offline`
+- verified description: `Offline-first, browser-local coffee-leaf observation prototype with human review.`
+
+Controls:
 
 1. do not recreate a repository under the old name;
-2. use the new product-only URL in later materials;
-3. remove organizer/partner acronyms from independent entry-material titles/headings as those files are touched within their authorized stage scope;
+2. use the product-only URL in later materials;
+3. remove unnecessary organizer/partner acronyms from independent entry-material titles/headings;
 4. run a complete branding sweep again in Stages 8 and 10.
 
 ---
@@ -215,7 +218,7 @@ After rename:
 | Missing one of two submission surfaces | Open until Stage 10 | Platform + Google Form; private receipts. |
 | Google Form target/fields not captured | **Open Stage 0 detail** | Open the platform link and record target/fields before closure if available. |
 | Missing required video field | Reduced | Three platform video fields/caps now resolved; 2–5 minute challenge-video destination still unresolved. |
-| Product repo naming/branding violation | **OWNER ACTION REQUIRED** | Product-only rename/description; no organizer/partner visual branding; later sweeps. |
+| Product repo naming/branding violation | **Resolved / controlled** | Product-only repository and neutral description verified; no organizer/partner visual branding; Stage 8/10 sweeps remain mandatory. |
 | Broken live demo | Open | Deploy early; last-known-good deploy; clean-session test. |
 | Undisclosed/impermissible AI assistance | Rule text unresolved | Conservative disclosure; recheck official rule surface if shown. |
 | Originality conflict | Rule text unresolved | Definitive implementation created during competition window; no unsupported permission claims. |
@@ -298,9 +301,8 @@ These are **not** treated as permission. Section 5 controls unless contrary offi
 
 ## Owner action still required before Stage 0 closure
 
-1. Complete the product-only repository rename and description change.
-2. If available, open/capture the Google Form target and any challenge/rules/FAQ surface that displays the remaining rule text.
-3. After the focused re-audit, confirm continued acceptance of the conservative Section 5 dispositions.
+1. Confirm continued acceptance of the conservative Section 5 dispositions.
+2. If available, capture the Google Form target and any challenge/rules/FAQ surface that displays remaining rule text. This is desirable but not blocking because Stage 6/10 rechecks already control it.
 
 ---
 
@@ -308,6 +310,8 @@ These are **not** treated as permission. Section 5 controls unless contrary offi
 
 The route remains viable and the authenticated participant page resolves the most important submission-mechanics uncertainty: accepted participant status, the active Team & Submission flow, the three required 60-second platform videos, the required team photo, required GitHub/live URLs, editability, and the 15-minute platform grace.
 
-The remaining closure blocker is the product-only repository rename/description remediation. Remaining rule silence is explicitly identified and controlled conservatively rather than treated as permission.
+The repository naming/description blocker is resolved. Remaining rule silence is explicitly identified and controlled conservatively rather than treated as permission.
 
-**Stage 0 status: IN REVIEW — focused Tier A re-audit required after the authorized repair pass.**
+The focused Tier A re-audit found no unresolved major findings and no new blocking or major findings; its only blocking residual was the repository description state, which has since been corrected and independently verified. The remaining re-audit items are minor documentation consistency repairs handled in the final Stage 0 pass.
+
+**Stage 0 status: IN REVIEW — ready for final owner closure/merge decision after the final minor-repair verification.**
