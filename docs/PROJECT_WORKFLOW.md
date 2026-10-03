@@ -54,6 +54,12 @@ For each project stage:
 16. **Preserve unsolved case branches explicitly.**  
     Solving one better agricultural decision does not authorize implying that the entry solves Noor’s other problems. The selected RoyaCheck route must keep the market-price branch, farmer-registry precondition, and broader yield-cause/advisory problem visible as out of scope or external dependencies.
 
+17. **Do not turn reconciliation into premature product lock.**  
+    Audit reconciliation may repair facts, requirements, safety boundaries, and future gates. When the audit identifies a substantive owner choice for a later stage, the reconciliation records that choice as an explicit gate rather than silently making it early.
+
+18. **Preserve historical audits as historical evidence.**  
+    Earlier audit conclusions are not rewritten to match later policy. If an old audit contains country-, language-, or case-framing that a later controlling source supersedes, add only a narrow historical/supersession note and keep the original audit body intact. Current Agriculture policy is governed by the Annex B case contract and the latest owner-approved reconciliation.
+
 ## Review tiers
 
 ### Tier A — independent adversarial review
