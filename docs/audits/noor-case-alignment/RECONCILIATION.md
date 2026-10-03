@@ -27,12 +27,12 @@ The independent audit reported **0 blockers / 6 majors / 8 minors**. The selecte
 |---|---|---|---|---|
 | **m1 — preserve precise case facts** | **Accepted** | Use “twice a year at best” where the Annex B cadence matters; distinguish Noor’s own phone from her daughter’s smartphone. | Prevents case drift. | None. |
 | **m2 — “no visible rust” safety semantics** | **Accepted** | Keep “no visible rust” distinct from healthy/all-clear/no-disease; preserve an obvious human-review option; require later evaluation to distinguish low confidence, OOD/non-coffee, other disease/stress and image-quality causes of `not sure`. | Prevents false reassurance and makes abstention auditable. | Final UI wording remains later-stage work. |
-| **m3 — capture realism/challenge set** | **Modified / accepted in substance** | Carry forward the studio-versus-field warning; add maize and bean leaves to the planned challenge/OOD set; require capture-side/acquisition-setting justification after data properties are verified. Do **not** decide in this reconciliation that a leaf is detached or photographed at the house. | The challenge set should reflect Noor’s farm, but the physical capture workflow is a Stage 3 choice and dataset properties still require verification. | **Stage 3:** detach/capture workflow. Later technical gate: capture-side rule after evidence review. |
+| **m3 — capture realism/challenge set** | **Modified / accepted in substance; record corrected by PR #10** | PR #9 added maize and bean leaves to the planned challenge/OOD set and deferred the capture-side/acquisition rule until data properties are verified, but it did **not** actually carry forward the explicit studio-versus-field warning as this row originally claimed. PR #10 corrects that record and adds the challenge brief's controlled/plain-background versus field-photo warning to the case contract and Stage 4 dataset controls, without deciding whether a leaf is detached or photographed at the house. | The challenge set should reflect Noor’s farm, but the physical capture workflow is a Stage 3 choice and dataset properties still require verification. | **Stage 3:** detach/capture workflow. Later technical gate: capture-side rule after evidence review. |
 | **m4 — shared-device privacy** | **Accepted** | Stage 4 privacy requirements explicitly address record visibility on a shared smartphone. | Local-only storage is not automatically private on a shared device. | Exact privacy UX belongs to Stage 4/8. |
 | **m5 — unify prohibited claims** | **Accepted** | Maintain one canonical prohibited-claims list and make later stages reference it. Add case-specific prohibitions: yield cause, general diagnosis, price improvement, registry solution, Noor nationality/location/language as fact, autonomous notification, unsupported field validation. | Reduces contradictory claim ceilings. | None. |
 | **m6 — video requirements** | **Accepted** | Preserve the organizer’s exact problem-sentence template and record that an entry without the 2–5 minute challenge video will not make the shortlist. | This is a hard submission consequence. | None. |
 | **m7 — status vocabulary** | **Accepted** | Normalize the roadmap and Stage 0–2 to **Reopened — in review**. | Uses the repository’s canonical status vocabulary. | None. |
-| **m8 — historical audits** | **Accepted** | Do not rewrite earlier audits. Add narrow supersession notes only to historical audit files that contain stale Spanish/Dominican or pre-Annex-B framing. | Preserves audit history while preventing judges from reading stale assumptions as current policy. | None. |
+| **m8 — historical audits** | **Accepted; record corrected by PR #10** | PR #9 added narrow supersession notes to `docs/audits/roadmap/ROADMAP_AUDIT.md` and `docs/audits/stage-00/STAGE_00_AUDIT.md`, but missed `docs/audits/roadmap/AUDIT_PACKAGE.md`, which still contained stale Spanish-target language. PR #10 adds the missing supersession note without rewriting any historical audit body. | Preserves audit history while preventing judges from reading stale assumptions as current policy. | None. |
 
 ## Stage 3 owner-decision gate preserved
 
@@ -71,3 +71,34 @@ José Antonio explicitly approved the repaired project foundation after reconcil
 This approval does **not** authorize any of the substantive Stage 3 decisions listed above, nor Stage 3 implementation beyond beginning the Stage 3 decision/lock process after merge.
 
 **Owner disposition:** Approved for re-closure and merge.
+
+## Post-reconciliation verification — Claude
+
+Claude independently checked the merged PR #9 repair state and returned **PASS WITH MINOR REPAIRS**.
+
+Key control result:
+
+- all six original major findings M1–M6 were resolved in the canonical foundation;
+- no new blocking or major finding was identified;
+- m3, m5, m8 and part of M3 retained minor documentation/control residuals;
+- N1–N4 were new minor precision/process findings;
+- the re-closure of roadmap/process architecture and Stages 0–2 can stand;
+- Claude judged the foundation strong enough to begin Stage 3, but the owner imposed a stricter gate: complete PR #10 and obtain a narrow confirmation before Stage 3 begins.
+
+The full verification report is preserved at `docs/audits/noor-case-alignment/POST_RECONCILIATION_AUDIT.md`.
+
+### PR #10 minor-repair disposition
+
+- **M3:** accepted. Require the Stage-3-locked user-initiated handoff in Stage 8, test it in Stage 9, and make consent/delete behavior explicit if an image is retained until handoff.
+- **m3:** accepted. Add the explicit controlled/plain-background versus field-photo warning to the Contract and Stage 4 data controls; disclose licensing-driven omissions from maize/bean challenge coverage.
+- **m5:** accepted. Contract §4 is the sole authoritative claims ceiling; ROADMAP retains only product-scope exclusions and points to Contract §4. Add the missing smartphone-on-slope and non-case-reviewer-as-fact prohibitions.
+- **m8:** accepted. Add the missed supersession note to `docs/audits/roadmap/AUDIT_PACKAGE.md`.
+- **N1:** accepted. Restore exact device wording: Noor has her own phone; the case says the phone is at the house.
+- **N2:** accepted. Correct the m3 and m8 rows above rather than leaving an overstated repair record.
+- **N3:** accepted. Require the handoff to be locked before instantiating the organizer's problem-sentence template.
+- **N4:** accepted. Preserve the verification report in-repo and update the roadmap's immediate-next-action state.
+
+### Stage 3 watch item preserved
+
+When Stage 3 later locks the label-to-action routing, the three routes must differ meaningfully in **priority and/or urgency** rather than collapsing into the same action, while review may still remain available and prominent after `no visible rust`. This is a Stage 3 design constraint, not a decision made by this reconciliation.
+
