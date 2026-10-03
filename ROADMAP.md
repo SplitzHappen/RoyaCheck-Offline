@@ -327,7 +327,7 @@ Freeze the public product definition, authority boundary, and exclusions so late
 
 ## Locked route
 
-**WBG Challenge 4 → Agriculture → RoyaCheck Offline**
+**Challenge 4 — Small AI for Development → Agriculture → RoyaCheck Offline**
 
 ## Primary value unit
 
