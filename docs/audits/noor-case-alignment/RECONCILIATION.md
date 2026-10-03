@@ -59,3 +59,15 @@ Those are owner decisions for Stage 3 unless separately authorized.
 The independent audit concluded that the roadmap and Stages 0–2 can be re-closed after documentation repair, that Stage 3 may begin after reconciliation and owner re-closure, and that **no second full independent audit round is necessary**. The next planned Tier-A independent audit remains Stage 4.
 
 This record does not itself close any stage, mark PR #9 Ready for Review, or authorize merge.
+
+## Owner re-closure and merge authorization
+
+José Antonio explicitly approved the repaired project foundation after reconciliation and authorized:
+
+- re-closing the roadmap/process architecture and Stages 0–2;
+- merging PR #9 at the freshly verified repaired state;
+- beginning Stage 3 only **after** that merge.
+
+This approval does **not** authorize any of the substantive Stage 3 decisions listed above, nor Stage 3 implementation beyond beginning the Stage 3 decision/lock process after merge.
+
+**Owner disposition:** Approved for re-closure and merge.
