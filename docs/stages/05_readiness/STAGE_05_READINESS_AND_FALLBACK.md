@@ -1,7 +1,7 @@
 # Stage 5 — Readiness, Fallback, and Submission Protection
 
 **Stage:** 5  
-**Status:** In review — owner authorization active  
+**Status:** Closed — owner approved (PR #16)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling technical preregistration:** `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`
@@ -158,4 +158,4 @@ The project is **operationally ready to proceed to the Stage 6 official-source r
 
 Stage 5 does **not** itself authorize definitive Stage 7 training.
 
-**Current Stage 5 status: In review — owner authorization active.**
+**Current Stage 5 status: Closed — owner approved (PR #16).**
