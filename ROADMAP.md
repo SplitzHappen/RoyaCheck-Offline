@@ -1139,7 +1139,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | In progress |
+| 3 — Product scope / route lock | In review |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
@@ -1154,4 +1154,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 PR #10 is merged after Claude's narrow confirmation returned **PASS**, and the owner has explicitly authorized **Stage 3 — Product scope / route lock**.
 
-Stage 3 is now **In progress**. The current action is owner review of the proposed D3-01 through D3-15 route locks in `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`. No recommendation becomes locked until the owner explicitly approves or modifies it.
+Stage 3 is now **In review**. José Antonio has explicitly approved D3-01 through D3-15, including the revised action-based label routing. The current action is the required independent Stage 3 audit and reconciliation. Stage 4 remains unauthorized until Stage 3 is audited, reconciled, owner-closed, and merged.
