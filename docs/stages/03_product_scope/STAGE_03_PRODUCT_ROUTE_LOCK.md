@@ -1,7 +1,7 @@
 # Stage 3 — Product Scope and Route Lock
 
 **Stage:** 3  
-**Status:** Closed — owner approved (PR #11); owner-directed simplification amended 2026-10-03  
+**Status:** Closed — owner approved (PR #11); simplified by owner-approved amendment PR #15  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling case:** `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`  
