@@ -8,7 +8,7 @@
 **Artifact under audit:** `ROADMAP.md`  
 **Audit role:** Independent adversarial reviewer / red team  
 **Audit type:** Process, governance, evidence, compliance, and execution audit  
-**Status:** Requested before Stage 0 public reconstruction begins
+**Status:** Requested before Stage 0 begins
 
 ---
 
