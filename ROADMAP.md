@@ -1132,10 +1132,10 @@ The stage order is a dependency structure for the project record. Public artifac
 
 | Stage | Status |
 |---|---|
-| Roadmap/process architecture | Reopened — in review |
-| 0 — Rules & compliance | Reopened — in review |
-| 1 — Agriculture problem research | Reopened — in review |
-| 2 — Concept comparison | Reopened — in review |
+| Roadmap/process architecture | Closed — owner approved (PR #9) |
+| 0 — Rules & compliance | Closed — owner approved (PR #9) |
+| 1 — Agriculture problem research | Closed — owner approved (PR #9) |
+| 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Not started |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
@@ -1149,4 +1149,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Complete owner review of the reconciled Annex B / Noor foundation in PR #9. The independent audit is preserved in `docs/audits/noor-case-alignment/CLAUDE_AUDIT.md` and the finding-by-finding disposition is in `docs/audits/noor-case-alignment/RECONCILIATION.md`. No second full independent audit round is required by the audit disposition. **Do not begin Stage 3 until the owner re-closes the repaired foundation; do not merge PR #9 without explicit authorization.**
+The Annex B / Noor foundation has been owner approved for re-closure and merge in PR #9. After PR #9 is merged, the next project action is to begin **Stage 3 — Product scope / route lock** and resolve the explicitly deferred owner decisions recorded in the case contract and reconciliation. Stage 3 remains **Not started** until that post-merge work begins.
