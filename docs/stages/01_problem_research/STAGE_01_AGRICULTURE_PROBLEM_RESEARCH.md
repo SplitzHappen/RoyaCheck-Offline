@@ -34,7 +34,7 @@ That is the core framing for RoyaCheck Offline.
 > **Human authority / escalation endpoint:** an extension officer, cooperative technician, or other responsible human reviewer.  
 > **Unit of analysis:** the user + field-observation workflow + binding constraint.
 
-Geography is secondary. A future deployment would need local validation, but the hackathon problem is not defined as a Dominican Republic problem or as a country-specific intervention.
+Geography is secondary. A future deployment would need local validation, but the hackathon problem is not defined as a country-specific intervention.
 
 ---
 
