@@ -1150,8 +1150,8 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | Closed — owner approved (PR #11) |
-| 4 — Product/data/model/evaluation pre-registration | Not started |
+| 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
+| 4 — Product/data/model/evaluation pre-registration | In review (PR #13) |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
@@ -1163,6 +1163,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stage 3's owner decisions, independent Claude audit, bounded reconciliation, and narrow confirmation are complete. Claude's narrow confirmation verified all 10 requested repairs, found no new blocker or major, and required only the now-recorded N1 traceability entry. José Antonio has explicitly authorized **Stage 3 closure and guarded merge of PR #11**.
+Stage 3 is **Closed — owner approved (PR #11)** and has an owner-directed simplification amendment in PR #15 that reduces implementation choreography without changing safety, human authority, privacy, routing, or the selected concept.
 
-Stage 3 is therefore **Closed — owner approved (PR #11)** for the closure/merge sequence. PR #11 must still pass the authorized fresh GitHub guards and merge successfully before Stage 4 can be opened. **Stage 4 remains unauthorized** pending that successful merge and a separate owner-control authorization.
+Stage 4 is already active in draft PR #13. After PR #15 merges, PR #13 must reconcile its product-assumption wrapper to the simplified Stage 3 invariants and apply Claude's remaining N1/N2 confirmation repairs. No definitive training or held-out/external/challenge readout is authorized until Stage 4 legitimately closes and the later Stage 6 greenlight is satisfied.
