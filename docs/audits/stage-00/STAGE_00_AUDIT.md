@@ -1,5 +1,7 @@
 # Stage 0 Compliance Audit
 
+> **Historical/supersession note:** This audit records an earlier Stage 0 state and intentionally preserves its original findings, including the then-current Spanish localization assumption. The later Annex B / Noor case alignment supersedes that assumption. Current localization policy is governed by `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md` and the PR #9 reconciliation.
+
 **Stage under review:** Stage 0 — Rules, Submission Requirements, and Compliance Control
 **Primary artifact:** `docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md`
 **Audited head:** `c8230e266f20e3983219784263a2916e5355b662` (branch `chatgpt/stage-00-compliance`)
