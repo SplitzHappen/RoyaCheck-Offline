@@ -1,7 +1,7 @@
 # Stage 0 — Rules, Submission Requirements, and Compliance Control
 
 **Stage:** 0  
-**Status:** Reopened — in review  
+**Status:** Closed — owner approved (PR #9)  
 **Purpose:** Establish one authoritative compliance checklist for the Small AI for Development Hackathon 2026 before later stages create technical or submission artifacts.
 
 This document is a compliance control, not a product specification. It records what the available official/public competition materials establish, what the authenticated participant submission surface establishes, what remains unresolved, and how later stages must enforce each requirement. The controlling Agriculture case interpretation is centralized in `ANNEX_B_CASE_CONTRACT.md`; generic Agriculture research may contextualize the case but may not redefine it.
@@ -325,4 +325,4 @@ The repository naming/description blocker is resolved. Remaining rule silence is
 
 The earlier Stage 0 audits remain valid for the rules, submission mechanics, branding, and rule-silence issues they examined. They did **not** close the later-discovered Annex B case-alignment gap. Stage 0 has therefore been reopened narrowly so the official Noor scenario, exact challenge-video content, two-layer data guidance, and judging rubric become explicit controlling requirements.
 
-**Stage 0 status: Reopened — in review. The independent Annex B audit is complete and preserved; reconciliation repairs are pending owner re-closure.**
+**Stage 0 status: Closed — owner approved (PR #9). The independent Annex B audit is preserved, its findings were reconciled, and the repaired foundation was explicitly approved for merge by the owner.**
