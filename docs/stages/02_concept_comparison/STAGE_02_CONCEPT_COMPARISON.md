@@ -1,7 +1,7 @@
 # Stage 2 — Annex B Agriculture Concept Comparison and Elimination Record
 
 **Stage:** 2  
-**Status:** Reopened — in review  
+**Status:** Closed — owner approved (PR #9)  
 **Sector:** Agriculture  
 **Selected route:** RoyaCheck Offline  
 **Controlling problem specification:** Annex B / Noor Agriculture case
@@ -385,4 +385,4 @@ It combines:
 
 while leaving the price and infrastructure branches honestly out of scope.
 
-**Stage 2 status: Reopened — in review. The independent case-alignment audit is complete and its findings are reconciled in PR #9 pending owner re-closure.**
+**Stage 2 status: Closed — owner approved (PR #9). The independent case-alignment audit is complete, its findings are reconciled, and RoyaCheck remains the owner-approved selected route subject to the Stage 3 locks.**
