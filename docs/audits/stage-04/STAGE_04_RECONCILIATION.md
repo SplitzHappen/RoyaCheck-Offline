@@ -4,7 +4,7 @@
 **Audit verdict:** PASS WITH MAJOR REPAIRS  
 **Findings:** 0 blocking / 10 major / 9 minor  
 **Owner authorization:** José Antonio explicitly approved one bounded reconciliation of M1–M10 and the listed minor repairs on 2026-10-03.  
-**Stage status:** In review — repairs applied; narrow confirmation pending.
+**Stage status:** In review — original Tier A repairs confirmed; owner-directed Stage 3 simplification reconciled; N1 repaired; N2 cap awaiting owner lock.
 
 ---
 
@@ -103,3 +103,125 @@ Next control:
 3. explicit owner closure/merge authorization.
 
 **Current status: In review — repairs applied; narrow confirmation pending.**
+
+---
+
+## 7. Narrow confirmation result
+
+Claude's narrow confirmation at repaired head `9ec0ea3fa960f1277b48ea18901a60960ff9aeb2` returned **PASS WITH MINOR REPAIRS**.
+
+Confirmed:
+
+- all M1–M10;
+- all m1–m9;
+- audit preservation byte-for-byte;
+- 0 new blockers;
+- 0 new majors.
+
+New minors:
+
+- **N1** — U-family `not sure` target share had been removed;
+- **N2** — degraded safety mode lacked a complete trigger/`T_rust` selection/readout rule.
+
+Claude stated that no further full audit is required after these narrow rules are reconciled.
+
+The confirmation is preserved verbatim at:
+
+`docs/audits/stage-04/STAGE_04_CONFIRMATION.md`
+
+---
+
+## 8. Owner-directed Stage 3 simplification delta
+
+After the narrow confirmation, José Antonio authorized a Stage 3 simplification amendment, merged as PR #15.
+
+The controlling product invariant is now:
+
+> **RoyaCheck Offline is designed for intermittent/shared/assisted smartphone access.**
+
+The amendment removes rigid product requirements for:
+
+- weekend-only capture;
+- daughter-required device operation;
+- on-slope capture;
+- original-plant re-identification;
+- attached-leaf capture;
+- backing-card use;
+- leaf preservation/transport.
+
+It also clarifies that Lugisu human validation gates a **validated localized-usability claim**, not technical MVP progress.
+
+Stage 4 reconciliation is deliberately limited to the product-assumption wrapper:
+
+- §2 inherited behavior;
+- D4-08 capture wording/evidence map;
+- D4-16 localization fallback;
+- ROADMAP coherence.
+
+No change is made to D4-01–D4-07, D4-09–D4-15, D4-17–D4-19, model family, runtime family, split/quarantine rules, metrics, held-out discipline, or exact-artifact parity except for Claude's separate N1/N2 rules.
+
+Historical Claude audit/confirmation files are not rewritten.
+
+---
+
+## 9. N1 reconciliation
+
+**Status: Repaired.**
+
+For every reported U/unknown-OOD category with at least 20 frozen examples:
+
+> **≥70% must route to `not sure`.**
+
+If the category is below 70%, no fail-safe/OOD claim is permitted for that category.
+
+For n < 20, counts and exact intervals are descriptive only and no target claim is made.
+
+The combined Q/K/U target remains removed.
+
+---
+
+## 10. N2 reconciliation
+
+**Status: Partially repaired; one owner numerical lock remains.**
+
+The degraded-mode rule now fixes:
+
+- trigger: A0 and, if clock permits, A1 both fail the **full D4-11 gate**;
+- `T_healthy` disabled;
+- `T_rust` selected from the existing 0.50–0.95 validation grid only;
+- objective: maximize `|R→VR|`;
+- tie-break: higher `T_rust`;
+- no feasible threshold → no learned proposal;
+- same Stage 7D exact-artifact parity;
+- same Stage 7E/7F one-shot discipline;
+- required R→VR, H→VR, O→VR counts and exact intervals.
+
+Claude's confirmation requires a **pre-set owner-chosen false-alarm-share cap** on:
+
+`|(H∪O)→VR| / |→VR|`
+
+The confirmation did not fix the numeric share. The repository therefore intentionally does **not invent one**.
+
+That cap must be owner-locked before Stage 4 closure and before any validation result is produced.
+
+---
+
+## 11. Bounded post-edit coherence check
+
+Current delta does not alter:
+
+- three-way Stage 3 routing for the full model;
+- human-final authority;
+- privacy/consent;
+- RoCoLe quarantine;
+- BRACOL truth map;
+- D4-11 metric definitions;
+- FP32 ONNX parity requirement;
+- one-shot held-out/external rules;
+- ImageNet risk gate;
+- runtime budgets.
+
+The Stage 3 simplification reduces implementation assumptions and removes a localization build dependency without expanding product scope.
+
+**Only unresolved Stage 4 decision:** N2 false-alarm-share cap for degraded safety mode.
+
