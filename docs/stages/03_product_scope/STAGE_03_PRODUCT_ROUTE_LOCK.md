@@ -1,7 +1,7 @@
 # Stage 3 — Product Scope and Route Lock
 
 **Stage:** 3  
-**Status:** In progress — recommendations awaiting owner approval  
+**Status:** In review — owner decisions accepted; audit pending  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling case:** `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`  
@@ -18,7 +18,7 @@ This record separates:
 - **Official case facts** — supplied by the participant brief and controlling case contract.
 - **External evidence** — real-world context used only as an implementation anchor, never as Noor's fictional location.
 - **Project assumptions** — choices required to make a complete prototype workflow.
-- **Recommendations** — builder proposals that remain unapproved until the owner explicitly accepts them.
+- **Owner-accepted decisions** — Stage 3 product-scope choices explicitly approved by José Antonio; they remain subject to the Stage 3 audit/closure gate.
 
 No model, definitive dataset, runtime, threshold, architecture, training, held-out/test access, production implementation, finished UI, deployment, video, or submission decision is made here.
 
@@ -48,9 +48,9 @@ The project may not infer Noor's country, nationality, exact language, reviewer 
 
 ---
 
-## 3. External evidence anchor — recommendation
+## 3. External evidence anchor — owner accepted
 
-### Recommended anchor
+### Accepted anchor
 
 **Bududa / Bugisu, Mount Elgon, Uganda**, used strictly as a **real-world implementation evidence anchor**, not as Noor's location.
 
@@ -62,6 +62,19 @@ Why this anchor is coherent:
 4. Uganda's 2024 census materials include Lumasaba among the local languages used for census translation.
 5. GSMA's 2025 mobile-connectivity evidence reports only **20% rural smartphone ownership in Uganda** in its 2024 consumer survey, reinforcing the decision not to assume farmer-owned continuous smartphone access.
 6. Separate GSMA Uganda reporting in 2025 states that population-level 4G coverage is high while mobile-internet use still has a large usage gap, with device affordability, energy reliability, and digital skills among the barriers. This supports an assisted, cached/offline workflow rather than a connectivity-only design.
+
+### Stage 3 source verification note
+
+The anchor facts were rechecked against current primary/authoritative sources before recording owner acceptance:
+
+- the 2026 Uganda Coffee Manual places Arabica production in highland areas on the slopes of Mount Elgon;
+- the World Bank documents coffee farming in Bududa district on the Mount Elgon ranges;
+- NCDC's Lugisu Orthography 2024 describes Lugisu as spoken by the Bagisu of Bugisu on the slopes of Mount Elgon;
+- Uganda's 2024 census report states that its household questionnaire was translated into Lumasaba among 20 local languages;
+- GSMA's State of Mobile Internet Connectivity 2025 reports 2024 smartphone ownership of **33% urban / 20% rural** in Uganda;
+- GSMA's Uganda digital-transformation reporting describes high 4G population coverage alongside a large mobile-internet usage gap and barriers including smartphone affordability, unreliable energy, and limited digital skills.
+
+These facts support the **anchor choice and design rationale only**. They do not establish Noor's nationality, location, language, device ownership, or actual network conditions.
 
 ### Sources
 
@@ -81,9 +94,9 @@ A second useful figure is the gap between Uganda's reported 4G population covera
 
 ---
 
-## 4. Recommended owner decisions
+## 4. Owner-accepted Stage 3 decisions
 
-Every item below is **PROPOSED**, not accepted.
+José Antonio explicitly approved D3-01 through D3-15 on 2026-10-03. These are now the controlling Stage 3 product-scope decisions, subject to the audit/closure gate below.
 
 ### D3-01 — One better agricultural decision
 
@@ -95,7 +108,7 @@ This is a triage decision for scarce human attention, not a disease-severity, tr
 
 **Why:** The visual AI changes the priority assigned to a real next step. A form alone can record an observation; it cannot make the learned visual proposal that changes triage priority.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-02 — Assisted/weekend user day
 
@@ -105,7 +118,7 @@ Noor remains the primary farmer/decision-maker. On a weekend when her daughter i
 
 **Why:** This preserves the case's screen-literacy and device-ownership facts without turning the daughter into the agricultural authority.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-03 — Physical capture workflow
 
@@ -119,7 +132,7 @@ Do not require Noor to detach, transport, or preserve a leaf.
 
 **Failure rule:** exact leaf-side/orientation guidance remains for Stage 4 after data properties are verified. If later evidence cannot support this on-plant assisted capture credibly, reopen the workflow rather than silently changing it.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-04 — Observation-to-capture delay
 
@@ -129,7 +142,7 @@ Lock the workflow as **capture at the next available weekend assisted session**,
 
 **Why:** This is case-faithful and avoids pretending the app can observe the crop when the smartphone is unavailable.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-05 — Role of Noor's own phone
 
@@ -139,7 +152,7 @@ Noor's own phone has **no required role in the RoyaCheck core loop**. She may co
 
 **Why:** This avoids a brittle cross-device workflow and preserves the distinction between Noor's phone and her daughter's smartphone.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-06 — Human reviewer
 
@@ -151,7 +164,7 @@ The cooperative remains context, not an assumed reviewer.
 
 **Why:** Choosing a cooperative technician would add an unsupported institutional fact. A later deployment could use other qualified reviewers, but the prototype story should not invent one.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-07 — Handoff channel
 
@@ -163,7 +176,7 @@ No automatic messaging, WhatsApp integration, cloud submission, registry lookup,
 
 **Why:** This remains fully usable offline and does not assume the extension officer has a reachable messaging endpoint.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-08 — Whether the image travels
 
@@ -175,7 +188,7 @@ At an in-person review, Noor may choose to reveal the image **on the device**; t
 
 **Why:** This materially reduces privacy, connectivity, and integration risk while preserving the review value of the image.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-09 — Consent rule
 
@@ -185,7 +198,7 @@ The review card defaults to text/structured fields without displaying the image.
 
 Deleting the observation must delete the retained image if one exists.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-10 — Reviewer-visible payload
 
@@ -204,7 +217,7 @@ The reviewer sees only:
 
 Do **not** include geolocation, inferred diagnosis, treatment recommendation, yield claim, price claim, or personal profile data.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-11 — Evidence anchor
 
@@ -214,7 +227,7 @@ Adopt **Bududa / Bugisu, Mount Elgon, Uganda** as the single real-world implemen
 
 It must always be labeled as an anchor and never presented as Noor's location.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-12 — Prototype local-language interaction
 
@@ -226,7 +239,7 @@ The Lugisu strings must be human-verified against the standardized orthography b
 
 **Why:** The NCDC source directly connects Lugisu to Bugisu / Mount Elgon and provides a modern standardized orthography. This is materially stronger than choosing a generic national language merely because it is easier.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-13 — Less-supported-language answer
 
@@ -238,23 +251,23 @@ Pre-commit this answer:
 
 No generative translation or voice system is required.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-14 — Final label-to-action routing
 
-**Recommendation**
+**Owner-accepted routing**
 
-Use a three-level **review-priority** routing:
+RoyaCheck uses **action-based routing rather than numerical priority or severity labels**:
 
-- **visible rust → Priority 1: review first at the next available human-review opportunity**;
-- **not sure → Priority 2: human review needed before drawing a rust conclusion; if the cause is image quality, retake first where possible**;
-- **no visible rust → Priority 3: routine record/monitor; human review remains available and prominent if Noor remains concerned**.
+- **`visible rust` → Review first.** RoyaCheck has detected visible evidence consistent with coffee leaf rust. The result is not a confirmed diagnosis. The observation should be prioritized for human review at the next available review opportunity.
+- **`not sure` → Retake or request review.** If the uncertainty is attributable to a correctable image-quality problem, the user should first retake the image where possible. If an acceptable image remains uncertain, appears out of distribution, or contains an unsupported condition, RoyaCheck makes no rust conclusion and the observation should be routed to human review.
+- **`no visible rust` → Record and monitor.** RoyaCheck did not identify visible evidence consistent with rust in the submitted image. This must never be presented as “healthy,” “all clear,” or “no disease.” Human review remains clearly available if Noor remains concerned or the condition persists.
 
-The priority numbers are **workflow triage only**. They are not treatment urgency, agronomic severity, or a claim about likely yield loss.
+The three routes therefore lead to materially different next actions without treating the AI output as agronomic severity, treatment urgency, diagnosis, or expected-loss estimation.
 
-**Why:** This satisfies the independent-audit constraint that the three labels not collapse into the same practical action while keeping review available after `no visible rust`.
+The routing controls **scarce human-review attention**, not farm treatment. Only the human disposition becomes the formal observation.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ### D3-15 — Explicitly unsolved branches
 
@@ -270,7 +283,7 @@ Lock as explicit non-solutions:
 
 These should remain visible in judge-facing limitations rather than disappearing from the story.
 
-**Owner status:** Proposed.
+**Owner status:** Accepted by José Antonio on 2026-10-03.
 
 ---
 
@@ -282,7 +295,7 @@ These should remain visible in judge-facing limitations rather than disappearing
 4. The daughter assists with the smartphone; Noor identifies the leaf and remains the farmer decision-maker.
 5. A current on-plant image is captured.
 6. RoyaCheck produces one bounded proposal: `visible rust`, `no visible rust`, or `not sure`.
-7. The interface maps that proposal to a review-priority route, not to treatment.
+7. The interface maps that proposal to the owner-approved action route—review first, retake/request review, or record/monitor—not to treatment.
 8. Noor explicitly confirms/corrects or requests review; only the human disposition becomes formal.
 9. The observation is stored locally.
 10. At the next extension encounter, Noor initiates an on-device review card.
@@ -313,7 +326,7 @@ It also keeps the claims honest:
 
 ## 7. Residual risks to carry into Stage 4
 
-If the owner accepts this package, Stage 4 must still test/specify:
+Because the owner has accepted this package, the following unresolved technical/evidence questions are explicitly carried forward to Stage 4:
 
 - whether available evidence can support the recommended on-plant field-photo workflow;
 - exact image acquisition guidance without overstating field robustness;
@@ -329,10 +342,18 @@ None of those are decided by Stage 3.
 
 ---
 
-## 8. Stage 3 closure gate
+## 8. Stage 3 audit and closure gate
 
-Stage 3 may close only after José Antonio explicitly approves, rejects, or modifies D3-01 through D3-15.
+José Antonio explicitly approved D3-01 through D3-15 on 2026-10-03, including the revised action-based D3-14 routing and the narrow ROADMAP terminology correction.
 
-Until then:
+The substantive owner-decision gate is therefore complete. Stage 3 is **not yet closed**.
 
-**Stage 3 status: In progress — recommendations awaiting owner approval.**
+Before closure:
+
+1. preserve this accepted decision record;
+2. run the required independent Claude audit against the Stage 3 package;
+3. reconcile any material finding without silently changing an owner-approved decision;
+4. return any consequential change to José Antonio for explicit approval;
+5. only then request owner authorization to close/merge Stage 3.
+
+**Stage 3 status: In review — owner decisions accepted; audit pending.**
