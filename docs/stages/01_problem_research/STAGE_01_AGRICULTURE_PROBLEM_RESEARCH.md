@@ -1,408 +1,378 @@
-# Stage 1 — Agriculture Problem-Space Research
+# Stage 1 — Annex B Agriculture Problem Research
 
 **Stage:** 1  
-**Stage status:** Closed — owner approved (PR #6)  
-**Document revision:** Corrective framing repair in review  
+**Status:** Reopened — Annex B case-alignment audit pending  
 **Sector:** Agriculture  
 **Product direction:** RoyaCheck Offline  
-**Purpose:** Establish the user, workflow, operating constraints, development relevance, AI-versus-non-AI rationale, and honest prototype-level claim ceiling for the selected Agriculture route.
+**Controlling source:** Official Small AI for Development Challenge Brief, Annex B (Agriculture), read with the common rules/data sections.
 
-This document is a problem-evidence record. It does **not** choose the final model, dataset, runtime, threshold, or deployment architecture, and it does not claim that the prototype improves farm-level outcomes.
+Stage 1 now treats the official Noor case as the primary problem specification. External Agriculture evidence may contextualize the case, but it may not redefine the user, the problem, or the competition’s required constraints.
 
----
-
-## 1. Official challenge anchor
-
-The project is anchored to the **Agriculture user and workflow described in the official Small AI for Development Challenge Brief**, not to a particular country.
-
-The Agriculture scenario centers on a **smallholder coffee farmer** who:
-
-- grows coffee;
-- faces an unexplained crop problem;
-- has limited access to extension support;
-- needs help making, communicating, or acting on one better agricultural decision.
-
-The challenge explicitly includes:
-
-- identifying a crop problem;
-- documenting a field observation;
-- connecting evidence to an extension-service next step.
-
-That is the core framing for RoyaCheck Offline.
-
-> **Primary user:** a smallholder coffee farmer or another field actor helping that farmer capture the observation.  
-> **Human authority / escalation endpoint:** an extension officer, cooperative technician, or other responsible human reviewer.  
-> **Unit of analysis:** the user + field-observation workflow + binding constraint.
-
-Geography is secondary. A future deployment would need local validation, but the hackathon problem is not defined as a country-specific intervention.
+See also: `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`.
 
 ---
 
-## 2. Bounded problem statement
+## 1. What the official case actually says
 
-A smallholder coffee farmer notices a suspicious leaf but may face a practical gap between:
+Noor is a fictional smallholder farmer whose constraints are intended to represent real development conditions.
 
-1. seeing a visible symptom;
-2. deciding whether it appears consistent with coffee leaf rust;
-3. recognizing when the image is ambiguous, poor quality, or out of scope;
-4. documenting the observation consistently; and
-5. communicating or escalating the evidence to a responsible human when needed.
+The relevant Agriculture case facts are:
 
-The project therefore focuses on a narrow task:
+- Noor is 38 and farms two hectares;
+- coffee is grown on the upper slope, with maize and beans elsewhere;
+- she has belonged to a coffee cooperative for eleven years;
+- coffee yields have fallen this season and she does not know why;
+- the nearest extension officer reaches the sub-county only rarely;
+- at harvest, Noor lacks an independent price reference when a middleman names a price;
+- extension services face staff shortages, manual data collection, and delayed alerts;
+- in some settings, missing farmer registries, phones, or trust can be more binding than the absence of an algorithm;
+- Noor has one phone she uses for calls, messages, and mobile money;
+- the household smartphone belongs to her daughter and Noor uses it with help when her daughter is home;
+- there is no household Wi-Fi and mobile data is purchased as needed;
+- Noor is generally on the slope during the day while the phone is at the house;
+- she speaks a local language at home and a national language when necessary.
 
-> **Support a bounded coffee-leaf observation workflow in which a compact local visual model proposes “visible rust,” “no visible rust,” or “not sure,” while a human retains final authority over the formal observation and any extension/cooperative next step.**
+The hackathon challenge is not “solve agriculture.”
 
-This is **not** a general crop-diagnosis system, a treatment recommender, or an autonomous farm-management tool.
+It is:
+
+> help Noor make, communicate, or act on **one better agricultural decision** under these constraints.
 
 ---
 
-## 3. Why this problem matters
+## 2. The case contains more than one problem
 
-### 3.1 Coffee leaf rust is a real production problem
+The Agriculture annex gives at least two headline problem branches.
 
-**FACT.** Coffee leaf rust is a material coffee-production problem in Latin America and the Caribbean. IICA has supported regional coffee-rust early-warning work across multiple coffee-producing countries, reflecting the need for observation, monitoring, and response capacity.  
-Source: IICA, 2019, *Ten countries in the Americas to be equipped with an integrated early warning system to tackle coffee leaf rust*  
+### Crop-information branch
+
+Noor does not know what is affecting her coffee crop and timely localized advice is difficult to obtain.
+
+### Market-information branch
+
+Noor lacks an independent reference for the price offered at harvest.
+
+The annex also identifies system-level constraints such as extension staffing, manual data collection, delayed alerts, registries, phone access, and trust.
+
+**PROJECT DECISION:** RoyaCheck intentionally addresses only a bounded part of the **crop-information branch**.
+
+The price-reference branch is real and relevant, but it is outside the MVP.
+
+---
+
+## 3. Selected problem slice
+
+RoyaCheck does **not** attempt to explain why Noor’s yields fell.
+
+Instead, it supports one narrower observation problem:
+
+> When Noor has access to the household smartphone and captures or selects a suspicious coffee-leaf image, can a compact offline visual model help her structure the observation as **visible rust / no visible rust / not sure**, so that the observation can be explicitly confirmed, corrected, or flagged for human review?
+
+The supported agricultural decision is therefore:
+
+> **Should this suspicious leaf observation be documented and prepared for human extension/cooperative review rather than treated as a confident answer from the model or left only to memory?**
+
+This is the unit of value that later stages must implement and demonstrate.
+
+---
+
+## 4. Why coffee rust is a legitimate but bounded target
+
+The official Agriculture dataset table lists **BRACOL**, an Arabica coffee-leaf disease and pest image dataset, as directly relevant to Noor’s crop.
+
+That is strong task-level alignment.
+
+It does **not** establish that:
+
+- rust caused Noor’s seasonal yield decline;
+- every suspicious coffee leaf is rust;
+- a BRACOL-trained model will generalize to Noor’s field conditions;
+- image classification is sufficient for agronomic diagnosis;
+- the prototype improves yield or treatment.
+
+Regional agricultural evidence also establishes that coffee leaf rust is a material coffee-production problem, but that evidence remains contextual rather than proof about Noor’s fictional farm.
+
+Supporting source: IICA, 2019, regional coffee-rust early-warning work  
 https://iica.int/en/press/news/diez-paises-de-america-contaran-con-sistema-integrado-de-alerta-temprana-para-2/
 
-**FACT.** A 2022 World Bank report on Northern Central America describes coffee rust (“roya”) as an endemic agronomic factor limiting coffee production, and emphasizes technical assistance, extension, information systems, and crop-management capacity.  
-Source: World Bank, 2022, *Agrifood Systems in Northern Central America: Agrologistics for Modern Family Farms*  
-https://documents1.worldbank.org/curated/en/099210110132219107/pdf/P178022019de1d00b0b4b20b1cb1e4c88b1.pdf
-
-These sources establish the relevance of coffee rust and field-support systems. They do **not** establish that image-based AI is automatically the correct intervention.
-
-### 3.2 The visual observation step is bounded and testable
-
-**FACT.** Coffee leaf rust is caused by *Hemileia vastatrix* and produces visible leaf symptoms.  
-Supporting source: FAO AGRIS record for Gamarra Gamarra et al. (2022), *Phylogenetic relationship of coffee leaf rust in the central jungle of Peru*  
-https://agris.fao.org/search/en/providers/122436/records/6a96d2348a202ccda1b64898
-
-**INFERENCE.** Because the target task involves interpreting visible image patterns, computer vision is a plausible AI contribution. That does not remove the need for uncertainty, human review, and eventual field validation.
-
 ---
 
-## 4. Target users and authority roles
+## 5. User and authority roles
 
-### Primary user
+### Primary challenge user
 
-The primary story starts with the **smallholder coffee farmer** described in the Agriculture challenge.
+**Noor / smallholder coffee farmer.**
 
-The farmer may:
+The public story begins with Noor’s uncertainty and her observation.
 
-- capture or select a coffee-leaf image;
-- receive a bounded AI proposal;
-- review the result;
-- confirm, correct, or request review;
-- retain the observation locally;
-- prepare it for later communication to an extension/cooperative actor.
+### Assisted-use role
 
-### Assisted-use variant
+A cooperative worker, family member, or field intermediary may help where device access or digital confidence makes assisted use more realistic.
 
-A field intermediary or cooperative worker may help capture or structure the observation where:
+This is an implementation variant, not a replacement for Noor as the primary case user.
 
-- the farmer does not have the appropriate device;
-- digital literacy is a constraint;
-- the workflow is institutionally mediated.
+### Human review endpoint
 
-This is an **assisted-use variant**, not a replacement for the official farmer-centered problem frame.
+Possible responsible reviewers include:
 
-### Human authority / escalation role
-
-A responsible human reviewer may include:
-
-- an extension officer;
+- extension officer;
 - cooperative technician;
 - trained plant-health intermediary;
-- other explicitly authorized person.
+- another explicitly authorized human role.
 
-Where the image is ambiguous, poor quality, non-coffee, or otherwise uncertain, the correct behavior is **review/escalation**, not forced classification.
-
-**PROJECT DESIGN.** The formal observation records who confirmed it through `confirmed_by_role`.
+The project does not claim that such reviewers are always immediately available.
 
 ---
 
-## 5. Current-workflow abstraction
+## 6. Device and connectivity reality
 
-Actual plant-health workflows vary across institutions and farming systems. The following is a **workflow abstraction**, not a claim that every farmer follows the same process.
+The brief does **not** describe Noor as carrying a personal smartphone in the field all day.
 
-A plausible sequence is:
+That matters.
 
-1. the farmer notices a suspicious coffee leaf;
-2. the farmer or helper inspects it visually or compares it with prior knowledge/reference material;
-3. the observation is either acted on informally, ignored, or communicated to a technician/cooperative/extension actor;
-4. a responsible person decides whether the case warrants further attention;
-5. the observation may or may not be recorded consistently;
-6. more authoritative follow-up may be required before management action.
+The prototype must therefore avoid a hidden assumption that:
 
-RoyaCheck addresses only the **observation → documentation → human-review handoff**.
+> Noor sees a leaf → instantly opens an always-connected smartphone on the slope.
 
-It does not replace formal confirmation, extension judgment, laboratory diagnosis, or agronomic treatment planning.
+The credible minimum path is:
 
----
+1. Noor has access to the household smartphone at some point;
+2. she captures or selects the suspicious leaf image during that phone session;
+3. the app’s core proposal works without a live connection;
+4. the human disposition and structured record are stored locally;
+5. sharing or extension/cooperative review can occur later.
 
-## 6. Binding constraints
-
-The hackathon framing is constraint-based, not country-based.
-
-### 6.1 Limited or intermittent extension access
-
-The official Agriculture scenario describes a farmer who does not have frequent extension access.
-
-**PROJECT RELEVANCE.** RoyaCheck therefore aims to help the farmer create a structured observation **between extension interactions**, without pretending to replace the extension officer.
-
-### 6.2 Connectivity and digital access
-
-**FACT.** FAO guidance on digital agricultural extension identifies barriers including infrastructure/reception gaps, device cost, institutional capacity, governance constraints, digital-skills limitations, and unequal access to digital advisory services.  
-Sources:
-- FAO, 2023, *Strengthening digital agricultural extension and advisory services in smallholder farming*  
-  https://www.fao.org/family-farming/detail/en/c/1756401/
-- FAO, 2023, *Guide on digital agricultural extension and advisory services — Use of smartphone applications by smallholder farmers*  
-  https://www.fao.org/science-technology-and-innovation/resources/publications/guide-on-digital-agricultural-extension-and-advisory-services-use-of-smartphone-applications-by-smallholder-farmers/en
-
-**INFERENCE.** Offline operation is useful because it reduces dependence on immediate connectivity at the point of observation.
-
-This does **not** imply that all coffee farmers, all rural areas, or any particular country are uniformly offline.
-
-### 6.3 Device realism
-
-The challenge expects use of a device the intended user can realistically access.
-
-**PROJECT DESIGN.** The intended architecture is therefore constrained toward a compact browser-local implementation rather than a high-end-device or always-online cloud workflow.
-
-The exact device/browser target is fixed later under the Stage 4 technical pre-registration.
-
-### 6.4 Human and institutional capacity
-
-**FACT.** FAO treats extension and advisory services as mechanisms connecting farmers with knowledge, technologies, markets, and services, and positions digital tools as complements to human advisory capacity.  
-Source: FAO, *Extension and advisory services*  
-https://www.fao.org/research-extension-systems/extension-and-advisory-services/
-
-**PROJECT DESIGN.** The AI output remains a proposal. Human disposition remains the formal observation.
+The system should be compatible with shared/intermittent smartphone access rather than requiring permanent personal possession.
 
 ---
 
-## 7. Strongest non-AI alternatives
+## 7. Real-world evidence anchor for the device constraint
 
-The project should be compared against realistic simpler alternatives.
+The official brief asks teams to use common data to ground constraints and to cite source, year, and country/context.
 
-| Alternative | What it does well | Limitation for this task |
+Because Noor is fictional, a real-country statistic must be treated as a **context anchor**, not as Noor’s location.
+
+A relevant current source is the **GSMA Mobile Gender Gap Report 2025**, which includes Kenya among its surveyed lower- and middle-income countries. It reports that mobile ownership can be very high while mobile-internet and smartphone gender gaps remain meaningful, illustrating why “has access to a phone” should not be treated as equivalent to “has dependable smartphone internet access.”
+
+Source: GSMA, *The Mobile Gender Gap Report 2025*  
+https://www.gsma.com/gender-gap-2025/
+
+**LIMITATION:** Kenya is used only as a concrete evidence context for mobile-access/inclusion constraints. Noor is not asserted to be Kenyan.
+
+Stage 4 must retain the exact source/year/context in the evidence plan.
+
+---
+
+## 8. Local-language requirement
+
+The brief requires at least one interaction in a **named local language**, by voice or text.
+
+Noor’s fictional local/national languages are not named.
+
+Therefore:
+
+- the product must not invent a language as a fact about Noor;
+- Stage 3 must select one real prototype-localization language;
+- the final submission must clearly label that language as an implementation choice;
+- the UI must demonstrate at least one interaction in it;
+- the final narrative must explain limitations for less-supported languages.
+
+A static, human-reviewed text localization is sufficient unless later product decisions justify something more complex.
+
+---
+
+## 9. Current-workflow abstraction
+
+A case-faithful current workflow is:
+
+1. Noor notices something unusual in the coffee crop.
+2. She relies on her own visual judgment, memory, available reference information, or help from others.
+3. Extension support may not be available when the observation occurs.
+4. The observation may remain informal until someone with more expertise can review it.
+5. Manual data collection and delayed alerts can make the broader system slower.
+6. A later extension/cooperative interaction may need a clearer record of what Noor saw.
+
+RoyaCheck addresses only the **visual-observation and record-preparation step**.
+
+It does not replace extension diagnosis, treatment planning, farm management, or market-price information.
+
+---
+
+## 10. Strongest non-AI baselines
+
+The selected route must be compared with simpler tools.
+
+| Baseline | Strength | Remaining gap for the selected task |
 |---|---|---|
-| Laminated symptom guide / reference sheet | Cheap, offline, easy to distribute | Farmer still performs all visual interpretation manually |
-| Deterministic checklist / decision tree | Structured, auditable, no model risk | Hard to encode visual pattern variation from an image |
-| Structured digital form | Improves record consistency | Does not interpret the image |
-| Web search / online image reference | Broad information access | Connectivity-dependent and unstructured |
-| Messaging/photo review by expert | Human judgment and context | Depends on expert availability and often connectivity |
-| Direct extension/cooperative review | Strong human baseline | May not be immediately available when the observation occurs |
+| Printed/laminated symptom guide | Cheap, offline, simple | Noor performs all visual comparison herself |
+| Deterministic checklist | Auditable, safe | Does not directly interpret image appearance |
+| Structured observation form | Good record quality | Does not perform learned visual recognition |
+| Search/reference images | Broad information | Often connectivity-dependent; still leaves image interpretation to user |
+| Later human photo review | Strong authority | Depends on human availability and potentially connectivity |
+| Direct extension visit | Strong human support | Annex B explicitly describes infrequent access |
 
-These alternatives remain valid components of a real workflow. AI should not replace them where they are sufficient.
+A later evaluation must not claim superiority to these human/simple baselines unless measured.
 
 ---
 
-## 8. Why compact computer vision adds distinct value
+## 11. Why Small AI adds distinct value here
 
-The narrow AI contribution is **visual perception**.
+The AI does one learned task:
 
-A compact local model can potentially:
+> **visual pattern recognition on the coffee-leaf image.**
 
-- compare a new leaf image against learned visual patterns;
-- produce a bounded first-pass proposal;
-- identify low-confidence cases;
-- abstain rather than force a class;
-- operate without a live cloud inference call.
+A form or spreadsheet can store a record but cannot itself compare learned visual patterns across images.
 
-The AI does **not** need to:
+The Small AI fit is strengthened by the official Agriculture example of offline computer vision on a basic smartphone.
 
-- generate agronomic advice;
-- recommend a pesticide or fungicide;
-- specify a dose;
-- predict yield;
-- decide what action the farmer must take;
-- contact an extension service autonomously.
+The model is still only a proposal generator.
 
-The surrounding workflow is intentionally simpler:
+The surrounding system remains:
 
 - human confirmation/correction;
-- structured local record;
+- explicit uncertainty;
+- deterministic record state;
 - deterministic summary;
-- explicit review/escalation.
-
-**PROJECT DESIGN PRINCIPLE:** AI owns the visual pattern-recognition step; the human owns the formal disposition; deterministic software owns record and summary logic.
+- optional later human handoff.
 
 ---
 
-## 9. Development-value chain
+## 12. Human-final-authority and fail-safe requirements
 
-The defensible development logic is:
+The official rules require:
 
-**smallholder farmer encounters a suspicious coffee-leaf observation**  
-→ **visual interpretation is required before the observation can be structured confidently**  
-→ **extension access and connectivity may not be immediate**  
-→ **a compact offline visual proposal can support the farmer at the point of observation**  
-→ **explicit uncertainty prevents forced answers**  
-→ **human confirmation/escalation preserves authority**  
-→ **the observation can be stored and later communicated to an extension/cooperative actor**
+- a person makes the final call;
+- uncertainty is surfaced rather than guessed through;
+- the AI does not autonomously act on the user’s behalf.
 
-The prototype can directly demonstrate only the bounded technical/workflow portion of this chain.
+For RoyaCheck:
 
----
-
-## 10. What the prototype can measure
-
-Stage 1 intentionally uses **proximal prototype metrics**, not livelihood outcomes.
-
-Later technical stages can measure whether the system can:
-
-- produce a bounded AI proposal or abstain on a defined evaluation set;
-- preserve explicit human confirmation;
-- prevent an AI-only proposal from becoming a formal record;
-- save a structured observation locally;
-- generate a deterministic summary from the human disposition;
-- complete the core workflow with the network disconnected;
-- report latency and model/runtime size on the declared target browser/device;
-- report coverage, abstention, and confident-miss behavior under the pre-registered evaluation design.
-
-These are credible hackathon-scale measurements.
+- `visible rust`, `no visible rust`, and `not sure` are AI proposals;
+- no proposal becomes a formal observation automatically;
+- `not sure` must remain an explicit outcome;
+- uncertain cases can be marked for human review;
+- no spraying, selling, treatment, or extension-contact action occurs autonomously.
 
 ---
 
-## 11. Facts, inferences, project design, and claim ceiling
+## 13. Farmer-registry and scale preconditions
 
-### FACT
+Annex B explicitly warns that missing registries can be more binding than missing algorithms.
 
-Supported directly by cited or official challenge evidence:
+RoyaCheck’s local one-user loop can function without a registry.
 
-- the Agriculture challenge is framed around a smallholder coffee farmer;
-- the challenge includes identifying a crop problem, documenting a field observation, and connecting evidence to an extension-service next step;
-- coffee leaf rust is a material coffee-production problem;
-- extension and technical-assistance systems remain relevant to agricultural workflows;
-- digital agricultural extension can face connectivity, cost, skills, and institutional constraints.
+That does **not** mean the prototype has solved scaled service delivery.
 
-### INFERENCE
+At scale, organized outreach or follow-up may require:
 
-Reasonable but not directly proven by the cited evidence:
+- farmer registry or equivalent identity/reach infrastructure;
+- device access;
+- trusted institutions;
+- extension capacity;
+- operational integration.
 
-- a local image proposal could reduce dependence on immediate connectivity for the observation step;
-- assisted use may be safer or easier in some settings;
-- structured local records may improve consistency relative to informal handoff.
+These are dependencies to disclose under scalability, not features to add to the MVP.
 
-### PROJECT DESIGN
+---
 
-Choices made for RoyaCheck:
+## 14. Data-grounding implications
 
-- three AI proposal states: visible rust / no visible rust / not sure;
-- explicit human confirmation/correction/review;
-- no automatic conversion of AI proposal into formal observation;
-- local structured record;
-- deterministic extension-ready summary;
-- no geolocation;
-- no raw-image persistence by default;
-- no treatment recommendation.
+A case-aligned entry should use both official data layers.
 
-### NOT ESTABLISHED / PROHIBITED CLAIMS
+### Sector data
 
-The project does **not** currently establish:
+BRACOL is the natural first candidate because the brief explicitly identifies it as relevant to Noor’s coffee crop.
 
-- increased yield;
-- increased farmer income;
-- reduced pesticide or fungicide use;
-- correct treatment selection;
-- improved extension-system performance at scale;
+Its role must be stated precisely:
+
+> model-development/evaluation data for a bounded leaf-appearance task, subject to license, class, acquisition-setting, and domain-shift checks.
+
+### Common data
+
+At least one common-data source must ground a real constraint.
+
+Current plan:
+
+> GSMA Mobile Gender Gap evidence for device/connectivity/inclusion context.
+
+Additional common data should be added only if they materially strengthen the implemented claim.
+
+The project does not need to use every dataset listed in Annex B.
+
+---
+
+## 15. Development-value chain
+
+The defensible logic is:
+
+**Noor observes a suspicious coffee leaf**  
+→ **immediate expert support may not be available**  
+→ **the household smartphone may be available only intermittently and connectivity may be weak**  
+→ **a compact offline model can provide a bounded visual proposal during the available phone session**  
+→ **uncertainty can be surfaced instead of hidden**  
+→ **Noor/human reviewer explicitly determines the formal observation**  
+→ **the record can be retained and later communicated to extension/cooperative support**
+
+The hackathon prototype can directly establish only the technical and workflow portion of this chain.
+
+---
+
+## 16. Prototype-level outcome
+
+The near-term outcome is not yield or income.
+
+The core measurable value unit is:
+
+> **completion of a bounded Noor observation loop under offline conditions, with measured visual-model behavior, explicit abstention, human authority, local record creation, and handoff-ready output.**
+
+Later stages may measure:
+
+- classification behavior;
+- abstention/coverage;
+- confident rust misses;
+- OOD/other-disease routing;
+- offline completion;
+- local latency;
+- model/runtime size;
+- authority-state correctness;
+- record/summary correctness.
+
+---
+
+## 17. Explicit non-claims
+
+The project does **not** establish:
+
+- why Noor’s yields fell;
+- farm-level rust prevalence;
+- improved yield;
+- improved income;
+- reduced pesticide/fungicide use;
+- correct treatment;
+- market-price improvement;
+- improved extension performance at scale;
 - farmer adoption;
 - real-world time savings;
-- reduced disease prevalence;
-- robustness in any specific country or farm system;
+- field deployment;
 - expert-equivalent diagnosis;
-- replacement of extension officers;
-- general coffee-disease diagnosis.
-
-These claims require evidence beyond a hackathon prototype.
+- universal coffee-rust robustness;
+- successful registry/institutional integration.
 
 ---
 
-## 12. Geography policy
+## 18. Stage 1 case-alignment gate
 
-RoyaCheck is **not a country-specific prototype**.
+Stage 1 is aligned only if:
 
-Geographic examples may support the relevance of coffee, rust, or extension constraints, but they do not define the user or problem.
+- Noor remains the primary user;
+- the project supports one clearly stated better agricultural decision;
+- the selected crop-observation branch is distinguished from the price branch;
+- falling yields are not equated with rust;
+- smartphone access is treated as shared/intermittent;
+- offline behavior is justified by the actual user/device workflow;
+- extension scarcity is part of the problem but human authority remains;
+- registry/phone/trust dependencies are acknowledged for scale;
+- common and sector data roles are explicit;
+- claims remain proximal and measurable.
 
-A future deployment would require local validation of:
-
-- user workflow;
-- extension/cooperative role;
-- language;
-- device access;
-- connectivity;
-- coffee variety and disease presentation;
-- image-domain performance;
-- escalation pathways.
-
-No current evidence should be presented as field validation for a country not directly evaluated.
-
----
-
-## 13. Key risks that later stages must preserve
-
-### Domain shift
-
-A model evaluated on curated or geographically narrow images may fail on different:
-
-- cultivars;
-- cameras;
-- lighting;
-- backgrounds;
-- disease stages;
-- farms;
-- regions;
-- other diseases or stresses.
-
-Later evaluation must include abstention and out-of-domain controls.
-
-### Automation bias
-
-A confident wrong proposal may be accepted too readily.
-
-Control: the formal human disposition remains separate from the AI proposal.
-
-### Scope creep
-
-A rust-observation aid can drift into generic diagnosis or treatment advice.
-
-Control: maintain the narrow visible-rust / no-visible-rust / not-sure observation contract and canonical exclusions.
-
-### Institutional mismatch
-
-A technically functional tool may still fail if no viable review/escalation pathway exists in the target deployment context.
-
-Control: do not claim deployment readiness without context-specific validation.
-
----
-
-## 14. Stage 1 falsifiers
-
-The problem framing should be reconsidered if later evidence shows that:
-
-- the intended user already has a simpler, equally accessible tool that performs the same bounded image-assessment task adequately;
-- there is no plausible human review/escalation path;
-- legally usable, sufficiently relevant data cannot support credible evaluation;
-- the learned visual component cannot add measurable value beyond the strongest non-AI baseline;
-- safe abstention/OOD behavior cannot be demonstrated;
-- browser-local execution cannot meet the later technical budget.
-
-These are legitimate kill/reduction conditions, not failures to hide.
-
----
-
-## 15. Stage 1 conclusion
-
-The problem is sufficiently grounded to continue:
-
-> A smallholder coffee farmer may need to identify and document a suspicious leaf observation before expert review is immediately available. Coffee leaf rust provides a bounded visual task for which compact computer vision can plausibly add value, while uncertainty and human escalation remain explicit.
-
-The defensible intervention remains narrow:
-
-> **offline-capable coffee-leaf visual proposal + explicit human disposition + structured local record + deterministic extension/cooperative handoff.**
-
-The development case is grounded in the **farmer workflow and operating constraint**, not in a country label.
-
-The prototype does **not** claim yield, income, treatment, adoption, or extension-system impact.
-
-**Document revision status: READY FOR OWNER REVIEW.**
+**Stage 1 status: REOPENED — ready for independent case-alignment audit.**
