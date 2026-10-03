@@ -4,7 +4,7 @@
 **Audit verdict:** PASS WITH MAJOR REPAIRS  
 **Findings:** 0 blocking / 3 major / 7 minor  
 **Owner authorization:** José Antonio authorized one bounded reconciliation of M1–M3 and m1–m7 on 2026-10-03.  
-**Stage status:** In review — audit reconciled; narrow confirmation pending.
+**Stage status:** Closed — owner approved (PR #11); guarded merge authorized.
 
 ---
 
@@ -85,16 +85,15 @@ No audited file was modified as part of Claude's own audit commit.
 
 ## 6. Closure disposition
 
-The Stage 3 audit is reconciled, but **Stage 3 is not closed**.
+The Stage 3 audit and narrow confirmation are fully reconciled.
 
-The remaining control sequence is:
+Claude's narrow confirmation verified all 10 requested repairs, identified no new blocking or major finding, and stated that no additional Stage 3 audit is required after the N1 traceability entry. N1 is recorded in §7 below with explicit owner acknowledgement.
 
-1. Claude performs the narrow confirmation defined in `docs/audits/stage-03/STAGE_03_CONFIRMATION_PACKAGE.md`;
-2. the confirmation is reconciled;
-3. José Antonio explicitly authorizes Stage 3 closure and PR #11 merge;
-4. only then may Stage 4 be opened.
+José Antonio explicitly authorized Stage 3 closure and the guarded merge sequence for PR #11 on 2026-10-03.
 
-**Current status: In review — audit reconciled; narrow confirmation pending.**
+**Current status: Closed — owner approved (PR #11); guarded merge authorized.**
+
+Stage 4 remains unauthorized until PR #11 is successfully merged and a separate Stage 4 owner-control authorization is granted.
 
 ---
 
@@ -123,5 +122,5 @@ Claude's narrow confirmation is preserved verbatim at:
 
 `docs/audits/stage-03/STAGE_03_CONFIRMATION.md`
 
-Stage 3 remains **In review**. Closure, Ready-for-Review, merge, and Stage 4 remain subject to separate explicit owner authorization.
+The N1 confirmation finding is reconciled. Stage 3 closure and the guarded PR #11 merge are explicitly owner-authorized; Stage 4 remains subject to separate explicit owner authorization after successful merge.
 
