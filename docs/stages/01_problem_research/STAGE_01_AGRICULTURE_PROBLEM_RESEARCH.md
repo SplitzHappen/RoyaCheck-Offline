@@ -186,7 +186,7 @@ A static, human-reviewed text localization is sufficient unless later product de
 
 A case-faithful current workflow is:
 
-1. Noor notices something unusual in the coffee crop while she is often on the slope and the phones are at the house.
+1. Noor notices something unusual in the coffee crop while she is often on the slope and the phone is at the house.
 2. She relies on her own visual judgment, memory, available reference information, or help from others.
 3. Her daughter boards in the district town, so the daughter’s smartphone and setup help are mainly available on weekends.
 4. The observation may therefore wait before any assisted smartphone capture/selection step; the exact delay and physical leaf workflow remain unresolved for Stage 3.
