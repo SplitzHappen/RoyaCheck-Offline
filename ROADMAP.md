@@ -408,7 +408,7 @@ These label semantics do **not** silently decide the action mapping. Stage 3 mus
 
 ## Gate
 
-Stage 3 closes when the product frame, label semantics, authority model, canonical exclusions, and claim ceiling are owner approved.
+Stage 3 closes when the product frame, label semantics, authority model, product-scope exclusions, and the Contract §4 claim ceiling are owner approved.
 
 **Review:** Tier B.
 
@@ -1139,7 +1139,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | Not started |
+| 3 — Product scope / route lock | In progress |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
@@ -1152,6 +1152,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-PR #9 is merged and the repaired Annex B / Noor foundation has received an independent post-reconciliation verdict of **PASS WITH MINOR REPAIRS**: all six original major findings are resolved and no new blocker or major finding remains. PR #10 is the bounded cleanup/verification PR for the residual minor findings.
+PR #10 is merged after Claude's narrow confirmation returned **PASS**, and the owner has explicitly authorized **Stage 3 — Product scope / route lock**.
 
-**Do not begin Stage 3 yet under the owner's stricter control gate.** First complete the authorized PR #10 minor repairs and obtain the planned narrow Claude confirmation of those repairs. Stage 3 remains **Not started** until that confirmation is returned, reconciled, and the owner authorizes progression.
+Stage 3 is now **In progress**. The current action is owner review of the proposed D3-01 through D3-15 route locks in `docs/stages/03_product_scope/STAGE_03_PRODUCT_ROUTE_LOCK.md`. No recommendation becomes locked until the owner explicitly approves or modifies it.
