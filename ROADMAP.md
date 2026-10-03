@@ -1140,7 +1140,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11) |
-| 4 — Product/data/model/evaluation pre-registration | Not started |
+| 4 — Product/data/model/evaluation pre-registration | In progress |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
@@ -1152,6 +1152,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stage 3's owner decisions, independent Claude audit, bounded reconciliation, and narrow confirmation are complete. Claude's narrow confirmation verified all 10 requested repairs, found no new blocker or major, and required only the now-recorded N1 traceability entry. José Antonio has explicitly authorized **Stage 3 closure and guarded merge of PR #11**.
+Stage 3 is merged and **Closed — owner approved (PR #11)**. José Antonio has explicitly authorized **Stage 4 — Product/data/model/evaluation pre-registration**.
 
-Stage 3 is therefore **Closed — owner approved (PR #11)** for the closure/merge sequence. PR #11 must still pass the authorized fresh GitHub guards and merge successfully before Stage 4 can be opened. **Stage 4 remains unauthorized** pending that successful merge and a separate owner-control authorization.
+Stage 4 is now **In progress**. The current action is owner review of the proposed D4-01 through D4-20 technical pre-registration in `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`, including resolution of the exact available smartphone/browser evidence target. No definitive training or held-out/external/challenge readout is authorized before the Stage 4 pre-registration gate is closed.
