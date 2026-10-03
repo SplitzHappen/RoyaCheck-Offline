@@ -1,3 +1,5 @@
+> **Historical / supersession note (2026-10-03):** This audit package predates the official Annex B / Noor case-alignment repair in PR #9. Any Spanish-language or other pre-Annex-B implementation assumptions below are historical audit inputs, not current project policy. The current controlling case/language rules are in `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md` and the Noor reconciliation/verification records.
+
 # Claude Adversarial Audit Package — Project Roadmap
 
 **Project:** RoyaCheck Offline  
