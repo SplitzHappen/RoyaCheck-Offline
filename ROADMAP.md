@@ -390,7 +390,7 @@ A suspicious coffee-leaf observation is converted into:
 2. explicit uncertainty where appropriate;
 3. a human-reviewed disposition;
 4. a structured local record;
-5. a deterministic extension/cooperative handoff-ready summary.
+5. a deterministic extension handoff-ready summary.
 
 ## Label semantics
 
@@ -852,7 +852,7 @@ Build the smallest complete user-value loop around the frozen technical core.
 - `confirmed_by_role`;
 - structured local record;
 - IndexedDB or equivalent local storage;
-- deterministic extension/cooperative handoff summary based on human disposition;
+- deterministic extension handoff summary based on human disposition;
 - the **Stage-3-locked, user-initiated handoff** itself, using the locked channel, consent step, and reviewer-visible payload rather than an implied or autonomous integration;
 - store-now/review-later behavior that does not require a live connection;
 - no UX claim that Noor carries the smartphone on the slope all day;
@@ -1154,4 +1154,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 PR #10 is merged after Claude's narrow confirmation returned **PASS**, and the owner has explicitly authorized **Stage 3 — Product scope / route lock**.
 
-Stage 3 is now **In review**. José Antonio has explicitly approved D3-01 through D3-15, including the revised action-based label routing. The current action is the required independent Stage 3 audit and reconciliation. Stage 4 remains unauthorized until Stage 3 is audited, reconciled, owner-closed, and merged.
+Stage 3 is now **In review**. José Antonio has explicitly approved D3-01 through D3-15. Claude's independent Stage 3 audit returned **PASS WITH MAJOR REPAIRS** (0 blockers, 3 majors, 7 minors); the authorized reconciliation is applied in PR #11 and awaits a narrow confirmation. Stage 4 remains unauthorized until that confirmation is reconciled and Stage 3 is owner-closed and merged.
