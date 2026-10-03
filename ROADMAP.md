@@ -1176,7 +1176,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
 | 5 — Readiness / fallback planning | Closed — owner approved (PR #16) |
-| 6 — Official-source recheck / greenlight | Not started |
+| 6 — Official-source recheck / greenlight | In review |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
 | 9 — Hardening / evidence / claims audit | Not started |
@@ -1186,6 +1186,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stages 0–4 are merged and closed. Stage 5 is **Closed — owner approved (PR #16)** for the guarded merge sequence.
+Stages 0–5 are merged and closed. Stage 6 official-source recheck is **In review**.
 
-After PR #16 merges, immediately perform the Stage 6 official-source recheck and implementation-greenlight analysis. Definitive Stage 7 training and all held-out/external/challenge readouts remain blocked until the Stage 6 greenlight is explicitly recorded.
+The current public-source recheck found no new blocking rule and no reason to reopen Stages 0–4. The remaining work is to record the Stage 6 greenlight/closure and merge its bounded record. Definitive Stage 7 training and all held-out/external/challenge readouts remain blocked until that greenlight is merged.
