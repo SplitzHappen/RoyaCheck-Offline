@@ -20,6 +20,27 @@ The owner has explicitly required this independent audit before further building
 
 Do not assume that the current selected route deserves to survive. If the repaired documents still fail the official case, identify that as a blocker or major finding.
 
+## Audit completion record
+
+The independent audit has now been completed and preserved verbatim in substance at:
+
+- `docs/audits/noor-case-alignment/CLAUDE_AUDIT.md`
+
+Its reported disposition was:
+
+- **0 blockers**
+- **6 major findings**
+- **8 minor findings**
+- RoyaCheck remains a defensible 1:1 response to Annex B
+- roadmap + Stages 0–2 can be re-closed after documentation repairs
+- Stage 3 may begin only after reconciliation and owner re-closure
+
+The builder/owner reconciliation is recorded at:
+
+- `docs/audits/noor-case-alignment/RECONCILIATION.md`
+
+The auditor explicitly stated that no second full independent audit round is necessary after this reconciliation; the next planned Tier-A independent audit remains Stage 4.
+
 ---
 
 ## 2. Primary source to compare against
