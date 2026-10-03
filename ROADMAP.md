@@ -139,6 +139,22 @@ The schedule below assumes the repaired roadmap is accepted no later than **3:30
 
 The protected buffer begins at **5:30 AM ET on 4 October 2026** if the Stage 0 deadline is confirmed. It is closed to feature work and must remain large enough for at least one redeploy, one re-upload of required videos, completion/retry of all submission forms, and capture of submission receipt evidence.
 
+### Live clock reconciliation — 3 October 2026
+
+The original schedule assumed Stages 0–6 would close by 5:30 PM ET. That assumption is now stale.
+
+At the Stage 5 authorization checkpoint, the verified clock was approximately **7:49 PM ET**. The protected 5:30–9:00 AM submission/recovery buffer remains unchanged.
+
+For the remaining pre-10:00 PM technical-proof window:
+
+- close Stages 5/6 immediately;
+- cap Stage 7.0 + 7A + 7B pre-training work at **30 minutes total**;
+- preserve A0's **60-minute** development cap;
+- preserve a final **30-minute minimum evidence/freeze reserve** before 10:00 PM ET;
+- attempt A1 only if its full 30-minute cap plus the 30-minute evidence reserve mathematically fit before 10:00 PM ET.
+
+Documentation overrun is absorbed by dropping/shortening non-buffer work, never by shrinking the protected submission buffer.
+
 ### Overrun rule
 
 An overrun in any work block from Stages 0–9 never shrinks the protected buffer. Instead it:
@@ -1159,7 +1175,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
-| 5 — Readiness / fallback planning | Not started |
+| 5 — Readiness / fallback planning | In review |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
@@ -1170,8 +1186,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stage 3 is **Closed — owner approved (PR #11)** and its owner-directed simplification amendment is merged as **PR #15**.
+Stages 0–4 are merged and closed. Stage 5 readiness/fallback planning is **In review** on the owner-authorized execution path.
 
-Stage 4 is **Closed — owner approved (PR #13)** for the guarded merge sequence. Claude's Tier A audit and narrow confirmation are preserved; all M1–M10 and m1–m9 repairs stand; N1 is repaired with the ≥70% U-category `not sure` target; and N2 is fully locked with a **20% maximum degraded-mode false-alarm share** before any validation result was produced.
-
-After PR #13 merges, proceed immediately through Stage 5 readiness/fallback and Stage 6 official-source recheck/greenlight. No definitive Stage 7 training or held-out/external/challenge readout is authorized until the Stage 6 greenlight is recorded.
+The active action is to close Stage 5 with the compressed clock/fallback plan, then immediately perform the Stage 6 official-source recheck. Definitive Stage 7 training and all held-out/external/challenge readouts remain blocked until the Stage 6 greenlight is recorded.
