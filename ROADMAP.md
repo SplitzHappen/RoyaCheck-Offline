@@ -390,7 +390,7 @@ A suspicious coffee-leaf observation is converted into:
 2. explicit uncertainty where appropriate;
 3. a human-reviewed disposition;
 4. a structured local record;
-5. a deterministic extension/cooperative handoff-ready summary.
+5. a deterministic extension handoff-ready summary.
 
 ## Label semantics
 
@@ -408,7 +408,7 @@ These label semantics do **not** silently decide the action mapping. Stage 3 mus
 
 ## Gate
 
-Stage 3 closes when the product frame, label semantics, authority model, canonical exclusions, and claim ceiling are owner approved.
+Stage 3 closes when the product frame, label semantics, authority model, product-scope exclusions, and the Contract §4 claim ceiling are owner approved.
 
 **Review:** Tier B.
 
@@ -852,7 +852,7 @@ Build the smallest complete user-value loop around the frozen technical core.
 - `confirmed_by_role`;
 - structured local record;
 - IndexedDB or equivalent local storage;
-- deterministic extension/cooperative handoff summary based on human disposition;
+- deterministic extension handoff summary based on human disposition;
 - the **Stage-3-locked, user-initiated handoff** itself, using the locked channel, consent step, and reviewer-visible payload rather than an implied or autonomous integration;
 - store-now/review-later behavior that does not require a live connection;
 - no UX claim that Noor carries the smartphone on the slope all day;
@@ -1139,7 +1139,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | Not started |
+| 3 — Product scope / route lock | Closed — owner approved (PR #11) |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
@@ -1152,6 +1152,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-PR #9 is merged and the repaired Annex B / Noor foundation has received an independent post-reconciliation verdict of **PASS WITH MINOR REPAIRS**: all six original major findings are resolved and no new blocker or major finding remains. PR #10 is the bounded cleanup/verification PR for the residual minor findings.
+Stage 3's owner decisions, independent Claude audit, bounded reconciliation, and narrow confirmation are complete. Claude's narrow confirmation verified all 10 requested repairs, found no new blocker or major, and required only the now-recorded N1 traceability entry. José Antonio has explicitly authorized **Stage 3 closure and guarded merge of PR #11**.
 
-**Do not begin Stage 3 yet under the owner's stricter control gate.** First complete the authorized PR #10 minor repairs and obtain the planned narrow Claude confirmation of those repairs. Stage 3 remains **Not started** until that confirmation is returned, reconciled, and the owner authorizes progression.
+Stage 3 is therefore **Closed — owner approved (PR #11)** for the closure/merge sequence. PR #11 must still pass the authorized fresh GitHub guards and merge successfully before Stage 4 can be opened. **Stage 4 remains unauthorized** pending that successful merge and a separate owner-control authorization.
