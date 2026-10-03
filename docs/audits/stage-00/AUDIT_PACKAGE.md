@@ -296,3 +296,126 @@ Once the audit PR exists, stop.
 
 Vale will reconcile material findings.
 José Antonio retains final owner authority.
+
+
+---
+
+## 9. Focused re-audit instructions after the first audit
+
+The first Stage 0 audit is recorded in PR #4 with original verdict **FAIL / BLOCKED** (1 blocking, 4 major, 8 minor).
+
+The focused re-audit must test repairs only. It must not reopen the full competition design.
+
+### Original findings to disposition
+
+Assign exactly one status to each:
+
+- B-01
+- M-01
+- M-02
+- M-03
+- M-04
+- m-01 through m-08
+
+Allowed statuses:
+
+- RESOLVED
+- PARTIALLY RESOLVED
+- UNRESOLVED
+- SUPERSEDED BY ACCEPTABLE ALTERNATIVE
+
+### Required focused checks
+
+Verify that the repaired Stage 0 artifacts now:
+
+1. capture the authenticated Team & Submission evidence:
+   - admission accepted;
+   - active project submission area;
+   - 9:00 AM GMT−4 / 13:00 UTC deadline;
+   - 15-minute technical grace;
+   - three separate required video fields;
+   - MP4/MOV;
+   - 60-second maximum per platform video;
+   - 1 GB maximum per platform video;
+   - required team photo (JPG/PNG/WebP, 10 MB);
+   - GitHub repository field;
+   - live project URL field;
+   - two-submission requirement including Google Form backup;
+   - edit/save behavior shown by the participant page;
+2. distinguish the official 9:00 AM deadline from the recovery-only 15-minute platform grace;
+3. broaden naming/branding control to organizer and partners, names/titles/acronyms/logos/branding, with Stage 8 and Stage 10 rechecks;
+4. document the product-only repository rename target and whether the rename has actually been executed;
+5. add participant-source pinpoints for S5/S6/S7 rather than citing whole source categories without anchors;
+6. add organizer-license compatibility to Stage 4 and Stage 10 third-party asset controls;
+7. retain unresolved originality/AI-assistance/outside-review/boilerplate rules as unresolved rather than inferred;
+8. rephrase rule silence so absence of a prohibition is not treated as permission;
+9. keep submission receipts private where they expose personal/account information;
+10. add post-deadline repository-integrity and judging-period live-demo policies;
+11. update roadmap stage status/next action consistently.
+
+### Repository rename limitation
+
+If the product-only repository rename is still pending solely because the connected GitHub action set does not expose repository-settings mutation, record that as a remaining **owner-action blocker**, not as a failed checklist repair.
+
+Do not treat the builder's inability to call a repository-administration API as evidence that the owner declined the repair.
+
+### Re-audit output
+
+Create a new formal artifact rather than overwriting the original audit:
+
+`docs/audits/stage-00/STAGE_00_REAUDIT.md`
+
+Required structure:
+
+# Stage 0 Compliance Re-Audit
+
+## Verdict
+
+Use exactly one:
+
+- PASS
+- PASS WITH MINOR REPAIRS
+- PASS WITH MAJOR REPAIRS
+- FAIL / BLOCKED
+
+Then:
+
+- Original blocking findings unresolved:
+- Original major findings unresolved:
+- New blocking findings:
+- New major findings:
+- Minor residual findings:
+
+## Executive reassessment
+
+## Finding-by-finding disposition
+
+One compact table covering B-01, M-01–M-04, and m-01–m-08.
+
+## Residual owner actions
+
+## Residual builder repairs
+
+## Stage-closure assessment
+
+## Final conclusion
+
+### Publishing
+
+Create a dedicated audit branch from the repaired Stage 0 PR head.
+
+Suggested branch:
+
+`claude/stage-00-compliance-reaudit`
+
+Open a PR targeting:
+
+`chatgpt/stage-00-compliance`
+
+The re-audit PR must add exactly:
+
+`docs/audits/stage-00/STAGE_00_REAUDIT.md`
+
+Do not modify the Stage 0 checklist, roadmap, reconciliation, repository settings/name, or implementation files.
+Do not merge anything.
+Stop after the re-audit PR exists.
