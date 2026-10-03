@@ -1,7 +1,7 @@
 # Stage 1 — Annex B Agriculture Problem Research
 
 **Stage:** 1  
-**Status:** Reopened — Annex B case-alignment audit pending  
+**Status:** Reopened — in review  
 **Sector:** Agriculture  
 **Product direction:** RoyaCheck Offline  
 **Controlling source:** Official Small AI for Development Challenge Brief, Annex B (Agriculture), read with the common rules/data sections.
@@ -22,12 +22,13 @@ The relevant Agriculture case facts are:
 - coffee is grown on the upper slope, with maize and beans elsewhere;
 - she has belonged to a coffee cooperative for eleven years;
 - coffee yields have fallen this season and she does not know why;
-- the nearest extension officer reaches the sub-county only rarely;
+- the nearest extension officer reaches the sub-county only **twice a year at best**;
 - at harvest, Noor lacks an independent price reference when a middleman names a price;
 - extension services face staff shortages, manual data collection, and delayed alerts;
 - in some settings, missing farmer registries, phones, or trust can be more binding than the absence of an algorithm;
-- Noor has one phone she uses for calls, messages, and mobile money;
-- the household smartphone belongs to her daughter and Noor uses it with help when her daughter is home;
+- Noor’s **own phone** is the one she uses for calls, messages, and mobile money;
+- her 16-year-old daughter boards at school in the district town;
+- the smartphone belongs to her daughter, and Noor only really uses it when her daughter is home **on weekends** to set it up and show her how; this creates an assisted-use / screen-literacy constraint;
 - there is no household Wi-Fi and mobile data is purchased as needed;
 - Noor is generally on the slope during the day while the phone is at the house;
 - she speaks a local language at home and a national language when necessary.
@@ -66,13 +67,15 @@ RoyaCheck does **not** attempt to explain why Noor’s yields fell.
 
 Instead, it supports one narrower observation problem:
 
-> When Noor has access to the household smartphone and captures or selects a suspicious coffee-leaf image, can a compact offline visual model help her structure the observation as **visible rust / no visible rust / not sure**, so that the observation can be explicitly confirmed, corrected, or flagged for human review?
+> When Noor has access to her daughter’s smartphone during an assisted session, can a compact offline visual model help distinguish **visible rust / no visible rust / not sure** strongly enough to inform which suspicious-leaf observations she should prioritize for human review?
 
-The supported agricultural decision is therefore:
+The exact agricultural next-step wording is **not yet owner-locked**. Stage 3 must finalize a decision in which the visual proposal materially affects prioritization rather than merely deciding whether to save a record.
 
-> **Should this suspicious leaf observation be documented and prepared for human extension/cooperative review rather than treated as a confident answer from the model or left only to memory?**
+Candidate direction for Stage 3 evaluation:
 
-This is the unit of value that later stages must implement and demonstrate.
+> **Does this suspicious coffee leaf show enough visible evidence consistent with rust that Noor should prioritize it for human review, or should she record that no visible rust was observed while keeping review available if concern remains?**
+
+The final label-to-action routing also remains a Stage 3 owner decision. Safety constraints already fixed are: `not sure` gives no conclusion; `no visible rust` never means healthy/all-clear/no-disease; review remains available; and no route autonomously triggers treatment or contact.
 
 ---
 
@@ -113,14 +116,9 @@ This is an implementation variant, not a replacement for Noor as the primary cas
 
 ### Human review endpoint
 
-Possible responsible reviewers include:
+The **extension officer** is the only reviewer role explicitly named by the case. Possible implementation reviewers could also include a cooperative technician, trained plant-health intermediary, or another explicitly authorized human role, but those roles are **project assumptions unless separately evidenced**.
 
-- extension officer;
-- cooperative technician;
-- trained plant-health intermediary;
-- another explicitly authorized human role.
-
-The project does not claim that such reviewers are always immediately available.
+Stage 3 must lock the reviewer role and label any non-case role honestly. The project does not claim that any reviewer is always immediately available.
 
 ---
 
@@ -134,32 +132,35 @@ The prototype must therefore avoid a hidden assumption that:
 
 > Noor sees a leaf → instantly opens an always-connected smartphone on the slope.
 
-The credible minimum path is:
+The case establishes a harder workflow constraint than simple sharing: Noor mainly uses **her daughter’s smartphone on weekends, with her daughter’s help**, while Noor’s own calls/messages/mobile-money phone is normally at the house during the day.
 
-1. Noor has access to the household smartphone at some point;
-2. she captures or selects the suspicious leaf image during that phone session;
-3. the app’s core proposal works without a live connection;
-4. the human disposition and structured record are stored locally;
-5. sharing or extension/cooperative review can occur later.
+Therefore an observation on the slope may precede image capture by hours or days. Stage 3 must explicitly lock:
 
-The system should be compatible with shared/intermittent smartphone access rather than requiring permanent personal possession.
+1. who operates the daughter’s smartphone;
+2. when the assisted phone session occurs;
+3. where the leaf is when photographed;
+4. whether/how a leaf is detached or brought to the phone;
+5. the observation-to-capture delay;
+6. what role, if any, Noor’s own phone plays;
+7. how the later human handoff works.
+
+No current document may depict Noor pulling “her smartphone” out on the slope when she notices a leaf. The system must remain compatible with weekend-assisted, shared/intermittent access rather than permanent personal smartphone possession.
 
 ---
 
-## 7. Real-world evidence anchor for the device constraint
+## 7. Real-world implementation evidence anchor — selection deferred to Stage 3
 
 The official brief asks teams to use common data to ground constraints and to cite source, year, and country/context.
 
-Because Noor is fictional, a real-country statistic must be treated as a **context anchor**, not as Noor’s location.
+Because Noor is fictional, any real-country evidence must be treated as a **context/evidence anchor**, never as Noor’s location.
 
-A relevant current source is the **GSMA Mobile Gender Gap Report 2025**, which includes Kenya among its surveyed lower- and middle-income countries. It reports that mobile ownership can be very high while mobile-internet and smartphone gender gaps remain meaningful, illustrating why “has access to a phone” should not be treated as equivalent to “has dependable smartphone internet access.”
+The current research includes candidate common-data evidence such as the **GSMA Mobile Gender Gap Report 2025**, but **no final country/context anchor is locked in Stage 1**. Stage 3 must select one coherent real-world implementation evidence anchor and apply it consistently where possible to:
 
-Source: GSMA, *The Mobile Gender Gap Report 2025*  
-https://www.gsma.com/gender-gap-2025/
+- device/connectivity evidence;
+- localization/language reasoning;
+- coffee/agriculture context.
 
-**LIMITATION:** Kenya is used only as a concrete evidence context for mobile-access/inclusion constraints. Noor is not asserted to be Kenyan.
-
-Stage 4 must retain the exact source/year/context in the evidence plan.
+Stage 4 must then carry the exact source/year/context into the evidence plan and make at least one common-data figure bind an actual design parameter rather than remain a general citation.
 
 ---
 
@@ -172,12 +173,12 @@ Noor’s fictional local/national languages are not named.
 Therefore:
 
 - the product must not invent a language as a fact about Noor;
-- Stage 3 must select one real prototype-localization language;
+- Stage 3 must select either **(A)** a real local/home language in the chosen evidence-anchor context with explicit reasoning, or **(B)** a national/vehicular language while acknowledging the weaker case fit;
 - the final submission must clearly label that language as an implementation choice;
-- the UI must demonstrate at least one interaction in it;
-- the final narrative must explain limitations for less-supported languages.
+- Stage 3 must pre-commit the answer to how the tool would fare in a less-supported language;
+- the UI must demonstrate at least one interaction in the named language.
 
-A static, human-reviewed text localization is sufficient unless later product decisions justify something more complex.
+A static, human-reviewed text localization is sufficient unless later product decisions justify something more complex. Simple prerecorded or human-voiced accessibility prompts remain an option; speech recognition, generative voice advisory, and voice-agent workflows are outside the current MVP unless explicitly re-scoped later.
 
 ---
 
@@ -185,12 +186,14 @@ A static, human-reviewed text localization is sufficient unless later product de
 
 A case-faithful current workflow is:
 
-1. Noor notices something unusual in the coffee crop.
+1. Noor notices something unusual in the coffee crop while she is often on the slope and the phones are at the house.
 2. She relies on her own visual judgment, memory, available reference information, or help from others.
-3. Extension support may not be available when the observation occurs.
-4. The observation may remain informal until someone with more expertise can review it.
-5. Manual data collection and delayed alerts can make the broader system slower.
-6. A later extension/cooperative interaction may need a clearer record of what Noor saw.
+3. Her daughter boards in the district town, so the daughter’s smartphone and setup help are mainly available on weekends.
+4. The observation may therefore wait before any assisted smartphone capture/selection step; the exact delay and physical leaf workflow remain unresolved for Stage 3.
+5. Extension support is available only about twice a year at best, so it may not be available when the observation occurs.
+6. The observation may remain informal until someone with more expertise can review it.
+7. Manual data collection and delayed alerts can make the broader system slower.
+8. A later human interaction may need a clearer record of what Noor saw; the reviewer/channel/payload/consent path is not yet locked.
 
 RoyaCheck addresses only the **visual-observation and record-preparation step**.
 
@@ -291,11 +294,9 @@ Its role must be stated precisely:
 
 At least one common-data source must ground a real constraint.
 
-Current plan:
+**No final common-data anchor is locked in Stage 1.** Stage 3 must select one coherent evidence anchor; Stage 4 must name the source/year/context and use at least one common-data figure to bind a concrete design parameter such as first-load/model/bundle size or language support.
 
-> GSMA Mobile Gender Gap evidence for device/connectivity/inclusion context.
-
-Additional common data should be added only if they materially strengthen the implemented claim.
+Additional common data should be added only if they materially strengthen an implemented claim.
 
 The project does not need to use every dataset listed in Annex B.
 
@@ -307,7 +308,8 @@ The defensible logic is:
 
 **Noor observes a suspicious coffee leaf**  
 → **immediate expert support may not be available**  
-→ **the household smartphone may be available only intermittently and connectivity may be weak**  
+→ **her daughter’s smartphone/setup help may not be available until a weekend assisted session, and connectivity may be weak**  
+→ **the exact observation-to-capture path is owner-locked in Stage 3**  
 → **a compact offline model can provide a bounded visual proposal during the available phone session**  
 → **uncertainty can be surfaced instead of hidden**  
 → **Noor/human reviewer explicitly determines the formal observation**  
@@ -368,11 +370,14 @@ Stage 1 is aligned only if:
 - the project supports one clearly stated better agricultural decision;
 - the selected crop-observation branch is distinguished from the price branch;
 - falling yields are not equated with rust;
-- smartphone access is treated as shared/intermittent;
+- smartphone access preserves the weekend-assisted daughter-smartphone facts and Noor’s own-phone distinction;
+- observation-to-capture delay and the unresolved physical capture path are explicit;
 - offline behavior is justified by the actual user/device workflow;
+- reviewer role, handoff channel, image travel, consent, and reviewer-visible payload are explicit Stage 3 locks rather than hidden assumptions;
 - extension scarcity is part of the problem but human authority remains;
 - registry/phone/trust dependencies are acknowledged for scale;
-- common and sector data roles are explicit;
+- common and sector data roles are explicit, with one coherent real-world anchor deferred to Stage 3;
+- the local/home-language versus national/vehicular-language choice is deferred explicitly to Stage 3;
 - claims remain proximal and measurable.
 
-**Stage 1 status: REOPENED — ready for independent case-alignment audit.**
+**Stage 1 status: Reopened — in review. The independent case-alignment audit is complete and its findings are reconciled in PR #9 pending owner re-closure.**
