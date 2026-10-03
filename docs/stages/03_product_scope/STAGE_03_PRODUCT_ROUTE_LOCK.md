@@ -1,11 +1,107 @@
 # Stage 3 — Product Scope and Route Lock
 
 **Stage:** 3  
-**Status:** Closed — owner approved (PR #11)  
+**Status:** Closed — owner approved (PR #11); simplified by owner-approved amendment PR #15  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling case:** `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`  
 **Stage 3 authority:** José Antonio remains the sole owner of consequential product decisions.
+
+---
+
+## Controlling owner-directed simplification amendment — 2026-10-03
+
+This amendment is the controlling interpretation wherever it conflicts with the earlier Stage 3 wording below. It narrows implementation assumptions; it does **not** reopen Stages 0–2, change the selected RoyaCheck concept, weaken human authority, change the three-way routing, introduce messaging/institutional integration, or alter the explicit non-solutions.
+
+### A. Development value
+
+RoyaCheck helps determine which suspicious coffee-leaf observations should be surfaced first for qualified human review and which can remain lower-priority records while concern can still be escalated.
+
+The development value is **better allocation of scarce human-review attention**. It is not faster extension access, diagnosis, treatment, yield improvement, or creation of extension capacity.
+
+### B. Device-access invariant — supersedes rigid D3-02 choreography
+
+RoyaCheck is designed for **intermittent, shared or assisted smartphone access**. It does not assume that Noor owns, carries, or can independently use a smartphone continuously. Noor remains the agricultural decision-maker. A household member such as her daughter may assist with camera/navigation when assistance is needed.
+
+The daughter-at-home-on-weekends scenario remains a case-faithful **demo instantiation**, not a mandatory technical operating protocol.
+
+### C. Capture contract — supersedes rigid D3-03 physical choreography
+
+Capture or select a **current image of an eligible coffee leaf** when the household smartphone and any needed assistance are available.
+
+The product does not require:
+
+- re-identification of the originally noticed plant;
+- a particular weekend/on-slope session;
+- an attached-leaf workflow;
+- a backing card/sheet;
+- leaf preservation or transport.
+
+The product makes no recommendation to detach a leaf. Exact framing, leaf side/orientation, and any optional experimental capture aid are evidence-conditioned technical/data choices and must not exceed the acquisition evidence.
+
+### D. Capture timing — supersedes rigid D3-04 delay
+
+Capture occurs when a suitable household smartphone and any needed assistance are available. Intermittent access may create delay, but delay itself is not a product requirement.
+
+The model evaluates only the image captured at that time. It makes no claim about the appearance of an earlier observation.
+
+### E. Human review and handoff
+
+D3-05 through D3-10 remain controlling in substance. The in-person/on-device handoff remains user initiated and requires the household smartphone to be physically present at the qualifying review opportunity.
+
+Noor's daughter is not required to be the operator at that encounter. The device may be operated by Noor if able, by a household assistant, or by the reviewer at Noor's request with the screen visible to Noor.
+
+The value is **prepared/prioritized evidence when a qualifying review opportunity occurs**, not acceleration of that opportunity.
+
+### F. Evidence anchor
+
+D3-11 remains unchanged: Bududa / Bugisu / Mount Elgon, Uganda is an **implementation evidence anchor**, not Noor's fictional location.
+
+### G. Lugisu localization — supersedes build-blocking interpretation of D3-12
+
+Lugisu remains the current named prototype localization direction for the Bugisu/Mount Elgon evidence anchor.
+
+A qualified human validator familiar with the relevant Bududa/south-Bugisu variety and orthographic convention is required **before claiming validated/localized usability in Lugisu**.
+
+Human validation is **not a blocker for the technical MVP**. If no qualified validator is already available by the localization cutoff:
+
+- do not spend the competition clock sourcing one solely to satisfy a self-created dependency;
+- any Lugisu fixed-string interaction may remain only as an explicitly **unvalidated prototype localization draft**;
+- English remains available;
+- the submission must explicitly state that localized usability was **not validated**.
+
+Do not imply Noor speaks Lugisu. Do not silently rename Lugisu/Lumasaaba. Any actual named-language change returns to José Antonio.
+
+D3-13's architectural principle remains: **visual inference is independent of UI language, but safe localized usability is not**. No live generative translation is required.
+
+### H. D3-14 wording cleanup
+
+The three action routes remain unchanged.
+
+For `no visible rust → Record and monitor`, any recapture is described as occurring at **a later session when the household smartphone and any needed assistance are available**, not specifically a later weekend-assisted session.
+
+The AI controls prioritization of scarce human attention, not treatment urgency.
+
+### I. Integrated workflow — controlling version
+
+1. Noor has a coffee-leaf concern.
+2. RoyaCheck does not assume the smartphone is continuously with her.
+3. When the household smartphone and any needed assistance are available, a current eligible coffee-leaf image is captured or selected.
+4. Browser-local AI proposes `visible rust`, `no visible rust`, or `not sure`.
+5. The proposal maps to the existing action route.
+6. Noor explicitly confirms/corrects or requests review.
+7. Only the human disposition becomes formal.
+8. The structured observation is stored locally.
+9. At a qualifying human-review opportunity when the device is present, Noor initiates the review card.
+10. Nothing is automatically sent or treated.
+
+The daughter/weekend scenario remains available as a demo example of intermittent assisted use rather than the only valid operating path.
+
+### J. Scope unchanged
+
+D3-15 remains controlling. RoyaCheck does not solve the cause of falling yields, market-price reference/bargaining, farmer-registry creation, extension staffing/capacity, or agronomic treatment selection.
+
+Historical Stage 3 audit files remain historical evidence and are not rewritten.
 
 ---
 
