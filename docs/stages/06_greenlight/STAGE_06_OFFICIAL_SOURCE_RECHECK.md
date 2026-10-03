@@ -1,7 +1,7 @@
 # Stage 6 — Official-Source Recheck and Implementation Greenlight
 
 **Stage:** 6  
-**Status:** In review — official-source recheck complete; greenlight decision pending repository closure  
+**Status:** Closed — owner-authorized Stage 7 greenlight (PR #17)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Recheck date:** 3 October 2026
@@ -305,4 +305,15 @@ All four have existing conservative controls and none requires consuming held-ou
 
 This greenlight does not waive any licence, platform, safety, quarantine or claim-reduction rule.
 
-**Current Stage 6 status: In review — recheck clean; owner-authorized greenlight path ready for closure.**
+**Current Stage 6 status: Closed — owner-authorized Stage 7 greenlight (PR #17).**
+
+
+---
+
+## 12. Owner greenlight record
+
+José Antonio's 2026-10-03 authorization directed the project to continue through the Stage 6 official-source recheck/greenlight steps after Stage 4/5 closure, while preserving the prohibition on definitive Stage 7 training or held-out/external/challenge readout until the greenlight was recorded.
+
+The recheck found no blocker and no material official-rule change requiring owner reconsideration. The pre-registered Stage 7 path is therefore **GREENLIT**, subject to the hard Stage 7.0 / 7A / 7B pre-training gates in this document and Stage 4.
+
+This greenlight does not authorize bypassing any licence, quarantine, safety, parity, clock, or claim-reduction rule.
