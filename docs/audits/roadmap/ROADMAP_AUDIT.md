@@ -1,5 +1,7 @@
 # Roadmap Audit — RoyaCheck Offline
 
+> **Historical/supersession note:** This audit records an earlier pre-Annex-B project state and intentionally preserves its original findings, including now-superseded Spanish/Dominican framing. For current Agriculture policy, the controlling sources are `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md` and the PR #9 Noor case-alignment reconciliation. Do not treat stale country/language assumptions below as current project policy.
+
 **Artifact audited:** `ROADMAP.md` at commit `ecdb895` (`main`), read together with `docs/PROJECT_WORKFLOW.md` (process authority) and `docs/audits/roadmap/AUDIT_PACKAGE.md` (scope, severities, output structure).
 **Auditor role:** Independent adversarial reviewer / red team. Not a co-builder.
 **Audit type:** Process, governance, evidence, compliance, and execution audit of the roadmap. No model, dataset, code, UI, deployment, or submission artifact exists yet, and none is validated here.
