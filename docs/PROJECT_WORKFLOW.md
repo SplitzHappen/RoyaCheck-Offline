@@ -27,27 +27,66 @@ For each project stage:
 7. **Separate evidence from inference.**  
    Facts, measurements, assumptions, recommendations, and unsupported claims must remain distinguishable.
 
-8. **Review consequential stages adversarially.**  
-   Independent review should challenge compliance, evidence quality, architecture, evaluation validity, safety, execution risk, and claim discipline.
+8. **Use risk-tiered review.**  
+   Independent adversarial review is mandatory for the roadmap/process architecture, Stage 0 compliance, Stage 4 technical/evaluation pre-registration, Stage 7 technical/evidence readout, and Stage 10 final submission. Other stages receive owner/builder review unless they introduce a material compliance, safety, licensing, evaluation, or architecture risk.
 
-9. **Reconcile findings before closure.**  
-   Material audit findings are reviewed by the builder, accepted or rejected with rationale, repaired where necessary, and rechecked before a stage is considered closed.
+9. **Reconcile material findings before closure.**  
+   Blocking and major findings are reviewed by the builder, accepted or rejected with rationale, repaired where necessary, and rechecked before the affected artifact is considered final.
 
 10. **Owner approval remains final.**  
     José Antonio Tamburini Martínez is the sole human entrant and final decision-maker. A stage is not final merely because a document, pull request, or audit exists.
 
 11. **Do not merge consequential changes without owner authorization.**  
-    Review, reconciliation, and merge are separate steps.
+    Review, reconciliation, owner decision, and merge are separate steps.
 
 12. **Prefer completion over process theater.**  
-    Documentation and audit depth must remain proportionate to the remaining competition time. Any control that costs more than the risk it mitigates should be simplified.
+    Documentation and audit depth must remain proportionate to the competition clock. Any control that costs more than the risk it mitigates should be simplified without weakening compliance, safety, licensing, or evaluation integrity.
+
+13. **Protect held-out evidence.**  
+    Final test and external partitions are one-shot evidence. They must not be used to choose models, preprocessing, class mappings, thresholds, OOD guards, or fallback paths.
+
+14. **Protect the final submission buffer.**  
+    The roadmap defines a minimum protected recovery/submission buffer. Feature work stops when that buffer begins.
+
+## Review tiers
+
+### Tier A — independent adversarial review
+
+Required for:
+
+- roadmap/process architecture;
+- Stage 0 — compliance;
+- Stage 4 — technical/evaluation pre-registration;
+- Stage 7 — technical/evidence readout;
+- Stage 10 — final pre-submission red team.
+
+### Tier B — owner/builder review
+
+Default for:
+
+- Stages 1, 2, 3, 5, 6, 8, and 9.
+
+A Tier B stage escalates to Tier A only if it creates a new material compliance, safety, licensing, evaluation-integrity, or architecture risk.
 
 ## Standard stage flow
 
-`stage artifact → pull request → independent review → reconciliation → owner decision → merge → stage close`
+`stage artifact → stage PR → review according to tier → reconciliation if needed → owner decision → merge → stage close`
 
-The depth of review can vary by stage. Technical, evaluation, compliance, and final-submission gates should receive the strongest scrutiny.
+Stage 9 performs the internal evidence/claims check. The independent final claims/compliance red team happens once in Stage 10 rather than duplicating the same independent audit twice.
+
+## Stage closure rule
+
+A stage closes only when:
+
+- the required outputs are present;
+- material findings are reconciled;
+- the owner decision is recorded;
+- the approved PR is merged.
+
+If a non-blocking documentation stage exceeds its time box, prose expansion stops and residual gaps are recorded. A true rules, license, safety, or evaluation-integrity blocker remains blocking regardless of schedule pressure.
 
 ## Repository communication rule
 
 GitHub comments, reviews, PR bodies, and public documents should discuss only the public artifact, its evidence, its decisions, and its risks. They should not expose private working context that is not necessary to understand or evaluate the project.
+
+Stage artifacts should read as decision records rather than narrative diaries. They should state evidence and conclusions directly and should not make unsupported process-history claims.
