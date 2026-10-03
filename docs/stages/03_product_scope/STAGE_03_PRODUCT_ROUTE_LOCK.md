@@ -111,13 +111,13 @@ Noor remains the primary farmer/decision-maker. On a weekend when her daughter i
 
 **Recommendation**
 
-Use **weekend field capture on the slope**. Noor returns to the coffee plant/area of concern and her daughter accompanies her with the smartphone to photograph a currently suspicious leaf **on the plant**.
+Use **weekend assisted capture on the slope without detaching the leaf**. Noor returns to the coffee plant/area of concern and her daughter accompanies her with the smartphone to photograph a currently suspicious leaf **on the plant**. Where practical, use an ordinary plain backing card or sheet behind the leaf to reduce background clutter without turning the workflow into a laboratory setup.
 
-Do not require Noor to detach or preserve a leaf.
+Do not require Noor to detach, transport, or preserve a leaf.
 
-**Why:** This avoids inventing a leaf-storage protocol and avoids making an agronomic instruction about detachment. It also makes the domain-transfer requirement honest: the prototype must cope with, or explicitly fail on, ordinary field-photo conditions rather than silently assuming a white-background laboratory image.
+**Why:** This avoids inventing a leaf-storage protocol or agronomic detachment instruction while reducing the acquisition mismatch risk identified in the challenge brief. It also preserves an honest evidence boundary: the prototype must not claim ordinary-field robustness merely because a controlled/backed capture works.
 
-**Failure rule:** if later evidence cannot support field-photo behavior credibly, reduce or change the claim rather than silently changing the user workflow.
+**Failure rule:** exact leaf-side/orientation guidance remains for Stage 4 after data properties are verified. If later evidence cannot support this on-plant assisted capture credibly, reopen the workflow rather than silently changing it.
 
 **Owner status:** Proposed.
 
