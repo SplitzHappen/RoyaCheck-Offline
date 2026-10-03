@@ -800,6 +800,8 @@ Build the smallest complete user-value loop around the frozen technical core.
 
 Stage 8 closes when the full user-value loop works end to end on the defined target browser/device evidence level and all human-authority controls behave as specified.
 
+Before Stage 8 closes, UI strings and live-demo metadata must pass the Stage 0 naming/branding policy.
+
 No stretch feature is added before this gate passes.
 
 **Review:** Tier B unless implementation changes a locked safety/architecture boundary.
@@ -960,7 +962,7 @@ Before the protected buffer begins:
 - required video matrix from Stage 0 is resolved;
 - both submission destinations/forms have been dry-run as far as the platform permits;
 - all links have been tested from a clean browser/session;
-- the repository name/description, README, live-demo metadata, UI strings, video title cards/thumbnails, and submission-facing materials pass a naming/branding sweep;
+- all public repository documents, repository name/description, README, live-demo metadata, UI strings, video title cards/thumbnails, and submission-facing materials pass a naming/branding sweep;
 - the final third-party asset inventory has been rechecked for organizer-license compatibility.
 
 If the platform permits edits after initial submission, submit a complete honestly limited version **before** the protected buffer and update only if safe.
@@ -1036,7 +1038,7 @@ The stage order is a dependency structure for the project record. Public artifac
 
 | Stage | Status |
 |---|---|
-| Roadmap/process architecture | Closed — owner approved |
+| Roadmap/process architecture | Closed — owner approved (PR #2) |
 | 0 — Rules & compliance | In review |
 | 1 — Agriculture problem research | Not started |
 | 2 — Concept comparison | Not started |
@@ -1053,4 +1055,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Complete the bounded Stage 0 audit repair, resolve the product-only repository rename, obtain a focused Tier A Stage 0 re-audit, and then bring Stage 0 to the owner for closure/merge approval.
+Bring the fully repaired Stage 0 package to the owner for final closure/merge approval. No further Stage 0 audit is required.
