@@ -1139,7 +1139,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 0 — Rules & compliance | Closed — owner approved (PR #9) |
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
-| 3 — Product scope / route lock | In review |
+| 3 — Product scope / route lock | Closed — owner approved (PR #11) |
 | 4 — Product/data/model/evaluation pre-registration | Not started |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
@@ -1152,6 +1152,6 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-PR #10 is merged after Claude's narrow confirmation returned **PASS**, and the owner has explicitly authorized **Stage 3 — Product scope / route lock**.
+Stage 3's owner decisions, independent Claude audit, bounded reconciliation, and narrow confirmation are complete. Claude's narrow confirmation verified all 10 requested repairs, found no new blocker or major, and required only the now-recorded N1 traceability entry. José Antonio has explicitly authorized **Stage 3 closure and guarded merge of PR #11**.
 
-Stage 3 is now **In review**. José Antonio has explicitly approved D3-01 through D3-15. Claude's independent Stage 3 audit returned **PASS WITH MAJOR REPAIRS** (0 blockers, 3 majors, 7 minors); the authorized reconciliation is applied in PR #11 and awaits a narrow confirmation. Stage 4 remains unauthorized until that confirmation is reconciled and Stage 3 is owner-closed and merged.
+Stage 3 is therefore **Closed — owner approved (PR #11)** for the closure/merge sequence. PR #11 must still pass the authorized fresh GitHub guards and merge successfully before Stage 4 can be opened. **Stage 4 remains unauthorized** pending that successful merge and a separate owner-control authorization.
