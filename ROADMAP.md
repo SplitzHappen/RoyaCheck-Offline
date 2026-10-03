@@ -96,22 +96,30 @@ All later stage documents should reference this list rather than create competin
 
 The process must fit the remaining competition clock. The deadline and time zone are rechecked in Stage 0. If that recheck changes the deadline, the same priorities apply relative to the corrected deadline.
 
-### Maximum budget from the current roadmap checkpoint
+### Fixed latest end times
 
-| Work block | Maximum budget |
-|---|---:|
-| Stages 0–6 documentation, decisions, and gates | 2 hours total |
-| Stage 7 — definitive AI technical proof | 4.5 hours |
-| Stage 8 — minimum complete MVP | 3 hours |
-| Stage 9 — hardening and evidence | 2 hours |
-| Stage 10 — final docs, videos, audit, and submission | 2.5 hours |
-| Protected recovery/submission buffer | **3.5 hours minimum** |
+The schedule below assumes the repaired roadmap is accepted no later than **3:30 PM ET on 3 October 2026**. If acceptance occurs later, the clock times below do not move; the lost time is absorbed by the earliest remaining non-buffer block.
 
-The protected buffer is closed to feature work. It must be sufficient for at least one redeploy, one re-upload of required videos, completion/retry of all submission forms, and capture of submission receipt evidence.
+| Work block | Maximum budget | Latest end time (ET) |
+|---|---:|---:|
+| Stages 0–6 documentation, decisions, and gates | up to 2 hours | **5:30 PM, 3 Oct** |
+| Stage 7 — definitive AI technical proof | up to 4.5 hours | **10:00 PM, 3 Oct** |
+| Stage 8 — minimum complete MVP | up to 3 hours | **1:00 AM, 4 Oct** |
+| Stage 9 — hardening and evidence | up to 2 hours | **3:00 AM, 4 Oct** |
+| Stage 10 — final docs, videos, audit, and submission | up to 2.5 hours | **5:30 AM, 4 Oct** |
+| Protected recovery/submission buffer | **3.5 hours minimum** | **5:30–9:00 AM, 4 Oct** |
+
+The protected buffer begins at **5:30 AM ET on 4 October 2026** if the Stage 0 deadline is confirmed. It is closed to feature work and must remain large enough for at least one redeploy, one re-upload of required videos, completion/retry of all submission forms, and capture of submission receipt evidence.
 
 ### Overrun rule
 
-If a documentation stage exceeds its time box:
+An overrun in any work block from Stages 0–9 never shrinks the protected buffer. Instead it:
+
+- reduces the next non-buffer block;
+- triggers the pre-approved fallback ladder or a claim/scope reduction where applicable;
+- freezes the Stage 8 or Stage 9 candidate at the stated end time and records remaining gaps as limitations rather than continuing feature work.
+
+For a documentation-stage overrun:
 
 - stop expanding prose;
 - record the remaining non-blocking gaps;
@@ -119,6 +127,8 @@ If a documentation stage exceeds its time box:
 - move on.
 
 A true rules, license, safety, or evaluation-integrity blocker does **not** become non-blocking merely because time is short.
+
+Work on stage N+1 may begin once the owner decision for stage N is recorded, with the merge following promptly. Two hard gates remain strict: **Stage 4 pre-registration must be fixed before any training/validation result or held-out readout is produced, and Stage 6 greenlight must be recorded before definitive Stage 7 implementation begins.**
 
 ### Parallel de-risking permitted
 
@@ -448,7 +458,7 @@ Before training/evaluation proceeds, record a one-line license verdict for every
 The verdict must cover:
 
 - training/use permission;
-- redistribution of derived weights through the public repo/live demo;
+- redistribution of derived weights, embeddings, or reference sets through the public repo/live demo;
 - attribution obligations;
 - compatibility with the chosen repository license.
 
@@ -456,13 +466,15 @@ If a required license is incompatible or materially unclear, stop that path and 
 
 ## Split and leakage controls
 
-Before any final readout, commit:
+Before Stage 7 begins, pre-register:
 
-- split manifest: file identifier/hash → train / validation / test / external;
+- split procedure: grouping rule, train/validation/test ratios, near-duplicate rule, and deterministic seed where applicable;
 - class mapping;
 - operating-point selection rule;
 - mandatory metric list;
 - numerical Stage 7 acceptance criteria.
+
+After Stage 7A data acquisition, the generated split manifest (file identifier/hash → train / validation / test / external) must be committed in Stage 7B **before any training or validation result is produced**.
 
 Splits must be group-aware where group identifiers exist. If no reliable grouping field exists:
 
@@ -625,10 +637,9 @@ Stage 6 does **not** recreate Stage 0. It records:
 - whether any ambiguity now blocks implementation;
 - the owner's greenlight or stop decision.
 
-The same compliance checklist is rechecked again:
+The Stage 6 recheck satisfies the Stage 7-start compliance recheck unless official materials change between the Stage 6 owner decision and Stage 7 start.
 
-- at the start of Stage 7;
-- before final submission in Stage 10.
+The same compliance checklist is rechecked again before final submission in Stage 10.
 
 Every implementation asset included in the submission must remain consistent with the Stage 0 originality, assistance, license, and disclosure rulings.
 
@@ -673,9 +684,9 @@ If the candidate fails the Stage 4 technical budgets, move to the next fallback 
 
 ## 7B — Pre-registration commit
 
-Commit before any final readout:
+Commit **before any training or validation result is produced**:
 
-- split manifest;
+- generated split manifest;
 - group/near-duplicate controls;
 - class map;
 - model candidate;
