@@ -489,17 +489,14 @@ The data plan has two required layers:
 1. **Sector/task data** for the learned leaf-image component. BRACOL is the preferred first candidate because the official Agriculture annex identifies it as directly relevant to Noor’s crop.
 2. **Common/context data** for at least one real implementation constraint (device/connectivity/inclusion/language). Stage 3 first selects one coherent real-world evidence anchor; the source, year, and real country/context must be recorded and must not be presented as Noor’s fictional location. Stage 4 must make at least one common-data figure bind an actual design parameter such as first-load/model/bundle size or language support.
 
-Preferred development dataset order:
+Stage 4 owner-approved 2026 evidence plan (supersedes the earlier candidate order):
 
-1. BRACOL;
-2. Saposoa Arabica;
-3. RoCoLe.
+- **development/internal evaluation:** BRACOL labelled whole-leaf records, subject to Stage 7A archive/license/metadata verification;
+- **sole planned external transfer readout:** RoCoLe v2, quarantined from training, model selection, threshold selection, OOD design, and de-risking;
+- **Saposoa Arabica v2:** future candidate only for this submission; it is not conditionally opened after RoCoLe;
+- **BRACOT:** optional frozen unknown/scene-complexity challenge source only, not a rust/no-rust test set.
 
-Default plan:
-
-- **development/internal evaluation:** BRACOL, if license/access/structure pass Stage 7A;
-- **external transfer readout:** Saposoa Arabica v2, quarantined from training, model selection, threshold selection, OOD design, and de-risking;
-- if BRACOL cannot serve as development data, the external dataset is re-designated **before any readout**, and the newly external partition remains untouched.
+If BRACOL cannot serve as development data, stop and return to the owner before redesignating any external source or opening any readout.
 
 Every dataset used must document:
 
@@ -653,29 +650,31 @@ Make likely failure modes cheap to discover and cheap to recover from without ch
 
 ## Ordered compliant fallback ladder
 
-### Rung A — preferred
+Stage 4 repairs supersede the earlier generic ladder.
 
-Frozen compact pretrained visual encoder + tiny coffee-specific classifier head + thresholded abstention.
+### A0 — preferred learned path
 
-### Rung B — lower-training-risk
+MobileNetV3-Small 1.0, frozen backbone, pooled 576-dimensional features, five-way linear head, under the exact Stage 4 training configuration and 60-minute Stage 7C cap.
 
-Browser-side frozen encoder + embedding/reference similarity + thresholded abstention.
+### A1 — bounded fine-tuning fallback
 
-### Rung C — runtime-size fallback
+Only if A0 fails the pre-registered validation gate and clock permits: initialize from A0, unfreeze only the final MobileNetV3 backbone block plus head, under the exact Stage 4 configuration and 30-minute additional cap.
 
-Smaller browser-compatible pretrained encoder + tiny head or similarity layer.
+### C — runtime-size fallback
+
+A smaller MobileNetV3-Small 0.50-class architecture may be invoked **only if Stage 7.0 runtime/model budgets fail before definitive training**. Its exact pretrained artifact remains license-gated.
+
+### D — stop / reduce
+
+If no accepted learned path satisfies the safety gate within the available clock, stop the full three-state learned claim. The pre-authorized degraded safety mode disables `no visible rust`: high-confidence rust may still route to `visible rust`; every other learned outcome routes to `not sure`.
 
 ### Diagnostic baseline only
 
 Handcrafted color/texture rules may be retained as a diagnostic/benchmark baseline, but they are **not** the qualifying Small AI core unless Stage 0/6 rules explicitly establish otherwise.
 
-Each rung must define:
+Fallback selection may not use internal-test, external, or challenge results.
 
-- entry trigger;
-- expected claim reduction;
-- conversion/runtime implications.
-
-The Stage 4 kill time and validation criteria trigger fallback rather than ad hoc sunk-cost continuation.
+The Stage 4 absolute-clock rule and validation criteria trigger fallback rather than ad hoc sunk-cost continuation.
 
 ## Build order
 
@@ -779,7 +778,7 @@ Commit **before any training or validation result is produced**:
 - make design decisions only from train/validation evidence;
 - select the abstention operating point on validation.
 
-## 7D — Freeze
+## 7D — Freeze, export, and validation-only parity
 
 Freeze:
 
@@ -788,34 +787,41 @@ Freeze:
 - class mapping;
 - threshold/operating point;
 - OOD/fail-safe guard;
-- runtime candidate.
+- runtime candidate;
+- export format and precision.
 
-No further design choice is allowed after the one-shot readout without invoking the burned-partition rule.
+Before any one-shot readout:
+
+- export the exact FP32 ONNX artifact intended to ship;
+- freeze the exact browser preprocessing implementation;
+- run the pre-registered validation-only parity check;
+- require the Stage 4 route-agreement gate;
+- measure model/runtime bytes and browser compatibility on the Stage 4 target.
+
+No held-out or external result may be used to repair parity.
 
 ## 7E — Internal held-out one-shot readout
 
-Run the frozen system once on the untouched internal test partition.
+Run the untouched internal test partition exactly once using the **same frozen ONNX artifact and preprocessing path that passed 7D parity**.
 
 Report the mandatory Stage 4 metric core and preserve failures.
 
 ## 7F — External frozen readout
 
-If the external dataset remains feasible and appropriately mapped, run the frozen system once on the quarantined external dataset.
+If the owner-approved external source remains feasible and appropriately mapped, run the same frozen ONNX artifact and preprocessing path once on the quarantined external dataset.
 
 Do not tune anything from the result.
 
 Frame it as external transfer evidence, not field validation for Noor or any specific deployment context.
 
-## 7G — Exported browser artifact
+## 7G — Browser evidence and minimal deployable inference path
 
-- export the frozen model;
-- run actual local browser inference;
-- measure final model/runtime bytes;
-- measure latency on the Stage 4 target;
-- confirm compatibility;
+- run actual local browser inference using the already frozen artifact;
+- measure final latency on the Stage 4 target under the pre-registered protocol;
+- confirm offline/cache behavior and compatibility;
 - prepare the minimal deployable inference path.
 
-Deploy a minimal live shell as soon as this browser artifact passes so deployment failures surface early.
+Deploy a minimal live shell as soon as this already-evaluated browser artifact passes so deployment failures surface early.
 
 ## Stage 7 gate
 
@@ -1154,4 +1160,4 @@ The stage order is a dependency structure for the project record. Public artifac
 
 Stage 3 is merged and **Closed — owner approved (PR #11)**. José Antonio has explicitly approved **D4-01 through D4-20** and resolved the primary physical browser/device evidence target as **iPhone 17 Pro Max + Safari**.
 
-Stage 4 is now **In review**. The current action is the required Tier A independent Claude audit of the owner-approved pre-registration in `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`. No definitive training or validation-result-driven design, internal held-out readout, external readout, or challenge-set result is authorized before Stage 4 is audited, reconciled, owner-closed, and merged.
+Stage 4 is **In review**. Claude's Tier A audit returned **PASS WITH MAJOR REPAIRS** (0 blockers, 10 majors, 9 minors). José Antonio has explicitly approved the bounded M1–M10 and minor repairs. The repaired pre-registration now awaits a **narrow Claude confirmation**. No definitive training, internal held-out readout, external readout, or challenge-set result is authorized before Stage 4 is confirmed, reconciled, owner-closed, and merged.
