@@ -1,504 +1,388 @@
-# Stage 2 — Agriculture Concept Comparison and Elimination Record
+# Stage 2 — Annex B Agriculture Concept Comparison and Elimination Record
 
 **Stage:** 2  
-**Status:** In review  
+**Status:** Closed — owner approved (PR #9)  
 **Sector:** Agriculture  
 **Selected route:** RoyaCheck Offline  
-**Purpose:** Document why the selected farmer-facing coffee-leaf observation route remains preferable to credible Agriculture alternatives under the competition’s Small AI, constrained-environment, evidence, safety, and solo-build requirements.
+**Controlling problem specification:** Annex B / Noor Agriculture case
 
-This document is a **decision record**, not a new concept-selection exercise. The selected route is already in force. Stage 2 records the comparison logic and residual risks that justify continuing with it.
+This document compares only concepts that respond directly to Noor’s stated Agriculture case. It is not a generic Agriculture portfolio and it does not reopen Health, Tourism, or the selected route without a genuine blocking reason.
+
+See also: `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`.
 
 ---
 
 ## 1. Decision frame
 
-The comparison is centered on:
+The official case gives Noor several possible intervention points:
 
-> **smallholder farmer + field-observation workflow + binding constraint**
+- identify a crop problem;
+- access localized advice;
+- document a field observation;
+- time a farming activity;
+- improve quality/value addition;
+- connect evidence to a market, pricing, or extension-service next step.
 
-—not on country identity.
+It also identifies non-algorithmic constraints such as:
 
-For the selected route:
+- scarce extension capacity;
+- manual data collection;
+- delayed alerts;
+- weak or absent farmer registries;
+- phone access;
+- trust in the advisory system.
 
-- **primary user:** smallholder coffee farmer;
-- **task:** identify and document a suspicious coffee-leaf observation;
-- **constraint:** immediate expert review and/or connectivity may not be available;
-- **AI role:** bounded visual pattern recognition with uncertainty/abstention;
-- **human authority:** farmer confirmation and/or extension/cooperative review depending on the case;
-- **handoff:** structured local observation that can later support human review.
+The comparison therefore asks:
 
-Extension/cooperative professionals are therefore support and escalation roles rather than the primary challenge user.
-
----
-
-## 2. Evidence versus judgment
-
-Stage 2 distinguishes three types of statements:
-
-### Evidence-backed dependency
-
-A requirement or constraint supported by Stage 0/Stage 1 evidence or by the concept’s own technical needs.
-
-Examples:
-
-- a grounded retrieval concept requires an authoritative corpus;
-- a visual-grading concept requires relevant labelled images;
-- an offline concept must run without mandatory cloud inference.
-
-### Design / feasibility judgment
-
-A project assessment about relative fit under the competition clock.
-
-Examples:
-
-- one dependency is harder to satisfy than another;
-- one concept has a clearer end-to-end demo;
-- one concept creates more institutional integration risk.
-
-These are judgments, not empirical facts.
-
-### Owner-selected route
-
-The current owner decision is:
-
-> **RoyaCheck Offline — a narrow, offline-capable coffee-leaf rust observation aid with explicit uncertainty and human final authority.**
-
-Stage 2 does not reopen that decision unless a later confirmed rule or technical blocker makes the route impossible.
+> Which narrow intervention gives Noor one better agricultural decision, uses AI for something a simpler tool cannot do as well, fits her device/connectivity constraints, can be measured honestly, and can be built reliably in the competition window?
 
 ---
 
-## 3. Screening dimensions
+## 2. Comparison criteria
 
-All concepts are compared against the same dimensions from the roadmap:
+All concepts are compared against the official judging logic and project constraints:
 
-- development importance;
-- distinct AI value;
-- Small AI fit;
-- measurable value;
-- user realism;
-- solo-build feasibility;
-- demo reliability;
-- data feasibility;
-- inclusivity/localization;
-- safety/privacy tractability;
-- differentiation.
+- direct fit to Noor’s Annex B problem;
+- distinct AI value versus a simpler digital tool;
+- Small AI / offline-device fit;
+- usefulness to Noor’s actual workflow;
+- measurable evidence within the hackathon;
+- sound data grounding;
+- shared/intermittent-smartphone realism;
+- inclusion/localization;
+- human-authority / safety tractability;
+- solo-build and demo reliability;
+- scalability with explicit preconditions.
 
-Qualitative labels are used instead of artificial numeric precision:
+Qualitative labels are used:
 
 - **Strong**
 - **Moderate**
 - **Weak**
-- **Fatal dependency**
+- **Blocking dependency**
 
-A concept may still be rejected despite several strong dimensions if one binding dependency makes the route unrealistic for this competition.
-
----
-
-## 4. Hard rejection / downgrade triggers
-
-A concept is rejected or materially downgraded if it:
-
-- requires unavailable proprietary data;
-- depends on multiple fragile integrations;
-- relies on outcomes the prototype cannot credibly demonstrate;
-- assumes continuous connectivity or high-end hardware;
-- uses AI decoratively rather than for a task requiring learned inference;
-- lacks a complete user-value loop;
-- lacks a measurable near-term proxy;
-- is too broad for a solo build;
-- creates a safety/authority boundary that cannot be controlled credibly;
-- cannot be evaluated without circular or self-generated evidence.
+These are design judgments for this entry, not universal rankings of development interventions.
 
 ---
 
-# 5. Compact Agriculture longlist
+## 3. Case-specific concept set
 
-## A. RoyaCheck Offline — coffee-leaf rust observation aid
+### A. Coffee-leaf observation + extension handoff — RoyaCheck Offline
 
-**User/workflow:** smallholder farmer documents a suspicious coffee leaf and may later share the observation with extension/cooperative support.
+**Case branch:** crop uncertainty + field-observation documentation + extension-service next step.
 
-**AI increment:** visual pattern recognition over the leaf image with explicit uncertainty/abstention.
+**Noor action:** during the daughter-smartphone assisted workflow that Stage 3 must lock, capture/select a suspicious coffee-leaf image; receive a bounded offline proposal; explicitly confirm/correct/request review; retain a structured record for a later, user-initiated human handoff.
 
-**Non-AI components:** human disposition, local structured record, deterministic summary/handoff.
+**AI task:** visual pattern recognition with abstention.
 
-**Current disposition:** **SELECTED ROUTE**
+**Simple baseline:** symptom guide + observation form + later human review.
 
----
+**Disposition:** **SELECTED**
 
-## B. Grounded extension-information retrieval
+Why it remains strong:
 
-**User/workflow:** farmer or intermediary asks an agricultural question; the system retrieves bounded material from an authoritative corpus.
+- directly matches an allowed Annex B challenge path;
+- computer vision is explicitly recognized in the Agriculture brief as a Small AI pattern;
+- BRACOL is explicitly relevant to Noor’s coffee crop;
+- the AI contribution is perceptual rather than decorative;
+- the core can work offline;
+- the end-to-end loop is demonstrable;
+- the safety boundary can exclude treatment advice;
+- the output can be measured honestly.
 
-**AI increment:** semantic or vernacular retrieval / query normalization.
-
-**Strongest baseline:** keyword/BM25/full-text search plus glossary/synonym expansion.
-
-**Current disposition:** **DOWNGRADED**
-
-Reason: the concept depends on a current authoritative corpus and must demonstrate material improvement over a strong lexical-search baseline. That dependency is less direct than the selected visual-perception task.
-
----
-
-## C. Weather bulletin → crop-action translation
-
-**User/workflow:** farmer receives an official weather/crop bulletin and needs a short actionable interpretation.
-
-**AI increment:** language transformation or grounded extraction.
-
-**Strongest baseline:** deterministic templates/rule tables.
-
-**Current disposition:** **DOWNGRADED**
-
-Reason: deterministic templates may perform most of the useful transformation, weakening distinct AI necessity.
+**Audit condition:** the route remains selected only if Stage 3 turns the visual proposal into a real agricultural next-step prioritization decision and locks the weekend-assisted capture/handoff story. Documentation alone is not enough.
 
 ---
 
-## D. Agricultural disease/report intake
+### B. Independent crop-price reference
 
-**User/workflow:** farmer or field actor provides a report that is structured for human/institutional review.
+**Case branch:** Noor lacks an independent reference when a middleman names a price.
 
-**AI increment:** extraction, language normalization, or speech/text structuring.
+**Possible tool:** local price lookup / reference using a market-price dataset such as WFP food prices or another suitable source.
 
-**Strongest baseline:** structured form / hotline / deterministic validation.
+**AI task candidate:** forecasting, anomaly detection, natural-language explanation, or price comparison.
 
-**Current disposition:** **DOWNGRADED**
+**Strongest simple baseline:** current price table, SMS lookup, cached reference, spreadsheet, or search.
 
-Reason: value may depend more on institutional trust, reporting incentives, official protocols, and integration into a real reporting chain than on the AI component itself.
+**Disposition:** **NOT SELECTED**
 
----
+Reason:
 
-## E. Visual produce-quality grading
+The market-information problem is highly relevant, but much of the core user value may be delivered by a simpler reference service. Adding AI risks becoming decorative unless there is a narrow, demonstrable inference task that materially improves Noor’s decision.
 
-**User/workflow:** farmer or aggregator photographs produce for a bounded quality/defect assessment.
-
-**AI increment:** visual grading/classification.
-
-**Strongest baseline:** human grading standard / reference chart.
-
-**Current disposition:** **DOWNGRADED**
-
-Reason: strong visual-AI fit, but useful development value depends on stable grading standards, buyer incentives, and suitable calibrated image data.
+The project therefore excludes market-price prediction/reference from the MVP rather than forcing AI into this branch.
 
 ---
 
-## F. Agricultural paper-record digitization
+### C. Grounded localized agricultural advisory retrieval
 
-**User/workflow:** farmer/cooperative/field staff convert paper records into structured digital data.
+**Case branch:** Noor lacks timely localized advice.
 
-**AI increment:** OCR/document extraction and normalization.
+**Possible tool:** retrieve approved agricultural guidance from a bounded authoritative corpus.
 
-**Strongest baseline:** manual data entry / standard digitization workflow.
+**AI task:** semantic/vernacular query matching or grounded retrieval.
 
-**Current disposition:** **REJECTED FOR THIS ENTRY**
+**Strongest simple baseline:** indexed FAQ, BM25/full-text search, glossary/synonym expansion.
 
-Reason: technically buildable but relatively generic, less differentiated, and weaker as a Small AI constrained-environment demonstration than the selected observation loop.
+**Disposition:** **DOWNGRADED**
 
----
+Reason:
 
-# 6. Comparative matrix
+The route is case-relevant but depends on:
 
-| Dimension | RoyaCheck | Grounded extension retrieval | Weather/action translation | Disease/report intake | Visual quality grading | Paper-record digitization |
-|---|---|---|---|---|---|---|
-| Development importance | **Strong** | Strong | Moderate–Strong | Strong | Moderate | Moderate |
-| Distinct AI value | **Strong** | Moderate–Strong | Weak–Moderate | Moderate | Strong | Moderate |
-| Small AI fit | **Strong** | Strong | Strong | Moderate | Strong | Strong |
-| Measurable prototype value | **Strong** | Strong | Moderate | Moderate | Moderate–Strong | Strong |
-| User/workflow realism | **Strong** | Moderate | Moderate | Moderate | Moderate | Moderate–Strong |
-| Solo-build feasibility | **Strong** | Moderate | Strong | Moderate | Moderate | Strong |
-| Demo reliability | **Strong** | Moderate | Moderate–Strong | Moderate | Strong | Strong |
-| Data feasibility | **Moderate** | Moderate | Moderate–Strong | Weak–Moderate | Weak–Moderate | Moderate–Strong |
-| Inclusivity/localization | **Moderate–Strong** | Strong | Strong | Strong | Moderate | Moderate |
-| Safety/privacy tractability | **Strong** if no treatment advice | Moderate–Strong | Moderate–Strong | Moderate | Strong | Moderate |
-| Differentiation | **Strong** | Moderate | Weak–Moderate | Moderate | Moderate | Weak |
-| Binding dependency | Field-like data + OOD/abstention | Authoritative corpus + BM25 advantage | AI necessity vs templates | Institutional legitimacy/incentives | Standards + buyer incentives + image data | Generic value/differentiation |
+- an authoritative, reusable, current corpus;
+- localization quality;
+- a real advantage over a strong lexical baseline;
+- governance of content freshness and applicability.
 
-**Interpretation:** The matrix is a design comparison, not an empirical ranking. “Strong” means favorable relative to this hackathon’s constraints, not universally superior in real-world development.
+Those dependencies are heavier than the selected visual task within the competition clock.
 
 ---
 
-# 7. Why RoyaCheck remains the selected route
+### D. Voice/local-language advisory
 
-## 7.1 The AI role is distinct and easy to defend
+**Case branch:** localized advice under literacy or screen-literacy constraints.
 
-The selected route gives AI one job that is genuinely learned:
+**Possible tool:** a bounded voice/local-language advisory interaction using approved content.
 
-> interpret a coffee-leaf image.
+**AI task candidate:** speech recognition, speech synthesis, vernacular intent matching, or grounded retrieval.
 
-A form, spreadsheet, or deterministic record system can store the observation but cannot itself perform the learned image-pattern comparison.
+**Strongest simple baseline:** prerecorded human-voiced prompts, IVR/menu prompts, translated fixed guidance, or text with assisted use.
 
-That gives the project a clear answer to “Why AI?”
+**Disposition:** **DOWNGRADED**
 
----
+Reason:
 
-## 7.2 It fits the Small AI constraint naturally
+Annex B explicitly identifies voice-based local-language advisory as promising where literacy or screen literacy is a constraint, so it must be evaluated rather than excluded by fiat. However, as the primary hackathon route it adds heavier dependencies:
 
-The selected problem can plausibly be addressed with a compact local visual model.
+- a real local-language choice and usable speech resources;
+- authoritative agronomic content and applicability governance;
+- reliable speech behavior under the selected device/runtime;
+- a defensible advantage over prerecorded or fixed human-reviewed prompts.
 
-The system does not need:
-
-- a general-purpose LLM;
-- continuous cloud inference;
-- a large remote retrieval stack;
-- multiple live institutional integrations.
-
-That makes the constrained-environment story part of the architecture rather than presentation language.
+RoyaCheck therefore remains the selected visual route. The MVP excludes speech recognition, generative voice advisory, and voice-agent workflows unless later re-scoped; simple prerecorded or human-voiced accessibility prompts remain available as a non-AI accessibility option if Stage 3 justifies them.
 
 ---
 
-## 7.3 It has a complete farmer-facing value loop
+### E. Weather/crop-timing assistant
 
-The loop is compact and visible:
+**Case branch:** timing a farming activity is explicitly allowed by the challenge.
 
-1. farmer captures/selects leaf image;
-2. AI proposes visible rust / no visible rust / not sure;
-3. human explicitly confirms, corrects, or requests review;
-4. formal observation is stored locally;
-5. deterministic summary supports later extension/cooperative handoff.
+**Possible tool:** combine recent weather/agro-climate data with a bounded action table.
 
-This loop can be demonstrated end to end without claiming treatment or autonomous action.
+**AI task candidate:** pattern detection or grounded language generation.
 
----
+**Strongest simple baseline:** deterministic rule table/template.
 
-## 7.4 The evaluation target is concrete
+**Disposition:** **DOWNGRADED**
 
-Later stages can measure:
+Reason:
 
-- class performance on a declared evaluation set;
-- abstention/coverage;
-- confident misses;
-- OOD/other-disease behavior;
-- local latency;
-- model/runtime size;
-- offline execution;
-- human-authority controls;
-- correct local record/summary behavior.
-
-That evidence is closer to the system’s actual function than livelihood-level proxy claims.
+The route can fit the case, but a deterministic rules engine may perform most of the useful work. That weakens the argument that learned AI is necessary.
 
 ---
 
-## 7.5 Safety can be bounded cleanly
+### F. Visual produce-quality grading
 
-The selected route does not need to output:
+**Case branch:** improve quality/value addition before sale.
 
-- pesticide or fungicide selection;
-- chemical dose;
-- treatment plan;
-- quarantine clearance;
-- autonomous farm action.
+**Possible tool:** classify visible quality/defect attributes in produce.
 
-The formal authority boundary remains:
+**AI task:** computer vision.
 
-> AI proposal ≠ formal observation.
+**Strongest simple baseline:** grading chart / trained human grading.
 
-That is easier to test than a concept whose value depends on safe generated agronomic advice.
+**Disposition:** **DOWNGRADED**
 
----
+Reason:
 
-## 7.6 It is feasible for a solo build
+The visual-AI task is legitimate, but development value depends on:
 
-The selected route has one principal learned component and a deterministic surrounding workflow.
+- a stable grading standard;
+- buyer recognition of that grade;
+- evidence that the information changes Noor’s sale decision or bargaining position;
+- suitable calibrated image data.
 
-That is preferable to concepts requiring:
-
-- authoritative corpus construction;
-- multilingual retrieval evaluation;
-- voice/speech quality under field conditions;
-- institutional API integrations;
-- complex action-generation logic.
+Those dependencies are less directly supported by the supplied case than the coffee-leaf observation path.
 
 ---
 
-# 8. Why the alternatives are not selected
+### G. Farmer registry / enrollment / reach infrastructure
 
-## 8.1 Grounded extension-information retrieval
+**Case branch:** Annex B explicitly notes that a missing farmer registry may be the binding constraint.
 
-This route remains credible in principle.
+**Possible tool:** digital enrollment/registry workflow.
 
-However, it creates two material competition-time burdens:
+**AI task candidate:** document extraction, matching, or assisted data entry.
 
-1. obtaining and governing a sufficiently authoritative, current, reusable corpus;
-2. demonstrating that semantic/vernacular retrieval materially improves over BM25/full-text/glossary baselines.
+**Strongest simple baseline:** ordinary digital registration form/database.
 
-If the strong baseline already works well, the AI increment becomes harder to defend.
+**Disposition:** **PRECONDITION, NOT THE SELECTED AI PRODUCT**
 
-**Disposition:** useful family, but weaker than RoyaCheck for this entry.
+Reason:
 
----
+The case itself warns that the missing infrastructure may matter more than the algorithm. A registry can be development-critical without being a good reason to force AI into the workflow.
 
-## 8.2 Weather/action translation
-
-This route is technically simple and potentially useful.
-
-Its weakness is exactly that simplicity:
-
-- an approved action table;
-- deterministic templates;
-- rule-based message generation
-
-may handle much of the workflow without requiring learned AI.
-
-If the non-AI baseline performs the useful task, AI becomes decorative.
-
-**Disposition:** downgraded for weak AI necessity.
+RoyaCheck therefore treats registry/reach infrastructure as a scaling precondition, not as a feature it claims to solve.
 
 ---
 
-## 8.3 Agricultural disease/report intake
+## 4. Comparative matrix
 
-Structured intake can reduce form friction, especially where reports are free-text or multilingual.
+| Dimension | RoyaCheck | Price reference | Advisory retrieval | Voice/local-language advisory | Weather/timing | Quality grading | Registry/enrollment |
+|---|---|---|---|---|---|---|---|
+| Direct Annex B fit | **Strong** | Strong | Strong | Strong | Strong | Moderate–Strong | Strong as precondition |
+| Distinct AI value | **Strong** | Weak–Moderate | Moderate–Strong | Moderate–Strong | Weak–Moderate | Strong | Weak–Moderate |
+| Offline / Small AI fit | **Strong** | Strong | Moderate–Strong | Moderate | Strong | Strong | Strong |
+| Noor workflow realism | **Moderate–Strong pending Stage 3 weekend-assisted lock** | Strong | Moderate | **Strong in principle** under screen-literacy constraints | Moderate | Moderate | Moderate |
+| Measurable in hackathon | **Strong** | Strong | Strong | Moderate | Moderate | Moderate | Strong |
+| Data grounding | **Moderate–Strong** | Moderate–Strong | Moderate | Moderate | Moderate–Strong | Weak–Moderate | Moderate |
+| Human/safety tractability | **Strong** with no treatment advice | Strong | Moderate | Moderate | Moderate | Strong | Strong |
+| Solo-build reliability | **Strong** | Strong | Moderate | Weak–Moderate | Strong | Moderate | Strong |
+| AI-vs-simple-tool case | **Strong if Stage 3 routing differs materially by proposal** | Weak | Moderate | Moderate | Weak–Moderate | Strong | Weak |
+| Critical dependency | field/domain transfer + weekend-assisted workflow + handoff | fresh local reference | authoritative corpus | local speech/language resources + authoritative content | validated action rules | standards + buyer incentives | institutional adoption/registry governance |
 
-But a real surveillance/reporting workflow depends on:
-
-- institutional reporting authority;
-- user trust;
-- incentives to report;
-- official definitions and escalation rules;
-- real integration into a reporting channel.
-
-Those dependencies can dominate the value of the AI interface itself.
-
-**Disposition:** downgraded because institutional dependencies are heavier and harder to validate during the competition.
-
----
-
-## 8.4 Visual produce-quality grading
-
-This route has a legitimate visual-AI task and can produce a compelling demo.
-
-Its weaker point is the value chain:
-
-> a grade matters only if it maps to a stable standard and affects a real buyer/market decision.
-
-Without verified standards, incentives, and suitable labelled data, a visually impressive classifier may have weak demonstrated development value.
-
-**Disposition:** downgraded despite strong visual-AI fit.
+**Interpretation:** This matrix is a bounded decision aid. It does not claim RoyaCheck is universally superior to the other interventions.
 
 ---
 
-## 8.5 Agricultural paper-record digitization
+## 5. Why RoyaCheck is the case-aligned selection
 
-This route is highly buildable and measurable.
+### 5.1 It answers one of the exact allowed challenge paths
 
-However, it is:
+The selected loop combines:
 
-- generic across sectors;
-- less differentiated;
-- less tightly aligned to the Agriculture challenge’s field-observation example;
-- less compelling as an offline Small AI perception demonstration.
+- identifying a crop problem at a bounded visual level;
+- documenting a field observation;
+- connecting evidence to a later extension/cooperative review step.
 
-**Disposition:** rejected for this entry, not because digitization lacks value generally.
+That is directly traceable to Annex B.
 
----
+### 5.2 The AI contribution is distinct
 
-# 9. Residual risks of the selected route
+The learned component performs image pattern recognition.
 
-RoyaCheck is selected with material risks still visible.
+A form can record the observation but cannot itself perform that learned visual comparison.
 
-## Field-domain shift
+### 5.3 The data table supports the task
 
-Performance may change across:
+BRACOL is explicitly listed as relevant to Noor’s coffee crop.
 
-- cultivar;
-- disease stage;
-- camera;
-- lighting;
-- background;
-- geography;
-- season;
-- look-alike disease/stress.
+This makes the crop/image route unusually well aligned to the supplied sector data.
 
-The selected route therefore requires explicit OOD/abstention evaluation later.
+### 5.4 The workflow can be offline
 
-## Data representativeness
+The core proposal and record creation do not need a live connection.
 
-Public coffee-leaf datasets may not represent the intended farmer’s field conditions.
+That matters because the brief does not give Noor Wi-Fi or continuous smartphone/network access.
 
-Later stages must disclose:
+### 5.5 The decision can remain safe and bounded
 
-- source;
-- license;
-- image conditions;
-- class mapping;
-- coverage limits;
-- external-domain limitations.
+RoyaCheck must ultimately help Noor **prioritize a real human-review next step** using the bounded visual proposal; merely deciding whether to save a record is not sufficient AI value.
 
-## Human baseline uncertainty
+The exact decision wording and label-to-action routing remain for Stage 3. They must remain safe and bounded without:
 
-A competent farmer, technician, or reference guide may already handle obvious cases adequately.
+- claiming the cause of her yield decline;
+- prescribing treatment;
+- autonomously contacting an extension service;
+- making a market decision for her;
+- treating `no visible rust` as healthy/all-clear/no-disease.
 
-The project must not claim superiority over human experts unless directly measured.
+### 5.6 The evidence can be proximal
 
-## Incumbent products
+The hackathon can test:
 
-Crop-diagnosis tools already exist.
+- visual-model behavior;
+- abstention;
+- offline operation;
+- local latency/size;
+- human-authority state transitions;
+- record generation.
 
-Differentiation therefore depends on:
-
-- narrow coffee-rust scope;
-- browser-local/offline operation;
-- explicit uncertainty;
-- human authority;
-- structured observation/handoff;
-- transparent evidence/limitations.
-
-## Institutional handoff
-
-A technically valid local record does not prove that an extension/cooperative system can operationally absorb it.
-
-The prototype demonstrates a handoff-ready record, not institutional deployment.
+It does not need to pretend to prove farm-level impact.
 
 ---
 
-# 10. Falsifiers / reasons to reduce scope later
+## 6. Important case tensions that remain
 
-The selected route should be reduced, degraded, or killed if a later gate establishes that:
+### The yield decline is not diagnosed
 
-- legally reusable target data are inadequate;
-- meaningful OOD/abstention cannot be demonstrated;
-- browser-local inference cannot meet the declared technical budget;
-- the visual model adds no defensible value over the strongest simple baseline;
-- the authority boundary cannot be implemented reliably;
-- an official competition rule prohibits a required technical input.
+The selected route tests one visible coffee-leaf condition.
 
-A technical fallback may change the model or runtime path.
+It does not establish why Noor’s yields fell.
 
-It does **not** authorize silently switching to an entirely different product concept.
+### Smartphone access is weekend-assisted/shared
 
----
+The demo must preserve that Noor’s daughter boards in the district town and that Noor mainly uses the daughter’s smartphone on weekends with her help. That is both a device-access and screen-literacy constraint.
 
-# 11. Selection record
+The demo must not present Noor as having a personal smartphone in hand all day. Stage 3 must lock the operator, timing, leaf location/capture path, observation-to-capture delay, and role of Noor’s own phone.
 
-**Owner-selected route:**
+### A registry may still matter for scale
 
-> **RoyaCheck Offline — a narrow, offline-capable coffee-leaf rust observation aid for a smallholder farmer, with explicit uncertainty and human final authority.**
+Local operation can succeed while institutional reach remains constrained.
 
-The selected value loop is:
+### Price information remains unsolved
 
-> **leaf image → bounded visual proposal → explicit human disposition → local structured observation → deterministic extension/cooperative handoff**
+The selected route intentionally leaves Noor’s market-price problem outside the MVP.
 
-The selection rationale is:
+### BRACOL is relevant but not sufficient for field confidence
 
-- genuine perceptual AI task;
-- natural Small AI/offline fit;
-- strong farmer-facing demo;
-- measurable proximal evidence;
-- bounded safety surface;
-- low integration burden;
-- realistic solo-build scope.
+Its presence in the official brief is evidence of task relevance, not of field generalization.
 
-The selected route remains subject to the residual data, domain-shift, OOD, baseline, and handoff risks listed above.
+### Human-review capacity is limited
+
+The product can prepare a better record for later review; it does not create additional extension staff.
 
 ---
 
-# 12. Stage 2 conclusion
+## 7. Hard rejection / reduction triggers for the selected route
 
-The Agriculture alternatives considered are credible but create weaker combinations of AI necessity, evidence quality, dependency load, differentiation, or solo-build feasibility.
+The route must be reduced or stopped if later gates show that:
 
-RoyaCheck remains the selected route because it offers the clearest combination of:
+- legally usable image data are inadequate;
+- field/domain-transfer evidence is too weak for the intended claim;
+- reliable abstention/OOD behavior cannot be demonstrated;
+- browser-local inference cannot meet the declared device/size/latency budget;
+- the visual component adds no defensible value beyond the strongest simple baseline;
+- the human-authority boundary cannot be enforced;
+- an official rule prohibits a required technical input.
 
-> **development relevance + distinct visual AI value + constrained-environment fit + measurable technical evidence + human authority + reliable solo-build scope**
+A technical fallback may change model/runtime details.
 
-without requiring unsupported claims about treatment, yield, income, adoption, or institutional deployment.
+It does not silently authorize switching to an unrelated product concept.
 
-**Stage 2 status: READY FOR OWNER REVIEW.**
+---
+
+## 8. Owner selection record
+
+**Selected route:**
+
+> **RoyaCheck Offline — a small, offline-capable coffee-leaf observation aid that helps Noor structure a suspicious leaf observation and prepare it for human review, with explicit uncertainty and human final authority.**
+
+**Provisional case-level decision direction — final wording remains a Stage 3 owner decision:**
+
+> **Does this suspicious coffee leaf show enough visible evidence consistent with rust that Noor should prioritize it for human review, or should she record that no visible rust was observed while keeping review available if concern remains?**
+
+Stage 3 must lock the exact wording and label-to-action routing so the three AI proposals do not collapse into the same action.
+
+**Explicitly unsolved Annex B branches:**
+
+- full cause of seasonal yield decline;
+- market-price reference/bargaining;
+- registry creation;
+- extension staffing;
+- treatment planning.
+
+---
+
+## 9. Stage 2 conclusion
+
+RoyaCheck remains the selected route **because it is the strongest fit to this specific Annex B case**, not because coffee-rust classification is generically interesting.
+
+It combines:
+
+> **direct Noor-case fit + distinct visual AI value + official coffee-data relevance + offline Small AI plausibility + measurable evidence + bounded human authority + solo-build reliability**
+
+while leaving the price and infrastructure branches honestly out of scope.
+
+**Stage 2 status: Closed — owner approved (PR #9). The independent case-alignment audit is complete, its findings are reconciled, and RoyaCheck remains the owner-approved selected route subject to the Stage 3 locks.**

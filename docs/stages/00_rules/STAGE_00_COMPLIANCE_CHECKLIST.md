@@ -1,10 +1,10 @@
 # Stage 0 — Rules, Submission Requirements, and Compliance Control
 
 **Stage:** 0  
-**Status:** In review  
+**Status:** Closed — owner approved (PR #9)  
 **Purpose:** Establish one authoritative compliance checklist for the Small AI for Development Hackathon 2026 before later stages create technical or submission artifacts.
 
-This document is a compliance control, not a product specification. It records what the available official/public competition materials establish, what the authenticated participant submission surface establishes, what remains unresolved, and how later stages must enforce each requirement.
+This document is a compliance control, not a product specification. It records what the available official/public competition materials establish, what the authenticated participant submission surface establishes, what remains unresolved, and how later stages must enforce each requirement. The controlling Agriculture case interpretation is centralized in `ANNEX_B_CASE_CONTRACT.md`; generic Agriculture research may contextualize the case but may not redefine it.
 
 ---
 
@@ -17,7 +17,7 @@ This document is a compliance control, not a product specification. It records w
 | **S3** | Official Hack-Nation 7th Global AI Hackathon Luma event page: https://luma.com/z3za7zow | Primary event-host source for the 4 October 2026, 9:00 AM ET project-submission deadline and general event schedule. |
 | **S4** | Hack-Nation Global AI Hackathon page: https://hack-nation.ai/hackathon | Official event-host surface for event identity, dates, format, and participation context. |
 | **S5** | Official 3 October Hack-Nation kickoff materials | Pinpoints used here: “Rules 1/2”; “Rules 2/2 — submission checklist”; team/submission mechanics; judging-criteria slide. Supports platform + Google Form submission, public GitHub, live demo, Demo/Tech/Team video obligations, team mechanics, Discord challenge declaration, and general judging criteria. |
-| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Pinpoint anchors used here: the device/offline/model/local-language rule block; human-in-the-loop/uncertainty guardrail block; data-source and dataset-disclosure block; Agriculture annex challenge/dataset block; 2–5 minute challenge-video instruction. |
+| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Controlling pinpoints: Noor/user constraints and build rules (pp. 5–8); common datasets and deliverables/judging (pp. 8–11); Agriculture Annex B scenario/challenge/datasets (pp. 16–17). Supports device/offline/model/local-language rules, human-in-the-loop/fail-safe guardrails, two-layer data guidance, exact judging weights, 2–5 minute video content, and the Noor Agriculture case contract. |
 | **S7** | Authenticated Hack-Nation “Team & Submission” participant page captured 3 October 2026 | Page/field pinpoints: admission = accepted and deadline/grace information (p.1); two-submission notice, project/challenge fields and edit window (p.2); GitHub, live URL, team photo, team-introduction field (p.3); product-demo and technical-walkthrough fields (p.4). |
 
 ### Source-use rule
@@ -48,6 +48,10 @@ This document is a compliance control, not a product specification. It records w
 | 1 | Build for one sector: Health, Agriculture, or Tourism | S1, S2, S6 | CONFIRMED | Entry uses exactly one selected sector. Current route is Agriculture. | 3, 6, 10 | Product scope and final submission sector agree. |
 | 2 | Small AI must be targeted and use-case driven | S1, S6 | CONFIRMED | AI solves one bounded problem, not a broad general-assistant problem. | 3, 4, 7, 10 | Scope, architecture, demo, README. |
 | 3 | Demonstrate value under constrained conditions | S1, S6 | CONFIRMED | Explain and prove fit with realistic connectivity/device/infrastructure constraints. | 1, 4, 8, 9 | Problem evidence, architecture, offline proof, limitations. |
+| 3A | Agriculture entry must respond to the official Annex B Noor scenario | S6 | CONFIRMED — PARTICIPANT MATERIAL | Annex B is the controlling problem specification. The project must remain traceable to Noor’s stated crop/market problems, extension constraints, device context, and preconditions. | 1–10 | Annex B case contract + stage case-alignment checks. |
+| 3B | Agriculture solution must help Noor make, communicate, or act on **one better agricultural decision** | S6 | CONFIRMED — PARTICIPANT MATERIAL | RoyaCheck selects the crop-observation/documentation/extension-handoff branch. It does not need to solve every Annex B problem. | 1, 2, 3, 8, 10 | Explicit supported decision + end-to-end demo. |
+| 3C | Noor’s crop uncertainty and price-reference problem are separate case branches | S6 | CONFIRMED — PARTICIPANT MATERIAL | Selected entry addresses one bounded crop-observation branch. Market-price reference is acknowledged but out of scope for the MVP. | 1, 2, 3, 10 | Scope/exclusions + video narrative. |
+| 3D | Farmer-registry, phone access, and trust are explicit scalability preconditions | S6 | CONFIRMED — PARTICIPANT MATERIAL | The local one-user loop may work without a registry, but scaled outreach/follow-up cannot be claimed without the relevant institutional infrastructure. | 1, 3, 9, 10 | Limitations/scalability statement. |
 | 4 | Individual/solo entry is allowed | S1, S2, S5, S7 | CONFIRMED | A team of one is permitted. | 0, 10 | Participant page/team state. |
 | 4A | Entrant must be accepted and have access to the competition submission flow | S1, S7 | CONFIRMED | Owner confirmed current Team & Submission access; S7 shows admission status **accepted**. | 0, 10 | Authenticated platform state. |
 | 5 | Team size is 1–4 and members must be represented on the platform | S2, S5, S7 | CONFIRMED | Solo route uses one member; no undeclared team member is added. | 0, 10 | Team state. |
@@ -69,7 +73,7 @@ This document is a compliance control, not a product specification. It records w
 | 21 | Team introduction video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
 | 22 | Product demo video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
 | 23 | Technical walkthrough video is required | S5, S7 | CONFIRMED — PARTICIPANT MATERIAL | Separate required upload; MP4 or MOV; maximum 60 seconds; maximum 1 GB. | 10 | Uploaded video. |
-| 24 | Small AI challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | S7 exposes only the three 60-second Hack-Nation video sections; no 2–5 minute challenge-video field is visible in the captured submission page. Destination remains unresolved. | 10 | Separate compliant 2–5 minute cut unless an official field/rule explicitly maps it elsewhere. |
+| 24 | Small AI challenge requires a **2–5 minute video** | S6 | CONFIRMED — PARTICIPANT MATERIAL | **Entries without this video will not make it to the shortlist.** The problem sentence must use the organizer’s exact structure: **“Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence].”** The video must also explain the AI capability and why a simpler tool is insufficient, guardrails, end-to-end demo, where the tool sits in the user’s day/what happens next, technical stack where relevant, and the entrant’s view of localizing AI development. S7 exposes only the three 60-second platform sections, so the destination remains unresolved. | 10 | Separate compliant 2–5 minute cut + exact content checklist unless an official field/rule maps it elsewhere. |
 | 25 | Whether the 2–5 minute video can satisfy any Hack-Nation video field | S6, S7 | UNRESOLVED PLATFORM DETAIL | The visible platform fields have 60-second limits, so a 2–5 minute file cannot fit those fields as displayed. Keep it separate until the challenge-specific destination is identified. | 6, 10 | Challenge/rules/Google Form field inspection. |
 | 26 | Project details are editable before the deadline | S7 | CONFIRMED — PARTICIPANT MATERIAL | S7 says project details can be edited until the deadline and shows a Save draft action; S7 also says uploads/edits/submissions remain open through the 15-minute grace. | 10 | Platform behavior. Do not rely on post-9:00 grace for normal work. |
 | 27 | Challenge selection should be declared in Discord | S5 | CONFIRMED — PARTICIPANT MATERIAL | Owner confirmed Agriculture / Challenge 4 was already declared. | 0 | **Complete — owner confirmation.** |
@@ -79,16 +83,18 @@ This document is a compliance control, not a product specification. It records w
 | 31 | Entry must explain why AI adds value beyond simpler tools | S1, S6 | CONFIRMED | AI must perform a distinct visual-inference task a form/spreadsheet/search alone cannot. | 1, 3, 10 | Problem/value explanation. |
 | 32 | Proof the AI works on the selected sector is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | Show measured classification/abstention behavior, not only architecture. | 7, 9, 10 | Evaluation + demo evidence. |
 | 33 | Core feature must work offline | S6 | CONFIRMED — PARTICIPANT MATERIAL | Core rust proposal must not depend on a live network. | 4, 7, 8, 9 | Hard-reload offline test + network evidence. |
-| 34 | Solution should run on a device the intended user can realistically access | S1, S6 | CONFIRMED | State/test device assumptions honestly. | 1, 4, 9 | Device/browser evidence + limitation. |
+| 34 | Solution should run on a device the intended user can realistically access | S1, S6 | CONFIRMED | Noor’s case includes shared/intermittent smartphone access rather than an always-carried smartphone. The prototype may target the household smartphone but must not imply continuous possession or connectivity. | 1, 3, 4, 8, 9 | User-day/device path + device/browser evidence + limitation. |
 | 35 | Model files must be small enough to side-load / transfer over weak connectivity | S6 | CONFIRMED — PARTICIPANT MATERIAL | Report actual model/runtime/cached-bundle bytes rather than using “small” rhetorically. | 4, 7, 9 | Size measurement + transfer path. |
-| 36 | At least one local-language interaction is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | S6’s local-language rule permits voice or text; project policy is Spanish text at minimum for the selected target context. | 8, 10 | Visible Spanish interaction. |
+| 36 | At least one local-language interaction is required | S6 | CONFIRMED — PARTICIPANT MATERIAL | S6 permits voice or text, requires the language to be named, and expects an answer on less-supported languages. Because the brief distinguishes Noor’s local/home language from the national language she uses when needed, Stage 3 must choose either **(A)** a real local/home language in the selected evidence-anchor context with explicit reasoning, or **(B)** a national/vehicular language with the weaker case fit disclosed. The choice is an implementation decision, never a fact about Noor’s fictional location. | 3, 8, 10 | Named-language UI interaction + local-vs-national rationale + explicit less-supported-language answer. |
 | 37 | Human makes the final call | S6 | CONFIRMED — PARTICIPANT MATERIAL | AI proposal cannot silently become the formal observation. | 4, 8, 9 | Separate AI/human fields + tests. |
 | 38 | Tool must flag uncertainty / fail safely | S6 | CONFIRMED — PARTICIPANT MATERIAL | `not sure` and human-review routing are first-class requirements. | 4, 7, 8, 9 | Abstention + challenge tests. |
 | 39 | Tool must not autonomously act on the user’s behalf | S6 | CONFIRMED — PARTICIPANT MATERIAL | No autonomous spraying, selling, contacting, or formal diagnosis. | 3, 8, 9 | UX/action audit. |
 | 40 | Avoid hallucinated agronomy | S6 | CONFIRMED — PARTICIPANT MATERIAL | No generative treatment/advisory content in the rust decision loop. | 3, 8, 10 | Exclusions + demo inspection. |
-| 41 | Cite problem/gap data | S6 | CONFIRMED — PARTICIPANT MATERIAL | Material development claims need source/year/context/limitations. | 1, 9, 10 | Citations/evidence table. |
+| 41 | Cite problem/gap data | S6 | CONFIRMED — PARTICIPANT MATERIAL | S6 asks for contextual data with source, year, and country/context. Because Noor is fictional, real-world evidence must be labeled as an evidence anchor rather than Noor’s location. | 1, 3, 9, 10 | Annex B case source + real-world context source/year/country + limitations. |
 | 42 | Name every learning/evaluation dataset, source, license, size, and coverage limits | S6 | CONFIRMED — PARTICIPANT MATERIAL | Dataset limitations are evidence, not optional caveats. | 4, 7, 9, 10 | Dataset record/evidence table. |
 | 43 | Provided datasets are suggestions rather than a closed mandatory list | S6 | CONFIRMED — PARTICIPANT MATERIAL | Other public data may be used if terms are checked. | 4, 7 | Dataset decision + license verdict. |
+| 43A | Strong entries draw on both common and sector data layers | S6 | CONFIRMED — PARTICIPANT MATERIAL | Sector data supports what the tool operates on; common data grounds language/connectivity/device/inclusion or other case constraints. | 1, 3, 4, 9, 10 | Named common-source evidence + named sector dataset(s). |
+| 43B | BRACOL is explicitly listed as directly relevant to Noor’s coffee crop | S6 | CONFIRMED — PARTICIPANT MATERIAL | BRACOL supports task relevance only; it does not prove field robustness, causal relevance to falling yields, or Noor-specific performance. | 4, 7, 9, 10 | Dataset-role/coverage statement + field-domain limitation. |
 | 44 | Third-party rights must be held for submitted materials | S1 | CONFIRMED | Code, images, models, datasets, music/video assets, fonts and footage must not knowingly infringe rights. | 4, 7, 10 | Rights/attribution records. |
 | 45 | Participants retain ownership of their submissions | S1, S2 | CONFIRMED | Entrant keeps ownership subject to competition terms. | 0 | No further action. |
 | 46 | Submission grants the organizer a broad non-exclusive, royalty-free license for competition/education/promotion/knowledge sharing | S1 | CONFIRMED | Third-party content appearing in the repo, live demo, videos or submission must be licensed compatibly with the organizer’s stated downstream uses, with required attribution. Otherwise exclude or replace it. | 4, 7, 10 | Organizer-license compatibility verdict + Stage 10 asset inventory recheck. |
@@ -104,7 +110,7 @@ This document is a compliance control, not a product specification. It records w
 | 56 | Judging includes technical merit/depth | S1, S5 | CONFIRMED | Technical credibility matters without undermining Small AI fit or completion. | 7, 9, 10 | Working evidence + technical explanation. |
 | 57 | Judging includes development relevance, design, and inclusivity | S1 | CONFIRMED | Development problem fit and inclusion are first-order criteria. | 1, 3, 10 | Problem/value narrative + localization. |
 | 58 | Generic Hack-Nation judging includes communication and innovation/creativity | S5 | CONFIRMED — PARTICIPANT MATERIAL | Video/documentation quality and differentiated story matter. | 9, 10 | README/video/pitch quality. |
-| 59 | Exact scoring weights | S1, S5 | UNRESOLVED PLATFORM DETAIL | Do not invent numeric weights. | 10 | Use only if officially published. |
+| 59 | Challenge-brief judging weights **and official questions** | S6 | CONFIRMED — PARTICIPANT MATERIAL | **25% — The built solution (Small AI fidelity):** “Does the tool work end to end within the constraints of the sector?” **20% — Development relevance and impact:** “Is this a real problem from the sector briefs, and does the outcome matter to the person it is built for?” **15% — Data grounding:** “Does the tool help address an identified gap in the data, is the data modeling sound?” **15% — Evidence it works:** “Does the solution fit the challenges identified in the sector, does it add other constraints?” **15% — Clarity, design and inclusivity / Value proposition for AI:** “What the tool does with AI (machine learning, computer vision, language, generative), and would a simpler tool (SMS, a spreadsheet, a search) do the same job?” **10% — Scalability, replicability and what happens next:** “Could another setting reuse this innovation?” **Pass/fail — Responsible AI, data and safety:** “Are the limits respected, and the account of privacy, consent, bias, and human oversight credible?” | 1–10 | Judge-alignment matrix must map evidence to the official questions as well as the weights. |
 | 60 | Only official submission channels count | S1 | CONFIRMED | Email/social/direct outreach is not a valid entry submission. | 10 | Platform + Google Form receipts. |
 | 61 | Submission receipt evidence is retained privately | S1 | PROJECT POLICY | Because confirmed receipt matters and screenshots may expose account data, keep raw receipts private; publish only a redacted statement if useful. | 10 | Private receipt evidence. |
 | 62 | Freeze the judged repository state after the deadline unless official rules explicitly permit changes | S1 | PROJECT POLICY | Avoid ambiguity about what was judged. Tag/reference the submitted commit where possible. | 10 | Submitted commit SHA/tag + no default-branch pushes during judging absent permission. |
@@ -269,6 +275,10 @@ The following are sufficiently established to govern the build:
 - required 60-second Team Introduction, Product Demo, and Technical Walkthrough uploads;
 - separate 2–5 minute Small AI challenge video requirement;
 - targeted Small AI;
+- Annex B / Noor as the controlling Agriculture case;
+- one better agricultural decision as the required case-level unit of value;
+- crop-observation/documentation/extension-handoff as the selected problem branch, with the price branch explicitly out of scope;
+- farmer-registry/phone/trust preconditions acknowledged for scale;
 - realistic-device constraint;
 - offline core;
 - small/sideloadable model;
@@ -276,6 +286,8 @@ The following are sufficiently established to govern the build:
 - human final call;
 - uncertainty/fail-safe behavior;
 - data attribution/limitations;
+- both common and sector data layers, with BRACOL explicitly relevant to Noor’s crop but not field-validation evidence;
+- exact challenge-brief judging weights **and official judging questions**, including the responsible-AI pass/fail gate;
 - AI-value explanation;
 - working prototype;
 - responsible-AI/privacy;
@@ -292,7 +304,6 @@ Still not visible on the inspected Team & Submission page:
 - exact AI coding-assistant rule;
 - exact outside-review rule;
 - exact pre-existing-code/boilerplate rule;
-- exact scoring weights;
 - target URL/fields of the Google Form link;
 - destination of the separate 2–5 minute challenge video;
 - whether an explicit repository LICENSE is a competition rule versus project policy.
@@ -312,6 +323,6 @@ The route remains viable and the authenticated participant page resolves the mos
 
 The repository naming/description blocker is resolved. Remaining rule silence is explicitly identified and controlled conservatively rather than treated as permission.
 
-The focused Tier A re-audit found no unresolved major findings and no new blocking or major findings; its only blocking residual was the repository description state, which has since been corrected and independently verified. The remaining re-audit items are minor documentation consistency repairs handled in the final Stage 0 pass.
+The earlier Stage 0 audits remain valid for the rules, submission mechanics, branding, and rule-silence issues they examined. They did **not** close the later-discovered Annex B case-alignment gap. Stage 0 has therefore been reopened narrowly so the official Noor scenario, exact challenge-video content, two-layer data guidance, and judging rubric become explicit controlling requirements.
 
-**Stage 0 status: IN REVIEW — ready for final owner closure/merge decision after the final minor-repair verification.**
+**Stage 0 status: Closed — owner approved (PR #9). The independent Annex B audit is preserved, its findings were reconciled, and the repaired foundation was explicitly approved for merge by the owner.**
