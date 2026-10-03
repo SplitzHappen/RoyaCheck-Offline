@@ -17,7 +17,7 @@ This document is a compliance control, not a product specification. It records w
 | **S3** | Official Hack-Nation 7th Global AI Hackathon Luma event page: https://luma.com/z3za7zow | Primary event-host source for the 4 October 2026, 9:00 AM ET project-submission deadline and general event schedule. |
 | **S4** | Hack-Nation Global AI Hackathon page: https://hack-nation.ai/hackathon | Official event-host surface for event identity, dates, format, and participation context. |
 | **S5** | Official 3 October Hack-Nation kickoff materials | Pinpoints used here: “Rules 1/2”; “Rules 2/2 — submission checklist”; team/submission mechanics; judging-criteria slide. Supports platform + Google Form submission, public GitHub, live demo, Demo/Tech/Team video obligations, team mechanics, Discord challenge declaration, and general judging criteria. |
-| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Pinpoint anchors used here: the device/offline/model/local-language rule block; human-in-the-loop/uncertainty guardrail block; data-source and dataset-disclosure block; Agriculture annex challenge/dataset block; 2–5 minute challenge-video instruction. |
+| **S6** | Official Small AI for Development Challenge Brief supplied to participants | Controlling pinpoints: Noor/user constraints and build rules (pp. 5–8); common datasets and deliverables/judging (pp. 8–11); Agriculture Annex B scenario/challenge/datasets (pp. 16–17). Supports device/offline/model/local-language rules, human-in-the-loop/fail-safe guardrails, two-layer data guidance, exact judging weights, 2–5 minute video content, and the Noor Agriculture case contract. |
 | **S7** | Authenticated Hack-Nation “Team & Submission” participant page captured 3 October 2026 | Page/field pinpoints: admission = accepted and deadline/grace information (p.1); two-submission notice, project/challenge fields and edit window (p.2); GitHub, live URL, team photo, team-introduction field (p.3); product-demo and technical-walkthrough fields (p.4). |
 
 ### Source-use rule
@@ -323,6 +323,6 @@ The route remains viable and the authenticated participant page resolves the mos
 
 The repository naming/description blocker is resolved. Remaining rule silence is explicitly identified and controlled conservatively rather than treated as permission.
 
-The focused Tier A re-audit found no unresolved major findings and no new blocking or major findings; its only blocking residual was the repository description state, which has since been corrected and independently verified. The remaining re-audit items are minor documentation consistency repairs handled in the final Stage 0 pass.
+The earlier Stage 0 audits remain valid for the rules, submission mechanics, branding, and rule-silence issues they examined. They did **not** close the later-discovered Annex B case-alignment gap. Stage 0 has therefore been reopened narrowly so the official Noor scenario, exact challenge-video content, two-layer data guidance, and judging rubric become explicit controlling requirements.
 
 **Stage 0 status: REOPENED — Annex B case-alignment repair is pending independent adversarial audit before re-closure.**
