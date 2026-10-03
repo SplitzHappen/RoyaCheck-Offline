@@ -1,7 +1,7 @@
 # Stage 3 — Product Scope and Route Lock
 
 **Stage:** 3  
-**Status:** In review — audit reconciled; narrow confirmation pending  
+**Status:** Closed — owner approved (PR #11)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling case:** `docs/stages/00_rules/ANNEX_B_CASE_CONTRACT.md`  
@@ -373,14 +373,10 @@ None of those are decided by Stage 3.
 
 José Antonio explicitly approved D3-01 through D3-15 on 2026-10-03, including the revised action-based D3-14 routing and the narrow ROADMAP terminology correction.
 
-The substantive owner-decision gate is therefore complete. Stage 3 is **not yet closed**.
+The substantive owner-decision gate is complete. Claude's independent Stage 3 audit returned **PASS WITH MAJOR REPAIRS**; the authorized repairs were reconciled, and Claude's narrow confirmation verified all 10 requested repairs with no new blocker or major finding. Its sole new minor finding, N1, was a record-traceability issue and is recorded in the reconciliation with explicit owner acknowledgement. Claude stated that no further Stage 3 audit is required before closure.
 
-Before closure:
+José Antonio explicitly authorized Stage 3 closure and the guarded merge sequence for PR #11 on 2026-10-03.
 
-1. preserve this accepted decision record;
-2. run the required independent Claude audit against the Stage 3 package;
-3. reconcile any material finding without silently changing an owner-approved decision;
-4. return any consequential change to José Antonio for explicit approval;
-5. only then request owner authorization to close/merge Stage 3.
+**Stage 3 status: Closed — owner approved (PR #11).**
 
-**Stage 3 status: In review — audit reconciled; narrow confirmation pending.**
+Stage 4 remains unauthorized until PR #11 is successfully merged and a separate Stage 4 owner-control authorization is granted.
