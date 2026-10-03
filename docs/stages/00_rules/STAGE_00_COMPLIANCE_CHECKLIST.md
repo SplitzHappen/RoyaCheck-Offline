@@ -49,6 +49,7 @@ The following sources govern this checklist.
 | 2 | Small AI must be targeted and use-case driven | S1, S6 | CONFIRMED | AI should solve one bounded problem, not become a broad general assistant. | 3, 4, 7, 10 | Product scope, architecture, demo, README. |
 | 3 | Demonstrate value under constrained conditions | S1, S6 | CONFIRMED | The entry must show why the intervention fits real connectivity/device/infrastructure constraints. | 1, 4, 8, 9 | Problem evidence, architecture, offline proof, limitations. |
 | 4 | Individual/solo entry is allowed | S1, S2, S5 | CONFIRMED | A team of one is permitted. | 0, 10 | Platform team/submission entry shows the entrant only. |
+| 4A | Entrant must be a registered and accepted participant with access to the designated competition submission flow | S1 | CONFIRMED | Registration alone is not the competition entry; accepted participants must use the designated portal during the competition window. | 0, 10 | Owner confirms active participant/submission access on the Hack-Nation platform. |
 | 5 | Team size is at most four; each team member must be registered | S1, S2, S5 | CONFIRMED | Not a constraint for the solo route beyond ensuring no undeclared team member is added. | 0, 10 | Platform team state. |
 | 6 | Participant age eligibility is 18–35 | S1, S2 | CONFIRMED | Entrant must satisfy privately; personal eligibility evidence need not be reproduced in the public repository. | 0 | Owner attestation / platform eligibility. |
 | 7 | Participant must be from a World Bank member country | S1, S2 | CONFIRMED | Entrant must satisfy privately. | 0 | Owner/platform eligibility. |
@@ -281,9 +282,10 @@ These are **not** treated as permission. The owner dispositions in Section 5 gov
 
 ## Owner actions required before Stage 0 closure
 
-1. **Branding/name risk:** decide whether to rename the public repository and remove organizer/partner names/acronyms from independent entry materials.
-2. **Discord challenge notification:** confirm whether Agriculture / Challenge 4 has already been declared as instructed; if not, perform the notification.
-3. Confirm continued acceptance of the conservative rule-silence dispositions in Section 5 after the independent Stage 0 audit.
+1. **Participant submission access:** confirm that the current Hack-Nation account exposes the active competition team/submission flow for this entrant.
+2. **Branding/name risk:** decide whether to rename the public repository and remove organizer/partner names/acronyms from independent entry materials.
+3. **Discord challenge notification:** confirm whether Agriculture / Challenge 4 has already been declared as instructed; if not, perform the notification.
+4. Confirm continued acceptance of the conservative rule-silence dispositions in Section 5 after the independent Stage 0 audit.
 
 ---
 
