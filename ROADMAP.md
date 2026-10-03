@@ -678,7 +678,7 @@ A smaller MobileNetV3-Small 0.50-class architecture may be invoked **only if Sta
 
 ### D — stop / reduce
 
-If A0 and, when the preregistered clock permits, A1 both fail the **full D4-11 validation gate**, stop the full three-state learned claim. The pre-authorized degraded safety mode disables `no visible rust`: high-confidence rust may still route to `visible rust`; every other learned outcome routes to `not sure`. Its `T_rust` must be selected on validation only from the frozen grid, subject to the owner-fixed false-alarm-share cap recorded in Stage 4; if no threshold satisfies that cap, there is no learned proposal. The degraded artifact remains subject to the same 7D parity and 7E/7F one-shot discipline.
+If A0 and, when the preregistered clock permits, A1 both fail the **full D4-11 validation gate**, stop the full three-state learned claim. The pre-authorized degraded safety mode disables `no visible rust`: high-confidence rust may still route to `visible rust`; every other learned outcome routes to `not sure`. Its `T_rust` must be selected on validation only from the frozen 0.50–0.95 grid, maximizing `|R→VR|` subject to `|(H∪O)→VR| / |→VR| ≤ 20%` (at least 80% validation precision among `visible rust` routes); ties prefer the higher `T_rust`. If no threshold satisfies the 20% cap, there is no learned proposal. The degraded artifact remains subject to the same 7D parity and 7E/7F one-shot discipline.
 
 ### Diagnostic baseline only
 
@@ -1158,7 +1158,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 1 — Agriculture problem research | Closed — owner approved (PR #9) |
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
-| 4 — Product/data/model/evaluation pre-registration | In review |
+| 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
 | 5 — Readiness / fallback planning | Not started |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
@@ -1170,6 +1170,8 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stage 3 is **Closed — owner approved (PR #11)** and its owner-directed simplification amendment is merged as **PR #15**. The controlling product invariant is intermittent/shared/assisted smartphone access; rigid weekend/daughter/on-slope/backing-card choreography is not required, and Lugisu validation gates localization claims rather than technical MVP progress.
+Stage 3 is **Closed — owner approved (PR #11)** and its owner-directed simplification amendment is merged as **PR #15**.
 
-Stage 4 remains **In review** in PR #13. Claude's narrow confirmation returned **PASS WITH MINOR REPAIRS**: all M1–M10 and m1–m9 are confirmed; N1 is now repaired with the ≥70% U-category `not sure` target. N2 is structurally repaired, but its confirmation explicitly requires one owner-chosen degraded-mode false-alarm-share cap before Stage 4 can close. No definitive training or held-out/external/challenge readout is authorized before that value is locked and Stage 4 is legitimately closed/merged.
+Stage 4 is **Closed — owner approved (PR #13)** for the guarded merge sequence. Claude's Tier A audit and narrow confirmation are preserved; all M1–M10 and m1–m9 repairs stand; N1 is repaired with the ≥70% U-category `not sure` target; and N2 is fully locked with a **20% maximum degraded-mode false-alarm share** before any validation result was produced.
+
+After PR #13 merges, proceed immediately through Stage 5 readiness/fallback and Stage 6 official-source recheck/greenlight. No definitive Stage 7 training or held-out/external/challenge readout is authorized until the Stage 6 greenlight is recorded.
