@@ -30,12 +30,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "4f1f19e8738453e908fb7de68cd013be295510df"
+          test "$(git rev-parse HEAD^)" = "0e14ba006a2f967dbb0604ec66050c68da99746a"
           git merge-base --is-ancestor 9cd0ae6ab0fdde79c8002db96e8e7d7577674580 HEAD
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
           test ! -d raw_data
           test ! -d data/raw
-      - name: Repair runtime assets and app shell
+      - name: Repair runtime assets, CSP, and app shell
         shell: bash
         run: |
           set -euo pipefail
@@ -63,28 +63,32 @@ jobs:
           s = s.replace('ort.env.wasm.wasmPaths = "./";', 'ort.env.wasm.wasmPaths = ORT_BASE_URL;')
           app.write_text(s)
 
-          p = Path('app/index.html')
-          p.write_text(p.read_text().replace('  <script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\n', ''))
+          html = Path('app/index.html')
+          s = html.read_text()
+          s = s.replace('  <script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\n', '')
+          s = s.replace("script-src 'self';", "script-src 'self' 'wasm-unsafe-eval';")
+          html.write_text(s)
 
-          p = Path('app/sw.js')
-          s = p.read_text().replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"')
-          p.write_text(s)
+          sw = Path('app/sw.js')
+          s = sw.read_text().replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"')
+          sw.write_text(s)
 
-          p = Path('tests/static-smoke.mjs')
-          s = p.read_text()
+          smoke = Path('tests/static-smoke.mjs')
+          s = smoke.read_text()
           s = s.replace("  'const ort = window.ort;',", "  'import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";',")
           s = s.replace("  'ort.env.wasm.wasmPaths = \"./vendor/onnxruntime-web/\";',", "  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',")
           s = s.replace("  'ort.env.wasm.wasmPaths = \"./\";',", "  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',")
           s = s.replace('assert.doesNotThrow(() => new Function(js), "app.js must be syntactically valid classic JavaScript");\n', "assert.ok(js.includes('const ORT_BASE_URL = new URL(\"./vendor/onnxruntime-web/\", import.meta.url).href;'));\n")
           s = s.replace("assert.ok(!js.includes('ort.wasm.min.mjs'), \"App shell must not reference missing ORT module assets.\");\n", '')
           s = s.replace('assert.ok(html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n', 'assert.ok(!html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n')
+          s = s.replace('assert.ok(!html.match(/https?:\\/\\//), "App shell must not depend on remote HTTP assets.");', 'assert.ok(html.includes("script-src \'self\' \'wasm-unsafe-eval\'"));\nassert.ok(!html.match(/https?:\\/\\//), "App shell must not depend on remote HTTP assets.");')
           s = s.replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",')
-          p.write_text(s)
+          smoke.write_text(s)
 
-          p = Path('docs/stages/08_mvp/STAGE_08_MVP_BUILD.md')
-          s = p.read_text().replace('self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread', 'self-hosted `onnxruntime-web@1.30.0`, WASM-only ES-module path, one thread')
+          doc = Path('docs/stages/08_mvp/STAGE_08_MVP_BUILD.md')
+          s = doc.read_text().replace('self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread', 'self-hosted `onnxruntime-web@1.30.0`, WASM-only ES-module path, one thread')
           s = s.replace('by a temporary Actions workflow because ordinary connector file writes are text-only. That workflow must be removed after the verified asset commit.', 'by a temporary Actions workflow because ordinary connector file writes cannot reliably stage binary runtime assets. The temporary workflow was removed after evidence capture.')
-          p.write_text(s)
+          doc.write_text(s)
 
           files = ['app/index.html','app/styles.css','app/app.js','app/manifest.webmanifest','app/sw.js','app/assets/icon.svg','app/assets/model/royacheck_a0_fp32.onnx','app/vendor/onnxruntime-web/ort.wasm.min.mjs','app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs','app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm']
           rows=[]; total=0
@@ -154,7 +158,7 @@ jobs:
 
           No deployment, RoCoLe inference, challenge-set inference, model change, threshold change, preprocessing change, raw dataset commit, video production, submission, treatment recommendation, claim expansion, or Stage 7 closure was performed.
 
-          Runtime asset repair: final branch uses self-hosted WASM ES-module assets from `onnxruntime-web@1.30.0` with an absolute ORT asset prefix derived from `import.meta.url`.
+          Runtime asset repair: final branch uses self-hosted WASM ES-module assets from `onnxruntime-web@1.30.0`, an absolute ORT asset prefix derived from `import.meta.url`, and the minimum CSP allowance `wasm-unsafe-eval` needed for browser WebAssembly compilation.
 
           The temporary workflow removed itself before committing this evidence file.
           EOF
