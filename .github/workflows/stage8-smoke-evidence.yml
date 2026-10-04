@@ -2,10 +2,8 @@ name: Stage 8 temporary smoke evidence
 
 on:
   push:
-    branches:
-      - chatgpt/stage-08-mvp-build
-    paths:
-      - '.github/workflows/stage8-smoke-evidence.yml'
+    branches: [chatgpt/stage-08-mvp-build]
+    paths: ['.github/workflows/stage8-smoke-evidence.yml']
   workflow_dispatch:
 
 permissions:
@@ -21,28 +19,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout Stage 8 branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: chatgpt/stage-08-mvp-build
           fetch-depth: 8
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-
       - name: Verify guarded ancestry and fixed model asset
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "7340f73f6a192489e7dbf9c36131712362ba54ae"
+          test "$(git rev-parse HEAD^)" = "4f1f19e8738453e908fb7de68cd013be295510df"
           git merge-base --is-ancestor 9cd0ae6ab0fdde79c8002db96e8e7d7577674580 HEAD
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
           test ! -d raw_data
           test ! -d data/raw
-
-      - name: Repair bounded ORT Web asset layout
+      - name: Repair runtime assets and app shell
         shell: bash
         run: |
           set -euo pipefail
@@ -61,71 +54,48 @@ jobs:
           from pathlib import Path
 
           app = Path('app/app.js')
-          text = app.read_text()
-          text = text.replace('const ort = window.ort;\n\n', 'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";\n\n')
-          text = text.replace('  if (!ort) throw new Error("ONNX Runtime Web did not load.");\n', '')
-          text = text.replace('ort.env.wasm.wasmPaths = "./vendor/onnxruntime-web/";', 'ort.env.wasm.wasmPaths = "./";')
-          app.write_text(text)
+          s = app.read_text()
+          s = s.replace('const ort = window.ort;\n\n', 'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";\nconst ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;\n\n')
+          if 'const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;' not in s:
+              s = s.replace('import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";\n\n', 'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";\nconst ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;\n\n')
+          s = s.replace('  if (!ort) throw new Error("ONNX Runtime Web did not load.");\n', '')
+          s = s.replace('ort.env.wasm.wasmPaths = "./vendor/onnxruntime-web/";', 'ort.env.wasm.wasmPaths = ORT_BASE_URL;')
+          s = s.replace('ort.env.wasm.wasmPaths = "./";', 'ort.env.wasm.wasmPaths = ORT_BASE_URL;')
+          app.write_text(s)
 
-          html = Path('app/index.html')
-          text = html.read_text().replace('  <script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\n', '')
-          html.write_text(text)
+          p = Path('app/index.html')
+          p.write_text(p.read_text().replace('  <script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\n', ''))
 
-          sw = Path('app/sw.js')
-          text = sw.read_text()
-          text = text.replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"')
-          sw.write_text(text)
+          p = Path('app/sw.js')
+          s = p.read_text().replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"')
+          p.write_text(s)
 
-          smoke = Path('tests/static-smoke.mjs')
-          text = smoke.read_text()
-          text = text.replace("  'const ort = window.ort;',", "  'import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";',")
-          text = text.replace("  'ort.env.wasm.wasmPaths = \"./vendor/onnxruntime-web/\";',", "  'ort.env.wasm.wasmPaths = \"./\";',")
-          text = text.replace('assert.doesNotThrow(() => new Function(js), "app.js must be syntactically valid classic JavaScript");\n', "assert.ok(js.includes('import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";'));\n")
-          text = text.replace("assert.ok(!js.includes('ort.wasm.min.mjs'), \"App shell must not reference missing ORT module assets.\");\n", '')
-          text = text.replace('assert.ok(html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n', 'assert.ok(!html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n')
-          text = text.replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",')
-          smoke.write_text(text)
+          p = Path('tests/static-smoke.mjs')
+          s = p.read_text()
+          s = s.replace("  'const ort = window.ort;',", "  'import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";',")
+          s = s.replace("  'ort.env.wasm.wasmPaths = \"./vendor/onnxruntime-web/\";',", "  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',")
+          s = s.replace("  'ort.env.wasm.wasmPaths = \"./\";',", "  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',")
+          s = s.replace('assert.doesNotThrow(() => new Function(js), "app.js must be syntactically valid classic JavaScript");\n', "assert.ok(js.includes('const ORT_BASE_URL = new URL(\"./vendor/onnxruntime-web/\", import.meta.url).href;'));\n")
+          s = s.replace("assert.ok(!js.includes('ort.wasm.min.mjs'), \"App shell must not reference missing ORT module assets.\");\n", '')
+          s = s.replace('assert.ok(html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n', 'assert.ok(!html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n')
+          s = s.replace('  "./vendor/onnxruntime-web/ort.all.min.js",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",', '  "./vendor/onnxruntime-web/ort.wasm.min.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",\n  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",')
+          p.write_text(s)
 
-          doc = Path('docs/stages/08_mvp/STAGE_08_MVP_BUILD.md')
-          text = doc.read_text()
-          text = text.replace('self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread', 'self-hosted `onnxruntime-web@1.30.0`, WASM-only ES-module path, one thread')
-          text = text.replace('by a temporary Actions workflow because ordinary connector file writes are text-only. That workflow must be removed after the verified asset commit.', 'by a temporary Actions workflow because ordinary connector file writes cannot reliably stage binary runtime assets. The temporary workflow was removed after evidence capture.')
-          doc.write_text(text)
+          p = Path('docs/stages/08_mvp/STAGE_08_MVP_BUILD.md')
+          s = p.read_text().replace('self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread', 'self-hosted `onnxruntime-web@1.30.0`, WASM-only ES-module path, one thread')
+          s = s.replace('by a temporary Actions workflow because ordinary connector file writes are text-only. That workflow must be removed after the verified asset commit.', 'by a temporary Actions workflow because ordinary connector file writes cannot reliably stage binary runtime assets. The temporary workflow was removed after evidence capture.')
+          p.write_text(s)
 
-          files = [
-              'app/index.html', 'app/styles.css', 'app/app.js', 'app/manifest.webmanifest', 'app/sw.js', 'app/assets/icon.svg',
-              'app/assets/model/royacheck_a0_fp32.onnx',
-              'app/vendor/onnxruntime-web/ort.wasm.min.mjs',
-              'app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs',
-              'app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm',
-          ]
-          rows = []
-          total = 0
+          files = ['app/index.html','app/styles.css','app/app.js','app/manifest.webmanifest','app/sw.js','app/assets/icon.svg','app/assets/model/royacheck_a0_fp32.onnx','app/vendor/onnxruntime-web/ort.wasm.min.mjs','app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs','app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm']
+          rows=[]; total=0
           for name in files:
-              data = Path(name).read_bytes()
-              total += len(data)
-              rows.append({'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
-          manifest = {
-              'stage': '8_mvp_asset_bundle',
-              'source_stage7d_artifact_id': 11292181113,
-              'source_stage7d_artifact_name': 'stage7d-a0-export-parity',
-              'onnx_expected_sha256': '4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041',
-              'onnxruntime_web_version': '1.30.0',
-              'core_budget_bytes': 30000000,
-              'cached_file_bytes': total,
-              'core_budget_pass': total <= 30000000,
-              'files': rows,
-              'boundaries': {'deployment': False, 'rocole_inference': False, 'challenge_inference': False, 'model_change': False, 'threshold_change': False, 'preprocessing_change': False},
-          }
-          if not manifest['core_budget_pass']:
-              raise SystemExit(f'core asset budget failed: {total}')
-          Path('docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+              data=Path(name).read_bytes(); total += len(data); rows.append({'path':name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()})
+          manifest={'stage':'8_mvp_asset_bundle','source_stage7d_artifact_id':11292181113,'source_stage7d_artifact_name':'stage7d-a0-export-parity','onnx_expected_sha256':'4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041','onnxruntime_web_version':'1.30.0','core_budget_bytes':30000000,'cached_file_bytes':total,'core_budget_pass':total<=30000000,'files':rows,'boundaries':{'deployment':False,'rocole_inference':False,'challenge_inference':False,'model_change':False,'threshold_change':False,'preprocessing_change':False}}
+          if not manifest['core_budget_pass']: raise SystemExit(f'core asset budget failed: {total}')
+          Path('docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
           PY
-
       - name: Run static smoke checks
-        shell: bash
         run: npm test
-
       - name: Run bounded browser smoke check
         shell: bash
         run: |
@@ -149,14 +119,11 @@ jobs:
               const text = document.querySelector('#modelStatus')?.textContent || '';
               return text.includes('Frozen model ready') || text.startsWith('Model load failed:');
             }, null, { timeout: 30000 });
-            const modelStatus = await page.textContent('#modelStatus');
-            assert.match(modelStatus, /Frozen model ready/);
+            assert.match(await page.textContent('#modelStatus'), /Frozen model ready/);
             assert.equal((await page.textContent('h1')).trim(), 'RoyaCheck Offline');
             assert.ok(await page.locator('#imageInput[type="file"][accept="image/*"]').count());
             const htmlText = (await page.locator('body').innerText()).toLowerCase();
-            for (const phrase of ['visible rust', 'no visible rust', 'not sure', 'not a diagnosis', 'not treatment advice', 'no rocole external readout', 'only the human disposition becomes formal', 'no raw image']) {
-              assert.ok(htmlText.includes(phrase), `missing visible phrase: ${phrase}`);
-            }
+            for (const phrase of ['visible rust','no visible rust','not sure','not a diagnosis','not treatment advice','no rocole external readout','only the human disposition becomes formal','no raw image']) assert.ok(htmlText.includes(phrase), `missing ${phrase}`);
             assert.equal(await page.locator('#humanDisposition').evaluate(el => el.value), '');
             assert.deepEqual(await page.locator('#humanDisposition option').evaluateAll(nodes => nodes.map(n => n.value)), ['', 'visible_rust', 'no_visible_rust', 'not_sure', 'request_review']);
             assert.equal(await page.locator('#runButton').evaluate(el => el.disabled), true);
@@ -167,11 +134,10 @@ jobs:
             assert.ok(requests.some(r => r.url.endsWith('/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm')));
             assert.ok(requests.some(r => r.url.endsWith('/app/assets/model/royacheck_a0_fp32.onnx')));
             await browser.close();
-            console.log(JSON.stringify({ app_shell_loads: true, onnxruntime_web_loads_locally: true, model_loads_in_browser: true, image_input_path_present: true, non_get_requests: 0, external_requests: 0, human_disposition_blank_by_default: true, public_outputs_limited: ['visible rust', 'no visible rust', 'not sure'] }, null, 2));
+            console.log(JSON.stringify({app_shell_loads:true, onnxruntime_web_loads_locally:true, model_loads_in_browser:true, image_input_path_present:true, non_get_requests:0, external_requests:0, human_disposition_blank_by_default:true, public_outputs_limited:['visible rust','no visible rust','not sure']}, null, 2));
           })().catch(err => { console.error(err); process.exit(1); });
           JS
-
-      - name: Write concise smoke evidence and remove temporary workflow
+      - name: Write evidence and remove workflow
         shell: bash
         run: |
           set -euo pipefail
@@ -184,29 +150,15 @@ jobs:
           **Evidence execution:** GitHub Actions temporary local static server + headless Chromium  
           **Status:** PASS
 
-          ## Static checks
+          `npm test` passed. Browser smoke verified app shell load, local ONNX Runtime Web asset load, fixed A0 ONNX model browser load, ONNX SHA-256 `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`, image input presence, no default non-GET requests, no default external requests, public outputs limited to `visible rust`, `no visible rust`, and `not sure`, blank-by-default human disposition, visible not-diagnosis/not-treatment-advice messaging, and Stage 7C / Stage 7E-only evidence boundary including no RoCoLe external readout.
 
-          `npm test` passed against the Stage 8 branch state. The static smoke check locks the browser app contract for thresholds, class order, ImageNet normalization constants, ONNX input/output use, human-authority fields, no raw-image retention, public output labels, no remote HTTP shell dependencies, and offline core-asset declarations.
+          No deployment, RoCoLe inference, challenge-set inference, model change, threshold change, preprocessing change, raw dataset commit, video production, submission, treatment recommendation, claim expansion, or Stage 7 closure was performed.
 
-          ## Browser smoke observations
+          Runtime asset repair: final branch uses self-hosted WASM ES-module assets from `onnxruntime-web@1.30.0` with an absolute ORT asset prefix derived from `import.meta.url`.
 
-          The browser smoke check served `app/index.html` from a local static server and verified: app shell load, local ONNX Runtime Web load, fixed A0 ONNX model browser load, ONNX SHA-256 `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`, image input presence, no non-GET request by default, no external request by default, public outputs limited to `visible rust`, `no visible rust`, and `not sure`, blank-by-default human disposition, visible not-diagnosis/not-treatment-advice messaging, and the Stage 7C / Stage 7E-only evidence boundary including no RoCoLe external readout.
-
-          ## Boundary maintained
-
-          This smoke evidence did not perform deployment, RoCoLe inference, challenge-set inference, model change, threshold change, preprocessing change, raw dataset commit, video production, submission, treatment recommendation, claim expansion, or Stage 7 closure.
-
-          ## Runtime asset repair
-
-          The browser-smoke loop exposed that `ort.all.min.js` and then an app-relative ES-module `wasmPaths` setting caused runtime lookup failures. The final smoke-passing branch uses the narrower self-hosted WASM ES-module assets from `onnxruntime-web@1.30.0` with module-relative `wasmPaths = "./"`.
-
-          ## Temporary workflow handling
-
-          The workflow used to generate this evidence was temporary and removed itself from the branch before committing this evidence file.
+          The temporary workflow removed itself before committing this evidence file.
           EOF
           rm -f .github/workflows/stage8-smoke-evidence.yml
-          git status --short
-
       - name: Commit smoke evidence
         shell: bash
         run: |
