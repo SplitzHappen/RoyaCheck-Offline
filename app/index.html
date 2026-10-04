@@ -112,19 +112,19 @@
     </section>
 
     <section id="lugisuSection" class="card">
-      <h2>6. Draft fixed-string Lugisu prompt rehearsal</h2>
-      <p>This MVP includes draft fixed-string Lugisu text connected to the current proposal/disposition flow. The Lugisu text is explicitly unvalidated and must be reviewed by a fluent human before submission, field use, or any localization claim.</p>
-      <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt">
+      <h2>6. Local-language fixed-string scaffold</h2>
+      <p>This MVP includes a fixed-string local-language scaffold connected to the current AI proposal and human disposition. Actual Lugisu/Lumasaba wording is pending fluent human validation and is not claimed in this build.</p>
+      <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt rehearsal">
         <button type="button" data-lugisu-step="visible_rust">Visible rust</button>
         <button type="button" data-lugisu-step="no_visible_rust">No visible rust</button>
         <button type="button" data-lugisu-step="not_sure">Not sure</button>
         <button type="button" data-lugisu-step="review_later">Review later action</button>
       </div>
       <div id="lugisuPrompt" class="language-output" aria-live="polite">
-        <strong>Choose a prompt or run the normal flow.</strong>
-        <span>The prototype will show a fixed English instruction and a draft Lugisu string that must be validated by a fluent reviewer.</span>
+        <strong>Local-language scaffold pending fluent validation.</strong>
+        <span>Run the normal flow or choose a fixed-string rehearsal. Actual Lugisu/Lumasaba wording is not claimed in this build.</span>
       </div>
-      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu usability or field readiness.</p>
+      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu/Lumasaba usability or field readiness.</p>
     </section>
 
     <section class="card limitations">
@@ -133,7 +133,7 @@
       <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
       <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
       <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
-      <p><strong>Localization:</strong> this technical MVP includes draft fixed-string Lugisu text that is not validated. Validated localized usability has not been established.</p>
+      <p><strong>Localization:</strong> this technical MVP includes a local-language fixed-string scaffold. Actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.</p>
     </section>
   </main>
 
