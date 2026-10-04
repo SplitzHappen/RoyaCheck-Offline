@@ -1,24 +1,19 @@
 # Third-Party Notices Draft
 
-This draft is for submission-readiness review. It is not a final legal notice.
+**Status:** draft; not final notice text.
 
-## Runtime dependency
+## ONNX Runtime Web
 
-The browser MVP vendors `onnxruntime-web@1.30.0` assets for local ONNX inference:
+The prototype vendors ONNX Runtime Web browser assets from `onnxruntime-web@1.30.0`. The final notice must include the applicable MIT license notice and copyright text.
 
-- `app/vendor/onnxruntime-web/ort.wasm.min.mjs`
-- `app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs`
-- `app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm`
+## BRACOL dataset
 
-The final submission package still needs a license/notice review before submission.
+The frozen model was derived from BRACOL training/validation data. Prior project documentation records BRACOL as CC BY 4.0. Final submission materials must provide proper attribution and must not imply the dataset authors endorsed this project.
 
-## Model artifact
+## TorchVision / ImageNet-pretrained weights
 
-The committed ONNX model is the frozen Stage 7D A0 FP32 artifact:
+The model starts from TorchVision MobileNetV3-Small pretrained weights. Prior project documentation records that the owner accepted residual licensing risk for the pretrained path on the condition that the use is disclosed. Final submission materials must disclose this dependency.
 
-- `app/assets/model/royacheck_a0_fp32.onnx`
-- expected SHA-256: `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
+## Repository license
 
-## Open submission blocker
-
-Before final submission, confirm repository-level LICENSE posture and third-party notice completeness.
+A repository-level `LICENSE` file is still required before final submission. Until a license is selected and added, downstream reuse rights for repository code are not clearly stated.
