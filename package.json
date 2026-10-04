@@ -1,0 +1,10 @@
+{
+  "name": "royacheck-offline-stage8",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Static browser-local Stage 8 MVP smoke checks.",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/static-smoke.mjs"
+  }
+}
