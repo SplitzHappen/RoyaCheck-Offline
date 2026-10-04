@@ -31,13 +31,15 @@ The new guard checks:
 - app JavaScript does not introduce `XMLHttpRequest`, `WebSocket`, `EventSource`, or `navigator.sendBeacon` outbound paths;
 - app JavaScript does not declare mutating request methods such as `POST`, `PUT`, `PATCH`, or `DELETE`;
 - app JavaScript `fetch` calls do not set explicit request methods;
-- `routeFromProbabilities` preserves the public routing contract at threshold edges:
+- `routeFromProbabilities` preserves the public routing contract at threshold edges and precedence cases:
   - rust at `T_RUST = 0.50` and top class routes `visible_rust`;
   - rust below `T_RUST` routes `not_sure`;
   - healthy at `T_HEALTHY = 0.70` and top class routes `no_visible_rust`;
   - healthy below `T_HEALTHY` routes `not_sure`;
-  - non-public disease top class routes `not_sure`;
-  - rust above threshold does not override a higher healthy top class.
+  - leaf miner, brown leaf spot, and cercospora top classes route `not_sure`;
+  - rust above threshold does not override a higher healthy top class that passes `T_HEALTHY`;
+  - rust above `T_RUST` does not route `visible_rust` when healthy is the top class but below `T_HEALTHY`;
+  - true rust top class above `T_RUST`, with healthy below `T_HEALTHY`, routes `visible_rust`.
 
 ### Package test chain
 
@@ -49,9 +51,15 @@ Updated `package.json` so `npm test` runs:
 
 ## Validation status
 
-Not run by Vale in this connector-only pass.
+Vale did not run tests in this connector-only repair pass.
 
-Required independent validation before Ready for Review:
+Claude auditor-run evidence at head `a742f50f558cd649171ce7c2de56a5defe7da2cb`:
+
+- `npm test`: **FAIL**, exit 1. `static-smoke` and `preprocess-reference` passed; `closure-guards` failed because one routing assertion expected `visible_rust` for `[0.65, 0.55, 0.10, 0.10, 0.10]`, where healthy is actually the top class. The product routing was correct; the test expectation was wrong.
+- `npm run test:browser-followups` with external server mode: **PASS**, 2 saved records, 27 requests.
+- `node tests/browser-followups.mjs` with no `ROYA_BASE_URL`: **PASS**, 2 saved records, 25 requests.
+
+This repair updates the incorrect closure-guards routing assertion and aligns the documented routing cases with the test. Independent validation is still required before Ready for Review:
 
 - `npm test`
 - `npm run test:browser-followups`
@@ -69,7 +77,7 @@ This means:
 
 ## Remaining Stage 8 closure-readiness gaps after this increment
 
-If the new guard tests pass, the main remaining Stage 8 closure-readiness gap is current-head browser e2e/offline inference evidence. The original `browser-e2e.mjs` fixtures remain unavailable or not committed.
+If the repaired guard tests pass, the main remaining Stage 8 closure-readiness gap is current-head browser e2e/offline inference evidence. The original `browser-e2e.mjs` fixtures remain unavailable or not committed.
 
 A later closure package should still ask Claude to distinguish:
 
