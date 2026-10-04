@@ -1,41 +1,43 @@
 {
   "stage": "8_mvp_followup_asset_bundle",
-  "status": "stage8_followup_major_repair_candidate",
+  "status": "stage8_followup_second_repair_candidate_validation_pending",
   "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
   "onnxruntime_web_version": "1.30.0",
   "core_budget_bytes": 30000000,
-  "cached_file_bytes": 18093061,
-  "core_budget_pass": true,
-  "pr21_runtime_repair_preserved": {
-    "preprocessing": "browser preprocessing remains app/preprocess.js with separable triangle-filter resize plus ImageNet normalization",
-    "model_hash_runtime_check": true,
-    "route_variety_browser_smoke": true,
-    "stale_route_e2e_race_guard": true,
-    "safety_relevant_confident_miss_text": true
+  "asset_hashes_recompute_required": true,
+  "validation_status": {
+    "npm_test": "not_run_in_connector_pass",
+    "browser_followups": "not_run_in_connector_pass",
+    "upgrade_test": "not_run_in_connector_pass"
   },
   "followup_repair": {
     "saved_record_list": true,
-    "latest_request_wins_refresh": true,
-    "explicit_record_saved_deleted_events": true,
     "per_record_text_review_card": true,
     "per_record_delete": true,
-    "draft_lugisu_fixed_strings": true,
-    "lugisu_human_validation_required": true,
+    "record_saved_event": true,
+    "record_deleted_event": true,
+    "latest_request_wins_refresh": true,
+    "local_language_scaffold": true,
+    "actual_lugisu_lumasaba_text_pending_fluent_validation": true,
+    "unverified_language_tag_removed": true,
+    "suspect_luganda_like_strings_removed": true,
     "submission_disclosure_drafts": true,
-    "cache_name": "royacheck-stage8-a0-4037c096-20261004-r2",
-    "cache_asset_list_parity_static_check": true,
+    "service_worker_precache_cache_reload": true,
+    "service_worker_runtime_cache_no_cache": true,
+    "repository_mit_license_synced_from_main": true,
     "raw_image_retention_changed": false,
     "model_change": false,
     "threshold_change": false,
     "preprocessing_contract_change": false
   },
-  "validation_status": {
-    "npm_test": "pending execution on candidate head",
-    "browser_followup_test": "test file added; execution pending",
-    "hosted_workflow": "not attempted in this repair commit"
+  "previous_pr21_repair_context_preserved": {
+    "runtime_repair": true,
+    "final_minor_smoke": true,
+    "route_variety_smoke_previously_passed": true,
+    "stage8_closure": false
   },
   "boundaries": {
     "deployment": false,
@@ -45,69 +47,28 @@
     "threshold_change": false,
     "preprocessing_contract_change": false,
     "claim_expansion": false,
+    "field_validation_claim": false,
+    "treatment_recommendation": false,
     "stage7_closure": false,
     "stage8_closure": false
   },
-  "files": [
-    {
-      "path": "app/index.html",
-      "bytes": 8669,
-      "sha256": "c62972980647b383c59618cfccc0f11ac8b828ec37fdb7442c7f507c92fdfbda"
-    },
-    {
-      "path": "app/styles.css",
-      "bytes": 4026,
-      "sha256": "6d1d0ded057ef8431afbf4005621010ba16bbf4c900d28606a0ab0ce4c2f5d52"
-    },
-    {
-      "path": "app/app.js",
-      "bytes": 16585,
-      "sha256": "1f81430821e66c7eab689f0da24cb3f9e76ba0302e415af16b0461738890fed0"
-    },
-    {
-      "path": "app/followups.js",
-      "bytes": 11682,
-      "sha256": "15beb9b063fb1c21b3e4c779b7f591a44a89c58a653d20a97cc0fe52a68e13ea"
-    },
-    {
-      "path": "app/preprocess.js",
-      "bytes": 5346,
-      "sha256": "cad381fbaf3d5fc61a0d47c4a32ce14a902456db0f0abc3256f09d94f61368a0"
-    },
-    {
-      "path": "app/manifest.webmanifest",
-      "bytes": 435,
-      "sha256": "e8f7bff2df24eb7f7ec69eea68a4320fb64624c0e5de18fea19ebe39cde2c420"
-    },
-    {
-      "path": "app/sw.js",
-      "bytes": 1326,
-      "sha256": "b2bd2c770ddaeefbf99217f07f59eaa538997c0f2b902f60b13f584380eb42fe"
-    },
-    {
-      "path": "app/assets/icon.svg",
-      "bytes": 542,
-      "sha256": "f808d1010d5c087feca52aa50b31f25d5a44294b0141f92ab6083014cf30dc4f"
-    },
-    {
-      "path": "app/assets/model/royacheck_a0_fp32.onnx",
-      "bytes": 3730046,
-      "sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041"
-    },
-    {
-      "path": "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
-      "bytes": 50126,
-      "sha256": "219e6a1fc8a9938268d18efca3c91d310bd2f4a59bbd13744df5b2b7fc6cee3b"
-    },
-    {
-      "path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
-      "bytes": 24381,
-      "sha256": "e13f7f94fc51b4ca72b12faeb1ee95f4ace6dfbc8939bc718aabdc0a27c4299b"
-    },
-    {
-      "path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
-      "bytes": 14239897,
-      "sha256": "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2"
-    }
+  "core_assets_expected": [
+    "app/index.html",
+    "app/styles.css",
+    "app/app.js",
+    "app/followups.js",
+    "app/preprocess.js",
+    "app/manifest.webmanifest",
+    "app/sw.js",
+    "app/assets/icon.svg",
+    "app/assets/model/royacheck_a0_fp32.onnx",
+    "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+    "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+    "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
+  ],
+  "notes": [
+    "Exact byte counts and SHA-256 hashes must be recomputed after validation on the final frozen candidate SHA.",
+    "PR #22 remains draft until validation is run and recorded.",
+    "Local-language item is scaffolded but not fully complete until fluent human validation supplies or approves actual Lugisu/Lumasaba wording."
   ]
 }
