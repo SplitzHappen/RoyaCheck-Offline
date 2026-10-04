@@ -1,0 +1,316 @@
+name: Stage 7E A0 internal-test readout
+
+on:
+  push:
+    branches: [chatgpt/stage-07-pretraining-gates]
+    paths: [.github/workflows/stage7e-internal-test.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  internal-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download Stage 7D A0 ONNX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: stage7d-a0-export-parity
+          run-id: 37172702270
+          path: stage7d_a0_artifact
+          github-token: ${{ github.token }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pandas pillow gdown onnxruntime==1.30.0
+      - name: Download BRACOL archive
+        run: |
+          set -euo pipefail
+          mkdir -p data stage7e_internal_test_evidence
+          gdown 1ZMO9UnLK62SZYAdybDHRtarYDboQl_cT -O data/coffee-datasets.zip
+          sha256sum data/coffee-datasets.zip | tee stage7e_internal_test_evidence/coffee_datasets_sha256.txt
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=Path('data/coffee-datasets.zip')
+          expected='e6fc32d504ae33e667475dec4c4aef710aac65ad12f16a401c706445c46c9f89'
+          actual=hashlib.sha256(p.read_bytes()).hexdigest()
+          print('coffee_datasets_bytes', p.stat().st_size)
+          print('coffee_datasets_sha256', actual)
+          if actual != expected:
+              raise SystemExit(f'BRACOL archive SHA mismatch: {actual}')
+          PY
+      - name: Run one-shot internal-test readout
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import csv, hashlib, io, json, math, platform, sys, zipfile
+          from pathlib import Path
+          import numpy as np
+          import pandas as pd
+          from PIL import Image
+          import onnxruntime as ort
+
+          OUT = Path('stage7e_internal_test_evidence')
+          OUT.mkdir(exist_ok=True)
+          MODEL = Path('stage7d_a0_artifact/stage7d_a0_model/royacheck_a0_fp32.onnx')
+          STAGE7D_SUMMARY = Path('stage7d_a0_artifact/stage7d_a0_evidence/stage7d_a0_export_parity_summary.json')
+          BRACOL = Path('data/coffee-datasets.zip')
+          SPLIT = Path('docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json')
+
+          def sha256(path):
+              h=hashlib.sha256()
+              with open(path,'rb') as f:
+                  for chunk in iter(lambda:f.read(1024*1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          expected_model_sha='4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041'
+          actual_model_sha=sha256(MODEL)
+          if actual_model_sha != expected_model_sha:
+              raise SystemExit(f'ONNX SHA mismatch: {actual_model_sha}')
+          s7d=json.loads(STAGE7D_SUMMARY.read_text())
+          if s7d['export']['onnx_sha256'] != expected_model_sha:
+              raise SystemExit('Stage 7D summary ONNX SHA mismatch')
+
+          split=json.loads(SPLIT.read_text())
+          ids=[int(x) for x in split['internal_test']]
+          assert len(ids)==253
+          z=zipfile.ZipFile(BRACOL)
+          df=pd.read_csv(z.open('coffee-datasets/leaf/dataset.csv'))
+          rows={int(r.id):r for r in df.itertuples(index=False)}
+          class_names=['healthy','rust_present','leaf_miner_no_rust','brown_leaf_spot_no_rust','cercospora_no_rust']
+          mean=np.array([0.485,0.456,0.406],dtype=np.float32).reshape(3,1,1)
+          std=np.array([0.229,0.224,0.225],dtype=np.float32).reshape(3,1,1)
+          T_RUST=0.50
+          T_HEALTHY=0.70
+
+          def class_index(i):
+              r=rows[int(i)]
+              if int(r.predominant_stress)==5:
+                  raise ValueError('excluded id used in internal_test')
+              if int(r.rust)==1:
+                  return 1
+              ps=int(r.predominant_stress)
+              return {0:0,1:2,3:3,4:4}[ps]
+          def truth_group_from_class(c):
+              return 'R' if c==1 else ('H' if c==0 else 'O')
+          def preprocess(image_id):
+              with z.open(f'coffee-datasets/leaf/images/{image_id}.jpg') as f:
+                  im=Image.open(io.BytesIO(f.read())).convert('RGB')
+              if im.width < 224 or im.height < 224:
+                  raise ValueError(f'ineligible image {image_id}: {im.size}')
+              im=im.resize((224,224), Image.Resampling.BILINEAR)
+              arr=np.asarray(im, dtype=np.float32)/255.0
+              arr=np.transpose(arr,(2,0,1))
+              arr=(arr-mean)/std
+              return arr.astype(np.float32)
+          def softmax(logits):
+              x=logits-np.max(logits, axis=1, keepdims=True)
+              e=np.exp(x)
+              return e/np.sum(e, axis=1, keepdims=True)
+          def wilson(k,n,zv=1.959963984540054):
+              if n==0:
+                  return {'n':0,'k':int(k),'p':None,'lo':None,'hi':None,'method':'Wilson 95%'}
+              ph=k/n
+              den=1+zv*zv/n
+              center=(ph+zv*zv/(2*n))/den
+              half=zv*math.sqrt((ph*(1-ph)+zv*zv/(4*n))/n)/den
+              return {'n':int(n),'k':int(k),'p':ph,'lo':max(0,center-half),'hi':min(1,center+half),'method':'Wilson 95%'}
+
+          sess=ort.InferenceSession(MODEL.as_posix(), providers=['CPUExecutionProvider'])
+          routes=[]
+          counts={k:0 for k in ['R_to_VR','R_to_NVR','R_to_NS','H_to_VR','H_to_NVR','H_to_NS','O_to_VR','O_to_NVR','O_to_NS']}
+          source_counts={c:0 for c in class_names}
+          truth_counts={'R':0,'H':0,'O':0}
+          batch=[]; meta=[]
+          for image_id in ids:
+              ci=class_index(image_id)
+              tg=truth_group_from_class(ci)
+              source_counts[class_names[ci]] += 1
+              truth_counts[tg] += 1
+              batch.append(preprocess(image_id))
+              meta.append((image_id,ci,tg))
+              if len(batch)==32:
+                  x=np.stack(batch,axis=0)
+                  logits=sess.run(None, {'input':x})[0]
+                  probs=softmax(logits)
+                  for (iid,c,t),p in zip(meta,probs):
+                      pred=int(np.argmax(p))
+                      route='NS'
+                      if pred==1 and float(p[1])>=T_RUST:
+                          route='VR'
+                      elif pred==0 and float(p[0])>=T_HEALTHY:
+                          route='NVR'
+                      counts[f'{t}_to_{route}'] += 1
+                      routes.append({'image_id':iid,'truth_group':t,'true_class':class_names[c],'pred_class':class_names[pred],'route':route,'p_healthy':float(p[0]),'p_rust_present':float(p[1]),'p_leaf_miner_no_rust':float(p[2]),'p_brown_leaf_spot_no_rust':float(p[3]),'p_cercospora_no_rust':float(p[4])})
+                  batch=[]; meta=[]
+          if batch:
+              x=np.stack(batch,axis=0)
+              logits=sess.run(None, {'input':x})[0]
+              probs=softmax(logits)
+              for (iid,c,t),p in zip(meta,probs):
+                  pred=int(np.argmax(p))
+                  route='NS'
+                  if pred==1 and float(p[1])>=T_RUST:
+                      route='VR'
+                  elif pred==0 and float(p[0])>=T_HEALTHY:
+                      route='NVR'
+                  counts[f'{t}_to_{route}'] += 1
+                  routes.append({'image_id':iid,'truth_group':t,'true_class':class_names[c],'pred_class':class_names[pred],'route':route,'p_healthy':float(p[0]),'p_rust_present':float(p[1]),'p_leaf_miner_no_rust':float(p[2]),'p_brown_leaf_spot_no_rust':float(p[3]),'p_cercospora_no_rust':float(p[4])})
+          if len(routes)!=len(ids):
+              raise SystemExit(f'route length mismatch: {len(routes)}')
+
+          Rconf=counts['R_to_VR']+counts['R_to_NVR']
+          Hconf=counts['H_to_VR']+counts['H_to_NVR']
+          Oconf=counts['O_to_VR']+counts['O_to_NVR']
+          target_conf=Rconf+Hconf
+          sel_correct=counts['R_to_VR']+counts['H_to_NVR']
+          metrics={
+              'target_confident':target_conf,
+              'R_confident':Rconf,
+              'H_confident':Hconf,
+              'O_confident':Oconf,
+              'selective_accuracy_num':sel_correct,
+              'selective_accuracy_den':target_conf,
+              'accepted_rust_recall_num':counts['R_to_VR'],
+              'accepted_rust_recall_den':Rconf,
+              'accepted_healthy_specificity_num':counts['H_to_NVR'],
+              'accepted_healthy_specificity_den':Hconf,
+              'target_class_coverage_num':target_conf,
+              'target_class_coverage_den':truth_counts['R']+truth_counts['H'],
+              'rust_coverage_num':Rconf,
+              'rust_coverage_den':truth_counts['R'],
+              'healthy_coverage_num':Hconf,
+              'healthy_coverage_den':truth_counts['H'],
+              'other_confident_num':Oconf,
+              'other_confident_den':truth_counts['O'],
+              **counts,
+          }
+          ci={
+              'selective_accuracy': wilson(sel_correct,target_conf),
+              'accepted_rust_recall': wilson(counts['R_to_VR'],Rconf),
+              'accepted_healthy_specificity': wilson(counts['H_to_NVR'],Hconf),
+              'target_class_coverage': wilson(target_conf, truth_counts['R']+truth_counts['H']),
+              'rust_coverage': wilson(Rconf, truth_counts['R']),
+              'healthy_coverage': wilson(Hconf, truth_counts['H']),
+              'other_to_no_visible_rust': wilson(counts['O_to_NVR'], truth_counts['O']),
+              'confident_miss_R_to_NVR': wilson(counts['R_to_NVR'], truth_counts['R']),
+          }
+          summary={
+              'stage':'7E_one_shot_internal_test_readout',
+              'status':'complete',
+              'one_shot':True,
+              'model_artifact':{
+                  'source_stage7d_run_id':37172702270,
+                  'source_stage7d_artifact_id':11292181113,
+                  'onnx_file':'royacheck_a0_fp32.onnx',
+                  'onnx_sha256':actual_model_sha,
+                  'expected_onnx_sha256':expected_model_sha,
+              },
+              'data':{
+                  'source_archive':'coffee-datasets.zip',
+                  'source_archive_sha256':sha256(BRACOL),
+                  'split_file':'docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json',
+                  'partition':'internal_test',
+                  'records':len(ids),
+                  'source_class_counts':source_counts,
+                  'truth_group_counts':truth_counts,
+              },
+              'preprocessing':'RGB decode; require >=224px; preserve full frame; direct bilinear resize to 224x224; ImageNet normalization; no center crop',
+              'thresholds':{'T_rust':T_RUST,'T_healthy':T_HEALTHY,'source':'Stage 7C validation-selected thresholds; unchanged'},
+              'metrics':metrics,
+              'confidence_intervals':ci,
+              'packages':{
+                  'python':sys.version,
+                  'platform':platform.platform(),
+                  'numpy':np.__version__,
+                  'pandas':pd.__version__,
+                  'pillow':Image.__version__,
+                  'onnxruntime':ort.__version__,
+              },
+              'boundaries':{
+                  'a1_training':False,
+                  'threshold_change':False,
+                  'architecture_change':False,
+                  'preprocessing_change':False,
+                  'rocole_inference':False,
+                  'challenge_inference':False,
+                  'mvp_implementation':False,
+                  'deployment':False,
+                  'submission':False,
+              },
+              'claim_ceiling':{
+                  'internal_test_only':True,
+                  'not_field_validation':True,
+                  'not_rocole_external':True,
+                  'not_challenge_result':True,
+                  'recommended_wording':'On frozen BRACOL internal holdout only, A0 preserved high selective correctness among confident target-class outputs while routing many other-condition leaves to not sure; this is not field validation.'
+              }
+          }
+          # Route CSV
+          cols=['image_id','truth_group','true_class','pred_class','route','p_healthy','p_rust_present','p_leaf_miner_no_rust','p_brown_leaf_spot_no_rust','p_cercospora_no_rust']
+          with open(OUT/'stage7e_internal_test_routes.csv','w',newline='') as f:
+              w=csv.DictWriter(f, fieldnames=cols); w.writeheader(); w.writerows(routes)
+          (OUT/'stage7e_internal_test_summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True))
+          # Markdown summary for direct commit
+          def pct(x):
+              return 'NA' if x is None else f'{100*x:.1f}%'
+          md=[]
+          md.append('# Stage 7E — A0 One-Shot Internal-Test Readout')
+          md.append('')
+          md.append('**Stage:** 7E — sealed internal-test readout  ')
+          md.append('**Status:** COMPLETE — one-shot readout recorded  ')
+          md.append('**Model:** A0 FP32 ONNX from Stage 7D artifact `11292181113`  ')
+          md.append('')
+          md.append('## Boundary')
+          md.append('')
+          md.append('This was a one-shot readout on the frozen BRACOL internal-test partition. No A1 training, threshold change, architecture change, preprocessing change, RoCoLe inference, challenge inference, MVP implementation, deployment, video production, or submission occurred.')
+          md.append('')
+          md.append('## Source artifact')
+          md.append('')
+          md.append(f'- ONNX SHA-256: `{actual_model_sha}`')
+          md.append('- Thresholds: `T_rust = 0.50`, `T_healthy = 0.70`')
+          md.append('- Internal-test records: `253`')
+          md.append('')
+          md.append('## Internal-test counts')
+          md.append('')
+          md.append('| Metric | Count |')
+          md.append('|---|---:|')
+          for k in ['target_confident','R_confident','H_confident','O_confident','R_to_VR','R_to_NVR','R_to_NS','H_to_VR','H_to_NVR','H_to_NS','O_to_VR','O_to_NVR','O_to_NS']:
+              md.append(f'| `{k}` | {metrics[k]} |')
+          md.append('')
+          md.append('## Key proportions, Wilson 95% intervals')
+          md.append('')
+          md.append('| Metric | Estimate | Wilson 95% CI | Numerator / denominator |')
+          md.append('|---|---:|---:|---:|')
+          for k in ['selective_accuracy','accepted_rust_recall','accepted_healthy_specificity','target_class_coverage','rust_coverage','healthy_coverage','other_to_no_visible_rust','confident_miss_R_to_NVR']:
+              v=ci[k]
+              md.append(f'| `{k}` | {pct(v["p"])} | {pct(v["lo"])} – {pct(v["hi"])} | {v["k"]} / {v["n"]} |')
+          md.append('')
+          md.append('## Claim ceiling')
+          md.append('')
+          md.append('This supports only a frozen-BRACOL internal-holdout claim. It is not field validation, not RoCoLe external transfer evidence, and not challenge-set evidence.')
+          md.append('')
+          md.append('## Result')
+          md.append('')
+          md.append('**Stage 7E internal-test readout: COMPLETE.**')
+          (OUT/'STAGE_07E_INTERNAL_TEST_SUMMARY.md').write_text('\n'.join(md)+'\n')
+          print('STAGE7E_INTERNAL_TEST_SUMMARY_BEGIN')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          print('STAGE7E_INTERNAL_TEST_SUMMARY_END')
+          PY
+      - name: Upload Stage 7E evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage7e-internal-test-readout
+          path: stage7e_internal_test_evidence
+          if-no-files-found: error
+          retention-days: 3
