@@ -62,7 +62,7 @@ jobs:
               probs = exp / exp.sum()
               return route(probs), probs
 
-          def gradient_leaf(width=448, height=224):
+          def gradient_leaf(width=2048, height=1024):
               y, x = np.mgrid[0:height, 0:width]
               arr = np.zeros((height, width, 3), dtype=np.uint8)
               arr[..., 0] = (x * 7 + y * 3) % 256
@@ -86,6 +86,42 @@ jobs:
                       arr[spot & mask] = [205, 113, 28]
               return arr
 
+          def leaf_miner_tracks(width=2048, height=1024):
+              arr = np.zeros((height, width, 3), dtype=np.uint8)
+              y, x = np.mgrid[0:height, 0:width]
+              arr[..., 0] = 42 + ((x // 27 + y // 31) % 32)
+              arr[..., 1] = 118 + ((x // 13 + y // 19) % 80)
+              arr[..., 2] = 46 + ((x // 37 + y // 17) % 34)
+              img = Image.fromarray(arr)
+              draw = ImageDraw.Draw(img)
+              for offset in range(80, 900, 105):
+                  points = []
+                  for t in np.linspace(0, 1, 220):
+                      px = 160 + int(t * (width - 320))
+                      py = offset + int(44 * np.sin(t * 8 * np.pi + offset / 90) + 28 * np.sin(t * 21 * np.pi))
+                      points.append((px, py))
+                  draw.line(points, fill=(215, 222, 150), width=16)
+                  draw.line(points, fill=(247, 239, 196), width=8)
+              return np.asarray(img.filter(ImageFilter.GaussianBlur(radius=0.7)))
+
+          def brown_spots_leaf(width=2048, height=1024, seed=11):
+              rng = np.random.default_rng(seed)
+              arr = np.zeros((height, width, 3), dtype=np.uint8)
+              y, x = np.mgrid[0:height, 0:width]
+              arr[..., 0] = 48 + ((x // 31 + y // 29) % 36)
+              arr[..., 1] = 122 + ((x // 17 + y // 23) % 60)
+              arr[..., 2] = 42 + ((x // 41 + y // 19) % 32)
+              for _ in range(70):
+                  cx = int(rng.integers(160, width - 160))
+                  cy = int(rng.integers(120, height - 120))
+                  rx = int(rng.integers(18, 55))
+                  ry = int(rng.integers(15, 48))
+                  spot = ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1
+                  ring = ((x - cx) / (rx + 8)) ** 2 + ((y - cy) / (ry + 8)) ** 2 <= 1
+                  arr[ring] = [92, 63, 34]
+                  arr[spot] = [144, 104, 58]
+              return arr
+
           def purple_blocks(width=1536, height=1024, seed=7):
               rng = np.random.default_rng(seed)
               small = rng.integers(0, 256, size=(height // 32, width // 32, 3), dtype=np.uint8)
@@ -94,23 +130,20 @@ jobs:
               small[..., 2] = np.maximum(small[..., 2], 130)
               return np.asarray(Image.fromarray(small).resize((width, height), Image.Resampling.NEAREST).filter(ImageFilter.GaussianBlur(radius=3)))
 
-          def striped_brown(width=1600, height=1000):
-              y, x = np.mgrid[0:height, 0:width]
-              arr = np.zeros((height, width, 3), dtype=np.uint8)
-              arr[..., 0] = (80 + 80 * (np.sin(x / 19) > 0) + (y % 37)).astype(np.uint8)
-              arr[..., 1] = (35 + 40 * (np.cos((x + y) / 23) > 0)).astype(np.uint8)
-              arr[..., 2] = (20 + 80 * (np.sin(y / 17) > 0)).astype(np.uint8)
-              return arr
-
+          healthy_large = gradient_leaf()
+          rust_large = rust_spots_leaf()
           candidates = [
-              ("visible_rust_spots_leaf", rust_spots_leaf()),
-              ("no_visible_gradient_leaf", gradient_leaf()),
-              ("not_sure_purple_blocks", purple_blocks()),
-              ("not_sure_striped_brown", striped_brown()),
+              ("visible_rust_spots_leaf", rust_large),
+              ("no_visible_gradient_leaf", healthy_large),
+              ("not_sure_leaf_miner_tracks", leaf_miner_tracks()),
+              ("not_sure_brown_spots", brown_spots_leaf()),
           ]
+          for alpha in np.linspace(0.01, 0.99, 99):
+              blend = np.clip((1.0 - alpha) * healthy_large.astype(np.float32) + alpha * rust_large.astype(np.float32), 0, 255).astype(np.uint8)
+              candidates.append((f"not_sure_healthy_rust_blend_{alpha:.2f}", blend))
           for radius in [8, 10, 12, 16, 22, 30]:
               candidates.append((f"visible_rust_spots_r{radius}", rust_spots_leaf(radius=radius, spacing=max(48, radius * 6))))
-          for seed in range(40):
+          for seed in range(25):
               candidates.append((f"not_sure_noise_{seed:02d}", purple_blocks(seed=seed + 100)))
 
           session = ort.InferenceSession("app/assets/model/royacheck_a0_fp32.onnx", providers=["CPUExecutionProvider"])
