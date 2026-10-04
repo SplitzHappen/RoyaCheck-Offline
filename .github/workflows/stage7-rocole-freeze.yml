@@ -14,7 +14,7 @@ permissions:
 jobs:
   rocole-freeze:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -26,103 +26,144 @@ jobs:
       - name: Install readers
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pandas openpyxl
+          python -m pip install pandas openpyxl requests
 
-      - name: Download official RoCoLe v2 archive and freeze metadata
+      - name: Freeze RoCoLe public API metadata only
         run: |
           set -euo pipefail
           mkdir -p rocole_freeze
-          URL="https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/c5yvn32dzg-2.zip"
-          curl -fL --retry 3 --retry-delay 5 --connect-timeout 30 -o rocole_freeze/rocole_v2.zip "$URL"
-          sha256sum rocole_freeze/rocole_v2.zip | tee rocole_freeze/rocole_archive_sha256.txt
-          stat -c '%n,%s' rocole_freeze/rocole_v2.zip | tee rocole_freeze/rocole_archive_size.csv
           python - <<'PY'
-          import json, zipfile, hashlib, csv, re, os
+          import csv, json, hashlib, re, sys
           from pathlib import Path
+          import requests
           import pandas as pd
 
-          zpath=Path('rocole_freeze/rocole_v2.zip')
           out=Path('rocole_freeze')
-          source={
-            'doi':'10.17632/c5yvn32dzg.2',
-            'download_url':'https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/c5yvn32dzg-2.zip',
-            'observed_bytes':zpath.stat().st_size,
-            'observed_sha256':hashlib.sha256(zpath.read_bytes()).hexdigest(),
-            'expected_bytes_from_stage7a':2245588288,
-            'expected_sha256_from_stage7a':'31daa765fb0cc27d4b9b897fa6350aacf0087ee5771d3c7599d2ac7041b866ff',
-            'license':'CC BY 4.0 per Mendeley source page / Stage 6 record',
-            'quarantine':'external-transfer one-shot only; no training/tuning/model selection'
+          headers={'Accept':'application/vnd.mendeley-public-dataset.1+json'}
+          base='https://api.data.mendeley.com/datasets'
+          did='c5yvn32dzg'
+          version=2
+          folders={
+            'Annotations':'201c7329-268c-48fb-a452-d9b435817774',
+            'Photos':'1ca51fea-39e6-483f-a3f4-7e54cf3b4fd8',
           }
-          with zipfile.ZipFile(zpath) as z:
-            names=z.namelist()
-            files=[n for n in names if not n.endswith('/')]
-            jpgs=[n for n in files if n.lower().endswith(('.jpg','.jpeg'))]
-            meta=[n for n in files if n.lower().endswith(('.csv','.json','.xlsx','.xls','.xml','.txt'))]
-            inv=[]
-            for n in files:
-              info=z.getinfo(n)
-              inv.append({'path':n,'bytes':info.file_size,'sha256':hashlib.sha256(z.read(n)).hexdigest() if info.file_size < 50_000_000 else None})
-            with open(out/'rocole_archive_inventory.csv','w',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=['path','bytes','sha256'])
-              w.writeheader(); w.writerows(inv)
-            with open(out/'rocole_image_identifiers.csv','w',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=['image_path','image_id','filename','file_size'])
-              w.writeheader()
-              for n in sorted(jpgs):
-                info=z.getinfo(n)
-                fn=Path(n).name
-                w.writerow({'image_path':n,'image_id':Path(fn).stem,'filename':fn,'file_size':info.file_size})
-            # Extract and inspect metadata files only.
-            metadata_summary=[]
-            label_frames=[]
-            for n in meta:
-              info=z.getinfo(n)
-              if info.file_size > 20_000_000:
-                continue
-              target=out/('meta_'+re.sub(r'[^A-Za-z0-9_.-]+','_',n))
-              target.write_bytes(z.read(n))
-              rec={'path':n,'bytes':info.file_size,'extracted_as':target.name}
-              try:
-                suffix=Path(n).suffix.lower()
-                if suffix=='.csv':
-                  df=pd.read_csv(target)
-                  rec.update({'rows':len(df),'columns':list(map(str,df.columns))})
-                  if len(df)<=5000:
-                    label_frames.append((n,df))
-                elif suffix in {'.xlsx','.xls'}:
-                  xl=pd.ExcelFile(target)
-                  rec['sheets']=xl.sheet_names
-                  rec['sheet_shapes']={}
-                  for sh in xl.sheet_names:
-                    df=pd.read_excel(target,sheet_name=sh)
-                    rec['sheet_shapes'][sh]={'rows':len(df),'columns':list(map(str,df.columns))}
-                    if len(df)<=5000:
-                      label_frames.append((n+'::'+sh,df))
-                elif suffix=='.json':
-                  obj=json.loads(target.read_text(errors='replace'))
-                  rec['json_type']=type(obj).__name__
-                  if isinstance(obj,dict): rec['json_keys']=list(obj.keys())[:50]
-                  if isinstance(obj,list): rec['json_len']=len(obj)
-              except Exception as e:
-                rec['inspect_error']=type(e).__name__+': '+str(e)
-              metadata_summary.append(rec)
-          # Search metadata frames for image-name/class columns, but do not infer performance.
-          mapping_candidates=[]
-          for source_name,df in label_frames:
-            cols=[str(c) for c in df.columns]
-            lower={str(c).lower():c for c in df.columns}
-            # A permissive extraction: keep rows and columns as metadata, not images.
-            possible_file=[c for c in df.columns if any(k in str(c).lower() for k in ['file','image','photo','filename','external id','data row id'])]
-            possible_label=[c for c in df.columns if any(k in str(c).lower() for k in ['class','label','state','disease','condition','annotation','classification'])]
-            mapping_candidates.append({'source':source_name,'rows':len(df),'columns':cols,'possible_file_columns':list(map(str,possible_file)),'possible_label_columns':list(map(str,possible_label))})
-          # Create a conservative Stage 4 mapping statement without model use.
+          session=requests.Session()
+          session.headers.update(headers)
+          def get_json(url):
+            r=session.get(url,timeout=60)
+            print('GET',r.status_code,url)
+            print((r.text or '')[:500])
+            r.raise_for_status()
+            return r.json()
+          # Basic metadata endpoints.
+          versions=get_json(f'{base}/{did}/versions')
+          zip_meta=get_json(f'{base}/{did}/zip?version={version}')
+          folder_meta=get_json(f'{base}/{did}/folders?version={version}')
+          (out/'rocole_versions.json').write_text(json.dumps(versions,indent=2,sort_keys=True))
+          (out/'rocole_zip.json').write_text(json.dumps(zip_meta,indent=2,sort_keys=True))
+          (out/'rocole_folders.json').write_text(json.dumps(folder_meta,indent=2,sort_keys=True))
+
+          all_files=[]
+          for fname,fid in folders.items():
+            start=0
+            limit=500
+            while True:
+              url=f'{base}/publics/{did}/files?version={version}&folder_id={fid}&%24start={start}&%24limit={limit}'
+              batch=get_json(url)
+              if not batch:
+                break
+              for rec in batch:
+                rec['_folder_name']=fname
+                all_files.append(rec)
+              if len(batch)<limit:
+                break
+              start += limit
+          (out/'rocole_public_file_metadata.json').write_text(json.dumps(all_files,indent=2,sort_keys=True))
+
+          # Identifiers: metadata only, no image content opened.
+          image_recs=[]
+          annotation_recs=[]
+          for rec in all_files:
+            fn=rec.get('filename') or ''
+            folder=rec.get('_folder_name')
+            size=rec.get('size') or rec.get('content_details',{}).get('size')
+            sha=rec.get('content_details',{}).get('sha256_hash')
+            fid=rec.get('id')
+            if folder=='Photos' and fn.lower().endswith(('.jpg','.jpeg')):
+              image_recs.append({'image_id':Path(fn).stem,'filename':fn,'file_id':fid,'file_size':size,'source_sha256':sha})
+            elif folder=='Annotations':
+              annotation_recs.append({'filename':fn,'file_id':fid,'file_size':size,'source_sha256':sha,'download_url':rec.get('content_details',{}).get('download_url')})
+          with (out/'rocole_image_identifiers.csv').open('w',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=['image_id','filename','file_id','file_size','source_sha256'])
+            w.writeheader(); w.writerows(sorted(image_recs,key=lambda r:r['filename']))
+          with (out/'rocole_annotation_files.csv').open('w',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=['filename','file_id','file_size','source_sha256','download_url'])
+            w.writeheader(); w.writerows(sorted(annotation_recs,key=lambda r:r['filename']))
+
+          # Download annotation files only, not photos.
+          metadata_summary=[]
+          label_tables=[]
+          for rec in annotation_recs:
+            url=rec['download_url']
+            if not url:
+              continue
+            r=session.get(url,timeout=120,allow_redirects=True)
+            print('ANNOT',r.status_code,rec['filename'],len(r.content))
+            r.raise_for_status()
+            safe=re.sub(r'[^A-Za-z0-9_.-]+','_',rec['filename'])
+            p=out/('annotation_'+safe)
+            p.write_bytes(r.content)
+            item={'filename':rec['filename'],'bytes':len(r.content),'sha256':hashlib.sha256(r.content).hexdigest(),'saved_as':p.name}
+            try:
+              suffix=Path(rec['filename']).suffix.lower()
+              if suffix=='.csv':
+                df=pd.read_csv(p)
+                item.update({'rows':len(df),'columns':list(map(str,df.columns))})
+                if len(df)<=5000: label_tables.append((rec['filename'],df))
+              elif suffix in {'.xlsx','.xls'}:
+                xl=pd.ExcelFile(p)
+                item['sheets']=xl.sheet_names
+                item['sheet_shapes']={}
+                for sh in xl.sheet_names:
+                  df=pd.read_excel(p,sheet_name=sh)
+                  item['sheet_shapes'][sh]={'rows':len(df),'columns':list(map(str,df.columns))}
+                  if len(df)<=5000: label_tables.append((rec['filename']+'::'+sh,df))
+              elif suffix=='.json':
+                obj=json.loads(p.read_text(errors='replace'))
+                item['json_type']=type(obj).__name__
+                if isinstance(obj,dict): item['json_keys']=list(obj.keys())[:50]
+                if isinstance(obj,list): item['json_len']=len(obj)
+            except Exception as e:
+              item['inspect_error']=type(e).__name__+': '+str(e)
+            metadata_summary.append(item)
+          (out/'rocole_annotation_metadata_summary.json').write_text(json.dumps(metadata_summary,indent=2,sort_keys=True))
+
+          # Retain the raw 1560-row label table if one exists, no model use.
+          rows1560=[]
+          for source,df in label_tables:
+            if len(df)==1560:
+              rows1560.append(source)
+              p=out/'rocole_external_metadata_map.csv'
+              with p.open('w',newline='') as f:
+                fieldnames=['metadata_source']+list(map(str,df.columns))
+                w=csv.DictWriter(f,fieldnames=fieldnames)
+                w.writeheader()
+                for _,row in df.iterrows():
+                  rec={'metadata_source':source}
+                  for c in df.columns:
+                    val=row[c]
+                    rec[str(c)]='' if pd.isna(val) else str(val)
+                  w.writerow(rec)
+              break
           summary={
-            'source':source,
-            'archive_files':len(files),
-            'jpg_count':len(jpgs),
-            'metadata_file_count':len(meta),
-            'metadata_summary':metadata_summary,
-            'mapping_candidates':mapping_candidates,
+            'stage':'7B_RoCoLe_external_freeze',
+            'doi':'10.17632/c5yvn32dzg.2',
+            'version':2,
+            'folders':folders,
+            'zip_meta':zip_meta,
+            'photo_identifier_count':len(image_recs),
+            'annotation_file_count':len(annotation_recs),
+            'label_tables_1560':rows1560,
             'stage4_mapping':{
               'healthy':'H',
               'rust_level_1':'R',
@@ -131,37 +172,13 @@ jobs:
               'rust_level_4':'R',
               'red_spider_mite':'O-unseen'
             },
-            'exclusion_rule':'If explicit state/classification conflicts are identifiable from metadata, exclude them before external readout and disclose; no model-development use allowed.',
-            'inference_performed':False,
-            'model_development_use':False
+            'known_conflict_policy':'Exclude and disclose explicit state/classification conflicts if confirmed before external readout.',
+            'quarantine':'RoCoLe external-transfer one-shot only; no model design/tuning/threshold/fallback use.',
+            'model_inference_performed':False,
+            'performance_outcome_produced':False
           }
           (out/'rocole_freeze_summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True))
-          # If exactly one 1560-row label table exists, create a compact label map from likely columns.
-          tables=[]
-          for source_name,df in label_frames:
-            if len(df)==1560:
-              tables.append((source_name,df))
-          if tables:
-            source_name,df=tables[0]
-            outmap=out/'rocole_external_metadata_map.csv'
-            with outmap.open('w',newline='') as f:
-              # Keep all columns as raw metadata fields; downstream mapping remains fixed by class labels.
-              fieldnames=['metadata_source']+list(map(str,df.columns))
-              w=csv.DictWriter(f,fieldnames=fieldnames)
-              w.writeheader()
-              for _,row in df.iterrows():
-                rec={'metadata_source':source_name}
-                for c in df.columns:
-                  val=row[c]
-                  rec[str(c)]='' if pd.isna(val) else str(val)
-                w.writerow(rec)
-          print(json.dumps({
-            'bytes':source['observed_bytes'],
-            'sha256':source['observed_sha256'],
-            'jpg_count':len(jpgs),
-            'metadata_files':len(meta),
-            'label_tables_1560':[x[0] for x in tables]
-          },indent=2))
+          print(json.dumps(summary,indent=2,sort_keys=True))
           PY
 
       - name: Upload RoCoLe freeze evidence
