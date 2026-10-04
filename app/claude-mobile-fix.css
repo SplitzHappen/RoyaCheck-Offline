@@ -1,0 +1,80 @@
+/* Claude field-instrument comparison: mobile lamp/readout repair.
+   UI-only override. Preserves all model, storage, routing, and claim behavior. */
+
+@media (max-width: 760px) {
+  .module-lamps {
+    overflow: hidden;
+  }
+
+  .lamps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .lamp {
+    display: grid;
+    grid-template-columns: clamp(3.8rem, 20vw, 5rem) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "bulb label"
+      "bulb action";
+    align-items: center;
+    justify-items: stretch;
+    column-gap: clamp(.9rem, 4vw, 1.35rem);
+    row-gap: .22rem;
+    min-width: 0;
+  }
+
+  .lamp .bulb {
+    grid-area: bulb;
+    width: clamp(2.8rem, 15vw, 3.6rem);
+    height: clamp(2.8rem, 15vw, 3.6rem);
+    margin: 0 auto;
+  }
+
+  .lamp b,
+  .lamp small {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: auto;
+  }
+
+  .lamp b {
+    grid-area: label;
+    align-self: end;
+    font-size: clamp(.95rem, 5vw, 1.15rem);
+    line-height: 1.05;
+    letter-spacing: .045em;
+  }
+
+  .lamp small {
+    grid-area: action;
+    align-self: start;
+    font-size: clamp(.68rem, 3.6vw, .82rem);
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 380px) {
+  .lamps {
+    gap: .85rem;
+  }
+
+  .lamp {
+    grid-template-columns: 3.35rem minmax(0, 1fr);
+    column-gap: .85rem;
+  }
+
+  .lamp .bulb {
+    width: 2.65rem;
+    height: 2.65rem;
+  }
+
+  .lamp b {
+    font-size: .92rem;
+  }
+}
