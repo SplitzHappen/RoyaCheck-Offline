@@ -1,7 +1,7 @@
 # Stage 6 — Official-Source Recheck / Implementation Greenlight
 
 **Stage:** 6  
-**Status:** In review — official-source recheck complete; owner closure/greenlight decision pending  
+**Status:** Closed — owner approved (PR #19)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Recheck date:** 2026-10-03 / 2026-10-04 competition window  
@@ -527,4 +527,27 @@ A Stage 7 greenlight is therefore **supportable**, subject to the owner explicit
 
 This document does **not** itself authorize Stage 7.
 
-**Current Stage 6 status: In review — official-source recheck complete; owner closure/greenlight decision pending.**
+**Current Stage 6 status: Closed — owner approved (PR #19).**
+
+
+---
+
+## 18. Owner closure and implementation-greenlight record
+
+José Antonio explicitly approved Stage 6 closure and the guarded merge sequence for PR #19 on 2026-10-03/04 during the competition window.
+
+The owner accepted the Stage 6 findings and authorized the preregistered Stage 7 implementation path **in principle**, subject to the mandatory Stage 7.0, 7A and 7B pre-training gates.
+
+This greenlight does **not** itself start Stage 7 and does not authorize bypassing any:
+
+- runtime feasibility gate;
+- exact dataset/archive/hash/licence/provenance gate;
+- quarantine/split-manifest freeze;
+- pretrained-artifact stop condition;
+- Stage 4 metric/threshold rule;
+- held-out/external/challenge one-shot rule;
+- privacy, safety, claim-reduction or clock control.
+
+No further Claude audit is required for Stage 6 absent a new material rule or conflict.
+
+**Final Stage 6 status: Closed — owner approved (PR #19).**
