@@ -85,6 +85,70 @@ jobs:
           print("phash_smoke", imagehash.phash(im, hash_size=8))
           PY
 
+      - name: Synthetic evaluation-control smoke
+        run: |
+          python - <<'PY'
+          import csv, math, tempfile
+          from pathlib import Path
+          from PIL import Image, ImageDraw
+          import imagehash
+
+          class DSU:
+              def __init__(self, n):
+                  self.p=list(range(n))
+              def find(self, x):
+                  while self.p[x] != x:
+                      self.p[x] = self.p[self.p[x]]
+                      x = self.p[x]
+                  return x
+              def union(self, a,b):
+                  ra,rb=self.find(a),self.find(b)
+                  if ra != rb:
+                      self.p[rb]=ra
+
+          with tempfile.TemporaryDirectory() as td:
+              td=Path(td)
+              ims=[]
+              base=Image.new("RGB",(256,256),"white")
+              d=ImageDraw.Draw(base); d.rectangle((60,60,180,180),fill="black")
+              ims.append(base)
+              ims.append(base.copy())
+              variant=base.copy(); d2=ImageDraw.Draw(variant); d2.rectangle((181,181,183,183),fill="black")
+              ims.append(variant)
+              other=Image.new("RGB",(256,256),"white"); d3=ImageDraw.Draw(other); d3.ellipse((40,40,210,210),fill="black")
+              ims.append(other)
+              paths=[]
+              for i,im in enumerate(ims):
+                  p=td/f"img_{i}.png"; im.save(p); paths.append(p)
+
+              hashes=[imagehash.phash(Image.open(p),hash_size=8) for p in paths]
+              dsu=DSU(len(paths))
+              for i in range(len(paths)):
+                  for j in range(i+1,len(paths)):
+                      if hashes[i]-hashes[j] <= 5:
+                          dsu.union(i,j)
+              groups={}
+              for i,p in enumerate(paths):
+                  groups.setdefault(dsu.find(i),[]).append(p.name)
+              print("synthetic_phash_groups", sorted(sorted(v) for v in groups.values()))
+              assert any({"img_0.png","img_1.png"}.issubset(set(v)) for v in groups.values())
+
+              nR,nH,nO=94,120,300
+              gates={
+                  "max_confident_misses": math.floor(0.05*nR),
+                  "min_rust_coverage_count": math.ceil(0.50*nR),
+                  "min_healthy_coverage_count": math.ceil(0.50*nH),
+                  "max_other_to_nvr": math.floor(0.10*nO),
+              }
+              print("integer_gate_smoke", gates)
+              assert gates["max_confident_misses"] == 4
+
+              manifest=td/"manifest.csv"
+              with manifest.open("w", newline="") as fh:
+                  w=csv.writer(fh); w.writerow(["file_id","partition"]); w.writerow(["dummy-a","train"]); w.writerow(["dummy-b","validation"])
+              print("manifest_smoke_lines", manifest.read_text().strip().splitlines())
+          PY
+
       - name: Pretrained MobileNetV3-Small artifact access smoke
         run: |
           python - <<'PY'
