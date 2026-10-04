@@ -1,7 +1,7 @@
 # Stage 8 — Minimum Browser-Local MVP Build
 
 **Stage:** 8 — MVP implementation  
-**Status:** Implementation in progress; deployment / physical-device smoke evidence not yet authorized  
+**Status:** MVP source/assets prepared; deployment / live-browser smoke evidence not yet authorized  
 **Branch:** `chatgpt/stage-08-mvp-build`
 
 ## Frozen technical core
@@ -18,8 +18,8 @@ Stage 8 consumes the already frozen Stage 7D A0 artifact without changing it:
 - preprocessing: RGB decode; require both dimensions >=224 px; preserve the full frame; direct bilinear resize to 224×224; ImageNet normalization; no center crop;
 - `T_rust = 0.50`;
 - `T_healthy = 0.70`;
-- runtime: self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread;
-- minimal browser runtime assets: `ort.wasm.min.mjs`, `ort-wasm-simd-threaded.mjs`, and `ort-wasm-simd-threaded.wasm`.
+- runtime: self-hosted `onnxruntime-web@1.30.0`, WASM execution provider, one thread;
+- committed browser runtime assets: `ort.all.min.js` and `ort-wasm-simd-threaded.wasm`.
 
 No Stage 8 change is authorized to alter the model, class map, thresholds, preprocessing contract, or public three-way routing.
 
@@ -80,9 +80,9 @@ Claim ceiling remains unchanged:
 
 ## Static checks
 
-`npm test` runs `tests/static-smoke.mjs`, which fails on drift in the frozen thresholds, class order, ImageNet constants, model hash, ONNX input/output usage, human-authority fields, public outputs, remote shell dependencies, or offline core-asset declarations.
+`npm test` runs `tests/static-smoke.mjs`, which fails on drift in the frozen thresholds, class order, ImageNet constants, model hash, ONNX input/output usage, human-authority fields, public outputs, offline core-asset declarations, remote shell dependencies, missing local ORT asset references, or literal escaped-newline artifacts in the app shell.
 
-Binary model/runtime assets are intentionally populated from the fixed Stage 7D artifact and `onnxruntime-web@1.30.0` by a temporary Actions workflow because ordinary connector file writes are text-only. That workflow must be removed after the verified asset commit.
+Binary model/runtime assets were populated from the fixed Stage 7D artifact and `onnxruntime-web@1.30.0` by a temporary Actions workflow because ordinary connector file writes are text-only. The temporary workflow has been removed from the branch after asset capture.
 
 ## Explicitly not performed in Stage 8 build
 
@@ -99,4 +99,4 @@ Binary model/runtime assets are intentionally populated from the fixed Stage 7D 
 
 ## Next gate
 
-After the local MVP source + fixed binary/runtime assets are present and static checks pass, stop for owner authorization before deployment / live-browser smoke evidence.
+After this MVP source + fixed binary/runtime asset state, stop for owner authorization before deployment / live-browser smoke evidence.

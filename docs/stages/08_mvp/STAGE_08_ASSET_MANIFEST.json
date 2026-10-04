@@ -7,7 +7,7 @@
     "rocole_inference": false,
     "threshold_change": false
   },
-  "cached_file_bytes": 18814998,
+  "cached_file_bytes": 18815016,
   "core_budget_bytes": 30000000,
   "core_budget_pass": true,
   "files": [
@@ -22,9 +22,9 @@
       "sha256": "10f3eb70025fb2f91582dd648eb1c8a550845ce92fe8b75fc9bc1f454733d2b1"
     },
     {
-      "bytes": 13836,
+      "bytes": 13854,
       "path": "app/app.js",
-      "sha256": "f7ab2c1133cf4981839814d1d0ee7abee5539b1ecd80ad3aef48a14e12545da0"
+      "sha256": "760aee15d7a3e55d57205cddbfbe74bf817996c4360c0522d82cf22285882550"
     },
     {
       "bytes": 435,
