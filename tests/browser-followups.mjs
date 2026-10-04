@@ -12,6 +12,7 @@ const BASE_URL = process.env.ROYA_BASE_URL || `http://127.0.0.1:${PORT}/`;
 const MIME = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8",
@@ -131,11 +132,32 @@ async function waitForPersistentCard(page) {
   });
 }
 
+async function waitForCurrentReviewCard(page) {
+  await page.waitForFunction(() => {
+    const card = document.querySelector("#reviewCard");
+    return card && !card.hidden && card.textContent.includes("AI proposal");
+  });
+}
+
+async function saveTinyObservation(page, imagePath, disposition = "visible_rust") {
+  await page.setInputFiles("#imageInput", imagePath);
+  await page.waitForFunction(() => !document.querySelector("#runButton")?.disabled, null, { timeout: 30000 });
+  await page.click("#runButton");
+  await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure");
+  await page.selectOption("#humanDisposition", disposition);
+  await page.check("#humanConfirm");
+  await page.click("#saveButton");
+  await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
+  return page.evaluate(() => window.__royacheckTest.latestRecord().id);
+}
+
 async function run() {
   const server = await startServer();
   const tmp = mkdtempSync(join(tmpdir(), "royacheck-followups-"));
-  const imagePath = join(tmp, "tiny.png");
+  const imagePath = join(tmp, "tiny-a.png");
+  const secondImagePath = join(tmp, "tiny-b.png");
   writeFileSync(imagePath, TINY_PNG);
+  writeFileSync(secondImagePath, TINY_PNG);
 
   const requests = [];
   const browser = await chromium.launch({ headless: true });
@@ -169,16 +191,10 @@ async function run() {
     await page.waitForFunction(() => document.querySelector("#persistentReviewStatus")?.textContent.includes("no longer available"));
     await waitForListCount(page, 2);
 
-    await page.setInputFiles("#imageInput", imagePath);
-    await page.waitForFunction(() => !document.querySelector("#runButton")?.disabled, null, { timeout: 30000 });
-    await page.click("#runButton");
-    await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure");
-    await page.selectOption("#humanDisposition", "visible_rust");
-    await page.check("#humanConfirm");
-    await page.click("#saveButton");
+    const savedBefore = await getRecords(page);
+    const currentId = await saveTinyObservation(page, imagePath);
     await page.waitForFunction(() => window.__royacheckEvents.some((event) => event.type === "saved"));
-    await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
-    await page.waitForFunction(() => document.querySelectorAll("#savedRecordsList .record-item").length === 3);
+    await waitForListCount(page, savedBefore.length + 1);
 
     const panelText = await page.textContent("#lugisuPrompt");
     assert.match(panelText, /AI proposal: not sure/);
@@ -187,42 +203,40 @@ async function run() {
     assert.doesNotMatch(nonPrimaryText, /AI proposal/i, "Only the primary line may name the AI proposal");
 
     await page.click("#reviewCardButton");
-    await page.waitForFunction(() => !document.querySelector("#reviewCard")?.hidden);
-    const currentId = await page.evaluate(() => window.__royacheckTest.latestRecord().id);
+    await waitForCurrentReviewCard(page);
     await page.click("#deleteButton");
     await page.waitForFunction((id) => window.__royacheckEvents.some((event) => event.type === "deleted" && event.id === id), currentId);
     await page.waitForFunction(() => document.querySelector("#savedSection")?.hidden);
+    await waitForListCount(page, savedBefore.length);
     assert.equal((await getRecords(page)).some((item) => item.id === currentId), false);
+
+    const section5Id = await saveTinyObservation(page, imagePath);
+    await page.click("#reviewCardButton");
+    await waitForCurrentReviewCard(page);
+    const beforeSection5Delete = await getRecords(page);
+    await page.click(`[data-record-id="${section5Id}"] .danger`);
+    await page.waitForFunction(() => document.querySelector("#savedSection")?.hidden && document.querySelector("#reviewCard")?.hidden);
+    await waitForListCount(page, beforeSection5Delete.length - 1);
+    const afterSection5Delete = await getRecords(page);
+    assert.equal(afterSection5Delete.some((item) => item.id === section5Id), false, "Section 5 delete must remove the exact target ID");
+    assert.equal(afterSection5Delete.length, beforeSection5Delete.length - 1, "Section 5 delete must not remove other records");
 
     await seedRecords(page, [record("section5-current", "visible_rust", 4)]);
     await page.click("#refreshRecordsButton");
-    await waitForListCount(page, 3);
-    await page.setInputFiles("#imageInput", imagePath);
-    await page.waitForFunction(() => !document.querySelector("#runButton")?.disabled, null, { timeout: 30000 });
-    await page.click("#runButton");
-    await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure");
-    await page.selectOption("#humanDisposition", "visible_rust");
-    await page.check("#humanConfirm");
-    await page.click("#saveButton");
-    await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
-    const latestId = await page.evaluate(() => window.__royacheckTest.latestRecord().id);
-    await page.click(`[data-record-id="${latestId}"] .danger`);
-    await page.waitForFunction(() => document.querySelector("#savedSection")?.hidden && document.querySelector("#reviewCard")?.hidden);
-    assert.equal((await getRecords(page)).some((item) => item.id === latestId), false);
-
-    const before = await getRecords(page);
+    const beforeExactDelete = await getRecords(page);
+    await waitForListCount(page, beforeExactDelete.length);
     await page.click('[data-record-id="section5-current"] .danger');
-    await waitForListCount(page, before.length - 1);
-    const after = await getRecords(page);
-    assert.equal(after.some((item) => item.id === "section5-current"), false, "Section 5 delete must remove the exact target ID");
-    assert.equal(after.length, before.length - 1, "Section 5 delete must not remove other records");
+    await waitForListCount(page, beforeExactDelete.length - 1);
+    const afterExactDelete = await getRecords(page);
+    assert.equal(afterExactDelete.some((item) => item.id === "section5-current"), false, "Section 5 delete must remove the exact target ID");
+    assert.equal(afterExactDelete.length, beforeExactDelete.length - 1, "Section 5 delete must not remove other records");
 
     await page.click('[data-lugisu-step="visible_rust"]');
     let rehearsalText = await page.textContent("#lugisuPrompt");
     assert.match(rehearsalText, /AI proposal: not sure/);
     assert.doesNotMatch(rehearsalText.replace(/AI proposal: not sure[^.]*\./, ""), /AI proposal/i);
 
-    await page.setInputFiles("#imageInput", imagePath);
+    await page.setInputFiles("#imageInput", secondImagePath);
     await page.click('[data-lugisu-step="visible_rust"]');
     rehearsalText = await page.textContent("#lugisuPrompt");
     assert.doesNotMatch(rehearsalText, /AI proposal: not sure/);
