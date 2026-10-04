@@ -1,20 +1,28 @@
 import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";
-const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;
+import {
+  CLASS_NAMES,
+  INPUT_SIZE,
+  MODEL_SHA256,
+  preprocessImageData,
+  routeFromProbabilities,
+} from "./preprocess.js";
 
+const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;
 const MODEL_URL = "./assets/model/royacheck_a0_fp32.onnx";
-const MODEL_SHA256 = "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041";
-const T_RUST = 0.50;
-const T_HEALTHY = 0.70;
-const CLASS_NAMES = [
-  "healthy",
-  "rust_present",
-  "leaf_miner_no_rust",
-  "brown_leaf_spot_no_rust",
-  "cercospora_no_rust",
+const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1";
+const CORE_ASSETS = [
+  "./",
+  "./index.html",
+  "./styles.css",
+  "./app.js",
+  "./preprocess.js",
+  "./manifest.webmanifest",
+  "./assets/icon.svg",
+  "./assets/model/royacheck_a0_fp32.onnx",
+  "./vendor/onnxruntime-web/ort.wasm.min.mjs",
+  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
 ];
-const IMAGENET_MEAN = [0.485, 0.456, 0.406];
-const IMAGENET_STD = [0.229, 0.224, 0.225];
-const INPUT_SIZE = 224;
 
 const $ = (id) => document.getElementById(id);
 const imageInput = $("imageInput");
@@ -40,11 +48,13 @@ const offlineBadge = $("offlineBadge");
 const sourceCanvas = $("sourceCanvas");
 
 let session = null;
+let modelLoadPromise = null;
 let selectedFile = null;
 let selectedImage = null;
 let previewUrl = null;
 let currentProposal = null;
 let currentSavedId = null;
+let inferenceToken = 0;
 
 function setStatus(message, isError = false) {
   modelStatus.textContent = message;
@@ -64,20 +74,47 @@ function resetPostImageState() {
   updateSaveState();
 }
 
+async function sha256Hex(buffer) {
+  const digest = await crypto.subtle.digest("SHA-256", buffer);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 async function loadModel() {
-  ort.env.wasm.numThreads = 1;
-  ort.env.wasm.proxy = false;
-  ort.env.wasm.wasmPaths = ORT_BASE_URL;
-  setStatus("Loading frozen local model…");
-  session = await ort.InferenceSession.create(MODEL_URL, {
-    executionProviders: ["wasm"],
-    graphOptimizationLevel: "all",
+  if (session) return session;
+  if (modelLoadPromise) return modelLoadPromise;
+
+  modelLoadPromise = (async () => {
+    ort.env.wasm.numThreads = 1;
+    ort.env.wasm.proxy = false;
+    ort.env.wasm.wasmPaths = ORT_BASE_URL;
+    setStatus("Loading frozen local model…");
+
+    const response = await fetch(MODEL_URL);
+    if (!response.ok) throw new Error(`Model fetch failed with HTTP ${response.status}.`);
+    const modelBytes = await response.arrayBuffer();
+    const actualSha = await sha256Hex(modelBytes);
+    if (actualSha !== MODEL_SHA256) {
+      throw new Error("Frozen ONNX model SHA-256 mismatch; refusing to run inference.");
+    }
+
+    session = await ort.InferenceSession.create(modelBytes, {
+      executionProviders: ["wasm"],
+      graphOptimizationLevel: "all",
+    });
+    if (!session.inputNames.includes("input") || !session.outputNames.includes("logits")) {
+      throw new Error("Unexpected ONNX input/output contract.");
+    }
+    setStatus("Frozen model ready. Inference stays in this browser.");
+    runButton.disabled = !selectedImage;
+    return session;
+  })().catch((error) => {
+    modelLoadPromise = null;
+    throw error;
   });
-  if (!session.inputNames.includes("input") || !session.outputNames.includes("logits")) {
-    throw new Error("Unexpected ONNX input/output contract.");
-  }
-  setStatus("Frozen model ready. Inference stays in this browser.");
-  runButton.disabled = !selectedImage;
+
+  return modelLoadPromise;
 }
 
 function loadImageElement(file) {
@@ -93,51 +130,16 @@ function loadImageElement(file) {
   });
 }
 
-function bilinearResizeRgb(image) {
+function imageDataFromImage(image) {
   const width = image.naturalWidth;
   const height = image.naturalHeight;
-  if (width < INPUT_SIZE || height < INPUT_SIZE) {
-    return { eligible: false, width, height };
-  }
-
   sourceCanvas.width = width;
   sourceCanvas.height = height;
   const ctx = sourceCanvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("Browser canvas is unavailable.");
   ctx.clearRect(0, 0, width, height);
   ctx.drawImage(image, 0, 0, width, height);
-  const src = ctx.getImageData(0, 0, width, height).data;
-
-  const chw = new Float32Array(3 * INPUT_SIZE * INPUT_SIZE);
-  const plane = INPUT_SIZE * INPUT_SIZE;
-
-  for (let y = 0; y < INPUT_SIZE; y += 1) {
-    const sy = Math.max(0, Math.min(height - 1, ((y + 0.5) * height / INPUT_SIZE) - 0.5));
-    const y0 = Math.floor(sy);
-    const y1 = Math.min(y0 + 1, height - 1);
-    const wy = sy - y0;
-
-    for (let x = 0; x < INPUT_SIZE; x += 1) {
-      const sx = Math.max(0, Math.min(width - 1, ((x + 0.5) * width / INPUT_SIZE) - 0.5));
-      const x0 = Math.floor(sx);
-      const x1 = Math.min(x0 + 1, width - 1);
-      const wx = sx - x0;
-
-      const i00 = (y0 * width + x0) * 4;
-      const i01 = (y0 * width + x1) * 4;
-      const i10 = (y1 * width + x0) * 4;
-      const i11 = (y1 * width + x1) * 4;
-      const outIndex = y * INPUT_SIZE + x;
-
-      for (let c = 0; c < 3; c += 1) {
-        const top = src[i00 + c] * (1 - wx) + src[i01 + c] * wx;
-        const bottom = src[i10 + c] * (1 - wx) + src[i11 + c] * wx;
-        const value255 = top * (1 - wy) + bottom * wy;
-        const value01 = value255 / 255.0;
-        chw[c * plane + outIndex] = (value01 - IMAGENET_MEAN[c]) / IMAGENET_STD[c];
-      }
-    }
-  }
-  return { eligible: true, tensorData: chw, width, height };
+  return ctx.getImageData(0, 0, width, height);
 }
 
 function softmax(logits) {
@@ -147,35 +149,25 @@ function softmax(logits) {
   return exps.map((value) => value / denom);
 }
 
-function routeFromProbabilities(probabilities) {
-  let topIndex = 0;
-  for (let i = 1; i < probabilities.length; i += 1) {
-    if (probabilities[i] > probabilities[topIndex]) topIndex = i;
-  }
-  if (topIndex === 1 && probabilities[1] >= T_RUST) return "visible_rust";
-  if (topIndex === 0 && probabilities[0] >= T_HEALTHY) return "no_visible_rust";
-  return "not_sure";
-}
-
 function proposalCopy(route) {
   if (route === "visible_rust") {
     return {
       label: "visible rust",
       explanation: "Review first.",
-      detail: "RoyaCheck proposes that the image shows visible evidence consistent with coffee leaf rust. This is not a confirmed diagnosis and does not recommend treatment.",
+      detail: "RoyaCheck proposes that the image shows visible evidence consistent with coffee leaf rust. This is not a confirmed diagnosis and does not recommend treatment. The model does not verify that the image is a coffee leaf.",
     };
   }
   if (route === "no_visible_rust") {
     return {
       label: "no visible rust",
       explanation: "Record and monitor.",
-      detail: "RoyaCheck did not identify visible evidence consistent with rust in this image. This does not mean healthy, all clear, or no disease. Human review remains available if concern persists.",
+      detail: "RoyaCheck did not identify visible evidence consistent with rust in this image. This does not mean healthy, all clear, or no disease. The model does not verify that the image is a coffee leaf.",
     };
   }
   return {
     label: "not sure",
     explanation: "Retake or request review.",
-    detail: "RoyaCheck is uncertain, the image may be unsuitable, or an unsupported condition may be present. It makes no rust conclusion.",
+    detail: "RoyaCheck is uncertain or an unsupported condition may be present. It makes no rust conclusion. The model does not verify that the image is a coffee leaf.",
   };
 }
 
@@ -196,21 +188,37 @@ function renderProposal(route) {
 
 async function runInference() {
   if (!selectedImage) return;
+  const token = inferenceToken;
   runButton.disabled = true;
   setStatus("Running local preprocessing and inference…");
+
   try {
-    const preprocessed = bilinearResizeRgb(selectedImage);
-    if (!preprocessed.eligible) {
-      renderProposal("not_sure");
-      setStatus(`Image is ${preprocessed.width}×${preprocessed.height}; minimum is 224×224. Routed to not sure without model inference.`);
-      return;
+    let imageData;
+    try {
+      imageData = imageDataFromImage(selectedImage);
+    } catch (error) {
+      throw new Error(`Image pixels could not be read safely: ${error.message}`);
     }
-    if (!session) await loadModel();
+
+    const preprocessed = preprocessImageData(imageData);
+    if (!preprocessed.eligible) {
+      if (preprocessed.reason === "too_small") {
+        if (token !== inferenceToken) return;
+        renderProposal("not_sure");
+        setStatus(preprocessed.message);
+        return;
+      }
+      throw new Error(preprocessed.message || "Image pixels could not be prepared safely.");
+    }
+
+    const activeSession = await loadModel();
+    if (token !== inferenceToken) return;
     const tensor = new ort.Tensor("float32", preprocessed.tensorData, [1, 3, INPUT_SIZE, INPUT_SIZE]);
-    const results = await session.run({ input: tensor });
+    const results = await activeSession.run({ input: tensor });
     const logits = Array.from(results.logits.data);
     if (logits.length !== CLASS_NAMES.length) throw new Error("Unexpected model output shape.");
     const probabilities = softmax(logits);
+    if (token !== inferenceToken) return;
     renderProposal(routeFromProbabilities(probabilities));
     setStatus("Local inference complete. Review the proposal before choosing your disposition.");
   } catch (error) {
@@ -348,21 +356,41 @@ async function removeCurrentRecord() {
   reviewCard.hidden = true;
 }
 
+async function verifyCoreCache() {
+  if (!("caches" in window)) return { ok: false, missing: CORE_ASSETS };
+  const cache = await caches.open(CACHE_NAME);
+  const missing = [];
+  for (const asset of CORE_ASSETS) {
+    const url = new URL(asset, window.location.href).href;
+    const hit = await cache.match(url, { ignoreSearch: true }) || await cache.match(asset, { ignoreSearch: true });
+    if (!hit) missing.push(asset);
+  }
+  return { ok: missing.length === 0, missing };
+}
+
 async function registerOfflineSupport() {
   if (!("serviceWorker" in navigator)) {
     offlineBadge.textContent = "Offline cache unavailable";
     return;
   }
+  offlineBadge.textContent = "First load needs connection; preparing offline cache…";
   try {
     await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+    await navigator.serviceWorker.ready;
     const persisted = navigator.storage?.persist ? await navigator.storage.persist() : false;
-    offlineBadge.textContent = persisted ? "Offline cache · persistent storage requested" : "Offline cache ready";
+    const cacheState = await verifyCoreCache();
+    if (cacheState.ok) {
+      offlineBadge.textContent = persisted ? "Offline cache verified · persistent storage requested" : "Offline cache verified";
+    } else {
+      offlineBadge.textContent = `First load needs connection; offline cache missing ${cacheState.missing.length} asset(s)`;
+    }
   } catch {
-    offlineBadge.textContent = "Offline cache needs HTTP(S)";
+    offlineBadge.textContent = "First load needs connection; offline cache not verified";
   }
 }
 
 imageInput.addEventListener("change", async () => {
+  inferenceToken += 1;
   resetPostImageState();
   selectedFile = imageInput.files?.[0] || null;
   selectedImage = null;
@@ -388,9 +416,16 @@ imageInput.addEventListener("change", async () => {
 runButton.addEventListener("click", runInference);
 humanDisposition.addEventListener("change", updateSaveState);
 humanConfirm.addEventListener("change", updateSaveState);
-saveButton.addEventListener("click", () => saveObservation().catch((error) => setStatus(error.message, true)));
+saveButton.addEventListener("click", () => saveObservation().catch((error) => setStatus(`Save failed: ${error.message}`, true)));
 reviewCardButton.addEventListener("click", prepareReviewCard);
-deleteButton.addEventListener("click", () => removeCurrentRecord().catch((error) => setStatus(error.message, true)));
+deleteButton.addEventListener("click", () => removeCurrentRecord().catch((error) => setStatus(`Delete failed: ${error.message}`, true)));
 
+window.__royacheckLatestRecord = null;
+window.__royacheckTest = {
+  cacheName: CACHE_NAME,
+  coreAssets: CORE_ASSETS,
+  latestRecord: () => window.__royacheckLatestRecord,
+};
+
+loadModel().catch((error) => setStatus(`Model failed to load: ${error.message}`, true));
 registerOfflineSupport();
-loadModel().catch((error) => setStatus(`Model load failed: ${error.message}`, true));

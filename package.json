@@ -5,6 +5,6 @@
   "description": "Static browser-local Stage 8 MVP smoke checks.",
   "type": "module",
   "scripts": {
-    "test": "node tests/static-smoke.mjs"
+    "test": "node tests/static-smoke.mjs && node tests/preprocess-reference.mjs"
   }
 }

@@ -1,9 +1,10 @@
-const CACHE_NAME = "royacheck-stage8-a0-v1";
+const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./preprocess.js",
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./assets/model/royacheck_a0_fp32.onnx",
@@ -31,14 +32,11 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type === "opaque") return response;
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      });
-    })
+    fetch(event.request).then((response) => {
+      if (!response || response.status !== 200 || response.type === "opaque") return response;
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });

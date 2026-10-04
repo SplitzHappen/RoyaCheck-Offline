@@ -17,7 +17,7 @@
       <p class="eyebrow">Browser-local coffee-leaf observation prototype</p>
       <h1>RoyaCheck Offline</h1>
     </div>
-    <span id="offlineBadge" class="badge" aria-live="polite">Checking offline readiness…</span>
+    <span id="offlineBadge" class="badge" aria-live="polite">First load needs connection; checking offline readiness…</span>
   </header>
 
   <main>
@@ -36,9 +36,9 @@
       <h2>1. Select or capture an image</h2>
       <label class="file-picker">
         <span>Choose coffee-leaf image</span>
-        <input id="imageInput" type="file" accept="image/*" capture="environment">
+        <input id="imageInput" type="file" accept="image/*">
       </label>
-      <p class="hint">Use a current image with the complete target leaf visible. Images smaller than 224×224 are routed to <em>not sure</em>.</p>
+      <p class="hint">Use a current landscape image with one complete target leaf visible. Images smaller than 224×224 are routed to <em>not sure</em>.</p>
       <div class="preview-wrap">
         <img id="preview" alt="Selected coffee-leaf preview" hidden>
       </div>
@@ -98,9 +98,9 @@
     <section class="card limitations">
       <h2>Evidence and limitations</h2>
       <p><strong>Frozen model:</strong> Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
-      <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, selective accuracy among confident target-class outputs was 104/106 (98.1%); accepted rust recall was 66/68 (97.1%); accepted healthy specificity was 38/38 (100.0%).</p>
+      <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
       <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
-      <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review.</p>
+      <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
       <p><strong>Localization:</strong> this technical MVP uses English. Validated localized usability has not been established.</p>
     </section>
   </main>
