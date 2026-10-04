@@ -85,6 +85,31 @@ jobs:
           print("phash_smoke", imagehash.phash(im, hash_size=8))
           PY
 
+      - name: Pretrained MobileNetV3-Small artifact access smoke
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          import torch
+          from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
+
+          weights = MobileNet_V3_Small_Weights.IMAGENET1K_V1
+          print("weights_url", weights.url)
+          model = mobilenet_v3_small(weights=weights).eval()
+          with torch.no_grad():
+              y = model(torch.zeros(1, 3, 224, 224))
+          print("pretrained_output_shape", tuple(y.shape))
+
+          cache = Path(torch.hub.get_dir()) / "checkpoints"
+          files = sorted(cache.glob("mobilenet_v3_small*.pth"))
+          if not files:
+              raise SystemExit("expected MobileNetV3-Small cached weight file not found")
+          for p in files:
+              print("weight_file", p.name)
+              print("weight_bytes", p.stat().st_size)
+              print("weight_sha256", hashlib.sha256(p.read_bytes()).hexdigest())
+          PY
+
       - name: Install ORT Web pinned runtime
         run: |
           mkdir -p /tmp/royacheck-stage5-web
