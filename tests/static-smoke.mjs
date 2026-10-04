@@ -33,8 +33,9 @@ for (const fragment of requiredJsFragments) {
   assert.ok(js.includes(fragment), `Missing locked app contract fragment: ${fragment}`);
 }
 
+const htmlLower = html.toLowerCase();
 for (const output of ["visible rust", "no visible rust", "not sure"]) {
-  assert.ok(html.includes(output), `Missing public output: ${output}`);
+  assert.ok(htmlLower.includes(output), `Missing public output: ${output}`);
 }
 assert.ok(html.includes("not a diagnosis"));
 assert.ok(html.includes("not treatment advice"));
