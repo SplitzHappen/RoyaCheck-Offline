@@ -1,70 +1,86 @@
 {
-  "boundaries": {
-    "challenge_inference": false,
-    "deployment": false,
-    "model_change": false,
-    "preprocessing_change": false,
-    "rocole_inference": false,
-    "threshold_change": false
-  },
-  "cached_file_bytes": 18069972,
+  "stage": "8_mvp_asset_bundle",
+  "status": "audit_repair_partial_stage8_increment",
+  "source_stage7d_artifact_id": 11292181113,
+  "source_stage7d_artifact_name": "stage7d-a0-export-parity",
+  "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+  "onnxruntime_web_version": "1.30.0",
   "core_budget_bytes": 30000000,
+  "cached_file_bytes": 18076612,
   "core_budget_pass": true,
+  "runtime_repair": {
+    "preprocessing": "browser preprocessing moved to app/preprocess.js with separable triangle-filter resize plus ImageNet normalization to match the frozen Stage 7C/7E preprocessing contract more closely than the prior non-antialiased 2x2 bilinear path",
+    "model_hash_runtime_check": true,
+    "cache_name": "royacheck-stage8-a0-4037c096-20261004-r1",
+    "offline_badge_requires_cache_verification": true,
+    "capture_attribute_removed": true
+  },
+  "boundaries": {
+    "deployment": false,
+    "rocole_inference": false,
+    "challenge_inference": false,
+    "model_change": false,
+    "threshold_change": false,
+    "preprocessing_contract_change": false,
+    "claim_expansion": false,
+    "stage7_closure": false,
+    "stage8_closure": false
+  },
   "files": [
     {
-      "bytes": 5933,
       "path": "app/index.html",
-      "sha256": "b59d3813394cf747c9d7bd18740a627236725a669ab10743e3bb97ff1928582a"
+      "bytes": 6192,
+      "sha256": "c8b8f1a82f3df5e3b731bb42738e3d8bf87a571517d2efc3c6ab9e9f281d50ba"
     },
     {
-      "bytes": 3376,
       "path": "app/styles.css",
+      "bytes": 3376,
       "sha256": "10f3eb70025fb2f91582dd648eb1c8a550845ce92fe8b75fc9bc1f454733d2b1"
     },
     {
-      "bytes": 13899,
       "path": "app/app.js",
-      "sha256": "d212176b28475300677fe5d645a38b2118a809f13335f35d99ee3c319eb63b16"
+      "bytes": 14965,
+      "sha256": "e7e02923ed2f6d98930d837bb5a1d027bff73cbbd8b1268baca65b2b0244c1e2"
     },
     {
-      "bytes": 435,
+      "path": "app/preprocess.js",
+      "bytes": 5346,
+      "sha256": "cad381fbaf3d5fc61a0d47c4a32ce14a902456db0f0abc3256f09d94f61368a0"
+    },
+    {
       "path": "app/manifest.webmanifest",
+      "bytes": 435,
       "sha256": "e8f7bff2df24eb7f7ec69eea68a4320fb64624c0e5de18fea19ebe39cde2c420"
     },
     {
-      "bytes": 1337,
       "path": "app/sw.js",
-      "sha256": "a7f996d2b99bc50bfb59f7fb83ab93c4b6f1e420b105e2eb84c022d78239c69f"
+      "bytes": 1306,
+      "sha256": "14ce5880c60110c52f053a3ab526b66f668f9ad6fa07488c2cf0d5e55e0fe973"
     },
     {
-      "bytes": 542,
       "path": "app/assets/icon.svg",
+      "bytes": 542,
       "sha256": "f808d1010d5c087feca52aa50b31f25d5a44294b0141f92ab6083014cf30dc4f"
     },
     {
-      "bytes": 3730046,
       "path": "app/assets/model/royacheck_a0_fp32.onnx",
+      "bytes": 3730046,
       "sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041"
     },
     {
-      "bytes": 50126,
       "path": "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+      "bytes": 50126,
       "sha256": "219e6a1fc8a9938268d18efca3c91d310bd2f4a59bbd13744df5b2b7fc6cee3b"
     },
     {
-      "bytes": 24381,
       "path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+      "bytes": 24381,
       "sha256": "e13f7f94fc51b4ca72b12faeb1ee95f4ace6dfbc8939bc718aabdc0a27c4299b"
     },
     {
-      "bytes": 14239897,
       "path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "bytes": 14239897,
       "sha256": "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2"
     }
-  ],
-  "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
-  "onnxruntime_web_version": "1.30.0",
-  "source_stage7d_artifact_id": 11292181113,
-  "source_stage7d_artifact_name": "stage7d-a0-export-parity",
-  "stage": "8_mvp_asset_bundle"
+  ]
 }
