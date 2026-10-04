@@ -1,6 +1,8 @@
 # Stage 7B — BRACOL Deterministic Manifest and Quarantine Freeze
 
-**Status:** BRACOL freeze complete; RoCoLe external freeze still pending before any Stage 7C training authorization.
+**Status:** BRACOL freeze complete. Stage 7C A0 validation subsequently passed. RoCoLe exact identifier freeze remains pending before any RoCoLe external readout.
+
+This file records the BRACOL freeze. The later A0 validation result is recorded in `STAGE_07C_A0_VALIDATION_SUMMARY.md` and `manifests/stage7c_a0_summary.json`.
 
 ## Source archive
 
@@ -98,10 +100,3 @@ The internal-test identifiers are frozen in `bracol_stage7b_split_ids.json`. No 
 ## Boundary
 
 This freeze did not perform training, validation performance selection, internal-test inference, RoCoLe external readout, challenge inference, MVP implementation, deployment, video production, or submission.
-
-## Remaining before Stage 7C
-
-RoCoLe external identifiers and metadata mapping are still pending. Stage 7C training should not be authorized until the owner accepts either:
-
-1. a completed RoCoLe metadata/quarantine freeze, or
-2. an explicit amendment deferring/removing the RoCoLe pre-training freeze requirement.
