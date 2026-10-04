@@ -82,11 +82,11 @@
     </section>
 
     <section id="savedSection" class="card" hidden>
-      <h2>4. Local observation</h2>
+      <h2>4. Current local observation</h2>
       <div id="savedRecord"></div>
       <div class="button-row">
         <button id="reviewCardButton" type="button">Prepare on-device review card</button>
-        <button id="deleteButton" class="danger" type="button">Delete local record</button>
+        <button id="deleteButton" class="danger" type="button">Delete current local record</button>
       </div>
       <div id="reviewCard" class="review-card" hidden>
         <h3>Reviewer card — user initiated</h3>
@@ -97,12 +97,13 @@
 
     <section id="savedRecordsSection" class="card">
       <h2>5. Review saved observations later</h2>
-      <p>Saved observations stay in this browser's IndexedDB until deleted. This list is text-only and still does not retain the raw photo.</p>
+      <p>Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, or clearing site data. This MVP provides no backup or export, and the list is text-only without raw photos.</p>
       <div class="button-row">
         <button id="refreshRecordsButton" type="button">Refresh saved records</button>
         <button id="clearReviewPanelButton" type="button">Clear review panel</button>
       </div>
       <div id="savedRecordsList" class="record-list" aria-live="polite"></div>
+      <p id="persistentReviewStatus" class="status" aria-live="polite"></p>
       <div id="persistentReviewCard" class="review-card" hidden>
         <h3>Saved-record review card — user initiated</h3>
         <p class="hint">Text-only. Nothing is sent automatically.</p>
@@ -111,19 +112,19 @@
     </section>
 
     <section id="lugisuSection" class="card">
-      <h2>Fixed-string local-language prompt rehearsal</h2>
-      <p>This MVP includes an interaction scaffold for Lugisu fixed strings, but the Lugisu wording below is explicitly marked as pending human linguistic validation before submission or field use.</p>
+      <h2>6. Draft fixed-string Lugisu prompt rehearsal</h2>
+      <p>This MVP includes draft fixed-string Lugisu text connected to the current proposal/disposition flow. The Lugisu text is explicitly unvalidated and must be reviewed by a fluent human before submission, field use, or any localization claim.</p>
       <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt">
         <button type="button" data-lugisu-step="visible_rust">Visible rust</button>
         <button type="button" data-lugisu-step="no_visible_rust">No visible rust</button>
         <button type="button" data-lugisu-step="not_sure">Not sure</button>
-        <button type="button" data-lugisu-step="review_later">Review later</button>
+        <button type="button" data-lugisu-step="review_later">Review later action</button>
       </div>
       <div id="lugisuPrompt" class="language-output" aria-live="polite">
-        <strong>Choose a prompt.</strong>
-        <span>The prototype will show a fixed English instruction and a Lugisu translation slot that must be validated by a fluent reviewer.</span>
+        <strong>Choose a prompt or run the normal flow.</strong>
+        <span>The prototype will show a fixed English instruction and a draft Lugisu string that must be validated by a fluent reviewer.</span>
       </div>
-      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of Lugisu usability validation.</p>
+      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu usability or field readiness.</p>
     </section>
 
     <section class="card limitations">
@@ -132,7 +133,7 @@
       <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
       <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
       <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
-      <p><strong>Localization:</strong> this technical MVP includes an unvalidated fixed-string Lugisu scaffold. Validated localized usability has not been established.</p>
+      <p><strong>Localization:</strong> this technical MVP includes draft fixed-string Lugisu text that is not validated. Validated localized usability has not been established.</p>
     </section>
   </main>
 
