@@ -105,6 +105,35 @@ jobs:
           sleep 2
           ROYA_BASE_URL=http://127.0.0.1:4173/app/ node tests/browser-e2e.mjs tmp/stage8-e2e/expected-routes.json
 
+      - name: Core asset hashes
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          paths = [
+              "app/index.html",
+              "app/styles.css",
+              "app/app.js",
+              "app/preprocess.js",
+              "app/manifest.webmanifest",
+              "app/sw.js",
+              "app/assets/icon.svg",
+              "app/assets/model/royacheck_a0_fp32.onnx",
+              "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+              "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+              "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+          ]
+          files = []
+          for path in paths:
+              data = Path(path).read_bytes()
+              files.append({"path": path, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+          print("STAGE8_CORE_ASSET_HASHES_JSON_START")
+          print(json.dumps(files, indent=2))
+          print("STAGE8_CORE_ASSET_HASHES_JSON_END")
+          PY
+
       - name: Evidence summary
         run: |
           {
