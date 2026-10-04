@@ -1,5 +1,7 @@
 # Claude Audit Package — Stage 8 Evidence Readiness
 
+> Supersession note (PR #23): This original audit package was prepared before Claude's later PR #23 confirmation audits. Subsequent PR #23 repair evidence restored the item 36 static guards and updated validation wording after head `b1ac54b` failed `npm test` on exactly two local-language disclosure assertions. Treat this package as historical input, not the final state of PR #23 evidence.
+
 Repository: `SplitzHappen/RoyaCheck-Offline`
 
 Branch: `chatgpt/stage-08-evidence-consolidation`
