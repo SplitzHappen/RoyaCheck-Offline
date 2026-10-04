@@ -1,19 +1,34 @@
 # Third-Party Notices Draft
 
-**Status:** draft; not final notice text.
+This draft is not final legal review.
+
+## Repository code
+
+The repository now includes an MIT `LICENSE` file for the project software unless a more specific notice applies.
 
 ## ONNX Runtime Web
 
-The prototype vendors ONNX Runtime Web browser assets from `onnxruntime-web@1.30.0`. The final notice must include the applicable MIT license notice and copyright text.
+The browser MVP vendors ONNX Runtime Web assets from `onnxruntime-web@1.30.0`:
 
-## BRACOL dataset
+- `app/vendor/onnxruntime-web/ort.wasm.min.mjs`
+- `app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs`
+- `app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm`
 
-The frozen model was derived from BRACOL training/validation data. Prior project documentation records BRACOL as CC BY 4.0. Final submission materials must provide proper attribution and must not imply the dataset authors endorsed this project.
+ONNX Runtime Web is distributed under the MIT license. Final submission should include the exact upstream copyright and license text.
+
+## BRACOL data lineage
+
+The frozen ONNX model is derived from BRACOL coffee-leaf imagery. Project Stage 4 records BRACOL as CC BY 4.0. Final submission must include BRACOL attribution and should not imply the repository MIT license replaces dataset attribution duties.
 
 ## TorchVision / ImageNet-pretrained weights
 
-The model starts from TorchVision MobileNetV3-Small pretrained weights. Prior project documentation records that the owner accepted residual licensing risk for the pretrained path on the condition that the use is disclosed. Final submission materials must disclose this dependency.
+The model starts from a TorchVision MobileNetV3-Small pretrained-weight lineage. Stage 4 records owner acceptance of residual pretrained-artifact licensing risk subject to disclosure. Final submission should include a specific pretrained-weights notice and should distinguish model-artifact rights from repository source-code licensing.
 
-## Repository license
+## Model artifact notice still required
 
-A repository-level `LICENSE` file is still required before final submission. Until a license is selected and added, downstream reuse rights for repository code are not clearly stated.
+The repository MIT license is not, by itself, a complete model notice for the derived ONNX artifact. Before final submission, add a model notice covering:
+
+- BRACOL attribution / CC BY 4.0 lineage;
+- TorchVision / pretrained ImageNet weight lineage;
+- ONNX export and frozen Stage 7D artifact identity;
+- no field-validation, diagnosis, or treatment-recommendation claim.
