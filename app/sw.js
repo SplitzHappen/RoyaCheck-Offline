@@ -4,6 +4,7 @@ const CORE_ASSETS = [
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./followups.js",
   "./preprocess.js",
   "./manifest.webmanifest",
   "./assets/icon.svg",
