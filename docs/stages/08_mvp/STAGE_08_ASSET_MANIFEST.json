@@ -1,25 +1,41 @@
 {
   "stage": "8_mvp_followup_asset_bundle",
-  "status": "stage8_followup_partial_increment",
+  "status": "stage8_followup_major_repair_candidate",
   "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
   "onnxruntime_web_version": "1.30.0",
   "core_budget_bytes": 30000000,
-  "cached_file_bytes": 18087203,
+  "cached_file_bytes": 18093061,
   "core_budget_pass": true,
+  "pr21_runtime_repair_preserved": {
+    "preprocessing": "browser preprocessing remains app/preprocess.js with separable triangle-filter resize plus ImageNet normalization",
+    "model_hash_runtime_check": true,
+    "route_variety_browser_smoke": true,
+    "stale_route_e2e_race_guard": true,
+    "safety_relevant_confident_miss_text": true
+  },
   "followup_repair": {
     "saved_record_list": true,
+    "latest_request_wins_refresh": true,
+    "explicit_record_saved_deleted_events": true,
     "per_record_text_review_card": true,
     "per_record_delete": true,
-    "fixed_string_lugisu_scaffold": true,
+    "draft_lugisu_fixed_strings": true,
     "lugisu_human_validation_required": true,
     "submission_disclosure_drafts": true,
+    "cache_name": "royacheck-stage8-a0-4037c096-20261004-r2",
+    "cache_asset_list_parity_static_check": true,
     "raw_image_retention_changed": false,
     "model_change": false,
     "threshold_change": false,
     "preprocessing_contract_change": false
+  },
+  "validation_status": {
+    "npm_test": "pending execution on candidate head",
+    "browser_followup_test": "test file added; execution pending",
+    "hosted_workflow": "not attempted in this repair commit"
   },
   "boundaries": {
     "deployment": false,
@@ -35,8 +51,8 @@
   "files": [
     {
       "path": "app/index.html",
-      "bytes": 8355,
-      "sha256": "2700f819e7893c8ebc19634ac3f8d6aeb7b86aff30845c6a6ab7dd3eb4114ef0"
+      "bytes": 8669,
+      "sha256": "c62972980647b383c59618cfccc0f11ac8b828ec37fdb7442c7f507c92fdfbda"
     },
     {
       "path": "app/styles.css",
@@ -45,13 +61,13 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 14965,
-      "sha256": "e7e02923ed2f6d98930d837bb5a1d027bff73cbbd8b1268baca65b2b0244c1e2"
+      "bytes": 16585,
+      "sha256": "1f81430821e66c7eab689f0da24cb3f9e76ba0302e415af16b0461738890fed0"
     },
     {
       "path": "app/followups.js",
-      "bytes": 7758,
-      "sha256": "eb7a47bdeb7429f4c37722a9596ac99df34280c85c73fd200d746b9a54256447"
+      "bytes": 11682,
+      "sha256": "15beb9b063fb1c21b3e4c779b7f591a44a89c58a653d20a97cc0fe52a68e13ea"
     },
     {
       "path": "app/preprocess.js",
@@ -66,7 +82,7 @@
     {
       "path": "app/sw.js",
       "bytes": 1326,
-      "sha256": "c2377d9697e2c1941ec78f3fc8b0eb115a5d3382eeb485405a1066d9d6599675"
+      "sha256": "b2bd2c770ddaeefbf99217f07f59eaa538997c0f2b902f60b13f584380eb42fe"
     },
     {
       "path": "app/assets/icon.svg",
