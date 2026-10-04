@@ -54,6 +54,12 @@ assert.ok(js.includes('const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/",
 assert.ok(preprocess.includes('blank_canvas'));
 assert.ok(!js.includes('\\n'), "App shell must not contain literal escaped newline artifacts.");
 
+const appCacheName = js.match(/const CACHE_NAME = "([^"]+)";/)?.[1];
+const swCacheName = sw.match(/const CACHE_NAME = "([^"]+)";/)?.[1];
+assert.ok(appCacheName, "App cache name must be declared.");
+assert.ok(swCacheName, "Service-worker cache name must be declared.");
+assert.equal(appCacheName, swCacheName, "App and service-worker cache names must stay synchronized.");
+
 const htmlLower = html.toLowerCase();
 for (const output of ["visible rust", "no visible rust", "not sure"]) {
   assert.ok(htmlLower.includes(output), `Missing public output: ${output}`);
@@ -64,6 +70,8 @@ assert.ok(html.includes("no RoCoLe external readout"));
 assert.ok(html.includes("Only the human disposition becomes formal"));
 assert.ok(html.includes("It does not verify that an image is a coffee leaf."));
 assert.ok(html.includes("66 of 95 rust leaves"));
+assert.ok(html.includes("27 of 95 rust leaves"));
+assert.ok(html.includes("2 of 95 rust leaves"));
 assert.ok(html.includes("7 of 117 other-condition leaves"));
 assert.ok(!html.includes("accepted rust recall"));
 assert.ok(!html.includes('capture="environment"'));

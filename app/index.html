@@ -98,7 +98,7 @@
     <section class="card limitations">
       <h2>Evidence and limitations</h2>
       <p><strong>Frozen model:</strong> Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
-      <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
+      <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
       <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
       <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
       <p><strong>Localization:</strong> this technical MVP uses English. Validated localized usability has not been established.</p>
