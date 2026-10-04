@@ -13,6 +13,7 @@ const USING_EXTERNAL_SERVER = Boolean(EXTERNAL_BASE_URL);
 const BASE_URL = EXTERNAL_BASE_URL || `http://127.0.0.1:${PORT}/`;
 const MODEL_SHA256 = "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041";
 const ROUTES = new Set(["visible_rust", "no_visible_rust", "not_sure"]);
+const SERVER_CLOSE_TIMEOUT_MS = 5000;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -119,7 +120,24 @@ function startServer() {
 async function closeServer(server) {
   if (!server) return;
   await new Promise((resolveServer, rejectServer) => {
-    server.close((error) => (error ? rejectServer(error) : resolveServer()));
+    let settled = false;
+    const timeout = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      rejectServer(new Error(`Timed out after ${SERVER_CLOSE_TIMEOUT_MS} ms while closing local test server.`));
+    }, SERVER_CLOSE_TIMEOUT_MS);
+
+    server.close((error) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      if (error) rejectServer(error);
+      else resolveServer();
+    });
+
+    if (typeof server.closeAllConnections === "function") {
+      server.closeAllConnections();
+    }
   });
 }
 
