@@ -1,0 +1,95 @@
+name: Stage 5 readiness smoke
+
+on:
+  push:
+    branches:
+      - chatgpt/stage-05-readiness-verification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  toolchain-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Record base environment
+        run: |
+          python --version
+          pip --version
+          node --version
+          npm --version
+          df -h .
+          free -h
+
+      - name: Install Python readiness packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch torchvision onnx onnxruntime ImageHash
+
+      - name: Untrained MobileNetV3-Small ONNX export smoke
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          import torch
+          import torchvision
+          import onnx
+          import onnxruntime as ort
+          import imagehash
+          from PIL import Image
+          from torchvision.models import mobilenet_v3_small
+
+          print("torch", torch.__version__)
+          print("torchvision", torchvision.__version__)
+          print("onnx", onnx.__version__)
+          print("onnxruntime", ort.__version__)
+          print("imagehash", getattr(imagehash, "__version__", "installed"))
+
+          model = mobilenet_v3_small(weights=None).eval()
+          x = torch.zeros(1, 3, 224, 224)
+          out = Path("stage5_dummy_mobilenetv3_small.onnx")
+          torch.onnx.export(
+              model,
+              x,
+              out.as_posix(),
+              input_names=["input"],
+              output_names=["output"],
+              opset_version=18,
+              dynamo=False,
+          )
+          onnx.checker.check_model(onnx.load(out.as_posix()))
+          sess = ort.InferenceSession(out.as_posix(), providers=["CPUExecutionProvider"])
+          y = sess.run(None, {"input": x.numpy()})
+          print("onnx_bytes", out.stat().st_size)
+          print("onnx_sha256", hashlib.sha256(out.read_bytes()).hexdigest())
+          print("ort_output_shape", y[0].shape)
+
+          im = Image.new("RGB", (224,224), "white")
+          print("phash_smoke", imagehash.phash(im, hash_size=8))
+          PY
+
+      - name: Install ORT Web pinned runtime
+        run: |
+          mkdir -p /tmp/royacheck-stage5-web
+          cd /tmp/royacheck-stage5-web
+          npm init -y
+          npm install --save-exact onnxruntime-web@1.30.0
+          npm ls onnxruntime-web
+          node - <<'JS'
+          const ort = require("onnxruntime-web");
+          console.log("ort-web-loaded", typeof ort.InferenceSession === "function");
+          JS
