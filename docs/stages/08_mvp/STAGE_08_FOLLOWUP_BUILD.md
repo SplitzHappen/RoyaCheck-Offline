@@ -1,96 +1,101 @@
-# Stage 8 — Deferred Follow-up Increment
+# Stage 8 — Follow-up Review-Later and Disclosure Repair
 
-**Stage:** 8 — MVP follow-up implementation  
-**Status:** partial follow-up increment; Stage 8 remains open  
-**Branch:** `chatgpt/stage-08-followups`  
-**Base:** `main` after PR #21 squash merge `751c99e9d16890ceb87ed2c4790f00c3289ceff5`
+**Stage:** 8 — MVP follow-up increment  
+**Status:** draft repair after Claude PR #22 audit; Stage 8 remains open  
+**Branch:** `chatgpt/stage-08-followups`
 
 ## Purpose
 
-This increment addresses the Stage 8 items explicitly deferred from PR #21:
+This follow-up PR addresses the Stage 8 items that PR #21 explicitly deferred:
 
-1. a saved-record / review-later list backed by the same browser-local IndexedDB store;
-2. per-record text review cards and per-record deletion;
-3. a fixed-string local-language interaction scaffold for Lugisu;
-4. draft submission-readiness disclosures.
+1. saved-record / review-later persistence;
+2. per-record text-only review cards;
+3. per-record local deletion;
+4. fixed-string local-language interaction scaffold;
+5. draft submission-readiness disclosures.
 
-This PR is not Stage 8 closure.
+This PR does **not** close Stage 8.
 
-## Frozen core preserved
+## Claude audit repair scope
 
-No change is made to:
+Claude audited PR #22 at `d419ceb64aab449bce2e0530383f33d66dd072e7` and returned `PASS WITH MAJOR REPAIRS`.
 
-- the Stage 7D A0 ONNX artifact;
-- ONNX SHA-256 `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`;
-- class order;
-- `T_rust = 0.50`;
-- `T_healthy = 0.70`;
-- preprocessing contract;
-- public output routes: `visible rust`, `no visible rust`, `not sure`.
+This repair pass addresses the reported blockers:
 
-## Saved-record / review-later behavior
+| Finding | Repair status |
+|---|---|
+| B1 saved-record duplicate rendering race | Repaired in `app/followups.js` with a latest-request-wins refresh counter and off-screen list construction before DOM swap. |
+| B2 stale deleted-record paths | Repaired with shared `royacheck:record-saved` and `royacheck:record-deleted` events between `app.js` and `followups.js`. Deleting from either view refreshes/clears the other affected view. |
+| B3 Lugisu placeholder mismatch | Repaired by replacing English-only placeholders with draft fixed-string Lugisu text, still explicitly unvalidated and pending fluent human review. |
+| B4 no behavioral coverage | Partially repaired by adding `tests/browser-followups.mjs`, a dedicated Playwright browser probe for the follow-up behavior. Execution evidence is still pending. |
 
-The new `app/followups.js` module reads the existing `royacheck-offline` IndexedDB `observations` store and renders saved observations in `#savedRecordsSection`.
+## Review-later behavior
 
-Implemented behavior:
+The follow-up module now:
 
-- refresh saved local records;
-- list each saved record as text only;
-- view a saved-record review card;
-- delete an individual saved record;
-- keep `raw_image_retained:false` as the expected record posture;
-- do not upload or send anything automatically.
+- reads persisted records from the existing `royacheck-offline` IndexedDB `observations` store;
+- renders a text-only saved-record list;
+- uses `refreshRequestSeq` so rapid refreshes cannot append duplicate records from stale refreshes;
+- builds a fresh list off-screen and swaps it into the DOM only if the refresh is current;
+- exposes per-record text review cards only after re-reading the selected record from IndexedDB;
+- refuses to render a review card for a deleted/missing record;
+- deletes only the requested record ID;
+- clears section 4 and the saved-record review card when either is showing a deleted record;
+- reports refresh/delete errors through visible status text.
 
-This upgrades the PR #21 current-session-only review/delete behavior into a minimal review-later loop while keeping the raw-image non-retention constraint.
+The record posture remains text-only. Raw images are not retained or sent.
 
 ## Lugisu fixed-string scaffold
 
-The prototype now includes `#lugisuSection`, a fixed-string local-language prompt rehearsal.
+This PR adds draft fixed-string Lugisu text for bounded statuses/actions:
 
-Important limitation:
+- visible rust;
+- no visible rust;
+- not sure;
+- review later.
 
-- the Lugisu text is **not validated**;
-- the UI marks each Lugisu slot as `Lugisu translation pending human validation`;
-- this is an interaction scaffold, not validated localization;
-- no chatbot or free-form translation is introduced.
+The app states that these strings are:
 
-Before final submission or field-use claims, a fluent reviewer must replace or approve the Lugisu strings.
+- draft;
+- unvalidated;
+- pending review by a fluent human;
+- not evidence of validated localization, field readiness, or usability.
 
-## Submission-readiness disclosure drafts
+The Lugisu scaffold is fixed-string only. It does not add chatbot behavior or free-form translation.
 
-This increment adds draft disclosure material under `docs/submission/`:
+## Cache and offline repair
 
-- AI/tooling disclosure draft;
-- supported browser and offline limitations draft;
-- third-party notices draft.
+The cache name is bumped to:
 
-These are draft submission aids. They do not by themselves close Stage 8 or Stage 10.
+`royacheck-stage8-a0-4037c096-20261004-r2`
 
-## Validation target
+`app/followups.js` is included in both `app.js` and `app/sw.js` `CORE_ASSETS`, and `tests/static-smoke.mjs` checks that the app and service-worker asset lists remain identical.
 
-`npm test` should continue to pass and now checks that:
+## Validation status
 
-- `app/followups.js` exists in the shell and service-worker cache;
-- saved-record persistence uses IndexedDB `getAll`;
-- per-record deletion exists;
-- Lugisu fixed-string slots are marked as pending human validation;
-- no remote shell assets are introduced;
-- the frozen model/preprocessing/routing contracts remain unchanged.
+Static validation has been updated:
 
-## Explicitly not performed
+- `npm test` checks the static app shell, cache-name equality, asset-list equality, Lugisu warning strings, review-later repair hooks, and preprocessing reference behavior.
+- `tests/browser-followups.mjs` is added for browser-level follow-up behavior.
 
-- no deployment;
-- no video production;
-- no submission;
-- no RoCoLe inference;
-- no challenge-set inference;
-- no model retraining or fine-tuning;
-- no model change;
-- no threshold change;
-- no class-order change;
-- no preprocessing-contract change;
-- no raw dataset commit;
-- no field-validation claim;
-- no treatment recommendation;
-- no Stage 7 closure;
-- no Stage 8 closure.
+Required before Ready for Review:
+
+1. run `npm test`;
+2. run `node tests/browser-followups.mjs` against a served app with Playwright available;
+3. record commands, outputs, tested SHA, and whether the evidence is local-only or hosted.
+
+No hosted browser evidence is recorded yet for this repaired PR.
+
+## Boundaries preserved
+
+No deployment, video, submission, RoCoLe inference, challenge-set inference, model retraining/fine-tuning, model change, threshold change, class-order change, preprocessing-contract change, raw dataset commit, field-validation claim, treatment recommendation, Stage 7 closure, or Stage 8 closure was performed.
+
+## Remaining submission-stage blockers
+
+The following remain open before final submission:
+
+- final repository `LICENSE`;
+- final third-party notices with BRACOL CC BY 4.0 attribution, TorchVision/ImageNet-pretrained-weight disclosure, and ONNX Runtime Web MIT notice;
+- final AI/tooling disclosure;
+- supported-browser/offline statement;
+- owner decision on whether local-only browser evidence is acceptable if hosted Actions remains unavailable.
