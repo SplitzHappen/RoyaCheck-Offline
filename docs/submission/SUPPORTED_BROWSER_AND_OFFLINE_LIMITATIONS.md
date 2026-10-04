@@ -1,31 +1,34 @@
 # Supported Browser and Offline Limitations Draft
 
-This draft is for submission-readiness review. It does not close Stage 8.
+**Status:** draft; not final submission text.
 
-## Supported runtime assumption
+## Tested browser evidence
 
-RoyaCheck Offline is a static browser-local prototype requiring a modern browser with support for:
+PR #21 recorded Chromium/Playwright evidence for the browser-local inference loop. PR #22 adds review-later/fixed-string follow-up behavior and requires its own browser evidence before Ready for Review.
 
-- ES modules;
-- WebAssembly;
-- IndexedDB;
-- `crypto.subtle`;
-- Canvas image decode/readback;
-- Service Worker and Cache Storage for offline reload behavior.
+This document must not imply that PR #21 browser evidence covers PR #22 behavior.
 
-## Tested path
+## Untested browsers
 
-Current evidence covers Chromium-based testing through Playwright in the Stage 8 smoke evidence.
+The following remain untested for the PR #22 follow-up behavior:
+
+- iOS Safari;
+- Firefox;
+- Android browser variants;
+- low-memory mobile devices.
+
+## First-load size and connectivity
+
+The current cached app bundle is approximately **18.1 MB**. First load requires a working connection before offline use can be verified. This matters for low-connectivity environments.
 
 ## Offline behavior
 
-First load requires a network connection so the app shell, ONNX model, and local ONNX Runtime Web assets can be cached. After cache verification, the app is designed to reload and run inference offline in the same browser profile.
+The service worker caches the static app shell, model, preprocessing code, follow-up module, manifest, icon, and local ONNX Runtime Web assets. Offline behavior is intended for the static app after a successful first load and cache verification.
 
-## Known limitations
+## Local storage durability
 
-- Plain HTTP phone testing may not support all secure-browser APIs; use HTTPS or localhost.
-- Minimum device/browser support has not been field-tested.
-- Mobile camera photos may differ from the internal BRACOL evidence domain.
-- Localization is fixed-string only and Lugisu wording remains pending human validation.
-- Stored records are local to the browser/profile and can be deleted by the user.
-- Raw images are not retained by default.
+Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, Safari/browser storage policies, clearing site data, or device/browser reset. The MVP provides no backup, sync, or export.
+
+## Privacy boundary
+
+The MVP is designed not to retain raw images in saved records and not to send raw images automatically. Records are text-only.
