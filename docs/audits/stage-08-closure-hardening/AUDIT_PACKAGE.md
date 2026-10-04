@@ -20,6 +20,18 @@ Remaining Stage 8 closure-readiness issues after PR #23 were:
 
 PR #24 addresses item 2 and documents item 3. It does not fully close item 1.
 
+## Claude repair context
+
+Claude audited PR #24 at head `a742f50f558cd649171ce7c2de56a5defe7da2cb` and returned `PASS WITH MINOR REPAIRS`.
+
+Blocking issue before Ready for Review:
+
+- `npm test` failed because `tests/closure-guards.mjs` expected `visible_rust` for `[0.65, 0.55, 0.10, 0.10, 0.10]`.
+- That input has healthy as the top class and healthy is below `T_HEALTHY`, so the correct result is `not_sure`.
+- The product routing was correct; the test expectation was wrong.
+
+This repair updates the incorrect expectation, adds the true rust-top visible-rust case, and expands non-public disease checks across indices 2, 3, and 4.
+
 ## Claimed PR #24 scope
 
 Expected changed files:
@@ -75,10 +87,13 @@ Flag overbroad, brittle, or underinclusive checks.
 
 Check whether `tests/closure-guards.mjs` adequately covers `routeFromProbabilities` threshold behavior:
 
-- rust at and below `T_RUST = 0.50`;
-- healthy at and below `T_HEALTHY = 0.70`;
-- non-public disease classes route `not_sure`;
-- top-class precedence is preserved.
+- rust at `T_RUST = 0.50` routes `visible_rust` only when rust is the top class;
+- rust below `T_RUST` routes `not_sure`;
+- healthy at `T_HEALTHY = 0.70` and top class routes `no_visible_rust`;
+- healthy below `T_HEALTHY` routes `not_sure`;
+- leaf miner, brown leaf spot, and cercospora top classes route `not_sure`;
+- rust above `T_RUST` does not override healthy when healthy is the top class;
+- a true rust top-class case above `T_RUST` routes `visible_rust` even when healthy is below `T_HEALTHY`.
 
 Flag missing edge cases or misleading expectations.
 
