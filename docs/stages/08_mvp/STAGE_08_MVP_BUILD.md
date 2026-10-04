@@ -18,7 +18,8 @@ Stage 8 consumes the already frozen Stage 7D A0 artifact without changing it:
 - preprocessing: RGB decode; require both dimensions >=224 px; preserve the full frame; direct bilinear resize to 224×224; ImageNet normalization; no center crop;
 - `T_rust = 0.50`;
 - `T_healthy = 0.70`;
-- runtime: self-hosted `onnxruntime-web@1.30.0`, WASM path, one thread.
+- runtime: self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread;
+- minimal browser runtime assets: `ort.wasm.min.mjs`, `ort-wasm-simd-threaded.mjs`, and `ort-wasm-simd-threaded.wasm`.
 
 No Stage 8 change is authorized to alter the model, class map, thresholds, preprocessing contract, or public three-way routing.
 
