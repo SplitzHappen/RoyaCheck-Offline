@@ -1,9 +1,10 @@
-const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1";
+const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./followups.js",
   "./preprocess.js",
   "./manifest.webmanifest",
   "./assets/icon.svg",
@@ -13,11 +14,20 @@ const CORE_ASSETS = [
   "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
 ];
 
+async function precacheCoreAssets() {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.all(CORE_ASSETS.map(async (asset) => {
+    const response = await fetch(new Request(asset, { cache: "reload" }));
+    if (!response || response.status !== 200 || response.type === "opaque") {
+      throw new Error(`Precache failed for ${asset}`);
+    }
+    await cache.put(asset, response);
+  }));
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(CORE_ASSETS))
-      .then(() => self.skipWaiting())
+    precacheCoreAssets().then(() => self.skipWaiting())
   );
 });
 
@@ -32,7 +42,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    fetch(event.request).then((response) => {
+    fetch(new Request(event.request, { cache: "no-cache" })).then((response) => {
       if (!response || response.status !== 200 || response.type === "opaque") return response;
       const copy = response.clone();
       caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));

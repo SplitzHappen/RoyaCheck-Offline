@@ -82,11 +82,11 @@
     </section>
 
     <section id="savedSection" class="card" hidden>
-      <h2>4. Local observation</h2>
+      <h2>4. Current local observation</h2>
       <div id="savedRecord"></div>
       <div class="button-row">
         <button id="reviewCardButton" type="button">Prepare on-device review card</button>
-        <button id="deleteButton" class="danger" type="button">Delete local record</button>
+        <button id="deleteButton" class="danger" type="button">Delete current local record</button>
       </div>
       <div id="reviewCard" class="review-card" hidden>
         <h3>Reviewer card — user initiated</h3>
@@ -95,13 +95,45 @@
       </div>
     </section>
 
+    <section id="savedRecordsSection" class="card">
+      <h2>5. Review saved observations later</h2>
+      <p>Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, or clearing site data. This MVP provides no backup or export, and the list is text-only without raw photos.</p>
+      <div class="button-row">
+        <button id="refreshRecordsButton" type="button">Refresh saved records</button>
+        <button id="clearReviewPanelButton" type="button">Clear review panel</button>
+      </div>
+      <div id="savedRecordsList" class="record-list" aria-live="polite"></div>
+      <p id="persistentReviewStatus" class="status" aria-live="polite"></p>
+      <div id="persistentReviewCard" class="review-card" hidden>
+        <h3>Saved-record review card — user initiated</h3>
+        <p class="hint">Text-only. Nothing is sent automatically.</p>
+        <dl id="persistentReviewFields"></dl>
+      </div>
+    </section>
+
+    <section id="lugisuSection" class="card">
+      <h2>6. Local-language fixed-string scaffold</h2>
+      <p>This MVP includes a fixed-string local-language scaffold connected to the current AI proposal and human disposition. Actual Lugisu/Lumasaba wording is pending fluent human validation and is not claimed in this build.</p>
+      <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt rehearsal">
+        <button type="button" data-lugisu-step="visible_rust">Visible rust</button>
+        <button type="button" data-lugisu-step="no_visible_rust">No visible rust</button>
+        <button type="button" data-lugisu-step="not_sure">Not sure</button>
+        <button type="button" data-lugisu-step="review_later">Review later action</button>
+      </div>
+      <div id="lugisuPrompt" class="language-output" aria-live="polite">
+        <strong>Local-language scaffold pending fluent validation.</strong>
+        <span>Run the normal flow or choose a fixed-string rehearsal. Actual Lugisu/Lumasaba wording is not claimed in this build.</span>
+      </div>
+      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu/Lumasaba usability or field readiness.</p>
+    </section>
+
     <section class="card limitations">
       <h2>Evidence and limitations</h2>
       <p><strong>Frozen model:</strong> Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
       <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
       <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
       <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
-      <p><strong>Localization:</strong> this technical MVP uses English. Validated localized usability has not been established.</p>
+      <p><strong>Localization:</strong> this technical MVP includes a local-language fixed-string scaffold. Actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.</p>
     </section>
   </main>
 
@@ -111,5 +143,6 @@
 
   <canvas id="sourceCanvas" hidden></canvas>
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./followups.js"></script>
 </body>
 </html>
