@@ -2,11 +2,15 @@
 
 Repository: `SplitzHappen/RoyaCheck-Offline`
 
+PR: `#26`
+
 Branch: `chatgpt/stage-08-closure-readiness-package`
+
+Current head: repaired minor-fix head after `95d7b7289f995082c6df5c645778c3078e57818e`
 
 Base commit: `03487327a15d4f8286ca0e275c834fa4c21a0e40` (PR #25 squash merge)
 
-Purpose: audit the repaired Stage 8 closure-readiness package after Claude's prior `PASS WITH MAJOR REPAIRS` finding. This package is for audit and owner decision support only. It must not be treated as Stage 8 closure, deployment readiness, field validation, submission, or treatment guidance.
+Purpose: audit whether PR #26 is ready for Ready for Review after minor documentation repairs. This package is for audit and owner decision support only. It must not be treated as Stage 8 closure, deployment readiness, field validation, submission, or treatment guidance.
 
 ## Scope of this PR
 
@@ -29,56 +33,112 @@ Expected scope:
 
 Please verify this scope directly.
 
-## Repair context
+## Background
 
-Your previous PR #26 closure-readiness audit at head `e2abb94c916e0493ed2d8c0afac5d59b14e23316` returned:
+Your prior re-audit at head `95d7b7289f995082c6df5c645778c3078e57818e` returned `PASS WITH MINOR REPAIRS`.
 
-`PASS WITH MAJOR REPAIRS`
+You confirmed that:
 
-You confirmed the original package was mechanically accurate where checked, but found two major defects:
+- the major target-device source repair was correct in substance;
+- the naming/branding policy repair was correctly cited and applied;
+- route-variety was correctly classified with one provenance error;
+- item 36 had no overclaim but needed deferral-vs-waiver consistency;
+- claims boundary held;
+- ROADMAP Stage 8 requirements trace was complete enough for review-readiness after one correction;
+- PR #26 appeared merge-ready after minor repairs, verification, Ready for Review, and owner authorization;
+- Stage 8 was not closeable yet.
 
-1. the package incorrectly said no target browser/device source existed;
-2. the package incorrectly said no Stage 0 naming/branding policy source existed.
+## Repairs applied in this pass
 
-This repaired package should now:
+### 1. Human-authority attribution repair
 
-- cite the existing D4-07 / Stage 5 / ROADMAP target-device sources;
-- classify current headless Chromium/Linux evidence as not satisfying the physical iPhone/Safari standalone-PWA target;
-- cite Stage 0 naming/branding sources and align the checklist with organizer/partner naming and branding restrictions;
-- state route-variety as a caveat requiring owner acceptance, not an automatic blocker;
-- state the current-head PR #25 synthetic route as confirmed `not_sure`;
-- cite PR #21's three-route browser smoke as earlier evidence;
-- label PR #23/PR #25 final Claude verdicts and 50/50 runs as sourced from PR review/audit conversation where not fully recorded in merged repo docs;
-- add the PR #21 deferrals ledger;
-- state the item 36 reduced-component / Stage 10 risk consequence;
-- qualify browser claims as headless Chromium/Linux;
-- separate existing Stage 7E internal-holdout figures from Stage 8 evidence;
-- add a ROADMAP Stage 8 requirements trace.
+The closure-readiness document no longer says PR #24 provides human-authority guards.
 
-## Background evidence to verify
+It now states:
 
-PR #25 was squash merged as `03487327a15d4f8286ca0e275c834fa4c21a0e40`.
+- PR #24 / `tests/closure-guards.mjs` covers CSP, outbound-transport, local-only/no-upload posture, and routing assertions;
+- PR #24 does **not** provide human-authority Save-button negative assertions;
+- PR #21 `browser-e2e.mjs` asserted Save starts disabled, stays disabled without confirmation, and enables only after disposition plus confirmation;
+- PR #21 static smoke guarded the role marker and authority copy;
+- current code inspection, as summarized in your PR #26 audit, shows disposition defaults to `""` and Save requires both disposition and confirmation;
+- current-head committed tests exercise the happy path only and do not include a negative current-head "Save stays disabled" assertion.
 
-Claude final verdict on PR #25 head `7db0dfbc4125d1655c8b39e40c420c9a3ea22065`: `PASS`.
+Please verify that the requirements trace now classifies this as:
 
-PR #25 evidence carried forward from the PR review/audit conversation:
+- evidence at earlier head + code inspection;
+- no current-head negative assertion;
+- owner acceptance required or separate test-change PR if stricter evidence is required.
 
-- `npm test`: PASS.
-- `npm run test:browser-followups`: PASS.
-- `npm run test:browser-inference`: 50/50 PASS, 0 hangs.
-- Every canonical inference run reported:
-  - `offline_network_down_enforced: true`;
-  - `server_closed_before_offline_reload: true`;
-  - `post_cutoff_server_hits: 0`.
-- Confirmed current-head offline inference route: `not_sure`.
-- Broken service-worker cache fallback fails.
-- Corrupted model fails.
-- `10 x 10` too-small image fails at `Local inference complete`.
-- `app/` was untouched.
-- No product behavior, model, threshold, class-order, preprocessing, ONNX, ORT, service-worker behavior, or route logic changed.
-- Evidence boundaries and item 36 deferral were clean.
+### 2. Target-device D4-18 repair
 
-The current package consolidates PR #21 through PR #25 evidence and identifies remaining closure decisions.
+The closure-readiness document and manifest now add D4-18 / technical-budget requirements:
+
+- at least 30 timed runs plus one warm-up;
+- median latency ≤2.0 seconds;
+- p95 latency ≤4.0 seconds;
+- median latency above 5.0 seconds is unusable;
+- iOS and Safari versions must be recorded.
+
+The package now states:
+
+- running the physical D4-07 protocol also requires D4-18 latency/timing measurement;
+- if José amends the Stage 8 evidence level to Chromium, the amendment must cite both D4-07 and D4-18;
+- that amendment must move physical proof plus latency-budget validation to Stage 9 with disclosure.
+
+Please verify this framing.
+
+### 3. `not_sure` provenance repair
+
+The package no longer attributes the confirmed `not_sure` route to the PR #25 final audit.
+
+It now states:
+
+- Claude confirmed `offline_inference_route: "not_sure"` during the PR #26 audit at head `e2abb94c916e0493ed2d8c0afac5d59b14e23316`;
+- this was one headless Chromium run;
+- because PR #26 is documentation/manifest-only and `app/` did not change, the route observation is treated as applicable to the repaired PR #26 head;
+- this is not presented as a PR #25 final-audit result.
+
+Please verify that this provenance is now correct in the document, manifest, and audit package.
+
+### 4. Minor 7 disposition repair
+
+The PR #21 deferrals ledger now states:
+
+- D4-07 supersedes the evidence-target part of Minor 7;
+- it does not fully close the original supported-browser/minimum-device documentation concern;
+- `SUPPORTED_BROWSER_AND_OFFLINE_LIMITATIONS.md` still needs a Stage 10 supported-browser/minimum-device statement;
+- an iPhone 17 Pro Max proof is not evidence for affordable phones;
+- Minor 7 carries forward to Stage 10 even if the Stage 8 target-device path is run or amended.
+
+Please verify this disposition.
+
+### 5. Item 36 wording repair
+
+The package now consistently uses **owner deferral**, not waiver.
+
+It states:
+
+- Stage 8 closure must explicitly approve the item 36 owner deferral as part of closing against a reduced Stage 8 component list;
+- the deferred item remains a Stage 10 submission risk;
+- disclosure alone does not satisfy the requirement;
+- this package does not record an item 36 waiver;
+- a waiver would be a different and stronger owner decision: knowingly submitting without satisfying the requirement and accepting the compliance risk;
+- José has not authorized waiver framing here.
+
+Please verify that the item 36 wording is consistent and claim-safe.
+
+### 6. Optional architecture-target trace rows
+
+The requirements trace now includes architecture-target rows for:
+
+- static PWA architecture;
+- no server-side rust inference;
+- no cloud LLM dependency;
+- self-hosted runtime/model assets;
+- no geolocation collection;
+- no raw-image retention by default.
+
+Please verify whether these rows are accurate enough for PR #26 review-readiness.
 
 ## Materials to inspect
 
@@ -87,15 +147,10 @@ Please inspect:
 - `docs/stages/08_mvp/STAGE_08_CLOSURE_READINESS.md`
 - `docs/stages/08_mvp/STAGE_08_CLOSURE_READINESS_MANIFEST.json`
 - this audit package
-- `docs/stages/08_mvp/STAGE_08_BROWSER_SMOKE_EVIDENCE.md`
-- `docs/stages/08_mvp/STAGE_08_CLAUDE_AUDIT_REPAIR_SUMMARY.md`
-- `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`
-- `docs/stages/05_readiness/STAGE_05_READINESS_AND_FALLBACK.md`
-- `docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md`
-- `ROADMAP.md`
+- any existing Stage 8 evidence docs needed to verify consistency
 - relevant app/test/package files only if needed to verify scope or claims
 
-## Required audit questions
+## Required checks
 
 ### A. Scope verification
 
@@ -115,159 +170,44 @@ Confirm whether any of the following changed:
 - service-worker behavior
 - route logic
 
-### B. Evidence consolidation accuracy
+### B. JSON validation
 
-Verify whether `STAGE_08_CLOSURE_READINESS.md` and the manifest accurately consolidate merged evidence from:
+Verify that:
 
-- PR #21 / `751c99e9d16890ceb87ed2c4790f00c3289ceff5`
-- PR #22 / `80eb5f3c6574c9b7ceb829792aef75e915122b01`
-- PR #23 / `d2f9f976d07af4ac1a0ff58fb229ef00d4f9733b`
-- PR #24 / `8f738852873723e9aed98b48ecfd96094f9dd1f1`
-- PR #25 / `03487327a15d4f8286ca0e275c834fa4c21a0e40`
+- `docs/stages/08_mvp/STAGE_08_CLOSURE_READINESS_MANIFEST.json` is valid JSON.
 
-Flag any incorrect commit, evidence, or claim.
+### C. Minor repair verification
 
-### C. Frozen model contract
+Verify that the five required minor repairs are complete:
 
-Verify whether the closure-readiness package accurately preserves the Stage 7D A0 frozen model contract:
+1. human-authority attribution no longer miscredits PR #24;
+2. D4-18 latency/budget requirements are included and tied to the target-device decision;
+3. confirmed `not_sure` route provenance is attributed to Claude's PR #26 audit run at `e2abb94`, not the PR #25 conversation;
+4. Minor 7 carries the supported-browser/minimum-device statement forward to Stage 10;
+5. item 36 uses deferral wording consistently and does not imply an owner waiver.
 
-- model path `app/assets/model/royacheck_a0_fp32.onnx`
-- SHA-256 `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
-- source artifact ID `11292181113`
-- artifact name `stage7d-a0-export-parity`
-- ONNX Runtime Web `1.30.0`
-- thresholds `T_RUST=0.50`, `T_HEALTHY=0.70`
-- class order `healthy`, `rust_present`, `leaf_miner_no_rust`, `brown_leaf_spot_no_rust`, `cercospora_no_rust`
-- preprocessing contract: RGB decode, dimensions at least `224`, preserve full frame, resize `224 x 224`, ImageNet normalization, no center crop.
-
-### D. Target browser/device sourcing repair
-
-Verify that the package now correctly cites and interprets:
-
-- Stage 4 D4-07 primary physical evidence context:
-  - `iPhone 17 Pro Max → Safari → Add to Home Screen → standalone PWA`;
-  - `navigator.storage.persist()` where supported, with returned value recorded;
-  - no assumption that Safari-tab storage is shared with Home Screen standalone PWA storage.
-- Stage 5 readiness:
-  - iPhone/Safari physical proof pending by design;
-  - device available;
-  - protocol fixed;
-  - later physical test required.
-- ROADMAP Stage 8 gate:
-  - full loop must work on the defined target browser/device evidence level.
-- ROADMAP Stage 9 offline protocol:
-  - if physical-phone protocol cannot be run, state actual environment and limitation.
-
-Assess whether current evidence is sufficient or whether this remains a Stage 8 closure blocker unless the owner runs the physical protocol or explicitly amends the Stage 8 evidence level.
-
-### E. Naming/branding sourcing repair
-
-Verify that the package now correctly cites and applies:
-
-- `docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md`, row 48;
-- `docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md`, §5.7 Branding;
-- Stage 0 reconciliation findings M-01 and r-02, if present;
-- ROADMAP Stage 8 gate requiring UI strings and live-demo metadata to pass Stage 0 naming/branding policy.
-
-Check whether the package covers:
-
-- organizer and partner names;
-- titles;
-- acronyms;
-- logos;
-- visual branding;
-- no implied endorsement or official status;
-- minimal factual plain-text identification only where necessary;
-- live-demo metadata disposition.
-
-Classify naming/branding as satisfied, pending formal sweep, or blocking.
-
-### F. Route-variety closure question
-
-Assess whether Stage 8 can close with the repaired route evidence framing:
-
-- current-head PR #25 browser offline inference route is confirmed `not_sure`;
-- PR #21 browser smoke covered `visible_rust`, `no_visible_rust`, and `not_sure` at an earlier head;
-- PR #21 fixtures/workflow were not retained as current-head committed route-variety evidence;
-- PR #24 closure guards cover route threshold/top-class behavior;
-- `app/preprocess.js` was recorded as unchanged since PR #21;
-- no current-head live inference has rendered `visible_rust` or `no_visible_rust`.
-
-Please classify route variety as one of:
-
-- not a blocker;
-- owner-acceptance caveat;
-- blocking issue requiring additional current-head browser-level route evidence.
-
-### G. PR #21 deferrals ledger
-
-Verify the package now records and disposition-proposes:
-
-- M1: near-uniform-image routing, declined by owner;
-- Minor 5: hard-coded `confirmed_by_role`;
-- Minor 7: minimum device not documented;
-- Minor 9: training code only in history;
-- Minor 10: leftover branches not inspected.
-
-Assess whether the proposed disposition for each is acceptable before PR #26 Ready for Review, before PR #26 merge, and before Stage 8 closure.
-
-### H. Item 36 consequence framing
-
-Verify whether item 36 is handled safely:
-
-- validated Lugisu/Lumasaba support remains deferred by owner decision;
-- English-only scaffold is not completed local-language support;
-- `local_language_item_complete: false`;
-- demo/submission/pitch material must disclose the deferral if local-language support is mentioned;
-- no completed validated Lugisu/Lumasaba support is claimed;
-- closing Stage 8 with item 36 deferred is explicitly framed as closing against a reduced component list;
-- the unmet requirement becomes a Stage 10 submission risk;
-- disclosure alone does not satisfy the requirement;
-- Stage 8 closure must explicitly approve the deferral as part of closure criteria.
-
-Classify item 36 as accepted deferral with owner decision, minor caveat, or blocking issue.
-
-### I. Claims boundary
+### D. Claims boundary
 
 Verify the package does not claim:
 
-- new model-performance evidence from Stage 8;
+- new Stage 8 model performance evidence;
 - field validation;
 - treatment guidance;
 - production deployment;
 - completed validated Lugisu/Lumasaba support;
-- WBG or partner endorsement;
+- World Bank Group or partner endorsement;
 - RoCoLe/challenge-set inference;
 - Stage 8 closure.
 
-Verify that:
+### E. Remaining state classification
 
-- browser inference claims are qualified as headless Chromium/Linux;
-- existing internal-holdout figures are governed by the Stage 7 evidence ceiling, not created by Stage 8.
+Separate:
 
-### J. ROADMAP Stage 8 requirements trace
+- blockers before PR #26 Ready for Review;
+- blockers before PR #26 merge;
+- blockers before Stage 8 closure.
 
-Assess whether the requirements trace is sufficient or still missing closure-critical evidence/decisions for:
-
-- named local-language interaction;
-- image capture/upload;
-- browser-local inference;
-- three public outputs;
-- explicit AI-suggestion state;
-- pending-human-confirmation state;
-- confirm/correct/review actions;
-- no pre-filled human disposition;
-- `confirmed_by_role`;
-- structured local record;
-- IndexedDB/local storage;
-- deterministic extension handoff summary;
-- Stage-3-locked user-initiated handoff and consent step;
-- store-now/review-later without live connection;
-- no claim that Noor carries the smartphone all day;
-- safety/limitation language;
-- local-record deletion path;
-- defined target browser/device evidence level;
-- Stage 0 naming/branding gate.
+Do not confuse Stage 8 closure blockers with PR #26 merge blockers.
 
 ## Output requested
 
@@ -284,39 +224,23 @@ Use one:
 
 ## Scope verification
 
-List changed files and confirm whether the PR is documentation/manifest only.
+List changed files and confirm whether PR #26 remains documentation/manifest-only.
 
-## Evidence consolidation assessment
+## JSON validation
 
-State whether PR #21–#25 evidence and model contract are accurately represented.
+Confirm whether `STAGE_08_CLOSURE_READINESS_MANIFEST.json` is valid JSON.
 
-## Target browser/device sourcing assessment
+## Minor repair verification
 
-State whether the repair is accurate and what remains before Stage 8 closure.
+Assess the five required minor repairs one by one.
 
-## Naming/branding sourcing assessment
+## Architecture-target trace assessment
 
-State whether the repair is accurate and what remains before Stage 8 closure.
-
-## Route-variety assessment
-
-Classify and explain.
-
-## PR #21 deferrals ledger assessment
-
-Assess the ledger and proposed dispositions.
-
-## Item 36 assessment
-
-Classify and explain.
+Assess the optional architecture-target rows if present.
 
 ## Claims-boundary assessment
 
-State whether any overclaims exist.
-
-## ROADMAP Stage 8 requirements-trace assessment
-
-State whether the trace is adequate for PR #26 and what remains before closure.
+State whether unsupported claims are avoided.
 
 ## Remaining issues before PR #26 Ready for Review
 
@@ -334,9 +258,9 @@ List separately. Do not confuse these with PR #26 merge blockers.
 
 State one:
 
-- Keep draft until major repairs are complete.
-- Ready for Review after minor repairs.
 - Ready for Review now.
+- Ready for Review after minor repairs.
+- Keep draft until major repairs are complete.
 - Blocked.
 
-Then separately state whether PR #26 appears merge-ready after Ready for Review and owner authorization, and whether Stage 8 appears closeable now or only after additional owner decisions/evidence.
+Then separately state whether PR #26 appears merge-ready after Ready for Review and owner authorization, and whether Stage 8 is closeable now or only after additional owner decisions/evidence.
