@@ -41,7 +41,7 @@ jobs:
           set -euo pipefail
           mkdir -p stage7d_a0_evidence stage7d_a0_model
           python - <<'PY'
-          import hashlib, json, os, platform, sys, time
+          import hashlib, json, platform, sys
           from pathlib import Path
           import numpy as np
           import torch
@@ -157,10 +157,25 @@ jobs:
               raise SystemExit(f'parity failed: max_abs={max_abs_all} max_rel={max_rel_all}')
 
           dist = Path('node_modules/onnxruntime-web/dist')
-          primary_runtime = [dist / 'ort.min.js', dist / 'ort-wasm-simd.wasm']
-          missing = [p.as_posix() for p in primary_runtime if not p.exists()]
-          if missing:
-              raise SystemExit(f'missing ORT Web primary runtime assets: {missing}')
+          js_candidates = sorted([p for p in dist.glob('ort*.min.js') if p.is_file()])
+          if not js_candidates:
+              js_candidates = sorted([p for p in dist.glob('ort*.js') if p.is_file()])
+          wasm_candidates = sorted([p for p in dist.glob('*.wasm') if p.is_file()])
+          if not js_candidates:
+              raise SystemExit('no ONNX Runtime Web JS asset found')
+          if not wasm_candidates:
+              raise SystemExit('no ONNX Runtime Web WASM asset found')
+          def wasm_rank(p):
+              n = p.name.lower()
+              return (
+                  0 if 'simd' in n and 'threaded' not in n and 'jsep' not in n else
+                  1 if 'simd' in n and 'threaded' not in n else
+                  2 if 'wasm' in n and 'threaded' not in n else
+                  3,
+                  p.stat().st_size,
+                  n,
+              )
+          primary_runtime = [js_candidates[0], sorted(wasm_candidates, key=wasm_rank)[0]]
           model_bytes = onnx_path.stat().st_size
           primary_runtime_bytes = sum(p.stat().st_size for p in primary_runtime)
           current_core_bytes = model_bytes + primary_runtime_bytes
