@@ -1174,8 +1174,8 @@ Stages 0–4 are closed and merged. **Stage 5 is in review.**
 
 The deliberate readiness verification pass is complete in PR #18. The technical/toolchain path, evaluation-control tooling, model-artifact access, binary recovery path, primary data-source reachability, browser runtime package path, and deployment infrastructure have been checked without consuming protected evidence.
 
-Before Stage 5 can close, José Antonio must complete/confirm the four small owner-side readiness checks recorded in `docs/stages/05_readiness/STAGE_05_READINESS_AND_FALLBACK.md`: current authenticated submission access, Google Form backup access, practical video-production path, and local recovery/storage/network readiness.
+José Antonio has now completed the owner-side readiness checks: Hack-Nation access/editability, Google Form backup access, local storage, network fallback, and power contingency are confirmed. The video-production path is ready with a bounded low-complexity fallback: direct iPhone MOV capture for the introduction and the owner's working screen-recording route for demo/walkthrough, with simple conversion/export assistance later only if needed.
+
+No Stage 5 readiness blocker remains. **Stage 5 is still not closed** until José Antonio explicitly authorizes closure and guarded merge of PR #18.
 
 **Stage 6 is not started. Stage 7 is not started and is not authorized.**
-
-Do not advance to Stage 6 until José Antonio explicitly approves Stage 5 closure.
