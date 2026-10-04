@@ -1,14 +1,122 @@
 {
   "stage": "8_mvp_followup_asset_bundle",
-  "status": "stage8_followup_draft_validation_recorded",
-  "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+  "status": "stage8_evidence_consolidation_draft_candidate",
+  "branch": "chatgpt/stage-08-evidence-consolidation",
+  "base_main_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
+  "merged_pr21_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+  "merged_pr22_squash_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+  "onnx_sha256_status": "expected_frozen_sha_recorded_from_stage7d_and_guarded_by_app_static_checks; exact local recomputation still recommended before submission",
   "onnxruntime_web_version": "1.30.0",
-  "cache_name": "royacheck-stage8-a0-4037c096-20261004-r2",
+  "service_worker_cache_name": "royacheck-stage8-a0-4037c096-20261004-r2",
   "core_budget_bytes": 30000000,
+  "core_assets_total_bytes_git_tree_plus_root_alias": 18102457,
   "core_budget_pass": true,
+  "asset_evidence_method": {
+    "byte_counts_and_git_blob_sha": "GitHub git tree metadata for commit 80eb5f3c6574c9b7ceb829792aef75e915122b01",
+    "sha256_hashes": "Not recomputed by Vale in this connector-only pass. The manifest records the frozen ONNX expected SHA from Stage 7D; full per-file SHA-256 recomputation remains a local/auditor or submission-package task.",
+    "root_alias_note": "The ./ core asset is a service-worker/root fetch alias expected to serve app/index.html under the documented local static server. It is counted as an index.html-equivalent cache entry for budget purposes, not as a separate repository blob."
+  },
+  "core_assets": [
+    {
+      "cache_path": "./",
+      "repository_path": "app/index.html",
+      "byte_count": 8718,
+      "git_blob_sha": "4778def1d508748b1016e78ddd5115b46b889e53",
+      "sha256": null,
+      "sha256_status": "root_alias_to_index_html; local recomputation required for final submission-grade package"
+    },
+    {
+      "cache_path": "./index.html",
+      "repository_path": "app/index.html",
+      "byte_count": 8718,
+      "git_blob_sha": "4778def1d508748b1016e78ddd5115b46b889e53",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./styles.css",
+      "repository_path": "app/styles.css",
+      "byte_count": 4026,
+      "git_blob_sha": "7d59eed3d3b878bb6912af66c6f03d6012d52506",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./app.js",
+      "repository_path": "app/app.js",
+      "byte_count": 16585,
+      "git_blob_sha": "430c2f5a7a0c886ed5d3ceafa98045c0223c36b1",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./followups.js",
+      "repository_path": "app/followups.js",
+      "byte_count": 13637,
+      "git_blob_sha": "4c3ab363e045cb234021b8515186339a8e5d9d61",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./preprocess.js",
+      "repository_path": "app/preprocess.js",
+      "byte_count": 5346,
+      "git_blob_sha": "1de98733bfb164b9bf9a7fb0d942ca35135fa046",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./manifest.webmanifest",
+      "repository_path": "app/manifest.webmanifest",
+      "byte_count": 435,
+      "git_blob_sha": "3e132b03d1c20fe6fa9e44997ad31a66a17b549d",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./assets/icon.svg",
+      "repository_path": "app/assets/icon.svg",
+      "byte_count": 542,
+      "git_blob_sha": "ea4a1071bfe8bb8bb1e033cd34ab18177c929411",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./assets/model/royacheck_a0_fp32.onnx",
+      "repository_path": "app/assets/model/royacheck_a0_fp32.onnx",
+      "byte_count": 3730046,
+      "git_blob_sha": "62141e02549f0bd778ce155529e411fc9436161f",
+      "sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+      "sha256_status": "expected frozen Stage 7D SHA recorded; local byte-level recomputation recommended before submission"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort.wasm.min.mjs",
+      "repository_path": "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+      "byte_count": 50126,
+      "git_blob_sha": "a099240fde7b95cbb088a1354d442927bbb200b6",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+      "repository_path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+      "byte_count": 24381,
+      "git_blob_sha": "00af19eee6b3c35453a9d6eaae64f591299334cc",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "repository_path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "byte_count": 14239897,
+      "git_blob_sha": "6cd03bf4da35d8b53a554c5ff70bf781d427f14c",
+      "sha256": null,
+      "sha256_status": "local recomputation required"
+    }
+  ],
   "core_assets_expected": [
     "./",
     "./index.html",
@@ -44,69 +152,22 @@
     "preprocessing_contract_change": false
   },
   "validation_status": {
-    "evidence_type": "claude_auditor_run_local_evidence_not_vale_run",
-    "tested_sha": "469486f390251e47a327f06b7a0f52d8f3148b77",
-    "npm_test": {
-      "status": "pass",
-      "command": "npm test",
-      "exit_code": 0,
-      "reported_by": "Claude auditor",
-      "notes": "Static smoke checks and preprocessing reference checks passed."
-    },
-    "browser_followups": {
-      "status": "pass",
-      "command": "npm run test:browser-followups",
-      "server_mode": "python3 -m http.server 4173 at repository root / documented serve:app",
-      "runs": "3/3 pass",
-      "reported_by": "Claude auditor"
-    },
-    "mutation_suite": {
-      "status": "partial_pass",
-      "frozen_contract_mutations_caught": "9/9",
-      "known_uncaught_gaps": [
-        "CSP connect-src * mutation",
-        "remote POST injected into JS on untested path",
-        "route-body mutation"
-      ],
-      "reported_by": "Claude auditor"
-    },
-    "frozen_core_compare": {
-      "status": "unchanged",
-      "compared_to": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
-      "reported_by": "Claude auditor"
-    },
-    "app_compare": {
-      "status": "byte_identical",
-      "compared_to": "c395889c180ef4a280f6ef4ba59e3643cdc23163",
-      "reported_by": "Claude auditor"
-    },
-    "browser_e2e_original": {
-      "status": "not_run",
-      "reason": "fixtures are not committed and no fixture generator exists"
-    },
-    "r1_to_r2_upgrade_probe": {
-      "status": "carried_forward_from_prior_claude_probe",
-      "reason": "app/ byte-identical to c395889, where prior probe passed"
-    },
+    "npm_test": "claude_auditor_local_pass_exit_0_on_469486f390251e47a327f06b7a0f52d8f3148b77",
+    "browser_followups": "claude_auditor_local_pass_3_of_3_on_469486f390251e47a327f06b7a0f52d8f3148b77",
+    "mutation_suite": "claude_auditor_local_9_of_9_frozen_contract_mutations_caught_on_469486f390251e47a327f06b7a0f52d8f3148b77",
+    "browser_e2e_original": "not_run_fixtures_unavailable_or_not_committed",
+    "r1_to_r2_upgrade_probe": "claude_prior_local_probe_carried_forward_app_byte_identical_since_c395889c180ef4a280f6ef4ba59e3643cdc23163; reproducible_repo_test_not_added",
     "asset_hashes_recompute_required": true,
-    "hosted_clean_environment_run": false,
-    "vale_run": false
+    "tested_sha": "469486f390251e47a327f06b7a0f52d8f3148b77",
+    "evidence_consolidation_base_sha": "80eb5f3c6574c9b7ceb829792aef75e915122b01"
   },
-  "validation_environment": {
-    "reported_by": "Claude auditor",
-    "environment_type": "local read-only clone",
-    "node": "22.22.0",
-    "playwright": "1.56.1",
-    "chromium": "headless Chromium 1194",
-    "source_export": "git archive export of 469486f in scratch directory",
-    "repository_writes_by_claude": false
-  },
-  "known_non_blocking_caveats": [
-    "Built-in server mode still fails because /app.js rewrites to /.js.",
-    "Static smoke does not yet catch CSP connect-src *, remote POST injected into JS, or route-body mutation.",
-    "Original browser-e2e.mjs was not run because fixtures are not committed and no fixture generator exists.",
-    "Per-file SHA-256 and byte records remain a merge/submission-grade evidence item.",
-    "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist."
+  "unresolved_caveats": [
+    "Exact per-file SHA-256 values, except the frozen ONNX expected SHA, were not recomputed by Vale in the connector-only pass.",
+    "The original browser-e2e route/offline inference test was not run because expected route fixtures are unavailable or not committed.",
+    "The r1-to-r2 upgrade evidence remains Claude local/auditor-run evidence unless a reproducible repository test is added later.",
+    "The built-in browser-followups server mode has a known /app.js to /.js rewrite bug.",
+    "Static smoke does not yet catch CSP connect-src * mutation, remote POST injected into JavaScript, or route-body mutation.",
+    "Compliance item 36 remains incomplete/deferred pending fluent Lumasaba/Lugisu validation."
   ],
   "boundaries": {
     "deployment": false,
@@ -125,9 +186,8 @@
     "stage8_closure": false
   },
   "notes": [
-    "PR #22 remains draft until the owner separately authorizes Ready for Review.",
-    "Auditor-run local evidence supports Ready for Review if the owner accepts this evidence basis.",
-    "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist.",
+    "PR #23 should remain draft until Claude reviews the evidence consolidation package.",
+    "Stage 8 remains open after PR #22 and after this evidence-consolidation draft.",
     "Repository MIT licensing does not replace BRACOL attribution, pretrained-weight lineage, or model-artifact notices."
   ]
 }
