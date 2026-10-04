@@ -1,17 +1,17 @@
 # Stage 7 — Technical Proof Gates
 
 **Stage:** 7 — Definitive AI technical proof  
-**Authorized scope recorded here:** 7.0, 7A, 7B, owner-authorized 7C A0 validation, and owner-authorized 7D A0 export/parity only  
-**Status:** In progress — 7.0 passed; 7A BRACOL recovered; BRACOL 7B freeze complete; A0 validation gate passed; A0 export/parity/budget gate passed; RoCoLe exact identifier freeze remains pending before any RoCoLe external readout  
+**Authorized scope recorded here:** 7.0, 7A, 7B, owner-authorized 7C A0 validation, owner-authorized 7D A0 export/parity, and owner-authorized 7E one-shot internal-test readout only  
+**Status:** In progress — 7.0 passed; 7A BRACOL recovered; BRACOL 7B freeze complete; A0 validation gate passed; A0 export/parity/budget gate passed; A0 internal-test readout complete; RoCoLe exact identifier freeze remains pending before any RoCoLe external readout  
 **Branch:** `chatgpt/stage-07-pretraining-gates`
 
 ---
 
 ## 1. Boundary
 
-José Antonio authorized Stage 7.0 runtime/tooling verification, Stage 7A exact data/licence/provenance verification, Stage 7B deterministic split/quarantine freeze, Stage 7C A0 training with the clock-preserving RoCoLe freeze deferral, and Stage 7D A0 export/parity verification.
+José Antonio authorized Stage 7.0 runtime/tooling verification, Stage 7A exact data/licence/provenance verification, Stage 7B deterministic split/quarantine freeze, Stage 7C A0 training with the clock-preserving RoCoLe freeze deferral, Stage 7D A0 export/parity verification, and Stage 7E one-shot internal-test readout.
 
-No A1 training has occurred. No internal held-out, RoCoLe external, or challenge-set inference has occurred. No MVP implementation, deployment, video production, or submission has occurred.
+No A1 training has occurred. No RoCoLe external or challenge-set inference has occurred. No MVP implementation, deployment, video production, or submission has occurred.
 
 ---
 
@@ -24,8 +24,8 @@ No A1 training has occurred. No internal held-out, RoCoLe external, or challenge
 - **7B RoCoLe external freeze:** PARTIAL; exact identifiers/metadata still required before Stage 7F RoCoLe readout.
 - **7C A0 validation:** PASS on validation only.
 - **7D A0 export/parity/budget:** PASS using synthetic non-protected parity inputs only.
+- **7E A0 internal-test readout:** COMPLETE using the frozen internal-test partition and unchanged Stage 7C thresholds.
 - **A1:** NOT AUTHORIZED / NOT STARTED.
-- **Internal-test inference:** NOT AUTHORIZED / NOT STARTED.
 - **RoCoLe external readout:** NOT AUTHORIZED / NOT STARTED.
 - **Challenge readout:** NOT AUTHORIZED / NOT STARTED.
 
@@ -97,8 +97,6 @@ Frozen split, seed `20261003`:
 | validation | 252 | 94 | 41 | 117 |
 | internal_test | 253 | 95 | 41 | 117 |
 
-No internal-test inference has been run.
-
 ---
 
 ## 5. RoCoLe freeze status
@@ -158,24 +156,6 @@ Selected validation operating point:
 - `T_healthy = 0.70`
 - feasible threshold pairs: `1452`
 
-Validation counts at selected operating point:
-
-| Metric | Count |
-|---|---:|
-| target confident | 110 |
-| R confident | 75 |
-| H confident | 35 |
-| O confident | 9 |
-| R→VR | 75 |
-| R→NVR | 0 |
-| R→NS | 19 |
-| H→VR | 0 |
-| H→NVR | 35 |
-| H→NS | 6 |
-| O→VR | 7 |
-| O→NVR | 2 |
-| O→NS | 108 |
-
 Stage 4 validation gate result: **PASS**.
 
 No A1 training occurred.
@@ -184,7 +164,7 @@ No A1 training occurred.
 
 ## 7. Stage 7D A0 export/parity/budget result
 
-A0 export/parity verification completed successfully using the Stage 7C A0 evidence artifact.
+Stage 7D exported the owner-authorized trained A0 model to FP32 ONNX and verified parity using synthetic non-protected inputs only.
 
 Evidence run:
 
@@ -195,17 +175,14 @@ Evidence run:
 - artifact id: `11292181113`
 - artifact digest: `sha256:8ea53cef1d17c1cd1bbad4a2d92cba8ebd533d57160a639f5ca06df6f8db981d`
 
-Exported ONNX artifact:
+Exported model:
 
 - file: `royacheck_a0_fp32.onnx`
 - bytes: `3,730,046`
 - SHA-256: `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
-- opset: `18`
-- input: `input`
-- output: `logits`
-- ONNX checker: PASS
+- ONNX checker: PASS.
 
-PyTorch/ONNX parity:
+Parity check:
 
 - provider: `CPUExecutionProvider`
 - inputs: synthetic `zeros`, `half`, `randn_seeded`, and `ramp`;
@@ -224,7 +201,57 @@ The trained ONNX model is retained in the Stage 7D GitHub Actions artifact and i
 
 ---
 
-## 8. Persistent evidence files
+## 8. Stage 7E A0 one-shot internal-test readout
+
+Stage 7E completed the authorized one-shot internal-test readout using the frozen A0 ONNX artifact and frozen BRACOL internal-test partition.
+
+Evidence run:
+
+- GitHub Actions workflow: `Stage 7E A0 internal-test readout v2`
+- run id: `37173195407`
+- artifact: `stage7e-internal-test-readout`
+- artifact id: `11291959630`
+- artifact digest: `sha256:8dfe3778e43c7e0232984a8243c5b6b769f135f2eeca59d79487c155ac851ce1`
+- ONNX SHA-256: `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
+- thresholds: `T_rust = 0.50`, `T_healthy = 0.70`
+- internal-test records: `253`
+
+Internal-test counts at the fixed Stage 7C operating point:
+
+| Metric | Count |
+|---|---:|
+| target confident | 106 |
+| R confident | 68 |
+| H confident | 38 |
+| O confident | 9 |
+| R→VR | 66 |
+| R→NVR | 2 |
+| R→NS | 27 |
+| H→VR | 0 |
+| H→NVR | 38 |
+| H→NS | 3 |
+| O→VR | 7 |
+| O→NVR | 2 |
+| O→NS | 108 |
+
+Key one-shot internal-test proportions, Wilson 95% intervals:
+
+| Metric | Estimate | Wilson 95% CI | Numerator / denominator |
+|---|---:|---:|---:|
+| selective accuracy | 98.1% | 93.4% – 99.5% | 104 / 106 |
+| accepted rust recall | 97.1% | 89.9% – 99.2% | 66 / 68 |
+| accepted healthy specificity | 100.0% | 90.8% – 100.0% | 38 / 38 |
+| target-class coverage | 77.9% | 70.3% – 84.1% | 106 / 136 |
+| rust coverage | 71.6% | 61.8% – 79.7% | 68 / 95 |
+| healthy coverage | 92.7% | 80.6% – 97.5% | 38 / 41 |
+| other-condition to no-visible-rust | 1.7% | 0.5% – 6.0% | 2 / 117 |
+| confident miss R→NVR | 2.1% | 0.6% – 7.4% | 2 / 95 |
+
+This supports only a frozen-BRACOL internal-holdout claim. It is not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.
+
+---
+
+## 9. Persistent evidence files
 
 Committed evidence files include:
 
@@ -232,18 +259,20 @@ Committed evidence files include:
 - `docs/stages/07_technical_proof/STAGE_07B_ROCOLE_FREEZE_ATTEMPT.md`
 - `docs/stages/07_technical_proof/STAGE_07C_A0_VALIDATION_SUMMARY.md`
 - `docs/stages/07_technical_proof/STAGE_07D_A0_EXPORT_PARITY_SUMMARY.md`
+- `docs/stages/07_technical_proof/STAGE_07E_INTERNAL_TEST_SUMMARY.md`
 - `docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json`
 - `docs/stages/07_technical_proof/manifests/stage7b_config_ledger.json`
 - `docs/stages/07_technical_proof/manifests/rocole_stage7b_freeze_attempt.json`
 - `docs/stages/07_technical_proof/manifests/stage7c_a0_summary.json`
 - `docs/stages/07_technical_proof/manifests/stage7d_a0_export_parity_summary.json`
+- `docs/stages/07_technical_proof/manifests/stage7e_internal_test_summary.json`
 
-The trained head state and trained ONNX artifact are retained in GitHub Actions artifacts only and are not committed to the repository.
+The trained head state, trained ONNX artifact, and internal-test route CSV are retained in GitHub Actions artifacts only and are not committed to the repository.
 
 ---
 
-## 9. Current gate verdict
+## 10. Current gate verdict
 
-A0 validation and export/parity passed. The next authorized step must be explicitly approved by José Antonio.
+A0 validation, export/parity, and internal-test readout are complete. The next authorized step must be explicitly approved by José Antonio.
 
-Recommended next technical step: Stage 7E one-shot internal-test readout, still without RoCoLe or challenge inference.
+Recommended next technical step: compact RoCoLe identifier/metadata recovery before any Stage 7F external readout, or proceed to MVP build with RoCoLe explicitly deferred and claim wording limited to BRACOL internal holdout until RoCoLe is frozen/read out.
