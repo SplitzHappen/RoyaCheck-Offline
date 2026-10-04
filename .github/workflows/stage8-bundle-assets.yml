@@ -1,0 +1,120 @@
+name: Stage 8 bundle fixed model/runtime assets
+
+on:
+  push:
+    branches: [chatgpt/stage-08-mvp-build]
+    paths: [.github/workflows/stage8-bundle-assets.yml]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  bundle-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/stage-08-mvp-build
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download fixed Stage 7D A0 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: stage7d-a0-export-parity
+          run-id: 37172702270
+          path: /tmp/stage7d
+          github-token: ${{ github.token }}
+
+      - name: Install and copy bounded ONNX Runtime Web assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODEL="$(find /tmp/stage7d -type f -name royacheck_a0_fp32.onnx | head -n 1)"
+          test -n "$MODEL"
+          mkdir -p app/assets/model app/vendor/onnxruntime-web
+          cp "$MODEL" app/assets/model/royacheck_a0_fp32.onnx
+
+          mkdir -p /tmp/ort
+          cd /tmp/ort
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund onnxruntime-web@1.30.0
+          cp node_modules/onnxruntime-web/dist/ort.all.min.js "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort.all.min.js"
+          cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
+
+      - name: Verify locked hashes and build asset manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
+          echo "7c737591a5a7890af39481a0340e87f129b4c349ea8fce9330f0c35d0eaf5011  app/vendor/onnxruntime-web/ort.all.min.js" | sha256sum -c -
+          echo "4ea68ec7db3adfe3a27d90df2486ebc3981b6055e66227cd6d735e1cf17b31fe  app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm" | sha256sum -c -
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          files = [
+              "app/index.html",
+              "app/styles.css",
+              "app/app.js",
+              "app/manifest.webmanifest",
+              "app/sw.js",
+              "app/assets/icon.svg",
+              "app/assets/model/royacheck_a0_fp32.onnx",
+              "app/vendor/onnxruntime-web/ort.all.min.js",
+              "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+          ]
+          rows = []
+          total = 0
+          for name in files:
+              p = Path(name)
+              data = p.read_bytes()
+              size = len(data)
+              total += size
+              rows.append({"path": name, "bytes": size, "sha256": hashlib.sha256(data).hexdigest()})
+          manifest = {
+              "stage": "8_mvp_asset_bundle",
+              "source_stage7d_artifact_id": 11292181113,
+              "source_stage7d_artifact_name": "stage7d-a0-export-parity",
+              "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+              "onnxruntime_web_version": "1.30.0",
+              "core_budget_bytes": 30000000,
+              "cached_file_bytes": total,
+              "core_budget_pass": total <= 30000000,
+              "files": rows,
+              "boundaries": {
+                  "deployment": False,
+                  "rocole_inference": False,
+                  "challenge_inference": False,
+                  "model_change": False,
+                  "threshold_change": False,
+                  "preprocessing_change": False,
+              },
+          }
+          if not manifest["core_budget_pass"]:
+              raise SystemExit(f"core asset budget failed: {total}")
+          out = Path("docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json")
+          out.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(manifest, indent=2, sort_keys=True))
+          PY
+
+      - name: Run static smoke checks
+        run: npm test
+
+      - name: Commit verified binary/runtime assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/assets/model/royacheck_a0_fp32.onnx
+          git add app/vendor/onnxruntime-web/ort.all.min.js
+          git add app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm
+          git add docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json
+          git diff --cached --stat
+          git commit -m "stage 8: bundle fixed model and runtime assets"
+          git push origin HEAD:chatgpt/stage-08-mvp-build
