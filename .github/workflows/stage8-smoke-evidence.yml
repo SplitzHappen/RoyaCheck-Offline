@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: chatgpt/stage-08-mvp-build
-          fetch-depth: 2
+          fetch-depth: 8
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -36,7 +36,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "316497ce324a0116a5eb1eb4dae19393f167c9a2"
+          test "$(git rev-parse HEAD^)" = "16d90ed41094c1d0ae5ff1f80e741cf2bde15e15"
           git merge-base --is-ancestor 9cd0ae6ab0fdde79c8002db96e8e7d7577674580 HEAD
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
           test ! -d raw_data
@@ -76,7 +76,7 @@ jobs:
 
           smoke = Path('tests/static-smoke.mjs')
           text = smoke.read_text()
-          text = text.replace("  'const ort = window.ort;',", "  'import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";'")
+          text = text.replace("  'const ort = window.ort;',", "  'import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";',")
           text = text.replace('assert.doesNotThrow(() => new Function(js), "app.js must be syntactically valid classic JavaScript");\n', "assert.ok(js.includes('import * as ort from \"./vendor/onnxruntime-web/ort.wasm.min.mjs\";'));\n")
           text = text.replace("assert.ok(!js.includes('ort.wasm.min.mjs'), \"App shell must not reference missing ORT module assets.\");\n", '')
           text = text.replace('assert.ok(html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n', 'assert.ok(!html.includes(\'<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>\'));\n')
@@ -86,7 +86,6 @@ jobs:
           doc = Path('docs/stages/08_mvp/STAGE_08_MVP_BUILD.md')
           text = doc.read_text()
           text = text.replace('self-hosted `onnxruntime-web@1.30.0`, WASM-only path, one thread', 'self-hosted `onnxruntime-web@1.30.0`, WASM-only ES-module path, one thread')
-          text = text.replace('`ort.wasm.min.mjs`, `ort-wasm-simd-threaded.mjs`, and `ort-wasm-simd-threaded.wasm`.', '`ort.wasm.min.mjs`, `ort-wasm-simd-threaded.mjs`, and `ort-wasm-simd-threaded.wasm`.')
           text = text.replace('by a temporary Actions workflow because ordinary connector file writes are text-only. That workflow must be removed after the verified asset commit.', 'by a temporary Actions workflow because ordinary connector file writes cannot reliably stage binary runtime assets. The temporary workflow was removed after evidence capture.')
           doc.write_text(text)
           PY
