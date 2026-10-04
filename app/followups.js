@@ -7,34 +7,38 @@ const clearReviewPanelButton = $("clearReviewPanelButton");
 const persistentReviewCard = $("persistentReviewCard");
 const persistentReviewFields = $("persistentReviewFields");
 const persistentReviewStatus = $("persistentReviewStatus");
-const lugisuPrompt = $("lugisuPrompt");
+const localLanguagePrompt = $("lugisuPrompt");
+const imageInput = $("imageInput");
+const humanDisposition = $("humanDisposition");
 
 let refreshRequestSeq = 0;
 let activeReviewRecordId = null;
+let latestAiProposal = null;
 
-const LUGISU_PROMPTS = {
+const FIXED_STRINGS = {
   visible_rust: {
     title: "Visible rust",
-    english: "AI proposal: visible rust. Review the leaf before deciding.",
-    lugisu_draft: "Obulwadde bwa roya bubonekera ku likoola. Kebera n’omuntu omumanyi nga tonasalawo.",
+    english: "AI proposal only: visible rust. Review the leaf before deciding. Not a diagnosis and not treatment advice.",
     action: "Review first",
   },
   no_visible_rust: {
     title: "No visible rust",
-    english: "AI proposal: no visible rust. This does not mean healthy or all clear.",
-    lugisu_draft: "Roya teraboneka ku kifaananyi kino. Kino tekitegeeza nti omuti mulamu oba nti tewali bulwadde.",
+    english: "AI proposal only: no visible rust. This does not mean healthy or all clear. Not a diagnosis and not treatment advice.",
     action: "Record and monitor",
   },
   not_sure: {
     title: "Not sure",
-    english: "AI proposal: not sure. Retake the image or request human review.",
-    lugisu_draft: "Tekitegeerekeka bulungi. Ddamu okukuba ekifaananyi oba saba omuntu omumanyi akebere.",
+    english: "AI proposal only: not sure. Retake the image or request human review. Not a diagnosis and not treatment advice.",
     action: "Retake or request review",
+  },
+  request_review: {
+    title: "Request human review",
+    english: "Human choice: request human review. Nothing is sent automatically and no photo is retained.",
+    action: "Request human review",
   },
   review_later: {
     title: "Review later",
-    english: "Saved locally for later human review. No photo is retained or sent.",
-    lugisu_draft: "Ekiwandiiko kiterekiddwa mu browser eno okwebuuza oluvannyuma. Ekifaananyi tekisigaziddwa era tekisindikiddwa.",
+    english: "Human action: saved locally for later review. Stored only in this browser; no photo is retained or sent.",
     action: "Review later",
   },
 };
@@ -119,41 +123,47 @@ function aiLabel(value) {
   }[value] || value || "—";
 }
 
-function clearPersistentReviewCard() {
+function actionRoute(value) {
+  if (value === "visible_rust") return "Review first";
+  if (value === "no_visible_rust") return "Record and monitor";
+  return "Retake or request review";
+}
+
+function clearPersistentReviewCard({ preserveStatus = false } = {}) {
   activeReviewRecordId = null;
   persistentReviewFields.innerHTML = "";
   persistentReviewCard.hidden = true;
-  setPersistentStatus("");
+  if (!preserveStatus) setPersistentStatus("");
 }
 
-function appendField(label, value) {
+function appendField(container, label, value) {
   const dt = document.createElement("dt");
   const dd = document.createElement("dd");
   dt.textContent = label;
   dd.textContent = value || "—";
-  persistentReviewFields.append(dt, dd);
+  container.append(dt, dd);
 }
 
 async function showPersistentReviewCard(id) {
   const record = await getRecord(id);
   if (!record) {
-    clearPersistentReviewCard();
+    clearPersistentReviewCard({ preserveStatus: true });
     setPersistentStatus("That local record is no longer available in this browser.", true);
-    await refreshSavedRecords({ preserveReviewCard: false });
+    await refreshSavedRecords({ preserveReviewCard: false, preserveStatus: true });
     return;
   }
 
   activeReviewRecordId = record.id;
   persistentReviewFields.innerHTML = "";
-  appendField("Record ID", record.id);
-  appendField("Capture date", record.capture_date);
-  appendField("Saved at", record.saved_at ? new Date(record.saved_at).toLocaleString() : "—");
-  appendField("AI proposal", `${aiLabel(record.ai_proposal)} — AI proposal only`);
-  appendField("Human disposition", humanLabel(record.human_disposition));
-  appendField("Action route", record.action_route);
-  appendField("Farmer note", record.farmer_note);
-  appendField("Image", record.raw_image_retained === false ? "Not retained / not sent" : "Retention status unavailable — do not assume image is retained");
-  appendField("Model SHA-256", record.model_sha256);
+  appendField(persistentReviewFields, "Record ID", record.id);
+  appendField(persistentReviewFields, "Capture date", record.capture_date);
+  appendField(persistentReviewFields, "Saved at", record.saved_at ? new Date(record.saved_at).toLocaleString() : "—");
+  appendField(persistentReviewFields, "AI proposal", `${aiLabel(record.ai_proposal)} — AI proposal only`);
+  appendField(persistentReviewFields, "Human disposition", humanLabel(record.human_disposition));
+  appendField(persistentReviewFields, "Action route", record.action_route);
+  appendField(persistentReviewFields, "Farmer note", record.farmer_note);
+  appendField(persistentReviewFields, "Image", record.raw_image_retained === false ? "Not retained / not sent" : "Retention status unavailable — do not assume image is retained");
+  appendField(persistentReviewFields, "Model SHA-256", record.model_sha256);
   persistentReviewCard.hidden = false;
   setPersistentStatus("");
 }
@@ -207,7 +217,7 @@ function buildRecordItem(record) {
   return item;
 }
 
-async function refreshSavedRecords({ preserveReviewCard = true } = {}) {
+async function refreshSavedRecords({ preserveReviewCard = true, preserveStatus = false } = {}) {
   if (!savedRecordsSection) return;
   const requestId = ++refreshRequestSeq;
   const records = await getAllRecords();
@@ -230,68 +240,93 @@ async function refreshSavedRecords({ preserveReviewCard = true } = {}) {
 
   if (preserveReviewCard && activeReviewRecordId) {
     const stillExists = records.some((record) => record.id === activeReviewRecordId);
-    if (!stillExists) clearPersistentReviewCard();
+    if (!stillExists) clearPersistentReviewCard({ preserveStatus });
   } else if (!preserveReviewCard) {
-    clearPersistentReviewCard();
+    clearPersistentReviewCard({ preserveStatus });
   }
 }
 
 function currentProposalRoute() {
-  return document.querySelector("#proposalLabel")?.dataset.route || null;
+  return document.querySelector("#proposalLabel")?.dataset.route || latestAiProposal || null;
 }
 
 function currentHumanDisposition() {
-  return document.querySelector("#humanDisposition")?.value || "";
+  return humanDisposition?.value || "";
 }
 
-function renderLugisuPrompt(key) {
-  const prompt = LUGISU_PROMPTS[key];
-  if (!prompt || !lugisuPrompt) return;
-  lugisuPrompt.innerHTML = "";
+function renderLocalLanguagePanel({ mode = "context", manualKey = null } = {}) {
+  if (!localLanguagePrompt) return;
+  const aiRoute = currentProposalRoute();
+  const disposition = currentHumanDisposition();
+  const selectedKey = manualKey || disposition || aiRoute;
+  const selected = selectedKey ? FIXED_STRINGS[selectedKey] : null;
+
+  localLanguagePrompt.innerHTML = "";
 
   const title = document.createElement("strong");
-  title.textContent = prompt.title;
+  title.textContent = selected ? selected.title : "Local-language scaffold pending fluent validation";
+
+  const aiLine = document.createElement("span");
+  aiLine.textContent = aiRoute
+    ? `AI proposal: ${aiLabel(aiRoute)} — proposal only, not a diagnosis and not treatment advice.`
+    : "AI proposal: none yet. Run the local AI check before using proposal-linked language.";
+
+  const humanLine = document.createElement("span");
+  humanLine.textContent = disposition
+    ? `Human choice: ${humanLabel(disposition)}.`
+    : "Human choice: none selected yet.";
 
   const english = document.createElement("span");
-  english.textContent = prompt.english;
+  english.textContent = selected ? selected.english : "English fixed-string scaffold only until a fluent reviewer supplies and validates Lugisu/Lumasaba wording.";
 
-  const slot = document.createElement("span");
-  slot.className = "translation-slot";
-  slot.setAttribute("lang", "myx");
-  slot.textContent = `Draft Lugisu string — unvalidated, pending fluent human review: ${prompt.lugisu_draft}`;
+  const localSlot = document.createElement("span");
+  localSlot.className = "translation-slot";
+  localSlot.textContent = "Local-language slot: actual Lugisu/Lumasaba wording pending fluent human validation. No Lugisu/Lumasaba string is claimed in this build.";
 
   const validation = document.createElement("span");
   validation.className = "hint";
-  validation.textContent = "Do not use as validated Lugisu. This is a bounded fixed-string draft for review only.";
+  validation.textContent = "Validated localized usability has not been established. Fixed strings only; no chatbot or free-form translation.";
 
   const action = document.createElement("span");
   action.className = "pill";
-  action.textContent = `Human action: ${prompt.action}`;
+  action.textContent = selected
+    ? `Human action: ${selected.action}`
+    : "Human action: choose after review";
 
-  lugisuPrompt.append(title, english, slot, validation, action);
+  localLanguagePrompt.append(title, aiLine, humanLine, english, localSlot, validation, action);
+  localLanguagePrompt.dataset.mode = mode;
 }
 
-function syncLugisuToCurrentFlow() {
-  const disposition = currentHumanDisposition();
-  const route = currentProposalRoute();
-  const key = disposition && disposition !== "request_review" ? disposition : route;
-  if (key && LUGISU_PROMPTS[key]) {
-    renderLugisuPrompt(key);
-  }
+function resetLocalLanguagePanel() {
+  latestAiProposal = null;
+  if (!localLanguagePrompt) return;
+  localLanguagePrompt.innerHTML = "";
+  const title = document.createElement("strong");
+  title.textContent = "Local-language scaffold pending fluent validation";
+  const body = document.createElement("span");
+  body.textContent = "Run the normal flow or choose a fixed-string rehearsal. Actual Lugisu/Lumasaba wording is not claimed in this build.";
+  localLanguagePrompt.append(title, body);
+  localLanguagePrompt.dataset.mode = "neutral";
 }
 
 document.querySelectorAll("[data-lugisu-step]").forEach((button) => {
-  button.addEventListener("click", () => renderLugisuPrompt(button.dataset.lugisuStep));
+  button.addEventListener("click", () => renderLocalLanguagePanel({ mode: "manual", manualKey: button.dataset.lugisuStep }));
 });
 
-document.querySelector("#humanDisposition")?.addEventListener("change", syncLugisuToCurrentFlow);
-document.addEventListener("royacheck:proposal-rendered", syncLugisuToCurrentFlow);
+humanDisposition?.addEventListener("change", () => renderLocalLanguagePanel({ mode: "context" }));
+imageInput?.addEventListener("change", resetLocalLanguagePanel);
+
+document.addEventListener("royacheck:proposal-rendered", (event) => {
+  latestAiProposal = event.detail?.route || currentProposalRoute();
+  renderLocalLanguagePanel({ mode: "context" });
+});
+
 refreshRecordsButton?.addEventListener("click", () => refreshSavedRecords({ preserveReviewCard: true }).catch((error) => setPersistentStatus(`Refresh failed: ${error.message}`, true)));
 clearReviewPanelButton?.addEventListener("click", clearPersistentReviewCard);
 
 document.addEventListener("royacheck:record-saved", () => {
   refreshSavedRecords({ preserveReviewCard: true }).catch((error) => setPersistentStatus(`Refresh failed: ${error.message}`, true));
-  renderLugisuPrompt("review_later");
+  renderLocalLanguagePanel({ mode: "manual", manualKey: "review_later" });
 });
 
 document.addEventListener("royacheck:record-deleted", (event) => {
@@ -300,10 +335,14 @@ document.addEventListener("royacheck:record-deleted", (event) => {
 });
 
 window.__royacheckFollowups = {
-  lugisuPrompts: LUGISU_PROMPTS,
+  fixedStrings: FIXED_STRINGS,
   refreshSavedRecords,
   getAllRecords,
+  getRecord,
+  resetLocalLanguagePanel,
   getActiveReviewRecordId: () => activeReviewRecordId,
+  latestAiProposal: () => latestAiProposal,
 };
 
+resetLocalLanguagePanel();
 refreshSavedRecords({ preserveReviewCard: false }).catch((error) => setPersistentStatus(`Refresh failed: ${error.message}`, true));
