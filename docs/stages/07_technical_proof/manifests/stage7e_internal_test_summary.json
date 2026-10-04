@@ -1,0 +1,94 @@
+{
+  "boundaries": {
+    "a1_training": false,
+    "architecture_change": false,
+    "challenge_inference": false,
+    "deployment": false,
+    "mvp_implementation": false,
+    "preprocessing_change": false,
+    "rocole_inference": false,
+    "submission": false,
+    "threshold_change": false
+  },
+  "claim_ceiling": {
+    "internal_test_only": true,
+    "not_challenge_result": true,
+    "not_field_validation": true,
+    "not_rocole_external": true,
+    "recommended_wording": "On frozen BRACOL internal holdout only, A0 preserved high selective correctness among confident target-class outputs while routing many other-condition leaves to not sure; this is not field validation."
+  },
+  "confidence_intervals": {
+    "accepted_healthy_specificity": {"hi": 0.9999999999999999, "k": 38, "lo": 0.908190131774416, "method": "Wilson 95%", "n": 38, "p": 1.0},
+    "accepted_rust_recall": {"hi": 0.9918968204568701, "k": 66, "lo": 0.8989536863477694, "method": "Wilson 95%", "n": 68, "p": 0.9705882352941176},
+    "confident_miss_R_to_NVR": {"hi": 0.07354119494708962, "k": 2, "lo": 0.005792506864405536, "method": "Wilson 95%", "n": 95, "p": 0.021052631578947368},
+    "healthy_coverage": {"hi": 0.9748021693660901, "k": 38, "lo": 0.8057255146228096, "method": "Wilson 95%", "n": 41, "p": 0.926829268292683},
+    "other_to_no_visible_rust": {"hi": 0.06019008542865668, "k": 2, "lo": 0.004700382604581561, "method": "Wilson 95%", "n": 117, "p": 0.017094017094017096},
+    "rust_coverage": {"hi": 0.7967157983714039, "k": 68, "lo": 0.6180898964168235, "method": "Wilson 95%", "n": 95, "p": 0.7157894736842105},
+    "selective_accuracy": {"hi": 0.9948103912204043, "k": 104, "lo": 0.9338007278881413, "method": "Wilson 95%", "n": 106, "p": 0.9811320754716981},
+    "target_class_coverage": {"hi": 0.8408870108297729, "k": 106, "lo": 0.7025855804955782, "method": "Wilson 95%", "n": 136, "p": 0.7794117647058824}
+  },
+  "data": {
+    "partition": "internal_test",
+    "records": 253,
+    "source_archive": "coffee-datasets.zip",
+    "source_archive_sha256": "e6fc32d504ae33e667475dec4c4aef710aac65ad12f16a401c706445c46c9f89",
+    "source_class_counts": {
+      "brown_leaf_spot_no_rust": 52,
+      "cercospora_no_rust": 14,
+      "healthy": 41,
+      "leaf_miner_no_rust": 51,
+      "rust_present": 95
+    },
+    "split_file": "docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json",
+    "truth_group_counts": {"H": 41, "O": 117, "R": 95}
+  },
+  "metrics": {
+    "H_confident": 38,
+    "H_to_NS": 3,
+    "H_to_NVR": 38,
+    "H_to_VR": 0,
+    "O_confident": 9,
+    "O_to_NS": 108,
+    "O_to_NVR": 2,
+    "O_to_VR": 7,
+    "R_confident": 68,
+    "R_to_NS": 27,
+    "R_to_NVR": 2,
+    "R_to_VR": 66,
+    "accepted_healthy_specificity_den": 38,
+    "accepted_healthy_specificity_num": 38,
+    "accepted_rust_recall_den": 68,
+    "accepted_rust_recall_num": 66,
+    "healthy_coverage_den": 41,
+    "healthy_coverage_num": 38,
+    "other_confident_den": 117,
+    "other_confident_num": 9,
+    "rust_coverage_den": 95,
+    "rust_coverage_num": 68,
+    "selective_accuracy_den": 106,
+    "selective_accuracy_num": 104,
+    "target_class_coverage_den": 136,
+    "target_class_coverage_num": 106,
+    "target_confident": 106
+  },
+  "model_artifact": {
+    "expected_onnx_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+    "onnx_file": "royacheck_a0_fp32.onnx",
+    "onnx_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+    "source_stage7d_artifact_id": 11292181113,
+    "source_stage7d_run_id": 37172702270
+  },
+  "one_shot": true,
+  "packages": {
+    "numpy": "2.5.3",
+    "onnxruntime": "1.30.0",
+    "pandas": "3.0.6",
+    "pillow": "12.3.0",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0]"
+  },
+  "preprocessing": "RGB decode; require >=224px; preserve full frame; direct bilinear resize to 224x224; ImageNet normalization; no center crop",
+  "stage": "7E_one_shot_internal_test_readout",
+  "status": "complete",
+  "thresholds": {"T_healthy": 0.7, "T_rust": 0.5, "source": "Stage 7C validation-selected thresholds; unchanged"}
+}

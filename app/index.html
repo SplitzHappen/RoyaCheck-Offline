@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173d2b">
+  <meta name="description" content="Browser-local coffee-leaf observation prototype with human review.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>RoyaCheck Offline</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Browser-local coffee-leaf observation prototype</p>
+      <h1>RoyaCheck Offline</h1>
+    </div>
+    <span id="offlineBadge" class="badge" aria-live="polite">First load needs connection; checking offline readiness…</span>
+  </header>
+
+  <main>
+    <section class="card hero">
+      <div>
+        <h2>Check a coffee-leaf image locally</h2>
+        <p>The image is processed on this device. RoyaCheck does not upload the raw image for inference, and this MVP does not save the photo with the record.</p>
+      </div>
+      <div class="safety">
+        <strong>Human decision required.</strong>
+        <span>The AI output is a proposal only. It is not a diagnosis and not treatment advice.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>1. Select or capture an image</h2>
+      <label class="file-picker">
+        <span>Choose coffee-leaf image</span>
+        <input id="imageInput" type="file" accept="image/*">
+      </label>
+      <p class="hint">Use a current landscape image with one complete target leaf visible. Images smaller than 224×224 are routed to <em>not sure</em>.</p>
+      <div class="preview-wrap">
+        <img id="preview" alt="Selected coffee-leaf preview" hidden>
+      </div>
+      <button id="runButton" class="primary" type="button" disabled>Run local AI check</button>
+      <p id="modelStatus" class="status" aria-live="polite">Model not loaded yet.</p>
+    </section>
+
+    <section id="proposalSection" class="card" hidden>
+      <h2>2. AI proposal</h2>
+      <div id="proposalLabel" class="proposal" aria-live="polite"></div>
+      <p id="proposalExplanation"></p>
+      <details>
+        <summary>What this proposal means</summary>
+        <p id="proposalDetail"></p>
+      </details>
+      <div class="evidence-note">
+        <strong>Evidence boundary:</strong>
+        <span>Validation passed on frozen BRACOL validation data. A one-shot frozen BRACOL internal-holdout readout was completed. This is not field validation; no RoCoLe external readout has been completed.</span>
+      </div>
+    </section>
+
+    <section id="humanSection" class="card" hidden>
+      <h2>3. Your disposition</h2>
+      <p>Do not copy the AI automatically. Review the image and choose the formal observation yourself.</p>
+      <label for="humanDisposition">Human disposition</label>
+      <select id="humanDisposition" required>
+        <option value="" selected>Choose after reviewing…</option>
+        <option value="visible_rust">Visible rust observation</option>
+        <option value="no_visible_rust">No visible rust observation</option>
+        <option value="not_sure">Not sure</option>
+        <option value="request_review">Request human review</option>
+      </select>
+      <label for="farmerNote">Optional note</label>
+      <textarea id="farmerNote" maxlength="280" rows="3" placeholder="Short observation note"></textarea>
+      <label class="confirm-row">
+        <input id="humanConfirm" type="checkbox">
+        <span>I reviewed the AI proposal and the image. The disposition above is my choice.</span>
+      </label>
+      <button id="saveButton" class="primary" type="button" disabled>Save local observation</button>
+      <p class="hint">Only the human disposition becomes formal. The raw image is not stored with the record.</p>
+    </section>
+
+    <section id="savedSection" class="card" hidden>
+      <h2>4. Local observation</h2>
+      <div id="savedRecord"></div>
+      <div class="button-row">
+        <button id="reviewCardButton" type="button">Prepare on-device review card</button>
+        <button id="deleteButton" class="danger" type="button">Delete local record</button>
+      </div>
+      <div id="reviewCard" class="review-card" hidden>
+        <h3>Reviewer card — user initiated</h3>
+        <p class="hint">Text-only. Nothing is sent automatically.</p>
+        <dl id="reviewFields"></dl>
+      </div>
+    </section>
+
+    <section class="card limitations">
+      <h2>Evidence and limitations</h2>
+      <p><strong>Frozen model:</strong> Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
+      <p><strong>Internal evidence:</strong> on the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
+      <p><strong>Claim ceiling:</strong> those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
+      <p><strong>Safety:</strong> RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
+      <p><strong>Localization:</strong> this technical MVP uses English. Validated localized usability has not been established.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Local inference · human-final authority · no automatic sending</span>
+  </footer>
+
+  <canvas id="sourceCanvas" hidden></canvas>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

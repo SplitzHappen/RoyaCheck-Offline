@@ -1,0 +1,438 @@
+{
+  "boundaries": {
+    "a1_training": false,
+    "challenge_inference": false,
+    "deployment": false,
+    "internal_test_inference": false,
+    "rocole_inference": false,
+    "submission": false
+  },
+  "budget": {
+    "core_budget_bytes": 30000000,
+    "current_core_budget_pass_before_final_app_shell": true,
+    "current_core_bytes_model_plus_primary_runtime": 18789551,
+    "model_budget_bytes": 12000000,
+    "model_budget_pass": true,
+    "note": "Final Stage 8 app shell must remeasure total cached assets after UI/service-worker implementation.",
+    "primary_runtime_bytes": 15059505,
+    "primary_runtime_files": [
+      "node_modules/onnxruntime-web/dist/ort.all.min.js",
+      "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm"
+    ]
+  },
+  "export": {
+    "input_name": "input",
+    "onnx_bytes": 3730046,
+    "onnx_checker_pass": true,
+    "onnx_file": "royacheck_a0_fp32.onnx",
+    "onnx_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+    "opset_version": 18,
+    "output_name": "logits"
+  },
+  "model": "A0 frozen MobileNetV3-Small + Linear(576,5)",
+  "ort_web_dist_manifest": [
+    {
+      "bytes": 6012927,
+      "path": "node_modules/onnxruntime-web/dist/ort.all.js",
+      "sha256": "9c75f1ed341012f68ecc0e037721b45834bb5dd81c74e44dc230104a11763f42"
+    },
+    {
+      "bytes": 819608,
+      "path": "node_modules/onnxruntime-web/dist/ort.all.min.js",
+      "sha256": "7c737591a5a7890af39481a0340e87f129b4c349ea8fce9330f0c35d0eaf5011"
+    },
+    {
+      "bytes": 2673424,
+      "path": "node_modules/onnxruntime-web/dist/ort.js",
+      "sha256": "805c71ed931b58600844931bce9305341717a63d735950510b5453ac3e7ace37"
+    },
+    {
+      "bytes": 686924,
+      "path": "node_modules/onnxruntime-web/dist/ort.jspi.js",
+      "sha256": "6bc084dc2240e0fec093e58dafafbe3bc1bc5cb6f58f53a17752d88dd5dc342c"
+    },
+    {
+      "bytes": 66581,
+      "path": "node_modules/onnxruntime-web/dist/ort.jspi.min.js",
+      "sha256": "e6bd6add72e17fc09d8efa8ead57fcf4c3e3d96c9a2d09755b59dfed9b2ce4e0"
+    },
+    {
+      "bytes": 368025,
+      "path": "node_modules/onnxruntime-web/dist/ort.min.js",
+      "sha256": "44d77f8900cd81be939dbbe821572da5ad8f4252cd86af34bb715b18d5a987d2"
+    },
+    {
+      "bytes": 27160,
+      "path": "node_modules/onnxruntime-web/dist/ort.node.min.js",
+      "sha256": "fe1442c2415d53a3e7aaec81e76375f95b29fd7473fb6203b76eb8882b1f8b80"
+    },
+    {
+      "bytes": 586349,
+      "path": "node_modules/onnxruntime-web/dist/ort.wasm.js",
+      "sha256": "32ff66d5084c5f341449eb4eaf5ac3e63c56bdf82d4d75913e96f160f5b8852d"
+    },
+    {
+      "bytes": 50196,
+      "path": "node_modules/onnxruntime-web/dist/ort.wasm.min.js",
+      "sha256": "ce9a9b129d7c9fd2d81365eb804583c8179e77aa39594f81094c7577bb0eff7c"
+    },
+    {
+      "bytes": 3587997,
+      "path": "node_modules/onnxruntime-web/dist/ort.webgl.js",
+      "sha256": "dc154d87f1f8c77a76967a66ccc5ce5cb62c6c283828eeaa2894108aa45532fa"
+    },
+    {
+      "bytes": 472306,
+      "path": "node_modules/onnxruntime-web/dist/ort.webgl.min.js",
+      "sha256": "6fc43cb1318105e4e2ce5f81cc24afeff2cbd696ec861c3609e571db18da81de"
+    },
+    {
+      "bytes": 686907,
+      "path": "node_modules/onnxruntime-web/dist/ort.webgpu.js",
+      "sha256": "6fbb123f062028a58d9c9a01564cc2ba60760546286f2224d9026964e16ef939"
+    },
+    {
+      "bytes": 66417,
+      "path": "node_modules/onnxruntime-web/dist/ort.webgpu.min.js",
+      "sha256": "e6bd6add72e17fc09d8efa8ead57fcf4c3e3d96c9a2d09755b59dfed9b2ce4e0"
+    },
+    {
+      "bytes": 26781914,
+      "path": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.asyncify.wasm",
+      "sha256": "bb6d66153d8b0bc79dbeb2eaa65f8b0e090870ecf189f600e734187b8141b583"
+    },
+    {
+      "bytes": 28312028,
+      "path": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm",
+      "sha256": "8a03a347acfc8a54c39f5f010fc3e01940e347159bdba2c61cb8734b69ab9bc0"
+    },
+    {
+      "bytes": 16758545,
+      "path": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jspi.wasm",
+      "sha256": "0dd930462dc4f819ffcf276370b49579b74e6b75186cc5af78a84f293df60ca7"
+    },
+    {
+      "bytes": 14239897,
+      "path": "node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm",
+      "sha256": "4ea68ec7db3adfe3a27d90df2486ebc3981b6055e66227cd6d735e1cf17b31fe"
+    },
+    {
+      "bytes": 1502,
+      "path": "node_modules/onnxruntime-web/dist/wasm-core-impl.d.ts",
+      "sha256": "6c83c37d64c82930518f62751e2e70ac2e10d364fc688ec3869690759eed0fc1"
+    },
+    {
+      "bytes": 95799,
+      "path": "node_modules/onnxruntime-web/dist/wasm-core-impl.js",
+      "sha256": "ab2a21041503034b94ca559d5f31756cc6a4634ec2be89bf19d69cb78b20df76"
+    },
+    {
+      "bytes": 67330,
+      "path": "node_modules/onnxruntime-web/dist/wasm-core-impl.min.js",
+      "sha256": "3cc226c19d605102a41587269f3216c70198395c19df82fde5323cc9d3259d46"
+    },
+    {
+      "bytes": 61811,
+      "path": "node_modules/onnxruntime-web/dist/wasm-factory.d.ts",
+      "sha256": "04ef2673c5ee69f087068ad5d558fd77bf521f55f482f55dfe92ffc30caf7503"
+    },
+    {
+      "bytes": 372801,
+      "path": "node_modules/onnxruntime-web/dist/wasm-factory.js",
+      "sha256": "f09d6cbdeaf4472666f62529a5383782973cb484c721702fa12c32a6860935f3"
+    },
+    {
+      "bytes": 303180,
+      "path": "node_modules/onnxruntime-web/dist/wasm-factory.min.js",
+      "sha256": "0d71c97a8bd2dc328d1193af120f8510a54ad9a8fac6a6dfdfb1a41ef9efd049"
+    },
+    {
+      "bytes": 167028,
+      "path": "node_modules/onnxruntime-web/dist/wasm-js-core-impl.d.ts",
+      "sha256": "44afb40293b3c2971645b36f65335a676216f820f348607eb205c728b50f208d"
+    },
+    {
+      "bytes": 1231873,
+      "path": "node_modules/onnxruntime-web/dist/wasm-js-core-impl.js",
+      "sha256": "0b97848949d4f63f10809cda3dc56c7ec72a1693e6f87247c76aecc1d1904ad4"
+    },
+    {
+      "bytes": 905245,
+      "path": "node_modules/onnxruntime-web/dist/wasm-js-core-impl.min.js",
+      "sha256": "ee54546f9354c5f8f7c2d5d0db9779a0d5513622d412ccdb63404dca552e177a"
+    },
+    {
+      "bytes": 122812,
+      "path": "node_modules/onnxruntime-web/dist/wasm-js-core-impl.min.mjs",
+      "sha256": "4fbfa1d3e0b52bdcb9f11677c5b633276267b842d41e55d559108d8670c05598"
+    },
+    {
+      "bytes": 2690,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-imports.d.ts",
+      "sha256": "d133d427a2d2ef3df5dd598bd38c61eab1b0aa84272b89808ed72a31acf2d42f"
+    },
+    {
+      "bytes": 13115,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-imports.js",
+      "sha256": "8c1fdef31f7513da3eb90aa40261184d4d3c8e0cf22ab5e54ed45fa8984dc93"
+    },
+    {
+      "bytes": 9524,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-imports.min.js",
+      "sha256": "07b50beb6b4148bc4f2f18cf0c49dc367c88c615447ec88c721514fb3fe88d04"
+    },
+    {
+      "bytes": 1877,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-imports.min.mjs",
+      "sha256": "c0526544d61a63a2d1d9d8cebc61b93d39bd25937458a4e9edf7cf30a5379554"
+    },
+    {
+      "bytes": 1927,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-log.d.ts",
+      "sha256": "0723858ab424b4b82d9505fcb51fd9ec0aecdb699883f92ae00ce3545a09704b"
+    },
+    {
+      "bytes": 4590,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-log.js",
+      "sha256": "0a512768af9ea9901d4b1623db4d6a7f2919fe46db9fe61bbcb1b2005e76d830"
+    },
+    {
+      "bytes": 2553,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-log.min.js",
+      "sha256": "eebad7ff0ec9e2941c8d88c39933a5a6754bfe9356c90d621047fc50d042de4"
+    },
+    {
+      "bytes": 1083,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-log.min.mjs",
+      "sha256": "9c4030fed0457de83767858f68dd5d1a1d26f19c4b49ae66ff19f96f1d192acd"
+    },
+    {
+      "bytes": 3826,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-service.d.ts",
+      "sha256": "6dc46b5264882fcc6cdc788ebbbbe2493420210cba4339693b04b23fab53f93c"
+    },
+    {
+      "bytes": 12407,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-service.js",
+      "sha256": "080f6421be5d996ef949f38464134ed1e30274c93cdddc4e74d8795caf21c8d3"
+    },
+    {
+      "bytes": 8029,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-service.min.js",
+      "sha256": "025b91b1551e49fa8472bd22a91de5f7e470853e05f14574c18858184d62a21c"
+    },
+    {
+      "bytes": 1930,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-service.min.mjs",
+      "sha256": "04a645ab00eb3beea251ed9873fb4435380171067cb48601b0eb59e9375d675dd"
+    },
+    {
+      "bytes": 3236,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-thread.d.ts",
+      "sha256": "a590574a4b04387b5a58d148ce7f297402645499f9f68f62ebf1d29191cb2edc"
+    },
+    {
+      "bytes": 31614,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-thread.js",
+      "sha256": "1f81eb541422efef82a4be91346fb4cd881826e2a72f671e8a8d0af744cb00e1"
+    },
+    {
+      "bytes": 23924,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-thread.min.js",
+      "sha256": "87086dfde7627d1e579cae7633cf4f4658a5d7370664c40582479a294a87d8a1"
+    },
+    {
+      "bytes": 4499,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils-thread.min.mjs",
+      "sha256": "843bf2f17bb8cdef822412b39da8e3e2a9c8e234ae5187d9609c5206ef5b04bd"
+    },
+    {
+      "bytes": 4069,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils.d.ts",
+      "sha256": "b4584df8c2fb05863ebbe21a1619fac4d719d297e62e5bef0ceb55722ed39041"
+    },
+    {
+      "bytes": 36463,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils.js",
+      "sha256": "793b0237b60c7f2d9f516419a48eda4772d67fe67ac69ef526de2db2d799903d"
+    },
+    {
+      "bytes": 28870,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils.min.js",
+      "sha256": "b80f2fda75be1619d13124d958a02051de1262fb795c4978068e73686dc2f740d"
+    },
+    {
+      "bytes": 4340,
+      "path": "node_modules/onnxruntime-web/dist/wasm-utils.min.mjs",
+      "sha256": "fc71a122354bcd92bc3c5aa3965517921690491308947640262222742e6d8b66"
+    },
+    {
+      "bytes": 17985,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-buffer-manager.d.ts",
+      "sha256": "ea54e367fd085e5389a91fc087834df082f5fdbdc2459f1fb2e709cc1e1c7c0e"
+    },
+    {
+      "bytes": 54704,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-buffer-manager.js",
+      "sha256": "81d418cfa11a63c2bc52366b4973ddf9a133be70f9cfc03ed2b7ac742f9198b0"
+    },
+    {
+      "bytes": 42750,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-buffer-manager.min.js",
+      "sha256": "6a4cdddb8d9ad19707299d0a25bab7d77dfc5d72574df669553312b0e72dbd4e"
+    },
+    {
+      "bytes": 10056,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-buffer-manager.min.mjs",
+      "sha256": "86a878077244472fb5c4dd119f5d0f26478ed11763c90734ea226712e6a0081a6"
+    },
+    {
+      "bytes": 4962,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-utils.d.ts",
+      "sha256": "b2dfac0502aff4a5bda00509ba718a424e94b09d047e92ff4b02113cc8c5dcb5"
+    },
+    {
+      "bytes": 27351,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-utils.js",
+      "sha256": "f4b002586d0e797e3ce0101130f6abf363eb07e4d9822f6182293d4f820137da"
+    },
+    {
+      "bytes": 21380,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-utils.min.js",
+      "sha256": "928294e7cde3331a72f03b43e88036edba06133fb545ce9374105ba854ff7736"
+    },
+    {
+      "bytes": 4361,
+      "path": "node_modules/onnxruntime-web/dist/webgpu-utils.min.mjs",
+      "sha256": "f6b8eb507962248a64710757ff2d74cf73ba80c604db2a6b7754e1072a7e0f95"
+    },
+    {
+      "bytes": 1977,
+      "path": "node_modules/onnxruntime-web/dist/worker.d.ts",
+      "sha256": "9a72da60fd4030eb7fe6b01483214fc02538937b7ff7f9fb2ee12a4ef93178df"
+    },
+    {
+      "bytes": 25356,
+      "path": "node_modules/onnxruntime-web/dist/worker.js",
+      "sha256": "8fd98e1685546fd690cc75b6af0c833ff4b1632a53945f787c29849de268877b"
+    },
+    {
+      "bytes": 19634,
+      "path": "node_modules/onnxruntime-web/dist/worker.min.js",
+      "sha256": "b759b2495e2ab3de60600512bb596e668821782243df6343f6ea4c642c9363fd4"
+    },
+    {
+      "bytes": 2715,
+      "path": "node_modules/onnxruntime-web/dist/worker.min.mjs",
+      "sha256": "d097d965072ab18bcffac6bad9b37ac02152fdd1d161dfc01876e69db7cc33ef"
+    }
+  ],
+  "packages": {
+    "onnx": "1.23.1",
+    "onnxruntime": "1.30.0",
+    "onnxruntime_web_npm": "1.30.0",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0]",
+    "torch": "2.14.1+cpu",
+    "torchvision": "0.29.1+cpu"
+  },
+  "parity": {
+    "atol": 0.0001,
+    "inputs": [
+      {
+        "input": "zeros",
+        "max_abs_diff": 1.1101365089416504e-05,
+        "max_rel_diff": 1.032288115151925e-05,
+        "onnx_logits": [
+          -2.0775744915008545,
+          0.43236833810806274,
+          1.0753188133239746,
+          -2.017965793609619,
+          -2.5632123947143555
+        ],
+        "pytorch_logits": [
+          -2.077563762664795,
+          0.4323700964450836,
+          1.0753077268600464,
+          -2.0179646015167236,
+          -2.5632152557373047
+        ]
+      },
+      {
+        "input": "half",
+        "max_abs_diff": 6.67572021484375e-06,
+        "max_rel_diff": 5.570797409250168e-06,
+        "onnx_logits": [
+          -1.514433741569519,
+          1.1907768249511719,
+          0.7080056667327881,
+          -1.534146785736084,
+          -1.365854263305664
+        ],
+        "pytorch_logits": [
+          -1.5144387483596802,
+          1.190770149230957,
+          0.7080021500587463,
+          -1.5341453552246094,
+          -1.3658496141433716
+        ]
+      },
+      {
+        "input": "randn_seeded",
+        "max_abs_diff": 2.2649765014648438e-05,
+        "max_rel_diff": 6.432188820326701e-05,
+        "onnx_logits": [
+          -3.906679153442383,
+          3.6359434127807617,
+          0.8880537152290344,
+          -4.156891345977783,
+          -1.3855376243591309
+        ],
+        "pytorch_logits": [
+          -3.9066896438598633,
+          3.63594913482666,
+          0.8880310654640198,
+          -4.156901836395264,
+          -1.385528802871704
+        ]
+      },
+      {
+        "input": "ramp",
+        "max_abs_diff": 6.67572021484375e-06,
+        "max_rel_diff": 9.515710931445006e-06,
+        "onnx_logits": [
+          -3.279027223587036,
+          -1.4636064767837524,
+          1.5886726379394531,
+          0.7013236880302429,
+          -2.2496602535247803
+        ],
+        "pytorch_logits": [
+          -3.27903151512146,
+          -1.4635998010635376,
+          1.588670015335083,
+          0.7013303637504578,
+          -2.2496631145477295
+        ]
+      }
+    ],
+    "max_abs_diff_all": 2.2649765014648438e-05,
+    "max_rel_diff_all": 6.432188820326701e-05,
+    "pass": true,
+    "protected_data_used": false,
+    "providers": [
+      "CPUExecutionProvider"
+    ],
+    "rtol": 0.0001,
+    "validation_partition_used": false
+  },
+  "pretrained_backbone": {
+    "expected_sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+    "expected_url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+    "torchvision_weights": "MobileNet_V3_Small_Weights.IMAGENET1K_V1"
+  },
+  "source_head_state_sha256": "5c366089a8ee91d3a7752b0fae505df3f96463c32417861fbf28482f0b919a44",
+  "source_stage7c_artifact_id": 11291109525,
+  "source_stage7c_run_id": 37171911439,
+  "stage": "7D_A0_artifact_export_parity"
+}

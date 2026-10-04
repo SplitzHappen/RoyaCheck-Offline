@@ -1,0 +1,4 @@
+partition,healthy,rust_present,leaf_miner_no_rust,brown_leaf_spot_no_rust,cercospora_no_rust
+train,190,441,240,242,67
+validation,41,94,51,52,14
+internal_test,41,95,51,52,14

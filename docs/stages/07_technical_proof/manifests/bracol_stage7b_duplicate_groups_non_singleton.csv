@@ -1,0 +1,17 @@
+duplicate_group_id,size,image_ids,partition,count_healthy,count_rust_present,count_leaf_miner_no_rust,count_brown_leaf_spot_no_rust,count_cercospora_no_rust,contains_mixed_source_classes,contains_mixed_truth_groups
+G0106,2,106 594,validation,0,2,0,0,0,False,False
+G0113,2,113 180,internal_test,1,1,0,0,0,True,True
+G0115,2,115 242,internal_test,0,1,0,1,0,True,True
+G0117,2,117 128,internal_test,0,2,0,0,0,False,False
+G0125,2,125 144,internal_test,0,2,0,0,0,False,False
+G0129,2,130 140,validation,0,2,0,0,0,False,False
+G0130,2,131 159,internal_test,0,2,0,0,0,False,False
+G0136,2,137 1510,internal_test,0,1,1,0,0,True,True
+G0152,2,155 223,validation,0,1,1,0,0,True,True
+G0153,2,156 198,validation,1,1,0,0,0,True,True
+G0211,3,217 942 1633,internal_test,1,1,1,0,0,True,True
+G0232,2,239 624,validation,1,0,0,1,0,True,True
+G0293,2,301 946,validation,1,0,0,1,0,True,True
+G0714,2,732 768,validation,0,0,2,0,0,False,False
+G0793,2,813 1022,validation,0,2,0,0,0,False,False
+G1512,2,1566 1707,validation,0,2,0,0,0,False,False
