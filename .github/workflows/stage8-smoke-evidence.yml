@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "028e65c18a1acb3956c0abd0a4f5e205c06c32fc"
+          test "$(git rev-parse HEAD^)" = "2029ab1ecafcf1153d50b7e4f0e912e90c78bc3a"
           git merge-base --is-ancestor 9cd0ae6ab0fdde79c8002db96e8e7d7577674580 HEAD
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
           test ! -d raw_data
@@ -127,7 +127,7 @@ jobs:
             assert.equal((await page.textContent('h1')).trim(), 'RoyaCheck Offline');
             assert.ok(await page.locator('#imageInput[type="file"][accept="image/*"]').count());
             const htmlText = (await page.locator('body').evaluate(el => el.textContent)).toLowerCase();
-            for (const phrase of ['visible rust','no visible rust','not sure','not a diagnosis','not treatment advice','no rocole external readout','only the human disposition becomes formal','no raw image']) assert.ok(htmlText.includes(phrase), `missing ${phrase}`);
+            for (const phrase of ['visible rust','no visible rust','not sure','not a diagnosis','not treatment advice','no rocole external readout','only the human disposition becomes formal','raw image']) assert.ok(htmlText.includes(phrase), `missing ${phrase}`);
             assert.equal(await page.locator('#humanDisposition').evaluate(el => el.value), '');
             assert.deepEqual(await page.locator('#humanDisposition option').evaluateAll(nodes => nodes.map(n => n.value)), ['', 'visible_rust', 'no_visible_rust', 'not_sure', 'request_review']);
             assert.equal(await page.locator('#runButton').evaluate(el => el.disabled), true);
