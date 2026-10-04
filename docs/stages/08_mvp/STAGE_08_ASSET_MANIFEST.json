@@ -1,0 +1,65 @@
+{
+  "boundaries": {
+    "challenge_inference": false,
+    "deployment": false,
+    "model_change": false,
+    "preprocessing_change": false,
+    "rocole_inference": false,
+    "threshold_change": false
+  },
+  "cached_file_bytes": 18814998,
+  "core_budget_bytes": 30000000,
+  "core_budget_pass": true,
+  "files": [
+    {
+      "bytes": 5980,
+      "path": "app/index.html",
+      "sha256": "03b696d2fd9bb1b1086ff141193da3055b1a6635bfc913a90d1fe15f12770d50"
+    },
+    {
+      "bytes": 3376,
+      "path": "app/styles.css",
+      "sha256": "10f3eb70025fb2f91582dd648eb1c8a550845ce92fe8b75fc9bc1f454733d2b1"
+    },
+    {
+      "bytes": 13836,
+      "path": "app/app.js",
+      "sha256": "f7ab2c1133cf4981839814d1d0ee7abee5539b1ecd80ad3aef48a14e12545da0"
+    },
+    {
+      "bytes": 435,
+      "path": "app/manifest.webmanifest",
+      "sha256": "e8f7bff2df24eb7f7ec69eea68a4320fb64624c0e5de18fea19ebe39cde2c420"
+    },
+    {
+      "bytes": 1278,
+      "path": "app/sw.js",
+      "sha256": "7fb2b4c87b94aabeac508348dfbcb26b7728dacb12c488f957fcf9c2b28227ec"
+    },
+    {
+      "bytes": 542,
+      "path": "app/assets/icon.svg",
+      "sha256": "f808d1010d5c087feca52aa50b31f25d5a44294b0141f92ab6083014cf30dc4f"
+    },
+    {
+      "bytes": 3730046,
+      "path": "app/assets/model/royacheck_a0_fp32.onnx",
+      "sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041"
+    },
+    {
+      "bytes": 819608,
+      "path": "app/vendor/onnxruntime-web/ort.all.min.js",
+      "sha256": "e1a5d5ce04782ff5dd87d21fd534d32fc79f0c0c5ebf203733f4b06cdd22fdfa"
+    },
+    {
+      "bytes": 14239897,
+      "path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "sha256": "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2"
+    }
+  ],
+  "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+  "onnxruntime_web_version": "1.30.0",
+  "source_stage7d_artifact_id": 11292181113,
+  "source_stage7d_artifact_name": "stage7d-a0-export-parity",
+  "stage": "8_mvp_asset_bundle"
+}
