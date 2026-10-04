@@ -85,6 +85,14 @@ jobs:
           print("phash_smoke", imagehash.phash(im, hash_size=8))
           PY
 
+      - name: Upload dummy ONNX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage5-dummy-onnx
+          path: stage5_dummy_mobilenetv3_small.onnx
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Synthetic evaluation-control smoke
         run: |
           python - <<'PY'
