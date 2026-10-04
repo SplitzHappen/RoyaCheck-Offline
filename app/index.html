@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101312">
+  <meta name="theme-color" content="#241710">
   <meta name="description" content="Browser-local coffee-leaf observation prototype with human review.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>RoyaCheck Offline</title>
@@ -12,203 +12,246 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand-lockup">
-      <p class="eyebrow">Small AI field console</p>
-      <h1>RoyaCheck Offline</h1>
-      <p class="tagline">Browser-local coffee-leaf observation prototype with human-final authority.</p>
-    </div>
-    <div class="topbar-status">
-      <span id="offlineBadge" class="badge" aria-live="polite">First load needs connection; checking offline readiness…</span>
-    </div>
-  </header>
+  <div class="workbench-shell">
+    <header class="case-cover" aria-label="RoyaCheck Offline case file cover">
+      <div class="clip-bar" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </div>
+      <div class="case-meta">
+        <span class="case-stamp">Field sample dossier</span>
+        <span id="offlineBadge" class="badge" aria-live="polite">First load needs connection; checking offline readiness…</span>
+      </div>
+      <div class="case-title-block">
+        <p class="eyebrow">Small AI / Browser-local observation</p>
+        <h1>RoyaCheck Offline</h1>
+        <p class="tagline">A coffee-leaf review dossier where the compact model proposes and the human signs the record.</p>
+      </div>
+      <div class="case-facts" aria-label="System safeguards">
+        <span>Local inference</span>
+        <span>No raw-photo upload</span>
+        <span>Human-final record</span>
+        <span>No treatment advice</span>
+      </div>
+    </header>
 
-  <main>
-    <section class="hero-panel" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <p class="section-kicker">Offline-first inspection flow</p>
-        <h2 id="heroTitle">A compact field tool for coffee-leaf observation.</h2>
-        <p>The image is processed on this device. RoyaCheck does not upload the raw image for inference, and this MVP does not save the photo with the record.</p>
-        <div class="trust-strip" aria-label="Product safeguards">
-          <span>Local inference</span>
-          <span>Human-final</span>
-          <span>No automatic sending</span>
-          <span>No treatment advice</span>
+    <main class="dossier-stack">
+      <section class="sample-brief" aria-labelledby="briefTitle">
+        <div class="brief-tab">Before you inspect</div>
+        <div class="brief-copy">
+          <p class="section-kicker">Specimen intake</p>
+          <h2 id="briefTitle">Drop one leaf image onto the field desk. Keep the final call human.</h2>
+          <p>The image is processed on this device. RoyaCheck does not upload the raw image for inference, and this MVP does not save the photo with the record.</p>
         </div>
-      </div>
-      <aside class="safety-panel" aria-label="Safety boundary">
-        <span class="safety-mark">!</span>
-        <strong>Human decision required.</strong>
-        <span>The AI output is a proposal only. It is not a diagnosis and not treatment advice.</span>
-      </aside>
-    </section>
+        <aside class="safety-ticket" aria-label="Safety boundary">
+          <strong>Human decision required</strong>
+          <span>The AI output is a proposal only. It is not a diagnosis and not treatment advice.</span>
+        </aside>
+      </section>
 
-    <nav class="workflow-rail" aria-label="RoyaCheck workflow">
-      <span><strong>01</strong> Capture</span>
-      <span><strong>02</strong> Proposal</span>
-      <span><strong>03</strong> Human decision</span>
-      <span><strong>04</strong> Review records</span>
-      <span><strong>05</strong> Language scaffold</span>
-      <span><strong>06</strong> Evidence limits</span>
-    </nav>
+      <nav class="dossier-tabs" aria-label="RoyaCheck workflow">
+        <span><strong>01</strong> Intake</span>
+        <span><strong>02</strong> Model stamp</span>
+        <span><strong>03</strong> Human sign-off</span>
+        <span><strong>04</strong> Local records</span>
+        <span><strong>05</strong> Fixed strings</span>
+        <span><strong>06</strong> Evidence limits</span>
+      </nav>
 
-    <section class="card step-card image-card">
-      <div class="card-heading">
-        <p class="section-kicker">Step 01</p>
-        <h2>Select or capture an image</h2>
-      </div>
-      <label class="file-picker">
-        <span>Choose coffee-leaf image</span>
-        <input id="imageInput" type="file" accept="image/*">
-      </label>
-      <p class="hint">Use a current landscape image with one complete target leaf visible. Images smaller than 224×224 are routed to <em>not sure</em>.</p>
-      <div class="preview-wrap">
-        <img id="preview" alt="Selected coffee-leaf preview" hidden>
-      </div>
-      <div class="action-row">
-        <button id="runButton" class="primary" type="button" disabled>Run local AI check</button>
-        <p id="modelStatus" class="status" aria-live="polite">Model not loaded yet.</p>
-      </div>
-    </section>
-
-    <section id="proposalSection" class="card step-card proposal-card" hidden>
-      <div class="card-heading">
-        <p class="section-kicker">Step 02</p>
-        <h2>AI proposal</h2>
-      </div>
-      <div class="proposal-shell">
-        <span class="proposal-caption">Local model output</span>
-        <div id="proposalLabel" class="proposal" aria-live="polite"></div>
-        <p id="proposalExplanation"></p>
-      </div>
-      <details class="disclosure">
-        <summary>What this proposal means</summary>
-        <p id="proposalDetail"></p>
-      </details>
-      <div class="evidence-note">
-        <strong>Evidence boundary</strong>
-        <span>Validation passed on frozen BRACOL validation data. A one-shot frozen BRACOL internal-holdout readout was completed. This is not field validation; no RoCoLe external readout has been completed.</span>
-      </div>
-    </section>
-
-    <section id="humanSection" class="card step-card decision-card" hidden>
-      <div class="card-heading split-heading">
-        <div>
-          <p class="section-kicker">Step 03</p>
-          <h2>Human disposition</h2>
+      <section class="sheet specimen-sheet image-card">
+        <div class="sheet-label">
+          <span class="tag-number">01</span>
+          <div>
+            <p class="section-kicker">Image intake</p>
+            <h2>Select or capture an image</h2>
+          </div>
         </div>
-        <span class="record-badge">Formal record</span>
-      </div>
-      <p class="decision-warning">Do not copy the AI automatically. Review the image and choose the formal observation yourself.</p>
-      <label for="humanDisposition">Human disposition</label>
-      <select id="humanDisposition" required>
-        <option value="" selected>Choose after reviewing…</option>
-        <option value="visible_rust">Visible rust observation</option>
-        <option value="no_visible_rust">No visible rust observation</option>
-        <option value="not_sure">Not sure</option>
-        <option value="request_review">Request human review</option>
-      </select>
-      <label for="farmerNote">Optional note</label>
-      <textarea id="farmerNote" maxlength="280" rows="3" placeholder="Short observation note"></textarea>
-      <label class="confirm-row">
-        <input id="humanConfirm" type="checkbox">
-        <span>I reviewed the AI proposal and the image. The disposition above is my choice.</span>
-      </label>
-      <button id="saveButton" class="primary" type="button" disabled>Save local observation</button>
-      <p class="hint">Only the human disposition becomes formal. The raw image is not stored with the record.</p>
-    </section>
-
-    <section id="savedSection" class="card saved-card" hidden>
-      <div class="card-heading split-heading">
-        <div>
-          <p class="section-kicker">Saved locally</p>
-          <h2>Current local observation</h2>
+        <div class="specimen-grid">
+          <div class="intake-controls">
+            <label class="file-picker">
+              <span>Choose coffee-leaf image</span>
+              <input id="imageInput" type="file" accept="image/*">
+            </label>
+            <p class="hint">Use a current landscape image with one complete target leaf visible. Images smaller than 224×224 are routed to <em>not sure</em>.</p>
+            <div class="action-row">
+              <button id="runButton" class="primary" type="button" disabled>Run local AI check</button>
+              <p id="modelStatus" class="status" aria-live="polite">Model not loaded yet.</p>
+            </div>
+          </div>
+          <div class="specimen-frame" aria-label="Selected image preview frame">
+            <span class="frame-label">Image sleeve</span>
+            <div class="preview-wrap">
+              <img id="preview" alt="Selected coffee-leaf preview" hidden>
+            </div>
+          </div>
         </div>
-        <span class="record-badge">Text-only</span>
-      </div>
-      <div id="savedRecord"></div>
-      <div class="button-row">
-        <button id="reviewCardButton" type="button">Prepare on-device review card</button>
-        <button id="deleteButton" class="danger" type="button">Delete current local record</button>
-      </div>
-      <div id="reviewCard" class="review-card" hidden>
-        <h3>Reviewer card — user initiated</h3>
-        <p class="hint">Text-only. Nothing is sent automatically.</p>
-        <dl id="reviewFields"></dl>
-      </div>
-    </section>
+      </section>
 
-    <section id="savedRecordsSection" class="card step-card archive-card">
-      <div class="card-heading">
-        <p class="section-kicker">Step 04</p>
-        <h2>Review saved observations later</h2>
-      </div>
-      <p>Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, or clearing site data. This MVP provides no backup or export, and the list is text-only without raw photos.</p>
-      <div class="button-row">
-        <button id="refreshRecordsButton" type="button">Refresh saved records</button>
-        <button id="clearReviewPanelButton" type="button">Clear review panel</button>
-      </div>
-      <div id="savedRecordsList" class="record-list" aria-live="polite"></div>
-      <p id="persistentReviewStatus" class="status" aria-live="polite"></p>
-      <div id="persistentReviewCard" class="review-card" hidden>
-        <h3>Saved-record review card — user initiated</h3>
-        <p class="hint">Text-only. Nothing is sent automatically.</p>
-        <dl id="persistentReviewFields"></dl>
-      </div>
-    </section>
+      <section id="proposalSection" class="sheet stamp-sheet proposal-card" hidden>
+        <div class="sheet-label">
+          <span class="tag-number">02</span>
+          <div>
+            <p class="section-kicker">Model stamp</p>
+            <h2>AI proposal</h2>
+          </div>
+        </div>
+        <div class="stamp-grid">
+          <div class="proposal-stamp" aria-label="Local model output stamp">
+            <span class="stamp-caption">Local model output</span>
+            <div id="proposalLabel" class="proposal" aria-live="polite"></div>
+            <p id="proposalExplanation"></p>
+          </div>
+          <div class="proposal-notes">
+            <details class="disclosure">
+              <summary>What this proposal means</summary>
+              <p id="proposalDetail"></p>
+            </details>
+            <div class="evidence-note">
+              <strong>Evidence boundary</strong>
+              <span>Validation passed on frozen BRACOL validation data. A one-shot frozen BRACOL internal-holdout readout was completed. This is not field validation; no RoCoLe external readout has been completed.</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <section id="lugisuSection" class="card step-card language-card">
-      <div class="card-heading">
-        <p class="section-kicker">Step 05</p>
-        <h2>Local-language fixed-string scaffold</h2>
-      </div>
-      <p>This MVP includes a fixed-string local-language scaffold connected to the current AI proposal and human disposition. Actual Lugisu/Lumasaba wording is pending fluent human validation and is not claimed in this build.</p>
-      <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt rehearsal">
-        <button type="button" data-lugisu-step="visible_rust">Visible rust</button>
-        <button type="button" data-lugisu-step="no_visible_rust">No visible rust</button>
-        <button type="button" data-lugisu-step="not_sure">Not sure</button>
-        <button type="button" data-lugisu-step="review_later">Review later action</button>
-      </div>
-      <div id="lugisuPrompt" class="language-output" aria-live="polite">
-        <strong>Local-language scaffold pending fluent validation.</strong>
-        <span>Run the normal flow or choose a fixed-string rehearsal. Actual Lugisu/Lumasaba wording is not claimed in this build.</span>
-      </div>
-      <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu/Lumasaba usability or field readiness.</p>
-    </section>
+      <section id="humanSection" class="sheet signoff-sheet decision-card" hidden>
+        <div class="sheet-label split-heading">
+          <div class="label-cluster">
+            <span class="tag-number">03</span>
+            <div>
+              <p class="section-kicker">Human sign-off</p>
+              <h2>Human disposition</h2>
+            </div>
+          </div>
+          <span class="record-badge">Formal record</span>
+        </div>
+        <p class="decision-warning">Do not copy the AI automatically. Review the image and choose the formal observation yourself.</p>
+        <div class="form-grid">
+          <label for="humanDisposition">Human disposition</label>
+          <select id="humanDisposition" required>
+            <option value="" selected>Choose after reviewing…</option>
+            <option value="visible_rust">Visible rust observation</option>
+            <option value="no_visible_rust">No visible rust observation</option>
+            <option value="not_sure">Not sure</option>
+            <option value="request_review">Request human review</option>
+          </select>
+          <label for="farmerNote">Optional note</label>
+          <textarea id="farmerNote" maxlength="280" rows="3" placeholder="Short observation note"></textarea>
+        </div>
+        <label class="confirm-row">
+          <input id="humanConfirm" type="checkbox">
+          <span>I reviewed the AI proposal and the image. The disposition above is my choice.</span>
+        </label>
+        <div class="button-with-note">
+          <button id="saveButton" class="primary" type="button" disabled>Save local observation</button>
+          <p class="hint">Only the human disposition becomes formal. The raw image is not stored with the record.</p>
+        </div>
+      </section>
 
-    <section class="card step-card limitations">
-      <div class="card-heading">
-        <p class="section-kicker">Step 06</p>
-        <h2>Evidence and limitations</h2>
-      </div>
-      <div class="limit-grid">
-        <article>
-          <h3>Frozen model</h3>
-          <p>Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
-        </article>
-        <article>
-          <h3>Internal evidence</h3>
-          <p>On the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
-        </article>
-        <article>
-          <h3>Claim ceiling</h3>
-          <p>Those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
-        </article>
-        <article>
-          <h3>Safety</h3>
-          <p>RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
-        </article>
-        <article>
-          <h3>Localization</h3>
-          <p>This technical MVP includes a local-language fixed-string scaffold. Actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.</p>
-        </article>
-      </div>
-    </section>
-  </main>
+      <section id="savedSection" class="sheet saved-card" hidden>
+        <div class="sheet-label split-heading">
+          <div class="label-cluster">
+            <span class="tag-number">✓</span>
+            <div>
+              <p class="section-kicker">Saved locally</p>
+              <h2>Current local observation</h2>
+            </div>
+          </div>
+          <span class="record-badge">Text-only</span>
+        </div>
+        <div id="savedRecord"></div>
+        <div class="button-row">
+          <button id="reviewCardButton" type="button">Prepare on-device review card</button>
+          <button id="deleteButton" class="danger" type="button">Delete current local record</button>
+        </div>
+        <div id="reviewCard" class="review-card" hidden>
+          <h3>Reviewer card — user initiated</h3>
+          <p class="hint">Text-only. Nothing is sent automatically.</p>
+          <dl id="reviewFields"></dl>
+        </div>
+      </section>
 
-  <footer>
-    <span>Local inference · human-final authority · no automatic sending</span>
-  </footer>
+      <section id="savedRecordsSection" class="sheet archive-sheet">
+        <div class="sheet-label">
+          <span class="tag-number">04</span>
+          <div>
+            <p class="section-kicker">Local record drawer</p>
+            <h2>Review saved observations later</h2>
+          </div>
+        </div>
+        <p>Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, or clearing site data. This MVP provides no backup or export, and the list is text-only without raw photos.</p>
+        <div class="button-row">
+          <button id="refreshRecordsButton" type="button">Refresh saved records</button>
+          <button id="clearReviewPanelButton" type="button">Clear review panel</button>
+        </div>
+        <div id="savedRecordsList" class="record-list" aria-live="polite"></div>
+        <p id="persistentReviewStatus" class="status" aria-live="polite"></p>
+        <div id="persistentReviewCard" class="review-card" hidden>
+          <h3>Saved-record review card — user initiated</h3>
+          <p class="hint">Text-only. Nothing is sent automatically.</p>
+          <dl id="persistentReviewFields"></dl>
+        </div>
+      </section>
+
+      <section id="lugisuSection" class="sheet language-sheet">
+        <div class="sheet-label">
+          <span class="tag-number">05</span>
+          <div>
+            <p class="section-kicker">Fixed-string card</p>
+            <h2>Local-language fixed-string scaffold</h2>
+          </div>
+        </div>
+        <p>This MVP includes a fixed-string local-language scaffold connected to the current AI proposal and human disposition. Actual Lugisu/Lumasaba wording is pending fluent human validation and is not claimed in this build.</p>
+        <div class="language-buttons" role="group" aria-label="Choose fixed-string prompt rehearsal">
+          <button type="button" data-lugisu-step="visible_rust">Visible rust</button>
+          <button type="button" data-lugisu-step="no_visible_rust">No visible rust</button>
+          <button type="button" data-lugisu-step="not_sure">Not sure</button>
+          <button type="button" data-lugisu-step="review_later">Review later action</button>
+        </div>
+        <div id="lugisuPrompt" class="language-output" aria-live="polite">
+          <strong>Local-language scaffold pending fluent validation.</strong>
+          <span>Run the normal flow or choose a fixed-string rehearsal. Actual Lugisu/Lumasaba wording is not claimed in this build.</span>
+        </div>
+        <p class="hint">Localization limitation: fixed strings only; no chatbot, no free-form translation, and no claim of validated Lugisu/Lumasaba usability or field readiness.</p>
+      </section>
+
+      <section class="sheet limitation-sheet limitations">
+        <div class="sheet-label">
+          <span class="tag-number">06</span>
+          <div>
+            <p class="section-kicker">Claim ceiling</p>
+            <h2>Evidence and limitations</h2>
+          </div>
+        </div>
+        <div class="limit-grid">
+          <article>
+            <h3>Frozen model</h3>
+            <p>Stage 7D A0 FP32 ONNX, with the fixed Stage 7C operating thresholds.</p>
+          </article>
+          <article>
+            <h3>Internal evidence</h3>
+            <p>On the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing. The model produced 106 confident target-class outputs and 104 of those 106 were correct. The visible-rust route captured 66 of 95 rust leaves, while 27 of 95 rust leaves were routed to <em>not sure</em> and 2 of 95 rust leaves were routed to <em>no visible rust</em>. Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.</p>
+          </article>
+          <article>
+            <h3>Claim ceiling</h3>
+            <p>Those numbers are internal-holdout evidence only. They are not field validation, not RoCoLe external-transfer evidence, and not challenge-set evidence.</p>
+          </article>
+          <article>
+            <h3>Safety</h3>
+            <p>RoyaCheck does not diagnose a plant, select treatment, recommend pesticide use, explain falling yields, or replace qualified human review. It does not verify that an image is a coffee leaf.</p>
+          </article>
+          <article>
+            <h3>Localization</h3>
+            <p>This technical MVP includes a local-language fixed-string scaffold. Actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Local inference · human-final authority · no automatic sending</span>
+    </footer>
+  </div>
 
   <canvas id="sourceCanvas" hidden></canvas>
   <script type="module" src="./app.js"></script>
