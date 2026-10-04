@@ -112,12 +112,14 @@ jobs:
           set -euo pipefail
           cd /tmp/ort
           node - <<'JS'
+          const fs = require("fs");
           const path = require("path");
           const ort = require("./node_modules/onnxruntime-web/dist/ort.all.min.js");
           (async () => {
             ort.env.wasm.numThreads = 1;
             const model = path.join(process.env.GITHUB_WORKSPACE, "app/assets/model/royacheck_a0_fp32.onnx");
-            const session = await ort.InferenceSession.create(model, { executionProviders: ["wasm"] });
+            const modelBytes = fs.readFileSync(model);
+            const session = await ort.InferenceSession.create(modelBytes, { executionProviders: ["wasm"] });
             if (!session.inputNames.includes("input") || !session.outputNames.includes("logits")) {
               throw new Error("Unexpected ONNX input/output contract");
             }
