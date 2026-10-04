@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(path, "utf8");
-const [html, js, preprocess, sw, manifest] = await Promise.all([
+const [html, js, followups, preprocess, sw, manifest] = await Promise.all([
   read("app/index.html"),
   read("app/app.js"),
+  read("app/followups.js"),
   read("app/preprocess.js"),
   read("app/sw.js"),
   read("app/manifest.webmanifest"),
@@ -50,6 +51,19 @@ for (const fragment of requiredJsFragments) {
   assert.ok(js.includes(fragment), `Missing locked app contract fragment: ${fragment}`);
 }
 
+const followupFragments = [
+  'const LUGISU_PROMPTS',
+  'Lugisu translation pending human validation',
+  'getAllRecords',
+  'tx.objectStore("observations").getAll()',
+  'deleteRecord(record.id)',
+  'persistentReviewCard',
+  'raw_image_retained',
+];
+for (const fragment of followupFragments) {
+  assert.ok(followups.includes(fragment), `Missing follow-up contract fragment: ${fragment}`);
+}
+
 assert.ok(js.includes('const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;'));
 assert.ok(preprocess.includes('blank_canvas'));
 assert.ok(!js.includes('\\n'), "App shell must not contain literal escaped newline artifacts.");
@@ -73,6 +87,10 @@ assert.ok(html.includes("66 of 95 rust leaves"));
 assert.ok(html.includes("27 of 95 rust leaves"));
 assert.ok(html.includes("2 of 95 rust leaves"));
 assert.ok(html.includes("7 of 117 other-condition leaves"));
+assert.ok(html.includes('id="savedRecordsSection"'));
+assert.ok(html.includes('id="lugisuSection"'));
+assert.ok(html.includes('src="./followups.js"'));
+assert.ok(html.includes("Validated localized usability has not been established."));
 assert.ok(!html.includes("accepted rust recall"));
 assert.ok(!html.includes('capture="environment"'));
 assert.ok(!html.includes('<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>'));
@@ -82,6 +100,7 @@ assert.ok(!html.match(/https?:\/\//), "App shell must not depend on remote HTTP 
 for (const asset of [
   "./assets/model/royacheck_a0_fp32.onnx",
   "./preprocess.js",
+  "./followups.js",
   "./vendor/onnxruntime-web/ort.wasm.min.mjs",
   "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
   "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
