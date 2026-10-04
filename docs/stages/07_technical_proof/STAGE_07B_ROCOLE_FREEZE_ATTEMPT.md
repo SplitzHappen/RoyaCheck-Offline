@@ -9,9 +9,9 @@
 
 ## 1. Purpose
 
-José Antonio authorized a compact RoCoLe external-source metadata/identifier freeze before Stage 7C.
+José Antonio authorized a compact RoCoLe external-source metadata/identifier freeze before Stage 7C. That strict pre-training freeze did not complete through available automated routes. José Antonio later authorized a clock-preserving amendment allowing A0 training to proceed on frozen BRACOL only, while requiring exact RoCoLe identifiers/metadata before any Stage 7F RoCoLe external readout.
 
-The intended purpose was to freeze RoCoLe as the sole external-transfer readout without producing model performance evidence or allowing RoCoLe to influence model development.
+The intended purpose remains to freeze RoCoLe as the sole external-transfer readout without producing model performance evidence or allowing RoCoLe to influence model development.
 
 ---
 
@@ -28,9 +28,11 @@ This attempt did **not**:
 - select thresholds;
 - change architecture, preprocessing, augmentation, fallback or claims.
 
+Subsequent A0 training used only frozen BRACOL train/validation data and did not use RoCoLe.
+
 ---
 
-## 3. Source facts already frozen from Stage 7A metadata
+## 3. Source facts frozen from Stage 7A metadata
 
 RoCoLe v2 remains the planned external-transfer source.
 
@@ -98,13 +100,8 @@ What is **not** yet frozen:
 
 ## 6. Consequence
 
-BRACOL is ready for Stage 7C training from the Stage 7B freeze.
+BRACOL is ready and A0 validation has passed.
 
-RoCoLe remains quarantined, but its full compact identifier freeze is still pending.
+RoCoLe remains quarantined. Its full compact identifier freeze is still pending and must be completed before any Stage 7F RoCoLe external readout, unless José Antonio explicitly revises that rule later.
 
-The owner has two clean options:
-
-1. **Strict-original-gate option:** obtain/upload the RoCoLe archive or annotation files so exact identifiers can be frozen before Stage 7C.
-2. **Clock-preserving amendment option:** authorize A0 training now using only the frozen BRACOL train/validation split, while explicitly requiring RoCoLe identifiers/metadata to be frozen before any Stage 7F external readout. This does not let RoCoLe influence training because no RoCoLe outcomes are used before Stage 7C.
-
-No Stage 7C training may begin without explicit owner authorization selecting the applicable route.
+No RoCoLe inference or external performance readout has occurred.
