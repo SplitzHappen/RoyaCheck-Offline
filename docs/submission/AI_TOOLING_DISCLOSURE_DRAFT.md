@@ -1,23 +1,32 @@
 # AI / Tooling Disclosure Draft
 
-**Status:** draft; not final submission text.
+This draft is intentionally conservative pending final hackathon rules review.
 
-Most or all code, tests, documentation, evidence summaries, and PR text in this repository were drafted or edited with AI assistance under José Antonio Tamburini Martínez's direction and authorization.
+## Owner and accountability
 
-## Roles
+José Antonio Tamburini Martínez is the sole human entrant, product owner, final decision-maker, presenter, and accountable author of the submission.
 
-- José Antonio Tamburini Martínez is the sole human entrant, product owner, final decision-maker, and accountable author.
-- ChatGPT / Vale was used as a primary AI-assisted builder, debugger, documentation drafter, and integration assistant.
-- Claude was used as an independent adversarial auditor/red-team reviewer. Claude was not used as an accountable co-author or final decision-maker.
+## AI-assisted development
 
-## Authorship and commits
+Most or all repository code, tests, documentation, PR bodies, and evidence summaries in this hackathon build were drafted or edited with AI assistance under José's direction.
 
-Some commits were created through connected GitHub tooling under the owner's GitHub account. Those commits may contain AI-generated or AI-edited code, tests, documentation, and evidence text. The owner retained decision authority over whether to authorize changes, mark PRs ready, merge PRs, or defer scope.
+Commits authored through the connected GitHub tooling under the owner's GitHub account may contain AI-generated or AI-edited content. Commit authorship should therefore not be interpreted as purely manual drafting.
 
-## Conservative disclosure posture
+ChatGPT / Vale acted as the primary AI builder and integrator. Claude acted as an independent adversarial auditor / red-team reviewer and did not serve as the default co-builder.
 
-The hackathon AI/tooling rule must be re-read before final submission. If the final submission asks for AI-use disclosure, this project should disclose AI assistance broadly rather than narrowly.
+## Human decisions
 
-## Human accountability
+The owner made the substantive concept and scope decisions, including:
 
-All claims in the final submission must be bounded to evidence that the owner can stand behind. AI-generated text must not be treated as evidence unless it is backed by repository artifacts, tests, or external sources.
+- selecting RoyaCheck Offline as the project concept;
+- approving the frozen Stage 7D model path;
+- accepting residual pretrained-artifact licensing risk subject to disclosure;
+- approving PR #21 as a partial Stage 8 increment rather than Stage 8 closure;
+- approving PR #22 as a draft follow-up repair path while Stage 8 remains open;
+- deciding that unverified language strings must not be claimed as Lugisu/Lumasaba.
+
+## Evidence and limits
+
+AI assistance was used to prepare tests and evidence documents, but claims must be limited to what was actually run and recorded. Draft PR #22 currently requires fresh validation before Ready for Review.
+
+No AI system is claimed as an entrant, co-author, legal rights holder, or substitute for the owner's final judgment.
