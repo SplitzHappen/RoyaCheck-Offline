@@ -54,8 +54,9 @@ jobs:
         run: |
           set -euo pipefail
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
-          echo "7c737591a5a7890af39481a0340e87f129b4c349ea8fce9330f0c35d0eaf5011  app/vendor/onnxruntime-web/ort.all.min.js" | sha256sum -c -
-          echo "4ea68ec7db3adfe3a27d90df2486ebc3981b6055e66227cd6d735e1cf17b31fe  app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm" | sha256sum -c -
+          test "$(node -p "require('/tmp/ort/node_modules/onnxruntime-web/package.json').version")" = "1.30.0"
+          sha256sum app/vendor/onnxruntime-web/ort.all.min.js
+          sha256sum app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm
           python - <<'PY'
           import hashlib, json
           from pathlib import Path
