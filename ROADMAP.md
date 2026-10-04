@@ -139,22 +139,6 @@ The schedule below assumes the repaired roadmap is accepted no later than **3:30
 
 The protected buffer begins at **5:30 AM ET on 4 October 2026** if the Stage 0 deadline is confirmed. It is closed to feature work and must remain large enough for at least one redeploy, one re-upload of required videos, completion/retry of all submission forms, and capture of submission receipt evidence.
 
-### Live clock reconciliation — 3 October 2026
-
-The original schedule assumed Stages 0–6 would close by 5:30 PM ET. That assumption is now stale.
-
-At the Stage 5 authorization checkpoint, the verified clock was approximately **7:49 PM ET**. The protected 5:30–9:00 AM submission/recovery buffer remains unchanged.
-
-For the remaining pre-10:00 PM technical-proof window:
-
-- close Stages 5/6 immediately;
-- cap Stage 7.0 + 7A + 7B pre-training work at **30 minutes total**;
-- preserve A0's **60-minute** development cap;
-- preserve a final **30-minute minimum evidence/freeze reserve** before 10:00 PM ET;
-- attempt A1 only if its full 30-minute cap plus the 30-minute evidence reserve mathematically fit before 10:00 PM ET.
-
-Documentation overrun is absorbed by dropping/shortening non-buffer work, never by shrinking the protected submission buffer.
-
 ### Overrun rule
 
 An overrun in any work block from Stages 0–9 never shrinks the protected buffer. Instead it:
@@ -1175,8 +1159,8 @@ The stage order is a dependency structure for the project record. Public artifac
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
-| 5 — Readiness / fallback planning | Closed — owner approved (PR #16) |
-| 6 — Official-source recheck / greenlight | Closed — owner-authorized Stage 7 greenlight (PR #17) |
+| 5 — Readiness / fallback planning | In progress — initial findings |
+| 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
 | 9 — Hardening / evidence / claims audit | Not started |
@@ -1186,6 +1170,10 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stages 0–5 are merged and closed. Stage 6 is **Closed — owner-authorized Stage 7 greenlight (PR #17)** for the guarded merge sequence.
+Stages 0–4 are closed and merged. **Stage 5 is the active stage.**
 
-After PR #17 merges, begin Stage 7 in the preregistered order: **7.0 runtime smoke test → 7A data/licence verification → 7B split/quarantine manifest freeze → 7C A0 training**. No training may start before 7.0/7A/7B pass. Internal test, RoCoLe external, and challenge outcomes remain quarantined until their preregistered one-shot points.
+The current task is to work through the Stage 5 readiness findings in `docs/stages/05_readiness/STAGE_05_READINESS_AND_FALLBACK.md`: verify the actual development/export toolchain, browser/PWA path, data/artifact acquisition readiness, evaluation-control tooling, deployment route, backup/recovery path, and video/submission mechanics.
+
+**Stage 6 is not started. Stage 7 is not started and is not authorized.**
+
+Do not advance to Stage 6 until Stage 5 is deliberately reviewed and José Antonio explicitly approves Stage 5 closure.
