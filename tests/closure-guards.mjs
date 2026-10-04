@@ -26,8 +26,11 @@ assert.equal(routeFromProbabilities([0.20, 0.50, 0.10, 0.10, 0.10]), "visible_ru
 assert.equal(routeFromProbabilities([0.20, 0.499, 0.10, 0.10, 0.10]), "not_sure", "rust below T_RUST routes not_sure");
 assert.equal(routeFromProbabilities([0.70, 0.20, 0.05, 0.03, 0.02]), "no_visible_rust", "healthy at T_HEALTHY and top class routes no_visible_rust");
 assert.equal(routeFromProbabilities([0.699, 0.20, 0.05, 0.03, 0.02]), "not_sure", "healthy below T_HEALTHY routes not_sure");
-assert.equal(routeFromProbabilities([0.10, 0.20, 0.80, 0.10, 0.10]), "not_sure", "non-public disease top class routes not_sure");
-assert.equal(routeFromProbabilities([0.80, 0.60, 0.10, 0.10, 0.10]), "no_visible_rust", "rust above threshold does not override a higher healthy top class");
-assert.equal(routeFromProbabilities([0.65, 0.55, 0.10, 0.10, 0.10]), "visible_rust", "rust top class above threshold routes visible_rust even when healthy is below T_HEALTHY");
+assert.equal(routeFromProbabilities([0.10, 0.20, 0.80, 0.10, 0.10]), "not_sure", "leaf miner top class routes not_sure");
+assert.equal(routeFromProbabilities([0.10, 0.20, 0.10, 0.80, 0.10]), "not_sure", "brown leaf spot top class routes not_sure");
+assert.equal(routeFromProbabilities([0.10, 0.20, 0.10, 0.10, 0.80]), "not_sure", "cercospora top class routes not_sure");
+assert.equal(routeFromProbabilities([0.80, 0.60, 0.10, 0.10, 0.10]), "no_visible_rust", "rust above threshold does not override a higher healthy top class that passes T_HEALTHY");
+assert.equal(routeFromProbabilities([0.65, 0.55, 0.10, 0.10, 0.10]), "not_sure", "rust above T_RUST does not route visible_rust when healthy is top class and below T_HEALTHY");
+assert.equal(routeFromProbabilities([0.40, 0.55, 0.03, 0.01, 0.01]), "visible_rust", "rust top class above threshold routes visible_rust while healthy is below T_HEALTHY");
 
 console.log("closure guard checks: PASS");
