@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RoyaCheck leaf icon">
+  <rect width="512" height="512" rx="112" fill="#173d2b"/>
+  <path d="M116 320c28-126 117-197 280-202-10 154-93 243-229 255-22 2-42-18-51-53Z" fill="#eef3ef"/>
+  <path d="M150 347c72-70 143-121 221-168M247 264c-5-29-3-58 7-89M292 231c26 5 51 16 73 31" fill="none" stroke="#173d2b" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="212" cy="289" r="18" fill="#9b2c2c"/>
+  <circle cx="271" cy="246" r="14" fill="#9b2c2c"/>
+</svg>
