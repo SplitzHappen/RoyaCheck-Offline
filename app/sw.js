@@ -1,4 +1,4 @@
-const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1";
+const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
