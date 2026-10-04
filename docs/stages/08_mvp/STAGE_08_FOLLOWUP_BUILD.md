@@ -4,7 +4,7 @@
 
 PR #22 remains a **draft Stage 8 follow-up increment**. It does **not** close Stage 8.
 
-Current repair candidate: `chatgpt/stage-08-followups` after the minor repair pass that follows Claude's `PASS WITH MINOR REPAIRS` verification.
+Current repair candidate: `chatgpt/stage-08-followups` at tested SHA `469486f390251e47a327f06b7a0f52d8f3148b77`.
 
 ## Purpose
 
@@ -73,18 +73,45 @@ A first-load transitional state can still occur under an already-controlling old
 - offline saved-list render;
 - absence of raw images, canvases, blob previews, non-GET requests, and cross-origin requests.
 
-These tests still need to be executed and recorded on the final candidate SHA before Ready for Review.
+## Validation evidence recorded
 
-## Validation status
+Evidence below is **Claude auditor-run local evidence**, not Vale-run evidence. Vale did not execute the commands in this connector-only pass.
 
-Validation is pending. Vale has not run:
+Tested SHA: `469486f390251e47a327f06b7a0f52d8f3148b77`.
 
-- `npm test`;
-- `npm run test:browser-followups`;
-- the original browser e2e route/offline inference test;
-- an r1-to-r2 upgrade browser probe.
+Claude-reported environment:
 
-Do not mark Ready for Review or merge until green validation evidence is recorded or the owner explicitly accepts a narrower evidence basis.
+- local read-only clone;
+- Node `22.22.0`;
+- Playwright `1.56.1`;
+- headless Chromium `1194`;
+- `git archive` export of `469486f` in a scratch directory;
+- no repository writes by Claude.
+
+Claude-reported results:
+
+| Check | Result |
+|---|---|
+| `npm test` | PASS, exit 0; static smoke checks and preprocessing reference checks passed |
+| `npm run test:browser-followups` with `python3 -m http.server 4173` at repo root / documented `serve:app` | PASS, 3/3 |
+| Scratch mutation suite | 9/9 frozen-contract mutations caught |
+| Frozen core compared with `751c99e9d16890ceb87ed2c4790f00c3289ceff5` | unchanged |
+| `app/` compared with `c395889c180ef4a280f6ef4ba59e3643cdc23163` | byte-identical |
+| Prior app-behaviour and r1-to-r2 upgrade probes | carried forward because `app/` is unchanged since `c395889` |
+
+Claude-reported non-blocking caveats:
+
+- built-in server mode still fails because `/app.js` rewrites to `/.js`;
+- static smoke does not yet catch CSP `connect-src *`, remote POST injected into JS, or route-body mutation;
+- original `browser-e2e.mjs` was not run because fixtures are not committed and no fixture generator exists;
+- per-file SHA-256 and byte records remain a merge/submission-grade evidence item;
+- local-language compliance item 36 remains incomplete/deferred pending fluent Lumasaba/Lugisu validation.
+
+## Remaining validation posture
+
+The auditor-run evidence supports moving toward Ready for Review if the owner accepts local auditor-run validation evidence. It is not a hosted clean-environment run and it is not Vale-run evidence.
+
+Do not merge until merge-specific evidence and owner decisions are resolved.
 
 ## Boundaries preserved
 
