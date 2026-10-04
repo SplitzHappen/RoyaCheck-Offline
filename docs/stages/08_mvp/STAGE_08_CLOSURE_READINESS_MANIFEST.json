@@ -1,13 +1,15 @@
 {
-  "status": "stage8_closure_readiness_package_draft",
+  "status": "stage8_closure_readiness_package_draft_repaired",
   "does_not_close_stage8": true,
   "base_commit": "03487327a15d4f8286ca0e275c834fa4c21a0e40",
   "branch": "chatgpt/stage-08-closure-readiness-package",
+  "owner": "José Antonio",
   "scope": {
     "documentation_only": true,
     "app_changes": false,
     "model_asset_changes": false,
     "test_changes": false,
+    "package_json_changes": false,
     "product_behavior_changes": false
   },
   "frozen_model_contract": {
@@ -63,12 +65,18 @@
       "summary": "browser offline inference evidence"
     }
   ],
+  "evidence_source_transparency": {
+    "pr23_final_pass_source": "PR review/audit conversation and owner-control merge context; not fully recorded in a single merged in-repo verdict line",
+    "pr25_final_pass_source": "PR review/audit conversation; STAGE_08_BROWSER_INFERENCE_EVIDENCE.md records the earlier db57bbd PASS WITH MINOR REPAIRS and required final validation"
+  },
   "pr25_claude_evidence": {
     "head": "7db0dfbc4125d1655c8b39e40c420c9a3ea22065",
     "verdict": "PASS",
+    "source": "PR review/audit conversation",
     "npm_test": "PASS",
     "browser_followups": "PASS",
     "browser_inference_repeats": "50/50 PASS, 0 hangs",
+    "offline_inference_route": "not_sure",
     "offline_flags": {
       "offline_network_down_enforced": true,
       "server_closed_before_offline_reload": true,
@@ -82,24 +90,72 @@
   },
   "closure_decisions_required": {
     "route_variety": {
-      "status": "unresolved",
-      "current_evidence": "browser inference evidence covers one synthetic-image route, apparently not_sure; threshold and route logic covered by closure guards",
-      "decision_needed": "owner acceptance or additional browser-route evidence"
+      "status": "owner_acceptance_required",
+      "current_head_route": "not_sure",
+      "prior_evidence": "PR #21 browser smoke covered visible_rust, no_visible_rust and not_sure at an earlier head; fixtures/workflow not retained as current-head committed evidence",
+      "decision_needed": "owner acceptance of caveat or additional current-head browser-route evidence"
     },
     "target_browser_device": {
-      "status": "unresolved",
-      "current_evidence": "headless Chromium/Linux evidence from Claude audit",
-      "repository_source_found": false,
-      "decision_needed": "accept headless Chromium/Linux or require real-device/specific-browser evidence"
+      "status": "defined_target_not_met",
+      "repository_source_found": true,
+      "source": "Stage 4 D4-07, Stage 5 readiness, ROADMAP Stage 8 and Stage 9 offline proof protocol",
+      "defined_target": "iPhone 17 Pro Max + Safari + Add to Home Screen + standalone PWA",
+      "protocol": [
+        "connected first load",
+        "install/add to Home Screen",
+        "request navigator.storage.persist() where supported and record result",
+        "terminate app",
+        "airplane/offline state",
+        "relaunch from Home Screen",
+        "fresh inference",
+        "save record",
+        "close/reopen",
+        "verify record persistence"
+      ],
+      "current_evidence": "headless Chromium/Linux evidence from Claude PR #25 audit",
+      "closure_blocker": true,
+      "decision_needed": "run D4-07 physical protocol or record explicit owner amendment setting Stage 8 evidence level to headless Chromium/Linux and moving physical proof to Stage 9 with disclosure"
     },
     "naming_branding": {
-      "status": "pending_source_confirmation",
-      "repository_source_found": false,
-      "decision_needed": "apply Stage 0 naming/branding policy if available or accept closure checklist"
+      "status": "formal_sweep_pending",
+      "repository_source_found": true,
+      "source": "STAGE_00_COMPLIANCE_CHECKLIST.md row 48 and §5.7, Stage 0 reconciliation findings M-01/r-02, ROADMAP Stage 8 gate",
+      "policy_scope": [
+        "organizer and partner names",
+        "titles",
+        "acronyms",
+        "logos",
+        "visual branding",
+        "no implied endorsement",
+        "minimal plain-text factual identification only where necessary"
+      ],
+      "live_demo_metadata": "not applicable until deployment exists; carry to deployment/Stage 10 sweep",
+      "decision_needed": "formal Stage 8 UI-string sweep and live-demo metadata disposition"
     },
     "item36": {
-      "status": "owner_deferred",
-      "closure_condition": "must disclose deferral if local-language support is mentioned; do not claim completed validated Lugisu/Lumasaba support"
+      "status": "owner_deferred_with_stage10_risk",
+      "local_language_item_complete": false,
+      "closure_condition": "Stage 8 closure must explicitly approve reduced component list and carry Stage 10 submission risk",
+      "disclosure_requirement": "must disclose deferral if local-language support is mentioned; do not claim completed validated Lugisu/Lumasaba support"
+    },
+    "pr21_deferrals": {
+      "M1_near_uniform_image_routing": "accepted residual risk if owner reaffirms; carry image-quality/OOD hardening to Stage 9",
+      "Minor5_hard_coded_confirmed_by_role": "Stage 8 closure blocker unless accepted as MVP role assumption; otherwise repair",
+      "Minor7_minimum_device_not_documented": "superseded by D4-07 target-device blocker",
+      "Minor9_training_code_only_in_history": "defer to Stage 10 repository/submission transparency",
+      "Minor10_leftover_branches_not_inspected": "defer to Stage 10 repository hygiene/submission freeze"
+    },
+    "roadmap_stage8_trace": {
+      "status": "partially_mapped_requires_claude_audit",
+      "unresolved_or_decision_items": [
+        "D4-07 target-device gate",
+        "Stage 0 naming/branding sweep",
+        "route-variety caveat",
+        "item 36 local-language deferral",
+        "confirmed_by_role role assumption",
+        "Stage-3-locked handoff and consent evidence mapping",
+        "live-demo metadata disposition"
+      ]
     },
     "closure_audit": {
       "status": "required",
@@ -107,16 +163,16 @@
     },
     "owner_closure_decision": {
       "status": "required",
-      "owner": "Jose Antonio"
+      "owner": "José Antonio"
     }
   },
   "claims_not_supported": [
-    "model performance",
+    "new model performance evidence from Stage 8",
     "field validation",
     "treatment recommendation",
     "production deployment",
     "completed validated Lugisu/Lumasaba support",
-    "World Bank Group endorsement",
+    "World Bank Group or partner endorsement",
     "RoCoLe or challenge-set inference unless separately authorized and documented",
     "Stage 8 closure from this package alone"
   ]
