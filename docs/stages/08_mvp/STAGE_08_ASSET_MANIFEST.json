@@ -1,6 +1,6 @@
 {
   "stage": "8_mvp_followup_asset_bundle",
-  "status": "stage8_followup_draft_minor_repair_candidate",
+  "status": "stage8_followup_draft_validation_recorded",
   "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
@@ -44,13 +44,70 @@
     "preprocessing_contract_change": false
   },
   "validation_status": {
-    "npm_test": "pending_not_run_by_vale",
-    "browser_followups": "pending_not_run_by_vale",
-    "browser_e2e_original": "pending_not_run_by_vale",
-    "r1_to_r2_upgrade_probe": "pending_not_run_by_vale",
+    "evidence_type": "claude_auditor_run_local_evidence_not_vale_run",
+    "tested_sha": "469486f390251e47a327f06b7a0f52d8f3148b77",
+    "npm_test": {
+      "status": "pass",
+      "command": "npm test",
+      "exit_code": 0,
+      "reported_by": "Claude auditor",
+      "notes": "Static smoke checks and preprocessing reference checks passed."
+    },
+    "browser_followups": {
+      "status": "pass",
+      "command": "npm run test:browser-followups",
+      "server_mode": "python3 -m http.server 4173 at repository root / documented serve:app",
+      "runs": "3/3 pass",
+      "reported_by": "Claude auditor"
+    },
+    "mutation_suite": {
+      "status": "partial_pass",
+      "frozen_contract_mutations_caught": "9/9",
+      "known_uncaught_gaps": [
+        "CSP connect-src * mutation",
+        "remote POST injected into JS on untested path",
+        "route-body mutation"
+      ],
+      "reported_by": "Claude auditor"
+    },
+    "frozen_core_compare": {
+      "status": "unchanged",
+      "compared_to": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+      "reported_by": "Claude auditor"
+    },
+    "app_compare": {
+      "status": "byte_identical",
+      "compared_to": "c395889c180ef4a280f6ef4ba59e3643cdc23163",
+      "reported_by": "Claude auditor"
+    },
+    "browser_e2e_original": {
+      "status": "not_run",
+      "reason": "fixtures are not committed and no fixture generator exists"
+    },
+    "r1_to_r2_upgrade_probe": {
+      "status": "carried_forward_from_prior_claude_probe",
+      "reason": "app/ byte-identical to c395889, where prior probe passed"
+    },
     "asset_hashes_recompute_required": true,
-    "tested_sha": null
+    "hosted_clean_environment_run": false,
+    "vale_run": false
   },
+  "validation_environment": {
+    "reported_by": "Claude auditor",
+    "environment_type": "local read-only clone",
+    "node": "22.22.0",
+    "playwright": "1.56.1",
+    "chromium": "headless Chromium 1194",
+    "source_export": "git archive export of 469486f in scratch directory",
+    "repository_writes_by_claude": false
+  },
+  "known_non_blocking_caveats": [
+    "Built-in server mode still fails because /app.js rewrites to /.js.",
+    "Static smoke does not yet catch CSP connect-src *, remote POST injected into JS, or route-body mutation.",
+    "Original browser-e2e.mjs was not run because fixtures are not committed and no fixture generator exists.",
+    "Per-file SHA-256 and byte records remain a merge/submission-grade evidence item.",
+    "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist."
+  ],
   "boundaries": {
     "deployment": false,
     "submission": false,
@@ -68,7 +125,8 @@
     "stage8_closure": false
   },
   "notes": [
-    "PR #22 remains draft and is not Ready for Review until validation is run and recorded.",
+    "PR #22 remains draft until the owner separately authorizes Ready for Review.",
+    "Auditor-run local evidence supports Ready for Review if the owner accepts this evidence basis.",
     "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist.",
     "Repository MIT licensing does not replace BRACOL attribution, pretrained-weight lineage, or model-artifact notices."
   ]
