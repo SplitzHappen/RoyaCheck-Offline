@@ -1,0 +1,216 @@
+{
+  "status": "stage8_closure_readiness_package_draft_repaired_minor",
+  "does_not_close_stage8": true,
+  "base_commit": "03487327a15d4f8286ca0e275c834fa4c21a0e40",
+  "branch": "chatgpt/stage-08-closure-readiness-package",
+  "scope": {
+    "documentation_only": true,
+    "app_changes": false,
+    "model_asset_changes": false,
+    "test_changes": false,
+    "package_changes": false,
+    "product_behavior_changes": false,
+    "route_logic_changes": false,
+    "service_worker_changes": false
+  },
+  "owner": "José Antonio",
+  "frozen_model_contract": {
+    "model_path": "app/assets/model/royacheck_a0_fp32.onnx",
+    "model_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+    "source_artifact_id": "11292181113",
+    "artifact_name": "stage7d-a0-export-parity",
+    "onnx_runtime_web": "1.30.0",
+    "thresholds": {
+      "T_RUST": 0.5,
+      "T_HEALTHY": 0.7
+    },
+    "class_order": [
+      "healthy",
+      "rust_present",
+      "leaf_miner_no_rust",
+      "brown_leaf_spot_no_rust",
+      "cercospora_no_rust"
+    ],
+    "preprocessing": [
+      "RGB decode",
+      "both dimensions >=224",
+      "preserve full frame",
+      "resize 224x224",
+      "ImageNet normalization",
+      "no center crop"
+    ]
+  },
+  "merged_stage8_prs": [
+    {
+      "pr": 21,
+      "merge_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+      "summary": "browser-local MVP build"
+    },
+    {
+      "pr": 22,
+      "merge_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
+      "summary": "review-later and disclosure scaffold"
+    },
+    {
+      "pr": 23,
+      "merge_commit": "d2f9f976d07af4ac1a0ff58fb229ef00d4f9733b",
+      "summary": "evidence consolidation and audit package"
+    },
+    {
+      "pr": 24,
+      "merge_commit": "8f738852873723e9aed98b48ecfd96094f9dd1f1",
+      "summary": "closure-readiness hardening"
+    },
+    {
+      "pr": 25,
+      "merge_commit": "03487327a15d4f8286ca0e275c834fa4c21a0e40",
+      "summary": "browser offline inference evidence"
+    }
+  ],
+  "pr25_claude_evidence": {
+    "head": "7db0dfbc4125d1655c8b39e40c420c9a3ea22065",
+    "source": "PR review/audit conversation; not fully recorded in merged repo evidence file",
+    "verdict": "PASS",
+    "npm_test": "PASS",
+    "browser_followups": "PASS",
+    "browser_inference_repeats": "50/50 PASS, 0 hangs",
+    "offline_flags": {
+      "offline_network_down_enforced": true,
+      "server_closed_before_offline_reload": true,
+      "post_cutoff_server_hits": 0
+    },
+    "negative_controls": {
+      "broken_service_worker_cache_fallback": "FAILS as expected",
+      "corrupted_model": "FAILS as expected",
+      "tiny_10x10_image": "FAILS at Local inference complete as expected"
+    }
+  },
+  "route_variety": {
+    "status": "sufficient_only_with_owner_acceptance_caveat",
+    "current_head_confirmed_route": "not_sure",
+    "current_head_route_provenance": "Claude PR #26 audit run at e2abb94c916e0493ed2d8c0afac5d59b14e23316; one headless Chromium run; treated as applicable to repaired documentation-only heads because app did not change and synthetic image is deterministic",
+    "not_pr25_final_audit_route_claim": true,
+    "prior_three_route_browser_smoke": {
+      "source": "docs/stages/08_mvp/STAGE_08_BROWSER_SMOKE_EVIDENCE.md",
+      "head_status": "earlier head",
+      "routes": [
+        "visible_rust",
+        "no_visible_rust",
+        "not_sure"
+      ],
+      "fixtures_committed_current_head": false
+    },
+    "closure_decision_needed": "owner acceptance of caveat or additional current-head browser-route evidence"
+  },
+  "target_browser_device": {
+    "status": "defined_target_not_met",
+    "repository_source_found": true,
+    "sources": [
+      "Stage 4 D4-07",
+      "Stage 4 D4-18",
+      "Stage 5 readiness",
+      "ROADMAP Stage 8 gate",
+      "ROADMAP Stage 9 offline proof protocol"
+    ],
+    "physical_target": "iPhone 17 Pro Max + Safari + Add to Home Screen standalone PWA",
+    "d4_07_requirements": [
+      "navigator.storage.persist() where supported and record returned value",
+      "do not assume Safari tab storage is shared with installed Home Screen app"
+    ],
+    "d4_18_budget_requirements": [
+      "at least 30 timed runs plus one warm-up",
+      "median latency <=2.0 seconds",
+      "p95 latency <=4.0 seconds",
+      "median latency >5.0 seconds is unusable",
+      "record iOS and Safari versions"
+    ],
+    "current_evidence": "headless Chromium/Linux evidence from Claude audits",
+    "stage8_closure_paths": [
+      "run D4-07 physical protocol including D4-18 latency/timing measurement",
+      "record owner amendment citing both D4-07 and D4-18, set Stage 8 evidence level to headless Chromium/Linux, and move physical proof plus latency-budget validation to Stage 9 with disclosure"
+    ]
+  },
+  "naming_branding": {
+    "status": "policy_exists_formal_sweep_pending",
+    "repository_source_found": true,
+    "sources": [
+      "docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md row 48",
+      "docs/stages/00_rules/STAGE_00_COMPLIANCE_CHECKLIST.md section 5.7",
+      "ROADMAP Stage 8 gate"
+    ],
+    "stage0_reconciliation_findings": "M-01 and r-02 referenced by Claude PR #26 audit; direct source citation optional if fetched cleanly later",
+    "checklist": [
+      "organizer and partner names",
+      "titles",
+      "acronyms",
+      "logos",
+      "visual branding",
+      "no implied endorsement",
+      "minimal plain-text factual identification only where necessary",
+      "live-demo metadata status"
+    ],
+    "live_demo_metadata": "not applicable at Stage 8 if no deployed demo metadata exists; carry to deployment/Stage 10"
+  },
+  "human_authority_trace": {
+    "status": "evidence_at_earlier_head_plus_code_inspection_caveat",
+    "not_pr24_human_authority_guards": true,
+    "pr24_scope": "CSP, outbound-transport, local-only/no-upload posture, and routing assertions",
+    "sources": [
+      "PR #21 browser-e2e asserted Save disabled/enabled conditions at earlier head",
+      "PR #21 static smoke guarded role marker and copy",
+      "current code inspection shows disposition defaults to empty string and Save requires disposition plus confirmation"
+    ],
+    "current_head_negative_assertion": false,
+    "closure_decision_needed": "owner acceptance of evidence+caveat or separate test-change PR"
+  },
+  "item36": {
+    "status": "owner_deferred",
+    "not_waiver": true,
+    "local_language_item_complete": false,
+    "closure_condition": "Stage 8 closure must explicitly approve owner deferral as reduced-component closure",
+    "stage10_risk": true,
+    "disclosure_alone_satisfies_requirement": false
+  },
+  "pr21_deferrals": [
+    {
+      "item": "M1 near-uniform-image routing",
+      "disposition": "owner residual-risk reaffirmation needed for Stage 8; carry image-quality/OOD hardening to Stage 9"
+    },
+    {
+      "item": "Minor 5 hard-coded confirmed_by_role",
+      "disposition": "owner acceptance needed for Stage 8 MVP role assumption; carry to Stage 9/10 as UX/data-quality limitation"
+    },
+    {
+      "item": "Minor 7 minimum device not documented",
+      "disposition": "D4-07 supersedes evidence-target part, but SUPPORTED_BROWSER_AND_OFFLINE_LIMITATIONS.md still needs Stage 10 supported-browser/minimum-device statement; iPhone 17 Pro Max proof is not evidence for affordable phones"
+    },
+    {
+      "item": "Minor 9 training code only in history",
+      "disposition": "defer to Stage 10 repository/submission transparency and training-code/history disclosure posture"
+    },
+    {
+      "item": "Minor 10 leftover branches not inspected",
+      "disposition": "defer to Stage 10 repository hygiene/submission freeze"
+    }
+  ],
+  "closure_blockers": [
+    "D4-07/D4-18 target-device evidence or explicit owner amendment",
+    "formal Stage 0 naming/branding sweep",
+    "route-variety owner acceptance or current-head three-route browser evidence",
+    "human-authority evidence caveat owner acceptance or separate current-head negative Save-gating test",
+    "item 36 owner deferral approval as reduced-component Stage 8 closure and Stage 10 risk",
+    "PR #21 deferral dispositions",
+    "handoff/consent D3-07 to D3-10 mapping confirmation",
+    "Claude closure audit and explicit owner closure decision"
+  ],
+  "claims_not_supported": [
+    "new Stage 8 model performance evidence",
+    "field validation",
+    "treatment recommendation",
+    "production deployment",
+    "completed validated Lugisu/Lumasaba support",
+    "World Bank Group or partner endorsement",
+    "RoCoLe or challenge-set inference unless separately authorized and documented",
+    "Stage 8 closure from this package alone"
+  ]
+}
