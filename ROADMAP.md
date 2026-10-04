@@ -1159,7 +1159,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
-| 5 — Readiness / fallback planning | In progress — initial findings |
+| 5 — Readiness / fallback planning | In review — verification complete; owner closure decision pending |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
@@ -1170,11 +1170,11 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stages 0–4 are closed and merged. **Stage 5 is the active stage.**
+Stages 0–4 are closed and merged. **Stage 5 is in review.**
 
-The current task is to work through the initial Stage 5 readiness findings in `docs/stages/05_readiness/STAGE_05_READINESS_AND_FALLBACK.md`.
+The deliberate readiness verification pass is complete in PR #18. The technical/toolchain path, evaluation-control tooling, model-artifact access, binary recovery path, primary data-source reachability, browser runtime package path, and deployment infrastructure have been checked without consuming protected evidence.
 
-Stage 5 must deliberately verify the actual development/export environment, browser/PWA tooling, data/artifact acquisition readiness, evaluation-control tooling, deployment route, backup/recovery path, and video/submission mechanics before closure.
+Before Stage 5 can close, José Antonio must complete/confirm the four small owner-side readiness checks recorded in `docs/stages/05_readiness/STAGE_05_READINESS_AND_FALLBACK.md`: current authenticated submission access, Google Form backup access, practical video-production path, and local recovery/storage/network readiness.
 
 **Stage 6 is not started. Stage 7 is not started and is not authorized.**
 
