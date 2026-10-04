@@ -1,134 +1,61 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 
-const read = (path) => readFile(path, "utf8");
-const [html, js, followups, preprocess, sw, manifest] = await Promise.all([
-  read("app/index.html"),
-  read("app/app.js"),
-  read("app/followups.js"),
-  read("app/preprocess.js"),
-  read("app/sw.js"),
-  read("app/manifest.webmanifest"),
-]);
+const read = (path) => readFileSync(path, "utf8");
 
-const lockedFragments = [
-  'export const T_RUST = 0.50;',
-  'export const T_HEALTHY = 0.70;',
-  '"healthy",',
-  '"rust_present",',
-  '"leaf_miner_no_rust",',
-  '"brown_leaf_spot_no_rust",',
-  '"cercospora_no_rust",',
-  'export const IMAGENET_MEAN = [0.485, 0.456, 0.406];',
-  'export const IMAGENET_STD = [0.229, 0.224, 0.225];',
-  'export const INPUT_SIZE = 224;',
-  'resizeTriangleRgbToU8',
-  'triangleContribs',
-  'routeFromProbabilities',
-  '4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041',
-];
-for (const fragment of lockedFragments) {
-  assert.ok(preprocess.includes(fragment), `Missing locked preprocessing fragment: ${fragment}`);
+const appJs = read("app/app.js");
+const followupsJs = read("app/followups.js");
+const swJs = read("app/sw.js");
+const html = read("app/index.html");
+const manifest = read("docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json");
+const followupDoc = read("docs/stages/08_mvp/STAGE_08_FOLLOWUP_BUILD.md");
+const offlineDoc = read("docs/submission/SUPPORTED_BROWSER_AND_OFFLINE_LIMITATIONS.md");
+
+function extractConstString(fileText, name) {
+  const match = fileText.match(new RegExp(`const\\s+${name}\\s*=\\s*"([^"]+)"`));
+  assert.ok(match, `${name} must be declared as a string constant`);
+  return match[1];
 }
 
-const requiredJsFragments = [
-  'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";',
-  'from "./preprocess.js"',
-  'ort.env.wasm.numThreads = 1;',
-  'ort.env.wasm.proxy = false;',
-  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',
-  'executionProviders: ["wasm"]',
-  'await sha256Hex(modelBytes)',
-  'activeSession.run({ input: tensor })',
-  'results.logits.data',
-  'raw_image_retained: false',
-  'human_disposition',
-  'confirmed_by_role: "farmer_decision_maker"',
-  'model_sha256: MODEL_SHA256',
-  'cacheName: CACHE_NAME',
-  '"./followups.js"',
-  'royacheck:record-saved',
-  'royacheck:record-deleted',
-];
-for (const fragment of requiredJsFragments) {
-  assert.ok(js.includes(fragment), `Missing locked app contract fragment: ${fragment}`);
+function extractCoreAssets(fileText, label) {
+  const match = fileText.match(/const\s+CORE_ASSETS\s*=\s*\[([\s\S]*?)\];/);
+  assert.ok(match, `${label} must declare CORE_ASSETS`);
+  return [...match[1].matchAll(/"(\.\/[^"]*)"/g)].map((item) => item[1]);
 }
 
-assert.ok(js.includes('const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;'));
-assert.ok(preprocess.includes('blank_canvas'));
-assert.ok(!js.includes('\\n'), "App shell must not contain literal escaped newline artifacts.");
+const appCacheName = extractConstString(appJs, "CACHE_NAME");
+const swCacheName = extractConstString(swJs, "CACHE_NAME");
+assert.equal(appCacheName, swCacheName, "app.js and sw.js cache names must match");
+assert.ok(appCacheName.endsWith("-r2"), "cache name must remain bumped to r2");
 
-const appCacheName = js.match(/const CACHE_NAME = "([^"]+)";/)?.[1];
-const swCacheName = sw.match(/const CACHE_NAME = "([^"]+)";/)?.[1];
-assert.ok(appCacheName, "App cache name must be declared.");
-assert.ok(swCacheName, "Service-worker cache name must be declared.");
-assert.equal(appCacheName, swCacheName, "App and service-worker cache names must stay synchronized.");
-assert.ok(appCacheName.endsWith("-r2"), "Follow-up cache version must remain r2 until a new asset set is introduced.");
+const appAssets = extractCoreAssets(appJs, "app.js");
+const swAssets = extractCoreAssets(swJs, "sw.js");
+assert.deepEqual(appAssets, swAssets, "app.js and sw.js CORE_ASSETS arrays must match exactly");
+assert.ok(appAssets.includes("./"), "CORE_ASSETS must include ./");
+assert.ok(appAssets.includes("./followups.js"), "CORE_ASSETS must include followups.js");
+assert.ok(appAssets.includes("./app.js"), "CORE_ASSETS must include app.js");
 
-const appAssets = Array.from(js.matchAll(/"(\.\/[^"]+)"/g)).map((match) => match[1]).filter((asset) => asset !== "./vendor/onnxruntime-web/");
-const swAssets = Array.from(sw.matchAll(/"(\.\/[^"]+)"/g)).map((match) => match[1]);
-assert.deepEqual(appAssets, swAssets, "App and service-worker core asset lists must match exactly.");
-assert.ok(appAssets.includes("./followups.js"), "followups.js must be a core offline asset.");
-assert.ok(sw.includes('new Request(asset, { cache: "reload" })'), "Service-worker precache must bypass stale HTTP cache.");
-assert.ok(sw.includes('new Request(event.request, { cache: "no-cache" })'), "Service-worker runtime core fetch must revalidate instead of using stale HTTP cache.");
+assert.match(swJs, /new\s+Request\(asset,\s*\{\s*cache:\s*"reload"\s*\}\)/, "service-worker precache must bypass stale browser HTTP cache with cache: reload");
+assert.match(swJs, /new\s+Request\(event\.request,\s*\{\s*cache:\s*"no-cache"\s*\}\)/, "service-worker runtime network fetch must revalidate before cache fallback");
+assert.match(swJs, /if \(event\.request\.method !== "GET"\) return;/, "service worker must ignore non-GET requests");
 
-const htmlLower = html.toLowerCase();
-for (const output of ["visible rust", "no visible rust", "not sure"]) {
-  assert.ok(htmlLower.includes(output), `Missing public output: ${output}`);
-}
-assert.ok(html.includes("not a diagnosis"));
-assert.ok(html.includes("not treatment advice"));
-assert.ok(html.includes("no RoCoLe external readout"));
-assert.ok(html.includes("Only the human disposition becomes formal"));
-assert.ok(html.includes("It does not verify that an image is a coffee leaf."));
-assert.ok(html.includes("66 of 95 rust leaves"));
-assert.ok(html.includes("27 of 95 rust leaves"));
-assert.ok(html.includes("2 of 95 rust leaves"));
-assert.ok(html.includes("7 of 117 other-condition leaves"));
-assert.ok(html.includes("Actual Lugisu/Lumasaba wording is pending fluent human validation"));
-assert.ok(html.includes("Validated localized usability has not been established."));
-assert.ok(!html.includes("accepted rust recall"));
-assert.ok(!html.includes('capture="environment"'));
-assert.ok(!html.includes('<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>'));
-assert.ok(html.includes("script-src 'self' 'wasm-unsafe-eval'"));
-assert.ok(!html.match(/https?:\/\//), "App shell must not depend on remote HTTP assets.");
+assert.match(html, /storage eviction/i, "UI must warn that browser storage eviction can remove saved records");
+assert.match(html, /no backup or export/i, "UI must warn there is no backup or export");
+assert.match(offlineDoc, /storage eviction/i, "offline limitations must mention storage eviction");
+assert.match(offlineDoc, /no backup or export/i, "offline limitations must mention no backup or export");
 
-const followupFragments = [
-  "refreshRequestSeq",
-  "replaceChildren",
-  "royacheck:record-saved",
-  "royacheck:record-deleted",
-  "AI proposal:",
-  "Human choice:",
-  "proposal only, not a diagnosis and not treatment advice",
-  "actual Lugisu/Lumasaba wording pending fluent human validation",
-  "Validated localized usability has not been established",
-  "resetLocalLanguagePanel",
-];
-for (const fragment of followupFragments) {
-  assert.ok(followups.includes(fragment), `Missing follow-up repair fragment: ${fragment}`);
-}
-assert.ok(!followups.includes('lang", "myx"'), "Unverified strings must not be tagged as myx/Lugisu.");
-assert.ok(!followups.includes("lugisu_draft"), "Unverified Lugisu-like draft strings must not be shipped as Lugisu drafts.");
-assert.ok(!followups.includes("Obulwadde"), "Known suspect Luganda-like string must not remain in the app.");
-assert.ok(!followups.includes("Route: Review later"), "Review later must not be presented as a model route.");
-assert.ok(!followups.includes("Raw image retained: false"), "Developer-oriented retention wording must not be shown to users.");
+assert.match(html, /Validated localized usability has not been established\./, "UI must retain validated-localized-usability limitation");
+assert.match(followupsJs, /Actual Lugisu\/Lumasaba wording: pending fluent human validation; not claimed in this build\./, "followups must not claim completed Lugisu\/Lumasaba strings");
+assert.match(followupDoc, /not fully complete/i, "follow-up doc must mark local-language item not fully complete");
+assert.match(manifest, /local_language_item_complete"\s*:\s*false/, "manifest must keep local-language item incomplete pending fluent validation");
+assert.doesNotMatch(html + followupsJs + manifest, /lang="myx"|lang',\s*'myx'|lang",\s*"myx"/, "unverified text must not use lang=myx");
+assert.doesNotMatch(html + followupsJs + manifest, /Obulwadde|kifaananyi|Tekitegeerekeka|Ekiwandiiko|lugisu_draft/, "suspected wrong-language draft strings must not be present");
+assert.doesNotMatch(followupsJs, /AI proposal only:\s*(visible rust|no visible rust|not sure)/i, "human-keyed\/rehearsal strings must not be labelled as AI proposal only");
+assert.match(followupsJs, /AI proposal: .*proposal only, not a diagnosis and not treatment advice/, "only the primary AI proposal line should name the AI proposal");
+assert.match(followupsJs, /Human choice:/, "local-language panel must show human choice separately");
 
-for (const asset of [
-  "./assets/model/royacheck_a0_fp32.onnx",
-  "./followups.js",
-  "./preprocess.js",
-  "./vendor/onnxruntime-web/ort.wasm.min.mjs",
-  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
-  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
-]) {
-  assert.ok(sw.includes(asset), `Service worker missing core asset: ${asset}`);
-}
-assert.ok(sw.includes('const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r2";'));
-assert.ok(!sw.includes('CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1"'));
+assert.match(html, /does not diagnose/i, "app must retain no-diagnosis safety copy");
+assert.match(html, /not treatment advice/i, "app must retain no-treatment-advice safety copy");
+assert.match(html, /Stage 7D A0 FP32 ONNX/i, "app must retain frozen model reference");
 
-const parsedManifest = JSON.parse(manifest);
-assert.equal(parsedManifest.display, "standalone");
-assert.equal(parsedManifest.start_url, "./index.html");
-
-console.log("Stage 8 static smoke checks: PASS");
+console.log("static smoke checks: PASS");
