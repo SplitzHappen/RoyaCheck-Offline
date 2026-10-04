@@ -1,19 +1,49 @@
 {
   "stage": "8_mvp_asset_bundle",
-  "status": "audit_repair_partial_stage8_increment",
+  "status": "final_minor_repair_partial_stage8_increment",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
   "onnxruntime_web_version": "1.30.0",
   "core_budget_bytes": 30000000,
-  "cached_file_bytes": 18076612,
+  "cached_file_bytes": 18076676,
   "core_budget_pass": true,
   "runtime_repair": {
     "preprocessing": "browser preprocessing moved to app/preprocess.js with separable triangle-filter resize plus ImageNet normalization to match the frozen Stage 7C/7E preprocessing contract more closely than the prior non-antialiased 2x2 bilinear path",
     "model_hash_runtime_check": true,
     "cache_name": "royacheck-stage8-a0-4037c096-20261004-r1",
     "offline_badge_requires_cache_verification": true,
-    "capture_attribute_removed": true
+    "capture_attribute_removed": true,
+    "cache_name_drift_static_check": true,
+    "route_variety_browser_smoke": true,
+    "stale_route_e2e_race_guard": true,
+    "safety_relevant_confident_miss_text": true,
+    "owner_deferral_decisions_recorded": true
+  },
+  "final_minor_smoke": {
+    "run_id": 37177866620,
+    "job_id": 111364182320,
+    "smoke_tested_commit": "d24cd352226a931a04c397ea9cf50a7b715a9fad",
+    "status": "PASS",
+    "routes_covered": [
+      "visible_rust",
+      "no_visible_rust",
+      "not_sure"
+    ],
+    "fixtures": [
+      {
+        "name": "visible_rust_spots_leaf",
+        "expected_route": "visible_rust"
+      },
+      {
+        "name": "no_visible_gradient_leaf",
+        "expected_route": "no_visible_rust"
+      },
+      {
+        "name": "not_sure_healthy_rust_blend_0.85",
+        "expected_route": "not_sure"
+      }
+    ]
   },
   "boundaries": {
     "deployment": false,
@@ -29,8 +59,8 @@
   "files": [
     {
       "path": "app/index.html",
-      "bytes": 6192,
-      "sha256": "c8b8f1a82f3df5e3b731bb42738e3d8bf87a571517d2efc3c6ab9e9f281d50ba"
+      "bytes": 6256,
+      "sha256": "12ddc7bc02f27724ddfd9ef259a842ee1c240f6b74935b01e55b65ea9b3e3b18"
     },
     {
       "path": "app/styles.css",

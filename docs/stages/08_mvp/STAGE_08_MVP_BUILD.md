@@ -1,7 +1,7 @@
 # Stage 8 — Minimum Browser-Local MVP Build
 
-**Stage:** 8 — MVP implementation / technical hardening  
-**Status:** partial Stage 8 hardening increment repaired after Claude audit; not Stage 8 closure  
+**Stage:** 8 — MVP implementation  
+**Status:** partial Stage 8 hardening increment; final minor smoke PASS; Stage 8 remains open  
 **Branch:** `chatgpt/stage-08-mvp-build`
 
 ## Frozen technical core
@@ -16,13 +16,13 @@ Stage 8 consumes the already frozen Stage 7D A0 artifact without changing it:
 - output: `logits`;
 - class order: `healthy, rust_present, leaf_miner_no_rust, brown_leaf_spot_no_rust, cercospora_no_rust`;
 - preprocessing contract: RGB decode; require both dimensions >=224 px; preserve the full frame; resize to 224×224; ImageNet normalization; no center crop;
-- browser repair: preprocessing now lives in `app/preprocess.js` and uses a separable triangle-filter resize path designed to conform more closely to the Pillow / Stage 7C / Stage 7E resize behaviour than the previous non-antialiased 2x2 bilinear implementation;
+- browser preprocessing implementation: `app/preprocess.js`, separable triangle-filter resize with synthetic reference checks against Pillow-style behavior;
 - `T_rust = 0.50`;
 - `T_healthy = 0.70`;
 - runtime: self-hosted `onnxruntime-web@1.30.0`, WASM execution provider, one thread;
 - committed browser runtime assets: `ort.wasm.min.mjs`, `ort-wasm-simd-threaded.mjs`, and `ort-wasm-simd-threaded.wasm`.
 
-No Stage 8 repair altered the model, class map, thresholds, public three-way routing, or intended preprocessing contract.
+No Stage 8 change is authorized to alter the model, class map, thresholds, preprocessing contract, or public three-way routing.
 
 ## Implemented MVP loop
 
@@ -30,8 +30,8 @@ The static app under `app/` implements:
 
 1. image capture/upload input;
 2. local image decode and full-frame 224×224 preprocessing;
-3. browser-local ONNX Runtime Web inference;
-4. runtime SHA-256 check of the fetched ONNX bytes before session creation;
+3. runtime ONNX SHA-256 verification before session creation;
+4. browser-local ONNX Runtime Web inference;
 5. public AI proposal limited to:
    - `visible rust`;
    - `no visible rust`;
@@ -41,39 +41,41 @@ The static app under `app/` implements:
 8. local structured record in IndexedDB;
 9. deterministic action route derived from the **human** disposition;
 10. user-initiated, text-only on-device review card for the current session record;
-11. local deletion for the current session record;
+11. local current-session record deletion;
 12. no raw-image retention in this MVP;
 13. no raw-image upload or autonomous sending;
-14. service-worker / manifest structure for a self-hosted PWA.
+14. service-worker / manifest structure for a self-hosted PWA with cache verification.
 
 The AI proposal never pre-fills the human disposition.
 
-## Repairs after Claude audit
+## Safety and authority
 
-Claude returned `FAIL / BLOCKED` at `89e1d425c4fb542bff8c09ddb2def76c5038e980`. This repair pass addresses the owner-authorized subset:
+The app states explicitly that:
 
-- B1 preprocessing conformance: replaced the browser-only non-antialiased resize path with a shared `app/preprocess.js` triangle-filter implementation and synthetic reference checks.
-- B2 browser smoke gap: added a browser image-to-record smoke path that selects images, runs inference, checks routes against Python/Pillow references, saves a record, and reads IndexedDB.
-- B3 scope conflict: documented this PR as a partial Stage 8 hardening increment. Lugisu fixed-string interaction and full review-later persistence are deferred follow-up items; Stage 8 remains open.
-- M1: added blank-canvas / unreadable-pixel failure behaviour and removed language implying the model can detect image suitability or verify coffee-leaf identity.
-- M2: tightened on-screen evidence wording to include coverage and other-condition false-visible-rust information.
-- M3: changed offline readiness messaging so the app only reports verified offline cache after cache verification.
-- M4: versioned the service-worker cache.
-- M5: removed `capture="environment"` from the file input.
-- Minor 1: updated stale build documentation.
-- Minor 2: added runtime ONNX SHA-256 verification before creating the inference session.
+- the model output is an AI proposal;
+- it is not a diagnosis;
+- it is not treatment advice;
+- `no visible rust` does not mean healthy, all clear, or no disease;
+- only the human disposition becomes formal;
+- nothing is automatically sent;
+- no treatment recommendation is produced;
+- the system does not verify that an image is a coffee leaf.
+
+The reviewer card excludes model scores and raw-image transmission.
 
 ## Evidence shown in the prototype
 
-Only already produced Stage 7C / Stage 7E evidence is used. The app states:
+Only already produced Stage 7C / Stage 7E evidence is used:
 
 - Stage 7C validation gate: **PASS**.
 - Stage 7E frozen BRACOL internal-holdout readout: **COMPLETE**.
-- On the frozen BRACOL internal holdout, 136 target-class leaves were eligible for target-class routing.
-- The model produced 106 confident target-class outputs and 104 of those 106 were correct.
-- The visible-rust route captured 66 of 95 rust leaves.
-- 27 of 95 rust leaves were routed to `not sure`.
-- Other-condition false-visible-rust routing occurred for 7 of 117 other-condition leaves.
+- Internal target-class routing coverage: 136 eligible target-class leaves.
+- Confident target-class outputs: 106.
+- Correct confident target-class outputs: 104 / 106.
+- Rust leaves routed to visible rust: 66 / 95.
+- Rust leaves routed to not sure: 27 / 95.
+- Rust leaves routed to no visible rust: 2 / 95.
+- Other-condition leaves routed to visible rust: 7 / 117.
 
 Claim ceiling remains unchanged:
 
@@ -81,19 +83,20 @@ Claim ceiling remains unchanged:
 - no RoCoLe external readout yet;
 - no challenge-set evidence;
 - no diagnosis claim;
-- no treatment recommendation;
-- no assertion that the model verifies coffee-leaf identity.
+- no treatment recommendation.
 
 ## Static and browser checks
 
 `npm test` runs:
 
-1. `tests/static-smoke.mjs`; and
-2. `tests/preprocess-reference.mjs`.
+1. `tests/static-smoke.mjs`, which fails on drift in frozen thresholds, class order, ImageNet constants, model hash, ONNX input/output usage, human-authority fields, public outputs, evidence wording, offline core-asset declarations, cache-name equality between `app/app.js` and `app/sw.js`, remote shell dependencies, missing local ORT asset references, or literal escaped-newline artifacts in the app shell.
+2. `tests/preprocess-reference.mjs`, which checks the browser-side preprocessing implementation against synthetic non-protected reference fixtures.
 
-Browser-local image-to-record smoke evidence is recorded separately in `STAGE_08_BROWSER_SMOKE_EVIDENCE.md`.
+Final browser smoke evidence was collected by a temporary Actions workflow and passed at `d24cd352226a931a04c397ea9cf50a7b715a9fad`. The workflow covered route-variety fixtures (`visible_rust`, `no_visible_rust`, `not_sure`), route-staleness protection in the e2e test, browser inference, save gating, IndexedDB readback, no raw-image retention, no default non-GET or external requests, offline cache readiness, offline reload, and offline inference.
 
-## Explicitly not performed in this Stage 8 repair pass
+The temporary workflow has been removed from the branch after evidence capture.
+
+## Explicitly not performed in Stage 8 build
 
 - no deployment;
 - no video production;
@@ -101,24 +104,22 @@ Browser-local image-to-record smoke evidence is recorded separately in `STAGE_08
 - no RoCoLe inference;
 - no challenge-set inference;
 - no model retraining or fine-tuning;
-- no threshold selection;
+- no model change;
+- no threshold change;
 - no class-order change;
+- no preprocessing-contract change;
 - no field-validation claim;
 - no raw dataset commit;
-- no Lugisu localization implementation;
-- no full saved-records review-later list;
+- no treatment recommendation;
 - no Stage 7 closure;
 - no Stage 8 closure.
 
-## Remaining Stage 8 follow-ups
+## Deferred owner decisions / follow-ups
 
-Before Stage 8 can close, either implement or formally rescope:
+José explicitly accepts that PR #21 is a partial Stage 8 hardening increment. Lugisu fixed-string interaction and full review-later persistence are deferred from PR #21, and Stage 8 remains open.
 
-1. Lugisu fixed-string interaction pack / local-language path.
-2. Review-later persistence beyond the current session record.
-3. Claude verification of this repair pass.
-4. Any remaining organizer-rule disclosure or licensing/notice requirements before submission.
+José explicitly declines adding a uniform-image routing rule in PR #21 because it could alter routing behavior. Image-quality / near-uniform routing remains a future decision.
 
 ## Next gate
 
-Stop for owner review and Claude verification of the repaired head. PR #21 should remain draft until José explicitly authorizes Ready for Review.
+PR #21 is eligible for Ready-for-Review authorization. Ready for Review and merge both require separate explicit José authorization.
