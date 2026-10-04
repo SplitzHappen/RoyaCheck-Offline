@@ -94,7 +94,7 @@ assert.ok(html.includes("script-src 'self' 'wasm-unsafe-eval'"));
 assert.ok(!html.match(/https?:\/\//), "App shell must not depend on remote HTTP assets.");
 
 const followupFragments = [
-  "latest request wins",
+  "refreshRequestSeq",
   "replaceChildren",
   "royacheck:record-saved",
   "royacheck:record-deleted",
