@@ -1,15 +1,15 @@
-# Stage 7 — Pre-Training Gates
+# Stage 7 — Technical Proof Gates
 
 **Stage:** 7 — Definitive AI technical proof  
-**Authorized scope recorded here:** 7.0, 7A, 7B, and owner-authorized 7C A0 validation only  
-**Status:** In progress — 7.0 passed; 7A BRACOL recovered; BRACOL 7B freeze complete; A0 validation gate passed; RoCoLe exact identifier freeze remains pending before any RoCoLe external readout  
+**Authorized scope recorded here:** 7.0, 7A, 7B, owner-authorized 7C A0 validation, and owner-authorized 7D A0 export/parity only  
+**Status:** In progress — 7.0 passed; 7A BRACOL recovered; BRACOL 7B freeze complete; A0 validation gate passed; A0 export/parity/budget gate passed; RoCoLe exact identifier freeze remains pending before any RoCoLe external readout  
 **Branch:** `chatgpt/stage-07-pretraining-gates`
 
 ---
 
 ## 1. Boundary
 
-José Antonio authorized Stage 7.0 runtime/tooling verification, Stage 7A exact data/licence/provenance verification, Stage 7B deterministic split/quarantine freeze, and then Stage 7C A0 training with the clock-preserving RoCoLe freeze deferral.
+José Antonio authorized Stage 7.0 runtime/tooling verification, Stage 7A exact data/licence/provenance verification, Stage 7B deterministic split/quarantine freeze, Stage 7C A0 training with the clock-preserving RoCoLe freeze deferral, and Stage 7D A0 export/parity verification.
 
 No A1 training has occurred. No internal held-out, RoCoLe external, or challenge-set inference has occurred. No MVP implementation, deployment, video production, or submission has occurred.
 
@@ -23,6 +23,7 @@ No A1 training has occurred. No internal held-out, RoCoLe external, or challenge
 - **7B BRACOL deterministic manifest/quarantine freeze:** PASS.
 - **7B RoCoLe external freeze:** PARTIAL; exact identifiers/metadata still required before Stage 7F RoCoLe readout.
 - **7C A0 validation:** PASS on validation only.
+- **7D A0 export/parity/budget:** PASS using synthetic non-protected parity inputs only.
 - **A1:** NOT AUTHORIZED / NOT STARTED.
 - **Internal-test inference:** NOT AUTHORIZED / NOT STARTED.
 - **RoCoLe external readout:** NOT AUTHORIZED / NOT STARTED.
@@ -181,24 +182,68 @@ No A1 training occurred.
 
 ---
 
-## 7. Persistent evidence files
+## 7. Stage 7D A0 export/parity/budget result
+
+A0 export/parity verification completed successfully using the Stage 7C A0 evidence artifact.
+
+Evidence run:
+
+- GitHub Actions workflow: `Stage 7D A0 export parity`
+- run id: `37172702270`
+- head: `7bfc7ae2c2236e4885846d071ca8d8a76829299c`
+- artifact: `stage7d-a0-export-parity`
+- artifact id: `11292181113`
+- artifact digest: `sha256:8ea53cef1d17c1cd1bbad4a2d92cba8ebd533d57160a639f5ca06df6f8db981d`
+
+Exported ONNX artifact:
+
+- file: `royacheck_a0_fp32.onnx`
+- bytes: `3,730,046`
+- SHA-256: `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
+- opset: `18`
+- input: `input`
+- output: `logits`
+- ONNX checker: PASS
+
+PyTorch/ONNX parity:
+
+- provider: `CPUExecutionProvider`
+- inputs: synthetic `zeros`, `half`, `randn_seeded`, and `ramp`;
+- maximum absolute difference: `2.2649765014648438e-05`;
+- maximum relative difference: `6.432188820326701e-05`;
+- tolerance: `atol=1e-4`, `rtol=1e-4`;
+- parity result: PASS;
+- validation partition used for parity: NO.
+
+Budget check:
+
+- ONNX model budget: PASS (`3,730,046 <= 12,000,000` bytes);
+- model plus measured primary ONNX Runtime Web runtime bytes: PASS (`18,789,551 <= 30,000,000` bytes) before final app shell.
+
+The trained ONNX model is retained in the Stage 7D GitHub Actions artifact and is not committed to the repository at this stage.
+
+---
+
+## 8. Persistent evidence files
 
 Committed evidence files include:
 
 - `docs/stages/07_technical_proof/STAGE_07B_BRACOL_FREEZE_SUMMARY.md`
 - `docs/stages/07_technical_proof/STAGE_07B_ROCOLE_FREEZE_ATTEMPT.md`
 - `docs/stages/07_technical_proof/STAGE_07C_A0_VALIDATION_SUMMARY.md`
+- `docs/stages/07_technical_proof/STAGE_07D_A0_EXPORT_PARITY_SUMMARY.md`
 - `docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json`
 - `docs/stages/07_technical_proof/manifests/stage7b_config_ledger.json`
 - `docs/stages/07_technical_proof/manifests/rocole_stage7b_freeze_attempt.json`
 - `docs/stages/07_technical_proof/manifests/stage7c_a0_summary.json`
+- `docs/stages/07_technical_proof/manifests/stage7d_a0_export_parity_summary.json`
 
-The trained head state is retained in the GitHub Actions artifact only and is not committed to the repository.
+The trained head state and trained ONNX artifact are retained in GitHub Actions artifacts only and are not committed to the repository.
 
 ---
 
-## 8. Current gate verdict
+## 9. Current gate verdict
 
-A0 validation passed. The next authorized step must be explicitly approved by José Antonio.
+A0 validation and export/parity passed. The next authorized step must be explicitly approved by José Antonio.
 
-Recommended next technical step: Stage 7D A0 artifact export/parity and browser-runtime preparation, still without internal-test, RoCoLe, or challenge inference.
+Recommended next technical step: Stage 7E one-shot internal-test readout, still without RoCoLe or challenge inference.
