@@ -10,7 +10,7 @@ const [html, js, sw, manifest] = await Promise.all([
 ]);
 
 const requiredJsFragments = [
-  'const ort = window.ort;',
+  'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";',
   'const T_RUST = 0.50;',
   'const T_HEALTHY = 0.70;',
   '"healthy",',
@@ -23,7 +23,7 @@ const requiredJsFragments = [
   'const INPUT_SIZE = 224;',
   'ort.env.wasm.numThreads = 1;',
   'ort.env.wasm.proxy = false;',
-  'ort.env.wasm.wasmPaths = "./vendor/onnxruntime-web/";',
+  'ort.env.wasm.wasmPaths = ORT_BASE_URL;',
   'executionProviders: ["wasm"]',
   'session.run({ input: tensor })',
   'results.logits.data',
@@ -36,8 +36,7 @@ for (const fragment of requiredJsFragments) {
   assert.ok(js.includes(fragment), `Missing locked app contract fragment: ${fragment}`);
 }
 
-assert.doesNotThrow(() => new Function(js), "app.js must be syntactically valid classic JavaScript");
-assert.ok(!js.includes('ort.wasm.min.mjs'), "App shell must not reference missing ORT module assets.");
+assert.ok(js.includes('const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;'));
 assert.ok(!js.includes('\\n'), "App shell must not contain literal escaped newline artifacts.");
 
 const htmlLower = html.toLowerCase();
@@ -48,12 +47,14 @@ assert.ok(html.includes("not a diagnosis"));
 assert.ok(html.includes("not treatment advice"));
 assert.ok(html.includes("no RoCoLe external readout"));
 assert.ok(html.includes("Only the human disposition becomes formal"));
-assert.ok(html.includes('<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>'));
+assert.ok(!html.includes('<script src="./vendor/onnxruntime-web/ort.all.min.js"></script>'));
+assert.ok(html.includes("script-src 'self' 'wasm-unsafe-eval'"));
 assert.ok(!html.match(/https?:\/\//), "App shell must not depend on remote HTTP assets.");
 
 for (const asset of [
   "./assets/model/royacheck_a0_fp32.onnx",
-  "./vendor/onnxruntime-web/ort.all.min.js",
+  "./vendor/onnxruntime-web/ort.wasm.min.mjs",
+  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
   "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
 ]) {
   assert.ok(sw.includes(asset), `Service worker missing core asset: ${asset}`);

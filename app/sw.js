@@ -7,7 +7,8 @@ const CORE_ASSETS = [
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./assets/model/royacheck_a0_fp32.onnx",
-  "./vendor/onnxruntime-web/ort.all.min.js",
+  "./vendor/onnxruntime-web/ort.wasm.min.mjs",
+  "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
   "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
 ];
 

@@ -1,4 +1,5 @@
-const ort = window.ort;
+import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";
+const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;
 
 const MODEL_URL = "./assets/model/royacheck_a0_fp32.onnx";
 const MODEL_SHA256 = "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041";
@@ -64,10 +65,9 @@ function resetPostImageState() {
 }
 
 async function loadModel() {
-  if (!ort) throw new Error("ONNX Runtime Web did not load.");
   ort.env.wasm.numThreads = 1;
   ort.env.wasm.proxy = false;
-  ort.env.wasm.wasmPaths = "./vendor/onnxruntime-web/";
+  ort.env.wasm.wasmPaths = ORT_BASE_URL;
   setStatus("Loading frozen local model…");
   session = await ort.InferenceSession.create(MODEL_URL, {
     executionProviders: ["wasm"],
