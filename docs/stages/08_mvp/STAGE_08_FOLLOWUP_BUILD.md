@@ -60,14 +60,24 @@ Total core asset size is `18,102,457` bytes, counting `./` as an index-equivalen
 
 The committed ONNX file SHA-256 was independently recomputed by Claude and confirmed to match the frozen Stage 7D value. Static smoke guards the `MODEL_SHA256` constant and the presence of the runtime hash-check path; it does not itself hash the committed ONNX binary.
 
+## Local-language item 36 status
+
+The local-language item is **not fully complete**.
+
+Current UI wording does not claim completed Lugisu/Lumasaba support. Actual Lugisu/Lumasaba strings remain pending fluent human validation, and `lang="myx"` remains excluded for unverified text. Compliance item 36 remains incomplete/deferred until either fluent-speaker validation completes or the owner explicitly approves a deferral/waiver as part of the Stage 8 closure criteria.
+
 ## Validation evidence
 
 Claude auditor-run local evidence, not Vale-run evidence:
 
-- `npm test`: PASS, exit 0; static smoke checks and preprocessing reference checks passed.
-- `npm run test:browser-followups` with `python3 -m http.server 4173` at repo root / documented `serve:app`: PASS in one harness execution, reporting 2 saved records and 28 same-origin GET requests.
-- Scratch mutation suite: 9/9 frozen-contract mutations caught.
-- Frozen core compared with `751c99e9d16890ceb87ed2c4790f00c3289ceff5`: unchanged.
+- At head `b1ac54b220171f48228b2361523983f8cb73b52f`, `npm test` failed with exit 1 because exactly two static-smoke item 36 disclosure guards failed: the missing `not fully complete` phrase and the missing `local_language_item_complete: false` manifest flag.
+- This repair restores those two guarded disclosures. Vale did not run `npm test` after this connector-only restoration pass.
+- `node tests/preprocess-reference.mjs`: PASS in Claude's audit at `b1ac54b`.
+- `npm run test:browser-followups` with `python3 -m http.server 4173` at repo root / documented `serve:app`: PASS in one Claude auditor-run harness execution, reporting 2 saved records and 28 same-origin GET requests.
+- `node tests/browser-followups.mjs` with no `ROYA_BASE_URL`: PASS in one Claude auditor-run built-in-mode harness execution, reporting 2 saved records and 28 same-origin GET requests.
+- Claude reproduced the old harness built-in-mode timeout, confirming that the rewrite fix addressed the original `/app.js` to `/.js` bug.
+- Scratch mutation suite from the prior repair candidate: 9/9 frozen-contract mutations caught.
+- Frozen core compared with `751c99e9d16890ceb87ed2c4790f00c3289ceff5`: unchanged at the time of Claude's audit.
 - `app/` compared with `c395889c180ef4a280f6ef4ba59e3643cdc23163`: byte-identical at the time of PR #22 verification.
 - Prior app-behaviour and r1-to-r2 upgrade probes were carried forward because `app/` was unchanged since that verification point.
 
@@ -83,9 +93,19 @@ After Claude returned `PASS WITH MINOR REPAIRS`, this branch applied the followi
 - clarified the browser-followups result as one harness execution rather than an ambiguous `3/3` claim;
 - fixed the built-in `tests/browser-followups.mjs` path-rewrite bug so `/app.js` is no longer rewritten to `/.js`.
 
+## Claude major repair finding and restoration
+
+Claude then returned `PASS WITH MAJOR REPAIRS` on head `b1ac54b220171f48228b2361523983f8cb73b52f` because `npm test` failed after the repair pass accidentally removed two static-guarded item 36 disclosure controls.
+
+This follow-up restoration:
+
+- restores `"local_language_item_complete": false` in the machine-readable manifest;
+- restores the phrase `not fully complete` in this item 36 discussion;
+- updates validation wording so the failed `npm test` result at `b1ac54b` is recorded honestly and not overwritten by a stale pass claim.
+
 ## Remaining Stage 8 closure blockers
 
-PR #23 can proceed through review after the minor repairs, but Stage 8 closure-readiness still requires separate work or explicit owner decisions:
+PR #23 can proceed through review once its own test-guard restoration is confirmed, but Stage 8 closure-readiness still requires separate work or explicit owner decisions:
 
 1. Current-head browser e2e/offline inference evidence is still needed. The original `browser-e2e.mjs` fixtures are unavailable or not committed.
 2. No-upload and routing regression guards are still needed for closure quality, including checks for `connect-src 'self'`, non-GET request APIs in JavaScript, and `routeFromProbabilities` threshold cases.
