@@ -46,6 +46,13 @@ select, textarea { width: 100%; border: 1px solid #bfcac2; border-radius: 10px; 
 .review-card dl { display: grid; grid-template-columns: minmax(8rem, .6fr) 1.4fr; gap: .45rem .8rem; }
 .review-card dt { font-weight: 700; }
 .review-card dd { margin: 0; overflow-wrap: anywhere; }
+.record-list { display: grid; gap: .75rem; margin-top: 1rem; }
+.record-item { border: 1px solid #d9e3db; border-radius: 12px; padding: .9rem; background: #f8faf8; }
+.record-item p { margin: .25rem 0; }
+.language-buttons { display: flex; flex-wrap: wrap; gap: .6rem; margin: .75rem 0; }
+.language-output { display: grid; gap: .45rem; border: 1px solid #d9e3db; border-radius: 12px; padding: .9rem; background: #f8faf8; }
+.translation-slot { border-left: 4px solid #7a5700; padding-left: .7rem; }
+.pill { display: inline-flex; width: fit-content; border-radius: 999px; padding: .35rem .6rem; background: #eef3ef; font-size: .85rem; font-weight: 700; }
 .limitations p { margin: .65rem 0; }
 footer { width: min(840px, calc(100% - 2rem)); margin: 0 auto 2rem; color: #637068; font-size: .85rem; text-align: center; }
 @media (min-width: 720px) {
