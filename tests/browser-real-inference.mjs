@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
 import { deflateSync } from "node:zlib";
@@ -8,7 +8,9 @@ import { chromium } from "playwright";
 
 const ROOT = resolve("app");
 const PORT = Number(process.env.ROYA_TEST_PORT || 4173);
-const BASE_URL = process.env.ROYA_BASE_URL || `http://127.0.0.1:${PORT}/`;
+const EXTERNAL_BASE_URL = process.env.ROYA_BASE_URL || "";
+const USING_EXTERNAL_SERVER = Boolean(EXTERNAL_BASE_URL);
+const BASE_URL = EXTERNAL_BASE_URL || `http://127.0.0.1:${PORT}/`;
 const MODEL_SHA256 = "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041";
 const ROUTES = new Set(["visible_rust", "no_visible_rust", "not_sure"]);
 
@@ -88,11 +90,16 @@ function syntheticLeafLikePng(width = 224, height = 224) {
 }
 
 function startServer() {
-  if (process.env.ROYA_BASE_URL) return Promise.resolve(null);
+  if (USING_EXTERNAL_SERVER) {
+    return Promise.resolve({ server: null, serverHits: [], networkDownCanBeProven: false });
+  }
+
+  const serverHits = [];
   const server = createServer((req, res) => {
     const url = new URL(req.url || "/", BASE_URL);
     const pathname = url.pathname === "/" || url.pathname === "/app/" ? "/index.html" : url.pathname.replace(/^\/app\//, "/");
     const filePath = resolve(ROOT, `.${pathname}`);
+    serverHits.push({ method: req.method || "GET", path: url.pathname });
     if (!filePath.startsWith(ROOT) || !existsSync(filePath)) {
       res.writeHead(404);
       res.end("not found");
@@ -102,9 +109,17 @@ function startServer() {
     res.setHeader("Content-Type", MIME[extname(filePath)] || "application/octet-stream");
     res.end(readFileSync(filePath));
   });
+
   return new Promise((resolveServer, rejectServer) => {
     server.once("error", rejectServer);
-    server.listen(PORT, "127.0.0.1", () => resolveServer(server));
+    server.listen(PORT, "127.0.0.1", () => resolveServer({ server, serverHits, networkDownCanBeProven: true }));
+  });
+}
+
+async function closeServer(server) {
+  if (!server) return;
+  await new Promise((resolveServer, rejectServer) => {
+    server.close((error) => (error ? rejectServer(error) : resolveServer()));
   });
 }
 
@@ -131,7 +146,11 @@ async function getRecords(page) {
 }
 
 async function waitForOfflineReady(page) {
-  await page.waitForFunction(() => document.querySelector("#offlineBadge")?.textContent.includes("Offline cache verified"), null, { timeout: 60000 });
+  await page.waitForFunction(
+    () => document.querySelector("#offlineBadge")?.textContent.includes("Offline cache verified"),
+    null,
+    { timeout: 60000 },
+  );
 }
 
 async function runOneInference(page, imagePath) {
@@ -142,12 +161,16 @@ async function runOneInference(page, imagePath) {
     const route = document.querySelector("#proposalLabel")?.dataset.route;
     return route === "visible_rust" || route === "no_visible_rust" || route === "not_sure";
   }, null, { timeout: 120000 });
-  await page.waitForFunction(() => document.querySelector("#modelStatus")?.textContent.includes("Local inference complete"), null, { timeout: 120000 });
+  await page.waitForFunction(
+    () => document.querySelector("#modelStatus")?.textContent.includes("Local inference complete"),
+    null,
+    { timeout: 120000 },
+  );
   return page.$eval("#proposalLabel", (node) => node.dataset.route);
 }
 
 async function run() {
-  const server = await startServer();
+  const { server, serverHits, networkDownCanBeProven } = await startServer();
   const tmp = mkdtempSync(join(tmpdir(), "royacheck-real-inference-"));
   const imagePath = join(tmp, "synthetic-224.png");
   writeFileSync(imagePath, syntheticLeafLikePng());
@@ -158,17 +181,34 @@ async function run() {
   context.on("request", (request) => requests.push({ method: request.method(), url: request.url() }));
   const page = await context.newPage();
 
+  let serverClosedForOffline = false;
+  let offlineCutoffHitCount = null;
+
   try {
     await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
     await waitForOfflineReady(page);
+    await page.waitForTimeout(250);
 
     await context.setOffline(true);
+
+    if (networkDownCanBeProven) {
+      offlineCutoffHitCount = serverHits.length;
+      await closeServer(server);
+      serverClosedForOffline = true;
+    } else {
+      console.warn("ROYA_BASE_URL mode cannot prove network-down offline behavior because the harness does not control the external server.");
+    }
+
     await page.reload({ waitUntil: "domcontentloaded" });
     await waitForOfflineReady(page);
 
     const route = await runOneInference(page, imagePath);
     assert.ok(ROUTES.has(route), `Unexpected route ${route}`);
-    assert.doesNotMatch(await page.textContent("#modelStatus"), /too_small|minimum is 224/i, "real-inference harness must not use the too-small bypass");
+    assert.doesNotMatch(
+      await page.textContent("#modelStatus"),
+      /too_small|minimum is 224/i,
+      "real-inference harness must not use the too-small bypass",
+    );
 
     await page.selectOption("#humanDisposition", "request_review");
     await page.check("#humanConfirm");
@@ -178,8 +218,19 @@ async function run() {
     assert.equal(record.ai_proposal, route);
     assert.equal(record.human_disposition, "request_review");
     assert.equal(record.raw_image_retained, false);
+    assert.equal(Object.prototype.hasOwnProperty.call(record, "raw_image"), false, "saved record must not include raw_image");
+    assert.equal(Object.prototype.hasOwnProperty.call(record, "image_blob"), false, "saved record must not include image_blob");
     assert.equal(record.model_sha256, MODEL_SHA256);
     assert.equal((await getRecords(page)).some((item) => item.id === record.id), true);
+
+    if (networkDownCanBeProven) {
+      const postCutoffServerHits = serverHits.slice(offlineCutoffHitCount);
+      assert.deepEqual(
+        postCutoffServerHits,
+        [],
+        `offline inference must not hit the local server after network-down cutoff; saw ${JSON.stringify(postCutoffServerHits)}`,
+      );
+    }
 
     const origin = new URL(BASE_URL).origin;
     for (const request of requests) {
@@ -191,6 +242,9 @@ async function run() {
     console.log(JSON.stringify({
       status: "PASS",
       offline_inference_route: route,
+      offline_network_down_enforced: networkDownCanBeProven,
+      server_closed_before_offline_reload: serverClosedForOffline,
+      post_cutoff_server_hits: networkDownCanBeProven ? serverHits.length - offlineCutoffHitCount : null,
       raw_image_retained: record.raw_image_retained,
       model_sha256: record.model_sha256,
       requests: requests.length,
@@ -198,7 +252,8 @@ async function run() {
   } finally {
     await context.setOffline(false).catch(() => {});
     await browser.close();
-    if (server) await new Promise((resolveServer) => server.close(resolveServer));
+    if (server && !serverClosedForOffline) await closeServer(server).catch(() => {});
+    rmSync(tmp, { recursive: true, force: true });
   }
 }
 
