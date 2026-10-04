@@ -2,10 +2,8 @@ name: Stage 7C A0 training
 
 on:
   push:
-    branches:
-      - chatgpt/stage-07-pretraining-gates
-    paths:
-      - .github/workflows/stage7c-a0-train.yml
+    branches: [chatgpt/stage-07-pretraining-gates]
+    paths: [.github/workflows/stage7c-a0-train.yml]
   workflow_dispatch:
 
 permissions:
@@ -17,26 +15,22 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-
-      - name: Python 3.12
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Install training dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.14.1 torchvision==0.29.1
-          python -m pip install pandas pillow scikit-learn scipy gdown onnx==1.23.1
-
-      - name: Download BRACOL author/source-adjacent archive
+          python -m pip install pandas pillow gdown onnx==1.23.1
+      - name: Download BRACOL archive
         run: |
           set -euo pipefail
           mkdir -p data stage7c_a0_evidence
-          gdown --id 1ZMO9UnLK62SZYAdybDHRtarYDboQl_cT -O data/coffee-datasets.zip
+          gdown 1ZMO9UnLK62SZYAdybDHRtarYDboQl_cT -O data/coffee-datasets.zip
           sha256sum data/coffee-datasets.zip | tee stage7c_a0_evidence/coffee_datasets_sha256.txt
           python - <<'PY'
-          import hashlib, sys
+          import hashlib
           from pathlib import Path
           p=Path('data/coffee-datasets.zip')
           expected='e6fc32d504ae33e667475dec4c4aef710aac65ad12f16a401c706445c46c9f89'
@@ -46,37 +40,26 @@ jobs:
           if actual != expected:
               raise SystemExit(f'BRACOL archive SHA mismatch: {actual}')
           PY
-
       - name: Train and validate A0 only
         run: |
-          set -euo pipefail
           python - <<'PY'
-          import csv, hashlib, io, json, math, os, random, time, zipfile
+          import csv, hashlib, io, json, random, time, zipfile
           from pathlib import Path
-          import numpy as np
-          import pandas as pd
+          import numpy as np, pandas as pd, torch
           from PIL import Image
-          import torch
           from torch import nn
           from torch.utils.data import Dataset, DataLoader, TensorDataset
           from torchvision import transforms
           from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
-
           SEED=20261003
-          random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED)
-          torch.set_num_threads(2)
-          device=torch.device('cpu')
+          random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED); torch.set_num_threads(2)
           out=Path('stage7c_a0_evidence'); out.mkdir(exist_ok=True)
           zpath=Path('data/coffee-datasets.zip')
           split=json.loads(Path('docs/stages/07_technical_proof/manifests/bracol_stage7b_split_ids.json').read_text())
-          train_ids=[int(x) for x in split['train']]
-          val_ids=[int(x) for x in split['validation']]
-          if set(train_ids)&set(val_ids): raise SystemExit('train/validation overlap')
-          z=zipfile.ZipFile(zpath)
-          df=pd.read_csv(z.open('coffee-datasets/leaf/dataset.csv'))
-          rows={int(r.id):r for r in df.itertuples(index=False)}
+          train_ids=[int(x) for x in split['train']]; val_ids=[int(x) for x in split['validation']]
+          z=zipfile.ZipFile(zpath); df=pd.read_csv(z.open('coffee-datasets/leaf/dataset.csv')); rows={int(r.id):r for r in df.itertuples(index=False)}
           class_names=['healthy','rust_present','leaf_miner_no_rust','brown_leaf_spot_no_rust','cercospora_no_rust']
-          def class_index(i):
+          def ci(i):
               r=rows[int(i)]
               if int(r.predominant_stress)==5: raise ValueError('excluded id used')
               if int(r.rust)==1: return 1
@@ -85,187 +68,90 @@ jobs:
               if ps==1: return 2
               if ps==3: return 3
               if ps==4: return 4
-              raise ValueError(f'unmapped id={i} ps={ps} rust={r.rust}')
-          def truth_group(i):
-              ci=class_index(i)
-              return 'R' if ci==1 else ('H' if ci==0 else 'O')
-          train_labels=[class_index(i) for i in train_ids]
-          val_labels=[class_index(i) for i in val_ids]
-          val_truth=[truth_group(i) for i in val_ids]
-          # Fixed encoder normalization from TorchVision weights.
-          weights=MobileNet_V3_Small_Weights.IMAGENET1K_V1
-          mean=weights.transforms().mean
-          std=weights.transforms().std
-          eval_tf=transforms.Compose([
-              transforms.Resize((224,224), interpolation=transforms.InterpolationMode.BILINEAR, antialias=True),
-              transforms.ToTensor(),
-              transforms.Normalize(mean=mean, std=std),
-          ])
-          train_tf=transforms.Compose([
-              transforms.RandomHorizontalFlip(p=0.5),
-              transforms.RandomVerticalFlip(p=0.5),
-              transforms.RandomRotation(degrees=15, interpolation=transforms.InterpolationMode.BILINEAR, fill=255),
-              transforms.ColorJitter(brightness=0.10, contrast=0.10),
-              transforms.Resize((224,224), interpolation=transforms.InterpolationMode.BILINEAR, antialias=True),
-              transforms.ToTensor(),
-              transforms.Normalize(mean=mean, std=std),
-          ])
-          class ZipLeafDataset(Dataset):
-              def __init__(self, ids, labels, transform, repeat=1):
-                  self.ids=list(ids); self.labels=list(labels); self.transform=transform; self.repeat=repeat
-              def __len__(self): return len(self.ids)*self.repeat
+              raise ValueError(f'unmapped id {i}: ps={ps} rust={r.rust}')
+          def tg(i):
+              c=ci(i); return 'R' if c==1 else ('H' if c==0 else 'O')
+          y_train0=[ci(i) for i in train_ids]; y_val=[ci(i) for i in val_ids]; val_truth=[tg(i) for i in val_ids]
+          weights=MobileNet_V3_Small_Weights.IMAGENET1K_V1; mean=weights.transforms().mean; std=weights.transforms().std
+          eval_tf=transforms.Compose([transforms.Resize((224,224),interpolation=transforms.InterpolationMode.BILINEAR,antialias=True),transforms.ToTensor(),transforms.Normalize(mean,std)])
+          aug_tf=transforms.Compose([transforms.RandomHorizontalFlip(.5),transforms.RandomVerticalFlip(.5),transforms.RandomRotation(15,interpolation=transforms.InterpolationMode.BILINEAR,fill=255),transforms.ColorJitter(brightness=.10,contrast=.10),transforms.Resize((224,224),interpolation=transforms.InterpolationMode.BILINEAR,antialias=True),transforms.ToTensor(),transforms.Normalize(mean,std)])
+          class ZDS(Dataset):
+              def __init__(self, ids, labels, tf): self.ids=ids; self.labels=labels; self.tf=tf
+              def __len__(self): return len(self.ids)
               def __getitem__(self, idx):
-                  j=idx % len(self.ids)
-                  image_id=self.ids[j]
-                  with z.open(f'coffee-datasets/leaf/images/{image_id}.jpg') as f:
-                      im=Image.open(io.BytesIO(f.read())).convert('RGB')
-                  if im.width < 224 or im.height < 224:
-                      raise ValueError(f'ineligible image {image_id}: {im.size}')
-                  return self.transform(im), int(self.labels[j]), int(image_id)
-          class FeatureExtractor(nn.Module):
-              def __init__(self, base):
-                  super().__init__(); self.features=base.features; self.avgpool=base.avgpool
-              def forward(self,x):
-                  x=self.features(x); x=self.avgpool(x); return torch.flatten(x,1)
-          base=mobilenet_v3_small(weights=weights)
-          fe=FeatureExtractor(base).to(device).eval()
+                  i=self.ids[idx]
+                  with z.open(f'coffee-datasets/leaf/images/{i}.jpg') as f: im=Image.open(io.BytesIO(f.read())).convert('RGB')
+                  if im.width<224 or im.height<224: raise ValueError(f'ineligible {i} {im.size}')
+                  return self.tf(im), int(self.labels[idx]), int(i)
+          class FE(nn.Module):
+              def __init__(self, base): super().__init__(); self.features=base.features; self.avgpool=base.avgpool
+              def forward(self,x): return torch.flatten(self.avgpool(self.features(x)),1)
+          base=mobilenet_v3_small(weights=weights); fe=FE(base).eval()
           for p in fe.parameters(): p.requires_grad_(False)
-          def extract(ds, batch_size=32):
-              loader=DataLoader(ds,batch_size=batch_size,shuffle=False,num_workers=0)
-              feats=[]; labels=[]; ids=[]
+          def extract(ids, labels, tf):
+              loader=DataLoader(ZDS(ids,labels,tf),batch_size=32,shuffle=False,num_workers=0)
+              fs=[]; ys=[]; got=[]
               with torch.no_grad():
                   for xb,yb,ib in loader:
-                      feats.append(fe(xb.to(device)).cpu()); labels.append(yb.clone()); ids.extend([int(x) for x in ib])
-              return torch.cat(feats), torch.cat(labels), ids
-          t0=time.time()
-          # Three deterministic training feature passes: one fixed eval pass plus two allowed augmented passes.
-          train_feat_parts=[]; train_lab_parts=[]
-          for rep,tf in [('eval',eval_tf),('aug1',train_tf),('aug2',train_tf)]:
-              torch.manual_seed(SEED + len(train_feat_parts)); random.seed(SEED + len(train_feat_parts)); np.random.seed(SEED + len(train_feat_parts))
-              f,l,_=extract(ZipLeafDataset(train_ids,train_labels,tf,repeat=1))
-              train_feat_parts.append(f); train_lab_parts.append(l)
-          X_train=torch.cat(train_feat_parts); y_train=torch.cat(train_lab_parts)
-          X_val,y_val,val_id_check=extract(ZipLeafDataset(val_ids,val_labels,eval_tf,repeat=1))
-          assert val_id_check==val_ids
+                      fs.append(fe(xb).cpu()); ys.append(yb.clone()); got += [int(x) for x in ib]
+              return torch.cat(fs), torch.cat(ys), got
+          t0=time.time(); feats=[]; labs=[]
+          for k,tf in enumerate([eval_tf, aug_tf, aug_tf]):
+              random.seed(SEED+k); np.random.seed(SEED+k); torch.manual_seed(SEED+k)
+              f,l,_=extract(train_ids,y_train0,tf); feats.append(f); labs.append(l)
+          Xtr=torch.cat(feats); ytr=torch.cat(labs); Xv,yv,vids=extract(val_ids,y_val,eval_tf); assert vids==val_ids
           feature_seconds=time.time()-t0
-          counts=np.bincount(train_labels,minlength=5)
-          weights_cls=(len(train_labels)/(5*np.maximum(counts,1))).astype('float32')
-          head=nn.Linear(576,5).to(device)
-          torch.manual_seed(SEED)
-          opt=torch.optim.AdamW(head.parameters(),lr=1e-3,weight_decay=1e-4)
-          loss_fn=nn.CrossEntropyLoss(weight=torch.tensor(weights_cls,dtype=torch.float32,device=device))
-          train_ds=TensorDataset(X_train,y_train)
-          g=torch.Generator().manual_seed(SEED)
-          train_loader=DataLoader(train_ds,batch_size=32,shuffle=True,generator=g)
-          best=None; history=[]
-          for epoch in range(1,31):
+          counts=np.bincount(y_train0,minlength=5); class_weights=(len(y_train0)/(5*np.maximum(counts,1))).astype('float32')
+          head=nn.Linear(576,5); opt=torch.optim.AdamW(head.parameters(),lr=1e-3,weight_decay=1e-4); loss_fn=nn.CrossEntropyLoss(weight=torch.tensor(class_weights))
+          loader=DataLoader(TensorDataset(Xtr,ytr),batch_size=32,shuffle=True,generator=torch.Generator().manual_seed(SEED))
+          best=None; hist=[]
+          for ep in range(1,31):
               head.train(); losses=[]
-              for xb,yb in train_loader:
-                  xb=xb.to(device); yb=yb.to(device)
+              for xb,yb in loader:
                   opt.zero_grad(); loss=loss_fn(head(xb),yb); loss.backward(); opt.step(); losses.append(float(loss.item()))
               head.eval()
-              with torch.no_grad():
-                  val_logits=head(X_val.to(device)); val_loss=float(loss_fn(val_logits,y_val.to(device)).item())
-                  train_loss=float(np.mean(losses))
-              rec={'epoch':epoch,'train_loss':train_loss,'val_loss':val_loss}
-              history.append(rec)
-              if best is None or val_loss < best['val_loss']:
-                  best={'epoch':epoch,'val_loss':val_loss,'state':{k:v.detach().cpu().clone() for k,v in head.state_dict().items()}}
-              print(json.dumps(rec))
+              with torch.no_grad(): vl=float(loss_fn(head(Xv),yv).item())
+              rec={'epoch':ep,'train_loss':float(np.mean(losses)),'val_loss':vl}; hist.append(rec); print(json.dumps(rec))
+              if best is None or vl<best['val_loss']: best={'epoch':ep,'val_loss':vl,'state':{k:v.detach().clone() for k,v in head.state_dict().items()}}
           head.load_state_dict(best['state']); head.eval()
-          with torch.no_grad():
-              logits=head(X_val.to(device)).cpu().numpy()
-              probs=torch.softmax(torch.tensor(logits),dim=1).numpy()
-          np.save(out/'stage7c_a0_val_logits.npy', logits)
-          np.save(out/'stage7c_a0_val_probs.npy', probs)
-          torch.save({'head_state_dict':best['state'],'class_names':class_names,'seed':SEED,'best_epoch':best['epoch']}, out/'stage7c_a0_head_state.pt')
-
-          def route_counts(T_r,T_h):
-              counts={k:0 for k in ['R_to_VR','R_to_NVR','R_to_NS','H_to_VR','H_to_NVR','H_to_NS','O_to_VR','O_to_NVR','O_to_NS']}
-              routes=[]
-              for i,tg,p in zip(val_ids,val_truth,probs):
+          with torch.no_grad(): logits=head(Xv).numpy(); probs=torch.softmax(torch.tensor(logits),dim=1).numpy()
+          def route_counts(Tr,Th):
+              cnt={k:0 for k in ['R_to_VR','R_to_NVR','R_to_NS','H_to_VR','H_to_NVR','H_to_NS','O_to_VR','O_to_NVR','O_to_NS']}; routes=[]
+              for truth,p in zip(val_truth,probs):
                   pred=int(np.argmax(p)); route='NS'
-                  if pred==1 and p[1] >= T_r: route='VR'
-                  elif pred==0 and p[0] >= T_h: route='NVR'
-                  counts[f'{tg}_to_{route}'] += 1
-                  routes.append(route)
-              R_conf=counts['R_to_VR']+counts['R_to_NVR']; H_conf=counts['H_to_VR']+counts['H_to_NVR']; O_conf=counts['O_to_VR']+counts['O_to_NVR']
-              target_conf=R_conf+H_conf
-              selective_num=counts['R_to_VR']+counts['H_to_NVR']
-              accepted_rust_num=counts['R_to_VR']; accepted_healthy_num=counts['H_to_NVR']
-              feasible=(target_conf>=68 and R_conf>=47 and H_conf>=21 and
-                        100*selective_num >= 85*target_conf and
-                        100*accepted_rust_num >= 90*R_conf and
-                        100*accepted_healthy_num >= 80*H_conf and
-                        counts['R_to_NVR']<=4 and counts['O_to_NVR']<=11)
-              metrics={
-                  **counts,
-                  'target_confident':target_conf,'R_confident':R_conf,'H_confident':H_conf,'O_confident':O_conf,
-                  'selective_accuracy_num':selective_num,'selective_accuracy_den':target_conf,
-                  'accepted_rust_recall_num':accepted_rust_num,'accepted_rust_recall_den':R_conf,
-                  'accepted_healthy_specificity_num':accepted_healthy_num,'accepted_healthy_specificity_den':H_conf,
-                  'feasible':bool(feasible)
-              }
-              return metrics,routes
+                  if pred==1 and p[1]>=Tr: route='VR'
+                  elif pred==0 and p[0]>=Th: route='NVR'
+                  cnt[f'{truth}_to_{route}']+=1; routes.append(route)
+              Rc=cnt['R_to_VR']+cnt['R_to_NVR']; Hc=cnt['H_to_VR']+cnt['H_to_NVR']; target=Rc+Hc
+              ok=(target>=68 and Rc>=47 and Hc>=21 and 100*(cnt['R_to_VR']+cnt['H_to_NVR'])>=85*target and 100*cnt['R_to_VR']>=90*Rc and 100*cnt['H_to_NVR']>=80*Hc and cnt['R_to_NVR']<=4 and cnt['O_to_NVR']<=11)
+              m={**cnt,'target_confident':target,'R_confident':Rc,'H_confident':Hc,'O_confident':cnt['O_to_VR']+cnt['O_to_NVR'],'selective_accuracy_num':cnt['R_to_VR']+cnt['H_to_NVR'],'selective_accuracy_den':target,'accepted_rust_recall_num':cnt['R_to_VR'],'accepted_rust_recall_den':Rc,'accepted_healthy_specificity_num':cnt['H_to_NVR'],'accepted_healthy_specificity_den':Hc,'feasible':bool(ok)}
+              return m,routes
           ledger=[]; feasible=[]
-          grid=[round(x/100,2) for x in range(50,96)]
-          for Tr in grid:
-              for Th in grid:
-                  m,_=route_counts(Tr,Th); row={'T_rust':Tr,'T_healthy':Th,**m}; ledger.append(row)
-                  if m['feasible']:
-                      feasible.append(row)
+          for a in range(50,96):
+              for b in range(50,96):
+                  Tr=round(a/100,2); Th=round(b/100,2); m,_=route_counts(Tr,Th); row={'T_rust':Tr,'T_healthy':Th,**m}; ledger.append(row)
+                  if m['feasible']: feasible.append(row)
           if feasible:
-              def key(r):
-                  ar = r['accepted_rust_recall_num']/r['accepted_rust_recall_den'] if r['accepted_rust_recall_den'] else -1
-                  return (r['R_to_NVR'], -r['target_confident'], -ar, -r['T_healthy'], -r['T_rust'])
-              selected=sorted(feasible,key=key)[0]
-              selected['gate_pass']=True
+              sel=sorted(feasible,key=lambda r:(r['R_to_NVR'],-r['target_confident'],-(r['accepted_rust_recall_num']/r['accepted_rust_recall_den']),-r['T_healthy'],-r['T_rust']))[0]; sel['gate_pass']=True
           else:
-              # deterministic diagnostic pick: minimum confident miss, then max target coverage.
-              selected=sorted(ledger,key=lambda r:(r['R_to_NVR'],-r['target_confident'],-r['T_healthy'],-r['T_rust']))[0]
-              selected['gate_pass']=False
-          selected_metrics, selected_routes = route_counts(selected['T_rust'], selected['T_healthy'])
-          selected.update(selected_metrics)
-          with open(out/'stage7c_a0_threshold_ledger.csv','w',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=list(ledger[0].keys())); w.writeheader(); w.writerows(ledger)
+              sel=sorted(ledger,key=lambda r:(r['R_to_NVR'],-r['target_confident'],-r['T_healthy'],-r['T_rust']))[0]; sel['gate_pass']=False
+          sm,routes=route_counts(sel['T_rust'],sel['T_healthy']); sel.update(sm)
+          with open(out/'stage7c_a0_threshold_ledger.csv','w',newline='') as f: w=csv.DictWriter(f,fieldnames=list(ledger[0].keys())); w.writeheader(); w.writerows(ledger)
           with open(out/'stage7c_a0_validation_routes.csv','w',newline='') as f:
-              cols=['image_id','truth_group','source_class','true_class_index','pred_class_index','route','p_healthy','p_rust_present','p_leaf_miner_no_rust','p_brown_leaf_spot_no_rust','p_cercospora_no_rust']
-              w=csv.DictWriter(f,fieldnames=cols); w.writeheader()
-              for image_id,tg,y,p,route in zip(val_ids,val_truth,val_labels,probs,selected_routes):
-                  w.writerow({'image_id':image_id,'truth_group':tg,'source_class':class_names[y],'true_class_index':y,'pred_class_index':int(np.argmax(p)),'route':route,
-                              'p_healthy':float(p[0]),'p_rust_present':float(p[1]),'p_leaf_miner_no_rust':float(p[2]),'p_brown_leaf_spot_no_rust':float(p[3]),'p_cercospora_no_rust':float(p[4])})
-          class A0Model(nn.Module):
-              def __init__(self, fe, head): super().__init__(); self.fe=fe; self.head=head
+              cols=['image_id','truth_group','true_class','pred_class','route','p_healthy','p_rust_present','p_leaf_miner_no_rust','p_brown_leaf_spot_no_rust','p_cercospora_no_rust']; w=csv.DictWriter(f,fieldnames=cols); w.writeheader()
+              for i,t,y,p,r in zip(val_ids,val_truth,y_val,probs,routes): w.writerow({'image_id':i,'truth_group':t,'true_class':class_names[y],'pred_class':class_names[int(np.argmax(p))],'route':r,'p_healthy':float(p[0]),'p_rust_present':float(p[1]),'p_leaf_miner_no_rust':float(p[2]),'p_brown_leaf_spot_no_rust':float(p[3]),'p_cercospora_no_rust':float(p[4])})
+          torch.save({'head_state_dict':best['state'],'class_names':class_names,'seed':SEED,'best_epoch':best['epoch']}, out/'stage7c_a0_head_state.pt')
+          class A0(nn.Module):
+              def __init__(self,fe,head): super().__init__(); self.fe=fe; self.head=head
               def forward(self,x): return self.head(self.fe(x))
-          model=A0Model(fe,head).eval()
-          dummy=torch.zeros(1,3,224,224)
-          onnx_path=out/'stage7c_a0_unvalidated_selection.onnx'
-          torch.onnx.export(model,dummy,onnx_path.as_posix(),input_names=['input'],output_names=['output'],opset_version=18,dynamo=False)
+          model=A0(fe,head).eval(); onnx_path=out/'stage7c_a0_selected.onnx'
+          torch.onnx.export(model,torch.zeros(1,3,224,224),onnx_path.as_posix(),input_names=['input'],output_names=['output'],opset_version=18,dynamo=False)
           def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
-          summary={
-            'stage':'7C_A0_validation','training_performed':True,'model':'A0 MobileNetV3-Small frozen backbone + Linear(576,5)',
-            'seed':SEED,'optimizer':'AdamW','lr':1e-3,'weight_decay':1e-4,'batch_size':32,'loss':'class-weighted cross-entropy','max_epochs':30,
-            'best_epoch':best['epoch'],'best_val_loss':best['val_loss'],'feature_seconds':feature_seconds,
-            'train_original_records':len(train_ids),'train_feature_rows':int(len(X_train)),'validation_records':len(val_ids),'internal_test_used':False,'rocole_used':False,'challenge_used':False,
-            'class_names':class_names,'train_class_counts':{class_names[i]:int(counts[i]) for i in range(5)},'class_weights':{class_names[i]:float(weights_cls[i]) for i in range(5)},
-            'preprocessing':'RGB decode; require >=224px; full-frame direct bilinear resize to 224x224; ImageNet normalization; no center crop',
-            'training_augmentation':'two additional frozen-backbone feature passes using allowed flips, ±15° rotation, mild brightness/contrast; no synthetic lesions; validation has no augmentation',
-            'threshold_grid':'0.50..0.95 inclusive step 0.01','feasible_threshold_pairs':len(feasible),'selected':selected,
-            'gate_pass':bool(selected['gate_pass']),
-            'history':history,
-            'artifacts':{
-              'onnx_bytes':onnx_path.stat().st_size,'onnx_sha256':sha(onnx_path),
-              'head_state_sha256':sha(out/'stage7c_a0_head_state.pt')
-            }
-          }
+          summary={'stage':'7C_A0_validation','training_performed':True,'model':'A0 frozen MobileNetV3-Small + Linear(576,5)','seed':SEED,'optimizer':'AdamW','lr':1e-3,'weight_decay':1e-4,'batch_size':32,'loss':'class-weighted cross-entropy','max_epochs':30,'best_epoch':best['epoch'],'best_val_loss':best['val_loss'],'feature_seconds':feature_seconds,'train_original_records':len(train_ids),'train_feature_rows':int(len(Xtr)),'validation_records':len(val_ids),'internal_test_used':False,'rocole_used':False,'challenge_used':False,'class_names':class_names,'train_class_counts':{class_names[i]:int(counts[i]) for i in range(5)},'class_weights':{class_names[i]:float(class_weights[i]) for i in range(5)},'preprocessing':'RGB decode; require >=224px; full-frame direct bilinear resize to 224x224; ImageNet normalization; no center crop','training_augmentation':'two additional feature passes using allowed flips, ±15° rotation, mild brightness/contrast; no synthetic lesions','threshold_grid':'0.50..0.95 inclusive step 0.01','feasible_threshold_pairs':len(feasible),'selected':sel,'gate_pass':bool(sel['gate_pass']),'history':hist,'artifacts':{'onnx_bytes':onnx_path.stat().st_size,'onnx_sha256':sha(onnx_path),'head_state_sha256':sha(out/'stage7c_a0_head_state.pt')}}
           (out/'stage7c_a0_summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True))
-          with open(out/'stage7c_a0_training_history.csv','w',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=['epoch','train_loss','val_loss']); w.writeheader(); w.writerows(history)
-          print('STAGE7C_A0_SUMMARY_BEGIN')
-          print(json.dumps(summary,indent=2,sort_keys=True))
-          print('STAGE7C_A0_SUMMARY_END')
+          with open(out/'stage7c_a0_training_history.csv','w',newline='') as f: w=csv.DictWriter(f,fieldnames=['epoch','train_loss','val_loss']); w.writeheader(); w.writerows(hist)
+          print('STAGE7C_A0_SUMMARY_BEGIN'); print(json.dumps(summary,indent=2,sort_keys=True)); print('STAGE7C_A0_SUMMARY_END')
           PY
-
       - name: Upload A0 validation evidence
         uses: actions/upload-artifact@v4
         with:
