@@ -1,4 +1,4 @@
-const MODEL_URL = "./assets/model/royacheck_a0_fp32.onnx";
+import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";\n\nconst MODEL_URL = "./assets/model/royacheck_a0_fp32.onnx";
 const MODEL_SHA256 = "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041";
 const T_RUST = 0.50;
 const T_HEALTHY = 0.70;
