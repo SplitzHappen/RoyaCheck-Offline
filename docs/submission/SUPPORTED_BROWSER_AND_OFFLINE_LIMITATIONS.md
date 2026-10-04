@@ -1,34 +1,49 @@
 # Supported Browser and Offline Limitations Draft
 
-**Status:** draft; not final submission text.
+This draft supports the Stage 8 follow-up PR and is not final submission copy.
 
-## Tested browser evidence
+## Tested evidence status
 
-PR #21 recorded Chromium/Playwright evidence for the browser-local inference loop. PR #22 adds review-later/fixed-string follow-up behavior and requires its own browser evidence before Ready for Review.
+PR #21 browser smoke evidence covered the browser-local inference MVP at an earlier head. It did **not** cover PR #22's saved-record list, per-record delete, local-language scaffold, or r1-to-r2 service-worker upgrade behavior.
 
-This document must not imply that PR #21 browser evidence covers PR #22 behavior.
+PR #22 now includes `tests/browser-followups.mjs`, but that test must still be run and recorded on the final candidate SHA before Ready for Review.
 
-## Untested browsers
+## Browser support
 
-The following remain untested for the PR #22 follow-up behavior:
+Evidence so far is Chromium-based. iOS Safari, Firefox, and lower-end Android browsers remain untested unless later evidence is added.
 
-- iOS Safari;
-- Firefox;
-- Android browser variants;
-- low-memory mobile devices.
+The app relies on browser features including:
 
-## First-load size and connectivity
+- ES modules;
+- WebAssembly through ONNX Runtime Web;
+- IndexedDB;
+- Service Worker and Cache Storage;
+- `crypto.subtle` for runtime model hash verification.
 
-The current cached app bundle is approximately **18.1 MB**. First load requires a working connection before offline use can be verified. This matters for low-connectivity environments.
+Plain HTTP is not sufficient for typical mobile testing because service workers and some browser APIs require HTTPS or localhost.
 
 ## Offline behavior
 
-The service worker caches the static app shell, model, preprocessing code, follow-up module, manifest, icon, and local ONNX Runtime Web assets. Offline behavior is intended for the static app after a successful first load and cache verification.
+The first load requires a network connection. After successful service-worker installation, the app attempts to cache the static shell, ONNX model, ONNX Runtime Web WASM assets, preprocessing code, and follow-up UI code.
 
-## Local storage durability
+Approximate first-load cached payload remains about 18.1 MB. This is material in low-connectivity environments.
 
-Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, Safari/browser storage policies, clearing site data, or device/browser reset. The MVP provides no backup, sync, or export.
+The current service worker attempts to reduce stale-code upgrade risk by:
 
-## Privacy boundary
+- fetching precache assets with `cache: "reload"`;
+- using `cache: "no-cache"` for runtime network fetches before cache fallback;
+- versioning the cache as `royacheck-stage8-a0-4037c096-20261004-r2`.
 
-The MVP is designed not to retain raw images in saved records and not to send raw images automatically. Records are text-only.
+The r1-to-r2 upgrade repair still requires a clean browser upgrade test before merge.
+
+## Local storage limits
+
+Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, clearing site data, device storage pressure, or browser privacy policies.
+
+The MVP provides no cloud backup, export, synchronization, or recovery mechanism.
+
+Raw images are not retained in the saved records.
+
+## Localization limits
+
+The app includes a fixed-string local-language scaffold, but actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.
