@@ -1159,7 +1159,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 2 — Concept comparison | Closed — owner approved (PR #9) |
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
-| 5 — Readiness / fallback planning | In review — verification complete; owner closure decision pending |
+| 5 — Readiness / fallback planning | Closed — owner approved (PR #18) |
 | 6 — Official-source recheck / greenlight | Not started |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
@@ -1170,12 +1170,10 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stages 0–4 are closed and merged. **Stage 5 is in review.**
+Stages 0–4 are closed and merged. **Stage 5 is Closed — owner approved (PR #18)** for the guarded merge sequence.
 
-The deliberate readiness verification pass is complete in PR #18. The technical/toolchain path, evaluation-control tooling, model-artifact access, binary recovery path, primary data-source reachability, browser runtime package path, and deployment infrastructure have been checked without consuming protected evidence.
+PR #18 must pass the authorized fresh GitHub guards and merge successfully before Stage 6 begins.
 
-José Antonio has now completed the owner-side readiness checks: Hack-Nation access/editability, Google Form backup access, local storage, network fallback, and power contingency are confirmed. The video-production path is ready with a bounded low-complexity fallback: direct iPhone MOV capture for the introduction and the owner's working screen-recording route for demo/walkthrough, with simple conversion/export assistance later only if needed.
-
-No Stage 5 readiness blocker remains. **Stage 5 is still not closed** until José Antonio explicitly authorizes closure and guarded merge of PR #18.
+After that merge, present the Owner Control Brief for **Stage 6 — Official-source recheck / greenlight** before beginning substantive Stage 6 work.
 
 **Stage 6 is not started. Stage 7 is not started and is not authorized.**
