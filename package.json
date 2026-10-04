@@ -5,7 +5,7 @@
   "description": "Static browser-local Stage 8 MVP smoke checks.",
   "type": "module",
   "scripts": {
-    "test": "node tests/static-smoke.mjs && node tests/preprocess-reference.mjs",
+    "test": "node tests/static-smoke.mjs && node tests/preprocess-reference.mjs && node tests/closure-guards.mjs",
     "serve:app": "python3 -m http.server 4173",
     "test:browser-followups": "ROYA_BASE_URL=http://127.0.0.1:4173/app/ node tests/browser-followups.mjs"
   },
