@@ -182,6 +182,25 @@ jobs:
               print("weight_sha256", hashlib.sha256(p.read_bytes()).hexdigest())
           PY
 
+      - name: Primary dataset source reachability smoke
+        run: |
+          set -e
+          for url in             "https://data.mendeley.com/datasets/yy2k5y8mxg/1"             "https://data.mendeley.com/datasets/c5yvn32dzg/2"; do
+            echo "SOURCE $url"
+            code=$(curl -L -sS -o /tmp/mendeley.html -w "%{http_code}" "$url")
+            echo "http_code=$code bytes=$(wc -c </tmp/mendeley.html)"
+            test "$code" = "200"
+            grep -qi "Download All" /tmp/mendeley.html || true
+            grep -Eo 'https://[^" ]*public-files[^" ]*' /tmp/mendeley.html | head -5 || true
+          done
+
+          echo "PUBLIC API probe (auth may be required)"
+          curl -sS -o /tmp/mendeley-api.json -w "api_http_code=%{http_code}\n" \
+            -H "Accept: application/vnd.mendeley-public-dataset.1+json" \
+            "https://api.mendeley.com/datasets/yy2k5y8mxg?version=1&fields=id,name,version,files" || true
+          head -c 500 /tmp/mendeley-api.json || true
+          echo
+
       - name: Install ORT Web pinned runtime
         run: |
           mkdir -p /tmp/royacheck-stage5-web
