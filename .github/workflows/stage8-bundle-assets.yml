@@ -120,7 +120,7 @@ jobs:
             ort.env.wasm.numThreads = 1;
             const model = path.join(process.env.GITHUB_WORKSPACE, "app/assets/model/royacheck_a0_fp32.onnx");
             const modelBytes = fs.readFileSync(model);
-            const session = await ort.InferenceSession.create(modelBytes, { executionProviders: ["wasm"] });
+            const session = await ort.InferenceSession.create(modelBytes, { executionProviders: ["wasm"], graphOptimizationLevel: "disabled" });
             if (!session.inputNames.includes("input") || !session.outputNames.includes("logits")) {
               throw new Error("Unexpected ONNX input/output contract");
             }
