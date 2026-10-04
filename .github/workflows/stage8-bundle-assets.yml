@@ -4,6 +4,9 @@ on:
   push:
     branches: [chatgpt/stage-08-mvp-build]
     paths: [.github/workflows/stage8-bundle-assets.yml]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
