@@ -1,0 +1,173 @@
+name: Stage 7 RoCoLe metadata freeze
+
+on:
+  push:
+    branches:
+      - chatgpt/stage-07-pretraining-gates
+    paths:
+      - .github/workflows/stage7-rocole-freeze.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rocole-freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install readers
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pandas openpyxl
+
+      - name: Download official RoCoLe v2 archive and freeze metadata
+        run: |
+          set -euo pipefail
+          mkdir -p rocole_freeze
+          URL="https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/c5yvn32dzg-2.zip"
+          curl -fL --retry 3 --retry-delay 5 --connect-timeout 30 -o rocole_freeze/rocole_v2.zip "$URL"
+          sha256sum rocole_freeze/rocole_v2.zip | tee rocole_freeze/rocole_archive_sha256.txt
+          stat -c '%n,%s' rocole_freeze/rocole_v2.zip | tee rocole_freeze/rocole_archive_size.csv
+          python - <<'PY'
+          import json, zipfile, hashlib, csv, re, os
+          from pathlib import Path
+          import pandas as pd
+
+          zpath=Path('rocole_freeze/rocole_v2.zip')
+          out=Path('rocole_freeze')
+          source={
+            'doi':'10.17632/c5yvn32dzg.2',
+            'download_url':'https://prod-dcd-datasets-cache-zipfiles.s3.eu-west-1.amazonaws.com/c5yvn32dzg-2.zip',
+            'observed_bytes':zpath.stat().st_size,
+            'observed_sha256':hashlib.sha256(zpath.read_bytes()).hexdigest(),
+            'expected_bytes_from_stage7a':2245588288,
+            'expected_sha256_from_stage7a':'31daa765fb0cc27d4b9b897fa6350aacf0087ee5771d3c7599d2ac7041b866ff',
+            'license':'CC BY 4.0 per Mendeley source page / Stage 6 record',
+            'quarantine':'external-transfer one-shot only; no training/tuning/model selection'
+          }
+          with zipfile.ZipFile(zpath) as z:
+            names=z.namelist()
+            files=[n for n in names if not n.endswith('/')]
+            jpgs=[n for n in files if n.lower().endswith(('.jpg','.jpeg'))]
+            meta=[n for n in files if n.lower().endswith(('.csv','.json','.xlsx','.xls','.xml','.txt'))]
+            inv=[]
+            for n in files:
+              info=z.getinfo(n)
+              inv.append({'path':n,'bytes':info.file_size,'sha256':hashlib.sha256(z.read(n)).hexdigest() if info.file_size < 50_000_000 else None})
+            with open(out/'rocole_archive_inventory.csv','w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=['path','bytes','sha256'])
+              w.writeheader(); w.writerows(inv)
+            with open(out/'rocole_image_identifiers.csv','w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=['image_path','image_id','filename','file_size'])
+              w.writeheader()
+              for n in sorted(jpgs):
+                info=z.getinfo(n)
+                fn=Path(n).name
+                w.writerow({'image_path':n,'image_id':Path(fn).stem,'filename':fn,'file_size':info.file_size})
+            # Extract and inspect metadata files only.
+            metadata_summary=[]
+            label_frames=[]
+            for n in meta:
+              info=z.getinfo(n)
+              if info.file_size > 20_000_000:
+                continue
+              target=out/('meta_'+re.sub(r'[^A-Za-z0-9_.-]+','_',n))
+              target.write_bytes(z.read(n))
+              rec={'path':n,'bytes':info.file_size,'extracted_as':target.name}
+              try:
+                suffix=Path(n).suffix.lower()
+                if suffix=='.csv':
+                  df=pd.read_csv(target)
+                  rec.update({'rows':len(df),'columns':list(map(str,df.columns))})
+                  if len(df)<=5000:
+                    label_frames.append((n,df))
+                elif suffix in {'.xlsx','.xls'}:
+                  xl=pd.ExcelFile(target)
+                  rec['sheets']=xl.sheet_names
+                  rec['sheet_shapes']={}
+                  for sh in xl.sheet_names:
+                    df=pd.read_excel(target,sheet_name=sh)
+                    rec['sheet_shapes'][sh]={'rows':len(df),'columns':list(map(str,df.columns))}
+                    if len(df)<=5000:
+                      label_frames.append((n+'::'+sh,df))
+                elif suffix=='.json':
+                  obj=json.loads(target.read_text(errors='replace'))
+                  rec['json_type']=type(obj).__name__
+                  if isinstance(obj,dict): rec['json_keys']=list(obj.keys())[:50]
+                  if isinstance(obj,list): rec['json_len']=len(obj)
+              except Exception as e:
+                rec['inspect_error']=type(e).__name__+': '+str(e)
+              metadata_summary.append(rec)
+          # Search metadata frames for image-name/class columns, but do not infer performance.
+          mapping_candidates=[]
+          for source_name,df in label_frames:
+            cols=[str(c) for c in df.columns]
+            lower={str(c).lower():c for c in df.columns}
+            # A permissive extraction: keep rows and columns as metadata, not images.
+            possible_file=[c for c in df.columns if any(k in str(c).lower() for k in ['file','image','photo','filename','external id','data row id'])]
+            possible_label=[c for c in df.columns if any(k in str(c).lower() for k in ['class','label','state','disease','condition','annotation','classification'])]
+            mapping_candidates.append({'source':source_name,'rows':len(df),'columns':cols,'possible_file_columns':list(map(str,possible_file)),'possible_label_columns':list(map(str,possible_label))})
+          # Create a conservative Stage 4 mapping statement without model use.
+          summary={
+            'source':source,
+            'archive_files':len(files),
+            'jpg_count':len(jpgs),
+            'metadata_file_count':len(meta),
+            'metadata_summary':metadata_summary,
+            'mapping_candidates':mapping_candidates,
+            'stage4_mapping':{
+              'healthy':'H',
+              'rust_level_1':'R',
+              'rust_level_2':'R',
+              'rust_level_3':'R',
+              'rust_level_4':'R',
+              'red_spider_mite':'O-unseen'
+            },
+            'exclusion_rule':'If explicit state/classification conflicts are identifiable from metadata, exclude them before external readout and disclose; no model-development use allowed.',
+            'inference_performed':False,
+            'model_development_use':False
+          }
+          (out/'rocole_freeze_summary.json').write_text(json.dumps(summary,indent=2,sort_keys=True))
+          # If exactly one 1560-row label table exists, create a compact label map from likely columns.
+          tables=[]
+          for source_name,df in label_frames:
+            if len(df)==1560:
+              tables.append((source_name,df))
+          if tables:
+            source_name,df=tables[0]
+            outmap=out/'rocole_external_metadata_map.csv'
+            with outmap.open('w',newline='') as f:
+              # Keep all columns as raw metadata fields; downstream mapping remains fixed by class labels.
+              fieldnames=['metadata_source']+list(map(str,df.columns))
+              w=csv.DictWriter(f,fieldnames=fieldnames)
+              w.writeheader()
+              for _,row in df.iterrows():
+                rec={'metadata_source':source_name}
+                for c in df.columns:
+                  val=row[c]
+                  rec[str(c)]='' if pd.isna(val) else str(val)
+                w.writerow(rec)
+          print(json.dumps({
+            'bytes':source['observed_bytes'],
+            'sha256':source['observed_sha256'],
+            'jpg_count':len(jpgs),
+            'metadata_files':len(meta),
+            'label_tables_1560':[x[0] for x in tables]
+          },indent=2))
+          PY
+
+      - name: Upload RoCoLe freeze evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage7-rocole-freeze
+          path: rocole_freeze
+          if-no-files-found: error
+          retention-days: 3
