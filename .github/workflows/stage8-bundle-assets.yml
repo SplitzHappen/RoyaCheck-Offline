@@ -46,8 +46,10 @@ jobs:
           cd /tmp/ort
           npm init -y >/dev/null
           npm install --no-audit --no-fund onnxruntime-web@1.30.0
-          cp node_modules/onnxruntime-web/dist/ort.all.min.js "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort.all.min.js"
+          cp node_modules/onnxruntime-web/dist/ort.wasm.min.mjs "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort.wasm.min.mjs"
+          cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs"
           cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
+          rm -f "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort.all.min.js"
 
       - name: Verify locked hashes and build asset manifest
         shell: bash
@@ -55,7 +57,8 @@ jobs:
           set -euo pipefail
           echo "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041  app/assets/model/royacheck_a0_fp32.onnx" | sha256sum -c -
           test "$(node -p "require('/tmp/ort/node_modules/onnxruntime-web/package.json').version")" = "1.30.0"
-          sha256sum app/vendor/onnxruntime-web/ort.all.min.js
+          sha256sum app/vendor/onnxruntime-web/ort.wasm.min.mjs
+          sha256sum app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs
           sha256sum app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm
           python - <<'PY'
           import hashlib, json
@@ -69,7 +72,8 @@ jobs:
               "app/sw.js",
               "app/assets/icon.svg",
               "app/assets/model/royacheck_a0_fp32.onnx",
-              "app/vendor/onnxruntime-web/ort.all.min.js",
+              "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+              "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
               "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
           ]
           rows = []
@@ -115,13 +119,12 @@ jobs:
           cat > app/.runtime-smoke.html <<'HTML'
           <!doctype html>
           <html><body><pre id="result">PENDING</pre>
-          <script src="./vendor/onnxruntime-web/ort.all.min.js"></script>
-          <script>
+          <script type="module">
+          import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";
           (async () => {
             try {
               ort.env.wasm.numThreads = 1;
               ort.env.wasm.proxy = false;
-              ort.env.wasm.wasmPaths = "./vendor/onnxruntime-web/";
               const session = await ort.InferenceSession.create("./assets/model/royacheck_a0_fp32.onnx", {
                 executionProviders: ["wasm"],
                 graphOptimizationLevel: "all"
@@ -161,8 +164,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app/assets/model/royacheck_a0_fp32.onnx
-          git add app/vendor/onnxruntime-web/ort.all.min.js
-          git add app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm
+          git add -A app/vendor/onnxruntime-web
           git add docs/stages/08_mvp/STAGE_08_ASSET_MANIFEST.json
           git diff --cached --stat
           if git diff --cached --quiet; then
