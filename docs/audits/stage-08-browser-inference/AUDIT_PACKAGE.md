@@ -22,7 +22,20 @@ The major finding was that the original offline assertion was a false positive. 
 
 Claude separately found that the product appeared to work offline when the server was actually shut down after cache verification. The defect was in the evidence harness, not in product code.
 
-The repaired harness must therefore prove offline inference by shutting down the built-in local server after cache verification and asserting zero post-cutoff server hits.
+The repaired harness therefore proves offline inference by shutting down the built-in local server after cache verification and asserting zero post-cutoff server hits.
+
+## Repaired-head Claude finding and reliability fix
+
+Claude audited repaired head `db57bbda3229bfb3e9a49d7a8f82374c7c18adc5` and returned `PASS WITH MINOR REPAIRS`.
+
+Claude confirmed that the false-positive offline assertion was fixed and that negative controls behaved correctly:
+
+- broken service-worker cache fallback failed;
+- corrupted model failed;
+- `10 x 10` too-small path failed;
+- external `ROYA_BASE_URL` mode was correctly labelled as not full network-down proof.
+
+Claude found one reliability defect: `server.close()` could intermittently hang on stale keep-alive connections after the browser was put offline. Claude validated a close reliability fix using `server.closeAllConnections()` with repeated passing runs. This branch now adds `server.closeAllConnections()` and a bounded timeout to ensure a future server-close failure fails explicitly rather than hanging indefinitely.
 
 ## Claimed scope
 
@@ -33,7 +46,7 @@ Expected changed files:
 - `docs/stages/08_mvp/STAGE_08_BROWSER_INFERENCE_EVIDENCE.md`
 - `docs/audits/stage-08-browser-inference/AUDIT_PACKAGE.md`
 
-Expected implementation after repair:
+Expected implementation after reliability repair:
 
 - add and repair `tests/browser-real-inference.mjs`;
 - make `npm run test:browser-inference` run built-in-server mode directly;
@@ -42,7 +55,7 @@ Expected implementation after repair:
 - verify the app's offline cache;
 - set the browser context offline;
 - record the local-server hit cutoff;
-- close the built-in local server before offline reload;
+- close the built-in local server before offline reload using `server.close(...)`, `server.closeAllConnections()`, and a bounded timeout;
 - reload the app while offline and while the server is unavailable;
 - verify the app's offline cache again;
 - upload the synthetic eligible-size image;
@@ -59,6 +72,8 @@ Expected implementation after repair:
 
 `ROYA_BASE_URL` mode may remain supported, but it must not be treated as full network-down proof unless external server shutdown or equivalent evidence is supplied. The canonical PR #25 evidence command is `npm run test:browser-inference`, which should run the built-in server and shut it down itself.
 
+Operational note: `npm run test:browser-inference` uses port 4173 by default. Stop any existing `npm run serve:app` / `python3 -m http.server 4173` process before running it, or set `ROYA_TEST_PORT` to a free port.
+
 ## Requested audit tasks
 
 Please classify findings as blocking, major, or minor for both PR review-readiness and later Stage 8 closure-readiness.
@@ -74,11 +89,21 @@ Run, if feasible:
 - `npm test`
 - `npm run test:browser-followups`
 - `npm run test:browser-inference`
+- repeated `npm run test:browser-inference` runs sufficient to check that the intermittent close hang is resolved
 - optionally `ROYA_BASE_URL=http://127.0.0.1:4173/app/ node tests/browser-real-inference.mjs`, while treating this external mode as limited unless the external server is stopped or separately instrumented
 
 Report environment, command, result, and any failures.
 
-### C. Real-inference adequacy
+### C. Server-close reliability
+
+Verify that the repaired harness:
+
+- calls `server.closeAllConnections()` when closing the built-in server;
+- has a bounded timeout around the close path;
+- no longer intermittently hangs in repeated inference runs;
+- still reports `server_closed_before_offline_reload: true` and `post_cutoff_server_hits: 0` in canonical built-in mode.
+
+### D. Real-inference adequacy
 
 Verify that `tests/browser-real-inference.mjs` actually exercises the real ONNX inference path rather than:
 
@@ -90,7 +115,7 @@ Verify that `tests/browser-real-inference.mjs` actually exercises the real ONNX 
 
 Confirm whether the harness is adequate as **browser execution evidence**, while not overclaiming model performance.
 
-### D. Offline adequacy
+### E. Offline adequacy
 
 Verify whether the repaired harness meaningfully exercises offline execution:
 
@@ -104,7 +129,7 @@ Verify whether the repaired harness meaningfully exercises offline execution:
 
 Please mutation-test or reason whether the harness would fail if the service-worker cache fallback were removed or broken.
 
-### E. Claim safety
+### F. Claim safety
 
 Verify that docs and PR wording do not claim:
 
@@ -118,7 +143,7 @@ Verify that docs and PR wording do not claim:
 - treatment guidance;
 - completed validated Lugisu/Lumasaba support.
 
-### F. Item 36 carry-forward
+### G. Item 36 carry-forward
 
 Verify that the PR preserves the owner decision:
 
@@ -126,7 +151,7 @@ Verify that the PR preserves the owner decision:
 - the English-only scaffold is not completed local-language support;
 - demo/submission/pitch material must disclose the deferral if local-language support is mentioned.
 
-### G. Remaining Stage 8 closure-readiness
+### H. Remaining Stage 8 closure-readiness
 
 Assess whether passing this PR's repaired evidence suite is enough to remove the prior current-head browser offline inference blocker, or whether any additional evidence remains necessary before Stage 8 closure.
 
@@ -144,7 +169,8 @@ Please answer in this structure:
 2. Findings by severity.
 3. Test results.
 4. Scope and claim-safety assessment.
-5. Real-inference and offline adequacy assessment.
-6. Item 36 deferral assessment.
-7. Remaining blockers before Stage 8 closure-readiness.
-8. Final recommendation: keep draft, Ready for Review after repairs, or Ready for Review now.
+5. Server-close reliability assessment.
+6. Real-inference and offline adequacy assessment.
+7. Item 36 deferral assessment.
+8. Remaining blockers before Stage 8 closure-readiness.
+9. Final recommendation: keep draft, Ready for Review after repairs, or Ready for Review now.
