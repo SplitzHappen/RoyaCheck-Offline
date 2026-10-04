@@ -1,7 +1,7 @@
 # Stage 5 — Readiness, Fallback, and Submission Protection
 
 **Stage:** 5  
-**Status:** In review — readiness verification and owner-side reconciliation complete; owner closure decision pending  
+**Status:** Closed — owner approved (PR #18)  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling technical preregistration:** `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`  
@@ -608,14 +608,10 @@ Those are not Stage 5 closure blockers because Stage 5 has established an execut
 
 The readiness verification and owner-side reconciliation are complete.
 
-Stage 5 may now close only after José Antonio explicitly approves closure and guarded merge of PR #18.
+José Antonio explicitly approved Stage 5 closure and the guarded merge sequence for PR #18 on 2026-10-03.
 
-No Claude audit is required because this Stage 5 pass has not introduced a new material architecture, evaluation, safety, licensing or compliance decision. If a later stage reveals such a change, the applicable escalation rule remains in force.
+No Claude audit is required because this Stage 5 pass did not introduce a new material architecture, evaluation, safety, licensing or compliance decision. If a later stage reveals such a change, the applicable escalation rule remains in force.
 
-Until owner closure is granted:
+Stage 6 and Stage 7 remain outside this closure action. Stage 6 may begin only after PR #18 is legitimately merged and a separate Owner Control Brief is presented; Stage 7 remains unauthorized.
 
-- PR #18 remains draft and unmerged;
-- Stage 6 remains not started;
-- Stage 7 remains not started and unauthorized.
-
-**Current Stage 5 status: In review — readiness verification and owner-side reconciliation complete; owner closure decision pending.**
+**Current Stage 5 status: Closed — owner approved (PR #18).**
