@@ -113,7 +113,7 @@ jobs:
           cd /tmp/ort
           node - <<'JS'
           const path = require("path");
-          const ort = require("onnxruntime-web");
+          const ort = require("./node_modules/onnxruntime-web/dist/ort.all.min.js");
           (async () => {
             ort.env.wasm.numThreads = 1;
             const model = path.join(process.env.GITHUB_WORKSPACE, "app/assets/model/royacheck_a0_fp32.onnx");
