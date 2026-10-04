@@ -1,49 +1,25 @@
 {
-  "stage": "8_mvp_asset_bundle",
-  "status": "final_minor_repair_partial_stage8_increment",
+  "stage": "8_mvp_followup_asset_bundle",
+  "status": "stage8_followup_partial_increment",
+  "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
   "onnxruntime_web_version": "1.30.0",
   "core_budget_bytes": 30000000,
-  "cached_file_bytes": 18076676,
+  "cached_file_bytes": 18087203,
   "core_budget_pass": true,
-  "runtime_repair": {
-    "preprocessing": "browser preprocessing moved to app/preprocess.js with separable triangle-filter resize plus ImageNet normalization to match the frozen Stage 7C/7E preprocessing contract more closely than the prior non-antialiased 2x2 bilinear path",
-    "model_hash_runtime_check": true,
-    "cache_name": "royacheck-stage8-a0-4037c096-20261004-r1",
-    "offline_badge_requires_cache_verification": true,
-    "capture_attribute_removed": true,
-    "cache_name_drift_static_check": true,
-    "route_variety_browser_smoke": true,
-    "stale_route_e2e_race_guard": true,
-    "safety_relevant_confident_miss_text": true,
-    "owner_deferral_decisions_recorded": true
-  },
-  "final_minor_smoke": {
-    "run_id": 37177866620,
-    "job_id": 111364182320,
-    "smoke_tested_commit": "d24cd352226a931a04c397ea9cf50a7b715a9fad",
-    "status": "PASS",
-    "routes_covered": [
-      "visible_rust",
-      "no_visible_rust",
-      "not_sure"
-    ],
-    "fixtures": [
-      {
-        "name": "visible_rust_spots_leaf",
-        "expected_route": "visible_rust"
-      },
-      {
-        "name": "no_visible_gradient_leaf",
-        "expected_route": "no_visible_rust"
-      },
-      {
-        "name": "not_sure_healthy_rust_blend_0.85",
-        "expected_route": "not_sure"
-      }
-    ]
+  "followup_repair": {
+    "saved_record_list": true,
+    "per_record_text_review_card": true,
+    "per_record_delete": true,
+    "fixed_string_lugisu_scaffold": true,
+    "lugisu_human_validation_required": true,
+    "submission_disclosure_drafts": true,
+    "raw_image_retention_changed": false,
+    "model_change": false,
+    "threshold_change": false,
+    "preprocessing_contract_change": false
   },
   "boundaries": {
     "deployment": false,
@@ -59,18 +35,23 @@
   "files": [
     {
       "path": "app/index.html",
-      "bytes": 6256,
-      "sha256": "12ddc7bc02f27724ddfd9ef259a842ee1c240f6b74935b01e55b65ea9b3e3b18"
+      "bytes": 8355,
+      "sha256": "2700f819e7893c8ebc19634ac3f8d6aeb7b86aff30845c6a6ab7dd3eb4114ef0"
     },
     {
       "path": "app/styles.css",
-      "bytes": 3376,
-      "sha256": "10f3eb70025fb2f91582dd648eb1c8a550845ce92fe8b75fc9bc1f454733d2b1"
+      "bytes": 4026,
+      "sha256": "6d1d0ded057ef8431afbf4005621010ba16bbf4c900d28606a0ab0ce4c2f5d52"
     },
     {
       "path": "app/app.js",
       "bytes": 14965,
       "sha256": "e7e02923ed2f6d98930d837bb5a1d027bff73cbbd8b1268baca65b2b0244c1e2"
+    },
+    {
+      "path": "app/followups.js",
+      "bytes": 7758,
+      "sha256": "eb7a47bdeb7429f4c37722a9596ac99df34280c85c73fd200d746b9a54256447"
     },
     {
       "path": "app/preprocess.js",
@@ -84,8 +65,8 @@
     },
     {
       "path": "app/sw.js",
-      "bytes": 1306,
-      "sha256": "14ce5880c60110c52f053a3ab526b66f668f9ad6fa07488c2cf0d5e55e0fe973"
+      "bytes": 1326,
+      "sha256": "c2377d9697e2c1941ec78f3fc8b0eb115a5d3382eeb485405a1066d9d6599675"
     },
     {
       "path": "app/assets/icon.svg",
