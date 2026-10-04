@@ -20,7 +20,7 @@ const requiredJsFragments = [
   'const IMAGENET_MEAN = [0.485, 0.456, 0.406];',
   'const IMAGENET_STD = [0.229, 0.224, 0.225];',
   'const INPUT_SIZE = 224;',
-  'executionProviders: ["wasm"]',
+  'import * as ort from "./vendor/onnxruntime-web/ort.wasm.min.mjs";',\n  'executionProviders: ["wasm"]',
   'ort.env.wasm.numThreads = 1;',
   'session.run({ input: tensor })',
   'results.logits.data',
