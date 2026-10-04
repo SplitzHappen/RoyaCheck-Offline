@@ -9,12 +9,13 @@ import {
 
 const ORT_BASE_URL = new URL("./vendor/onnxruntime-web/", import.meta.url).href;
 const MODEL_URL = "./assets/model/royacheck_a0_fp32.onnx";
-const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r1";
+const CACHE_NAME = "royacheck-stage8-a0-4037c096-20261004-r2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./followups.js",
   "./preprocess.js",
   "./manifest.webmanifest",
   "./assets/icon.svg",
@@ -72,6 +73,10 @@ function resetPostImageState() {
   humanConfirm.checked = false;
   farmerNote.value = "";
   updateSaveState();
+}
+
+function dispatchLocalRecordEvent(type, detail) {
+  document.dispatchEvent(new CustomEvent(type, { detail }));
 }
 
 async function sha256Hex(buffer) {
@@ -184,6 +189,7 @@ function renderProposal(route) {
   humanConfirm.checked = false;
   updateSaveState();
   proposalSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  dispatchLocalRecordEvent("royacheck:proposal-rendered", { route });
 }
 
 async function runInference() {
@@ -263,6 +269,18 @@ async function putRecord(record) {
   });
 }
 
+async function getRecord(id) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction("observations", "readonly");
+    const request = tx.objectStore("observations").get(id);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+    tx.oncomplete = () => db.close();
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
 async function deleteRecord(id) {
   const db = await openDb();
   return new Promise((resolve, reject) => {
@@ -304,6 +322,14 @@ function renderSaved(record) {
   savedSection.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function clearCurrentSessionRecordView() {
+  currentSavedId = null;
+  window.__royacheckLatestRecord = null;
+  savedSection.hidden = true;
+  reviewCard.hidden = true;
+  reviewFields.innerHTML = "";
+}
+
 async function saveObservation() {
   if (saveButton.disabled) return;
   const disposition = humanDisposition.value;
@@ -323,6 +349,7 @@ async function saveObservation() {
   await putRecord(record);
   renderSaved(record);
   window.__royacheckLatestRecord = record;
+  dispatchLocalRecordEvent("royacheck:record-saved", { record });
 }
 
 function appendReviewField(label, value) {
@@ -333,9 +360,14 @@ function appendReviewField(label, value) {
   reviewFields.append(dt, dd);
 }
 
-function prepareReviewCard() {
-  const record = window.__royacheckLatestRecord;
-  if (!record || record.id !== currentSavedId) return;
+async function prepareReviewCard() {
+  const record = currentSavedId ? await getRecord(currentSavedId) : null;
+  if (!record) {
+    clearCurrentSessionRecordView();
+    setStatus("The selected local record is no longer available.", true);
+    return;
+  }
+  window.__royacheckLatestRecord = record;
   reviewFields.innerHTML = "";
   appendReviewField("Crop", "Coffee");
   appendReviewField("Capture date", record.capture_date);
@@ -343,17 +375,16 @@ function prepareReviewCard() {
   appendReviewField("Human disposition", humanLabel(record.human_disposition));
   appendReviewField("Action route", record.action_route);
   appendReviewField("Farmer note", record.farmer_note);
-  appendReviewField("Image", "Not retained / not sent");
+  appendReviewField("Image", record.raw_image_retained === false ? "Not retained / not sent" : "Retention status unavailable — do not assume image is retained");
   reviewCard.hidden = false;
 }
 
 async function removeCurrentRecord() {
   if (!currentSavedId) return;
-  await deleteRecord(currentSavedId);
-  currentSavedId = null;
-  window.__royacheckLatestRecord = null;
-  savedSection.hidden = true;
-  reviewCard.hidden = true;
+  const deleteId = currentSavedId;
+  await deleteRecord(deleteId);
+  clearCurrentSessionRecordView();
+  dispatchLocalRecordEvent("royacheck:record-deleted", { id: deleteId, source: "current-session" });
 }
 
 async function verifyCoreCache() {
@@ -417,8 +448,18 @@ runButton.addEventListener("click", runInference);
 humanDisposition.addEventListener("change", updateSaveState);
 humanConfirm.addEventListener("change", updateSaveState);
 saveButton.addEventListener("click", () => saveObservation().catch((error) => setStatus(`Save failed: ${error.message}`, true)));
-reviewCardButton.addEventListener("click", prepareReviewCard);
-deleteButton.addEventListener("click", () => removeCurrentRecord().catch((error) => setStatus(`Delete failed: ${error.message}`, true)));
+reviewCardButton.addEventListener("click", () => prepareReviewCard().catch((error) => setStatus(`Review card failed: ${error.message}`, true)));
+deleteButton.addEventListener("click", () => {
+  if (!currentSavedId) return;
+  if (!confirm("Delete this local text record from this browser? This cannot be undone.")) return;
+  removeCurrentRecord().catch((error) => setStatus(`Delete failed: ${error.message}`, true));
+});
+
+document.addEventListener("royacheck:record-deleted", (event) => {
+  if (event.detail?.id && event.detail.id === currentSavedId) {
+    clearCurrentSessionRecordView();
+  }
+});
 
 window.__royacheckLatestRecord = null;
 window.__royacheckTest = {
