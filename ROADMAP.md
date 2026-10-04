@@ -1160,7 +1160,7 @@ The stage order is a dependency structure for the project record. Public artifac
 | 3 — Product scope / route lock | Closed — owner approved (PR #11); simplified by PR #15 |
 | 4 — Product/data/model/evaluation pre-registration | Closed — owner approved (PR #13) |
 | 5 — Readiness / fallback planning | Closed — owner approved (PR #18) |
-| 6 — Official-source recheck / greenlight | In review — recheck complete; owner closure/greenlight decision pending |
+| 6 — Official-source recheck / greenlight | Closed — owner approved (PR #19); Stage 7 greenlit in principle subject to 7.0/7A/7B |
 | 7 — Definitive AI technical proof | Not started |
 | 8 — Minimum complete MVP | Not started |
 | 9 — Hardening / evidence / claims audit | Not started |
@@ -1170,10 +1170,12 @@ The stage order is a dependency structure for the project record. Public artifac
 
 # Immediate next action
 
-Stages 0–5 are closed and merged. **Stage 6 is in review.**
+Stages 0–5 are closed and merged. **Stage 6 is Closed — owner approved (PR #19)** for the guarded merge sequence.
 
-The official-source recheck is complete in the Stage 6 record. No current authoritative source introduced a blocking rule or material rule change; the existing rule silences and pretrained-weight residual risk remain controlled as previously recorded.
+PR #19 must pass the authorized fresh GitHub guards and merge successfully.
 
-Stage 6 is **not closed** until José Antonio explicitly approves closure and the implementation greenlight.
+After that merge, stop and present the separate Owner Control Brief for Stage 7 before any Stage 7 action.
 
-**Stage 7 is not started and is not authorized.**
+The Stage 7 path is greenlit **in principle only**, subject to its mandatory 7.0 runtime gate, 7A exact data/licence/provenance gate, and 7B split/quarantine-manifest freeze.
+
+**Stage 7 remains Not started and no Stage 7 action is authorized by this Stage 6 closure sequence.**
