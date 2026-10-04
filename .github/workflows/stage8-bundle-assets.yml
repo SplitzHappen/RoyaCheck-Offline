@@ -45,7 +45,7 @@ jobs:
           mkdir -p /tmp/ort
           cd /tmp/ort
           npm init -y >/dev/null
-          npm install --no-audit --no-fund onnxruntime-web@1.30.0
+          npm install --no-audit --no-fund onnxruntime-web@1.30.0 playwright-core@1.55.0
           cp node_modules/onnxruntime-web/dist/ort.wasm.min.mjs "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort.wasm.min.mjs"
           cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs"
           cp node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm "$GITHUB_WORKSPACE/app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
@@ -136,23 +136,40 @@ jobs:
               const expected = [-2.0775744915008545, 0.43236833810806274, 1.0753188133239746, -2.017965793609619, -2.5632123947143555];
               const maxAbs = Math.max(...logits.map((v, i) => Math.abs(v - expected[i])));
               document.getElementById("result").textContent = (maxAbs <= 1e-4 ? "PASS" : "FAIL") + "|" + maxAbs + "|" + JSON.stringify(logits);
-              document.title = maxAbs <= 1e-4 ? "PASS" : "FAIL";
             } catch (e) {
               document.getElementById("result").textContent = "ERROR|" + (e && e.stack ? e.stack : String(e));
-              document.title = "ERROR";
             }
           })();
           </script></body></html>
           HTML
           python3 -m http.server 8765 --bind 127.0.0.1 --directory "$GITHUB_WORKSPACE" >/tmp/royacheck-http.log 2>&1 &
           SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true; rm -f app/.runtime-smoke.html' EXIT
+          trap 'kill "$SERVER_PID" 2>/dev/null || true; rm -f "$GITHUB_WORKSPACE/app/.runtime-smoke.html"' EXIT
           sleep 1
-          "$CHROME" --headless=new --no-sandbox --disable-gpu --virtual-time-budget=20000 --dump-dom http://127.0.0.1:8765/app/.runtime-smoke.html > /tmp/royacheck-runtime-dom.html
-          cat /tmp/royacheck-runtime-dom.html
-          grep -q 'id="result">PASS|' /tmp/royacheck-runtime-dom.html
-          RESULT="$(sed -n 's/.*id="result">\(PASS|[^<]*\)<.*/\1/p' /tmp/royacheck-runtime-dom.html | head -n1)"
-          echo "browser_parity_result=$RESULT"
+          cd /tmp/ort
+          CHROME_PATH="$CHROME" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" node - <<'JS'
+          const { chromium } = require("playwright-core");
+          (async () => {
+            const browser = await chromium.launch({
+              executablePath: process.env.CHROME_PATH,
+              headless: true,
+              args: ["--no-sandbox", "--disable-gpu"]
+            });
+            const page = await browser.newPage();
+            page.on("console", msg => console.log("browser_console", msg.type(), msg.text()));
+            page.on("pageerror", err => console.error("browser_pageerror", err.stack || String(err)));
+            await page.goto("http://127.0.0.1:8765/app/.runtime-smoke.html", { waitUntil: "load", timeout: 30000 });
+            await page.waitForFunction(() => {
+              const v = document.getElementById("result")?.textContent || "";
+              return v.startsWith("PASS|") || v.startsWith("FAIL|") || v.startsWith("ERROR|");
+            }, null, { timeout: 30000 });
+            const result = await page.locator("#result").textContent();
+            console.log("browser_parity_result", result);
+            await browser.close();
+            if (!result.startsWith("PASS|")) process.exit(1);
+          })().catch(e => { console.error(e); process.exit(1); });
+          JS
+          cd "$GITHUB_WORKSPACE"
 
       - name: Run static smoke checks
         run: npm test
