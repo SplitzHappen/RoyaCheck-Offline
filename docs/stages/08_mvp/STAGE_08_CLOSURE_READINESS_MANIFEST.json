@@ -1,0 +1,123 @@
+{
+  "status": "stage8_closure_readiness_package_draft",
+  "does_not_close_stage8": true,
+  "base_commit": "03487327a15d4f8286ca0e275c834fa4c21a0e40",
+  "branch": "chatgpt/stage-08-closure-readiness-package",
+  "scope": {
+    "documentation_only": true,
+    "app_changes": false,
+    "model_asset_changes": false,
+    "test_changes": false,
+    "product_behavior_changes": false
+  },
+  "frozen_model_contract": {
+    "model_path": "app/assets/model/royacheck_a0_fp32.onnx",
+    "model_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+    "source_artifact_id": "11292181113",
+    "artifact_name": "stage7d-a0-export-parity",
+    "onnx_runtime_web": "1.30.0",
+    "thresholds": {
+      "T_RUST": 0.5,
+      "T_HEALTHY": 0.7
+    },
+    "class_order": [
+      "healthy",
+      "rust_present",
+      "leaf_miner_no_rust",
+      "brown_leaf_spot_no_rust",
+      "cercospora_no_rust"
+    ],
+    "preprocessing": [
+      "RGB decode",
+      "both dimensions >=224",
+      "preserve full frame",
+      "resize 224x224",
+      "ImageNet normalization",
+      "no center crop"
+    ]
+  },
+  "merged_stage8_prs": [
+    {
+      "pr": 21,
+      "merge_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+      "summary": "browser-local MVP build"
+    },
+    {
+      "pr": 22,
+      "merge_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
+      "summary": "review-later and disclosure scaffold"
+    },
+    {
+      "pr": 23,
+      "merge_commit": "d2f9f976d07af4ac1a0ff58fb229ef00d4f9733b",
+      "summary": "evidence consolidation and audit package"
+    },
+    {
+      "pr": 24,
+      "merge_commit": "8f738852873723e9aed98b48ecfd96094f9dd1f1",
+      "summary": "closure-readiness hardening"
+    },
+    {
+      "pr": 25,
+      "merge_commit": "03487327a15d4f8286ca0e275c834fa4c21a0e40",
+      "summary": "browser offline inference evidence"
+    }
+  ],
+  "pr25_claude_evidence": {
+    "head": "7db0dfbc4125d1655c8b39e40c420c9a3ea22065",
+    "verdict": "PASS",
+    "npm_test": "PASS",
+    "browser_followups": "PASS",
+    "browser_inference_repeats": "50/50 PASS, 0 hangs",
+    "offline_flags": {
+      "offline_network_down_enforced": true,
+      "server_closed_before_offline_reload": true,
+      "post_cutoff_server_hits": 0
+    },
+    "negative_controls": {
+      "broken_service_worker_cache_fallback": "FAILS as expected",
+      "corrupted_model": "FAILS as expected",
+      "tiny_10x10_image": "FAILS at Local inference complete as expected"
+    }
+  },
+  "closure_decisions_required": {
+    "route_variety": {
+      "status": "unresolved",
+      "current_evidence": "browser inference evidence covers one synthetic-image route, apparently not_sure; threshold and route logic covered by closure guards",
+      "decision_needed": "owner acceptance or additional browser-route evidence"
+    },
+    "target_browser_device": {
+      "status": "unresolved",
+      "current_evidence": "headless Chromium/Linux evidence from Claude audit",
+      "repository_source_found": false,
+      "decision_needed": "accept headless Chromium/Linux or require real-device/specific-browser evidence"
+    },
+    "naming_branding": {
+      "status": "pending_source_confirmation",
+      "repository_source_found": false,
+      "decision_needed": "apply Stage 0 naming/branding policy if available or accept closure checklist"
+    },
+    "item36": {
+      "status": "owner_deferred",
+      "closure_condition": "must disclose deferral if local-language support is mentioned; do not claim completed validated Lugisu/Lumasaba support"
+    },
+    "closure_audit": {
+      "status": "required",
+      "auditor": "Claude"
+    },
+    "owner_closure_decision": {
+      "status": "required",
+      "owner": "Jose Antonio"
+    }
+  },
+  "claims_not_supported": [
+    "model performance",
+    "field validation",
+    "treatment recommendation",
+    "production deployment",
+    "completed validated Lugisu/Lumasaba support",
+    "World Bank Group endorsement",
+    "RoCoLe or challenge-set inference unless separately authorized and documented",
+    "Stage 8 closure from this package alone"
+  ]
+}
