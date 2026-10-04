@@ -22,6 +22,14 @@ Claude found that the original harness passed while Playwright `context.setOffli
 
 That finding meant the original evidence was a false positive for offline inference. The product itself appeared to work offline when Claude shut the server down after cache verification, but the harness did not prove it.
 
+## Claude finding at repaired PR #25 head
+
+Claude audited repaired head `db57bbda3229bfb3e9a49d7a8f82374c7c18adc5` and returned `PASS WITH MINOR REPAIRS`.
+
+Claude confirmed that the false-positive offline assertion was fixed: the repaired harness shuts the server down, proves zero post-cutoff server hits, and fails when the service-worker cache fallback is broken. Claude also confirmed the real browser-local ONNX inference path, too-small bypass exclusion, item 36 deferral, and claim boundaries.
+
+The remaining issue was reliability, not evidence correctness. The canonical command could intermittently hang inside `closeServer()` because Node `server.close()` may wait on stale keep-alive connections after the browser goes offline. Claude observed roughly 4 hangs in about 50 runs and validated that adding `server.closeAllConnections()` passed 40 of 40 runs with zero post-cutoff hits. This branch applies that reliability fix and adds a bounded close timeout so future close failures fail explicitly instead of hanging indefinitely.
+
 ## Scope implemented
 
 ### Real browser-local inference harness
@@ -36,7 +44,7 @@ The repaired built-in-server harness:
 4. Waits for the app's core offline cache verification.
 5. Sets the browser context offline.
 6. Records the server-hit cutoff.
-7. Closes the internal localhost server before the offline reload.
+7. Closes the internal localhost server before the offline reload using `server.close(...)`, `server.closeAllConnections()`, and a bounded timeout.
 8. Reloads the app while the browser context is offline and the server is unavailable.
 9. Waits for offline cache verification again.
 10. Uploads the synthetic `224 x 224` image.
@@ -71,6 +79,8 @@ node tests/browser-real-inference.mjs
 
 This is the canonical PR #25 evidence command because the harness controls and shuts down its own server after cache verification.
 
+Operational note: `npm run test:browser-inference` uses port 4173 by default. Stop any prior `npm run serve:app` / `python3 -m http.server 4173` process before running it, or set `ROYA_TEST_PORT` to another free port.
+
 ### External `ROYA_BASE_URL` mode
 
 `ROYA_BASE_URL` mode remains supported for exploratory runs against an already served app bundle, but it does **not** prove network-down offline inference by itself because the harness cannot close or count the external server. In that mode the harness prints a warning and reports `offline_network_down_enforced: false`.
@@ -104,16 +114,26 @@ Claude auditor-run evidence at initial head `91d7eee9786215b5540f9432a662ab6ac16
 - `npm run test:browser-inference`: PASS, but with a false-positive offline assertion.
 - `node tests/browser-real-inference.mjs` built-in mode: PASS, but the initial offline proof was insufficient.
 
-Required independent validation before Ready for Review at the repaired head:
+Claude auditor-run evidence at repaired head `db57bbda3229bfb3e9a49d7a8f82374c7c18adc5`:
+
+- `npm test`: PASS.
+- `npm run test:browser-followups`: PASS.
+- `npm run test:browser-inference`: PASS when it completed, but intermittent hangs were observed before the close reliability fix.
+- Direct built-in inference mode: PASS.
+- External `ROYA_BASE_URL` mode: PASS with `offline_network_down_enforced: false`, correctly labelled as limited.
+- Negative controls: broken service-worker cache fallback failed; corrupted model failed; `10 x 10` too-small path failed.
+
+Required independent validation before Ready for Review at the close-reliability fixed head:
 
 - `npm test`
 - `npm run test:browser-followups`
 - `npm run test:browser-inference`
+- repeated `npm run test:browser-inference` runs sufficient to confirm the intermittent close hang is resolved and zero post-cutoff server hits remain intact
 - optional direct external-mode run with `ROYA_BASE_URL`, understood as not independently proving network-down offline behavior unless external server shutdown evidence is supplied
 
 ## Remaining Stage 8 closure-readiness considerations
 
-If the repaired browser inference harness passes under independent audit with zero post-cutoff server hits, the prior current-head browser offline inference blocker is substantially resolved. Before Stage 8 closure, a closure package should still ask Claude to verify:
+If the repaired browser inference harness passes under independent audit with zero post-cutoff server hits and no close hang, the prior current-head browser offline inference blocker is substantially resolved. Before Stage 8 closure, a closure package should still ask Claude to verify:
 
 1. the current head runs the full intended evidence suite;
 2. the browser inference harness really exercises ONNX inference and not a fallback or too-small path;
