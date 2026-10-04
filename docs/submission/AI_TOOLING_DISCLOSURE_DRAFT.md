@@ -1,35 +1,23 @@
 # AI / Tooling Disclosure Draft
 
-This draft is for the eventual hackathon submission package. It is not final submission text.
+**Status:** draft; not final submission text.
 
-## Human author and accountability
+Most or all code, tests, documentation, evidence summaries, and PR text in this repository were drafted or edited with AI assistance under José Antonio Tamburini Martínez's direction and authorization.
 
-José Antonio remains the sole human entrant, product owner, final decision-maker, presenter, and accountable author.
+## Roles
 
-## AI-assisted work
+- José Antonio Tamburini Martínez is the sole human entrant, product owner, final decision-maker, and accountable author.
+- ChatGPT / Vale was used as a primary AI-assisted builder, debugger, documentation drafter, and integration assistant.
+- Claude was used as an independent adversarial auditor/red-team reviewer. Claude was not used as an accountable co-author or final decision-maker.
 
-ChatGPT/Vale was used as an AI-assisted builder and integrator for:
+## Authorship and commits
 
-- research synthesis and planning;
-- architecture and scope control;
-- code drafting;
-- test drafting;
-- documentation drafting;
-- audit reconciliation and issue tracking.
+Some commits were created through connected GitHub tooling under the owner's GitHub account. Those commits may contain AI-generated or AI-edited code, tests, documentation, and evidence text. The owner retained decision authority over whether to authorize changes, mark PRs ready, merge PRs, or defer scope.
 
-Claude was used as an independent adversarial auditor/red-team reviewer. Claude was not treated as a co-builder by default.
+## Conservative disclosure posture
 
-## Repository authorship note
+The hackathon AI/tooling rule must be re-read before final submission. If the final submission asks for AI-use disclosure, this project should disclose AI assistance broadly rather than narrowly.
 
-Some code, tests, and evidence documentation were AI-assisted. José authorized the relevant repository actions and remains responsible for final review, claims, presentation, and submission.
+## Human accountability
 
-## Non-claims
-
-The AI tooling disclosure does not imply:
-
-- field validation;
-- regulatory or agronomic approval;
-- treatment recommendation capability;
-- automatic diagnosis;
-- autonomous farmer advice;
-- model retraining during the submission window unless separately documented.
+All claims in the final submission must be bounded to evidence that the owner can stand behind. AI-generated text must not be treated as evidence unless it is backed by repository artifacts, tests, or external sources.
