@@ -14,6 +14,16 @@ PR #24 merged Stage 8 closure-readiness hardening: closure guard tests, routing 
 
 This PR adds a constrained replacement evidence path intended to exercise real browser-local ONNX inference while offline, without using RoCoLe or challenge-set inference.
 
+## Initial Claude finding and repair context
+
+Claude audited initial PR #25 head `91d7eee9786215b5540f9432a662ab6ac16920b5` and returned `PASS WITH MAJOR REPAIRS`.
+
+The major finding was that the original offline assertion was a false positive. Playwright `context.setOffline(true)` did not block service-worker-originated network-first fetches. During the claimed offline phase, Claude observed local-server hits including the ONNX model and WASM files. Claude also confirmed that the harness still passed when service-worker cache fallback was deliberately removed.
+
+Claude separately found that the product appeared to work offline when the server was actually shut down after cache verification. The defect was in the evidence harness, not in product code.
+
+The repaired harness must therefore prove offline inference by shutting down the built-in local server after cache verification and asserting zero post-cutoff server hits.
+
 ## Claimed scope
 
 Expected changed files:
@@ -23,23 +33,31 @@ Expected changed files:
 - `docs/stages/08_mvp/STAGE_08_BROWSER_INFERENCE_EVIDENCE.md`
 - `docs/audits/stage-08-browser-inference/AUDIT_PACKAGE.md`
 
-Expected implementation:
+Expected implementation after repair:
 
-- add `tests/browser-real-inference.mjs`;
-- add `npm run test:browser-inference`;
+- add and repair `tests/browser-real-inference.mjs`;
+- make `npm run test:browser-inference` run built-in-server mode directly;
 - generate a deterministic synthetic `224 x 224` PNG inside the test process;
 - load the committed app bundle in headless Chromium;
 - verify the app's offline cache;
 - set the browser context offline;
-- reload the app while offline;
+- record the local-server hit cutoff;
+- close the built-in local server before offline reload;
+- reload the app while offline and while the server is unavailable;
+- verify the app's offline cache again;
 - upload the synthetic eligible-size image;
 - run the normal UI inference path through the frozen browser-local ONNX model;
 - assert the route is one of the three public routes;
 - assert `Local inference complete` is reached;
 - assert the too-small bypass was not used;
 - save a human `request_review` disposition;
-- assert the saved record keeps `raw_image_retained: false` and the frozen model SHA-256;
-- assert observed requests are GET and same-origin or `blob:`.
+- assert the saved record keeps `raw_image_retained: false`;
+- assert the saved record has no `raw_image` or `image_blob` field;
+- assert the saved record carries the frozen model SHA-256;
+- assert observed page requests are GET and same-origin or `blob:`;
+- assert zero local-server hits after the offline cutoff in built-in mode.
+
+`ROYA_BASE_URL` mode may remain supported, but it must not be treated as full network-down proof unless external server shutdown or equivalent evidence is supplied. The canonical PR #25 evidence command is `npm run test:browser-inference`, which should run the built-in server and shut it down itself.
 
 ## Requested audit tasks
 
@@ -56,7 +74,7 @@ Run, if feasible:
 - `npm test`
 - `npm run test:browser-followups`
 - `npm run test:browser-inference`
-- `node tests/browser-real-inference.mjs` with no `ROYA_BASE_URL`
+- optionally `ROYA_BASE_URL=http://127.0.0.1:4173/app/ node tests/browser-real-inference.mjs`, while treating this external mode as limited unless the external server is stopped or separately instrumented
 
 Report environment, command, result, and any failures.
 
@@ -74,15 +92,17 @@ Confirm whether the harness is adequate as **browser execution evidence**, while
 
 ### D. Offline adequacy
 
-Verify whether the harness meaningfully exercises offline execution:
+Verify whether the repaired harness meaningfully exercises offline execution:
 
 - core cache verified before offline reload;
 - browser context set offline;
-- app reloads while offline;
+- built-in local server closed before offline reload;
+- zero local-server hits after the offline cutoff;
+- app reloads while offline and while the server is unavailable;
 - inference completes while offline;
 - requests remain GET and same-origin or `blob:`.
 
-Flag any false positives or gaps.
+Please mutation-test or reason whether the harness would fail if the service-worker cache fallback were removed or broken.
 
 ### E. Claim safety
 
@@ -98,9 +118,17 @@ Verify that docs and PR wording do not claim:
 - treatment guidance;
 - completed validated Lugisu/Lumasaba support.
 
-### F. Remaining Stage 8 closure-readiness
+### F. Item 36 carry-forward
 
-Assess whether passing this PR's evidence suite is enough to remove the prior current-head browser offline inference blocker, or whether any additional evidence remains necessary before Stage 8 closure.
+Verify that the PR preserves the owner decision:
+
+- validated Lugisu/Lumasaba local-language support remains deferred due to time constraint;
+- the English-only scaffold is not completed local-language support;
+- demo/submission/pitch material must disclose the deferral if local-language support is mentioned.
+
+### G. Remaining Stage 8 closure-readiness
+
+Assess whether passing this PR's repaired evidence suite is enough to remove the prior current-head browser offline inference blocker, or whether any additional evidence remains necessary before Stage 8 closure.
 
 Do not treat this PR itself as Stage 8 closure unless a separate owner decision and closure audit package authorize that.
 
@@ -117,5 +145,6 @@ Please answer in this structure:
 3. Test results.
 4. Scope and claim-safety assessment.
 5. Real-inference and offline adequacy assessment.
-6. Remaining blockers before Stage 8 closure-readiness.
-7. Final recommendation: keep draft, Ready for Review after repairs, or Ready for Review now.
+6. Item 36 deferral assessment.
+7. Remaining blockers before Stage 8 closure-readiness.
+8. Final recommendation: keep draft, Ready for Review after repairs, or Ready for Review now.
