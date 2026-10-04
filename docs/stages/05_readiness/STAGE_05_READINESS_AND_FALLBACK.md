@@ -1,7 +1,7 @@
 # Stage 5 — Readiness, Fallback, and Submission Protection
 
 **Stage:** 5  
-**Status:** In review — deliberate readiness verification complete; owner closure decision pending  
+**Status:** In review — readiness verification and owner-side reconciliation complete; owner closure decision pending  
 **Sector:** Agriculture  
 **Route:** RoyaCheck Offline  
 **Controlling technical preregistration:** `docs/stages/04_technical_prereg/STAGE_04_TECHNICAL_PREREGISTRATION.md`  
@@ -466,12 +466,12 @@ If owner-side network/power becomes unstable:
 | iPhone/Safari physical proof | **Unverified by design** | Device available; protocol fixed | Run later physical test | disclose exact tested context/failure | No | No |
 | Static hosting infrastructure | **Verified with repair needed** | Render static-site capability/live historical deploy exists | Bind fresh site to active repo later | GitHub Pages | No | No |
 | Final deployment | **Not done by design** | Prohibited in Stage 5 | Deploy only when authorized | recovery host | No | No |
-| Video workflow | **Plan ready; rehearsal unverified** | Stage 0 formats known | Owner confirms recording/export route | phone + simple screen recorder | **Yes** | **Yes, small owner check** |
-| Authenticated submission access | **Previously verified; current session unverified** | Stage 0 captured acceptance/access | Owner opens both submission surfaces | preserve screenshots/receipts later | **Yes** | **Yes, small owner check** |
+| Video workflow | **Ready with bounded fallback** | Owner confirms screen recording; iPhone MOV direct-record path available; export assistance can be provided later | Rehearse only when production stage begins | iPhone direct MOV + simple screen recorder | No | No |
+| Authenticated submission access | **Verified by owner** | Hack-Nation login works; project editable; Google Form backup link opens | Recheck only at submission time | preserve screenshots/receipts later | No | No |
 | Owner local machine | **Not directly inspected** | CI route already works | Optional local check only if desired | GitHub Actions primary | No | No |
-| Backup/recovery | **Plan ready** | Git + workflow-artifact path tested | Owner confirms local storage/location | cloud + local copies | **Yes** | **Yes, small owner check** |
+| Backup/recovery | **Verified by owner + tested technical path** | Local storage sufficient; Git + workflow-artifact path tested | Preserve local copies of frozen artifacts/videos later | cloud + local copies | No | No |
 | Repository licence/notices | **Plan ready** | separation rules defined | populate after final dependencies freeze | conservative notice + exclusions | No | No |
-| Network/power contingency | **Plan ready; owner state unknown** | cloud CI reduces local dependency | Owner confirms practical fallback | cloud CI + local copies | **Yes** | **Yes, small owner check** |
+| Network/power contingency | **Verified by owner** | Stable internet with practical backup; power contingency available | Preserve critical files after first successful acquisition | cloud CI + local copies | No | No |
 
 ---
 
@@ -540,31 +540,82 @@ The winning execution pattern is:
 
 ---
 
-## 16. Owner checks needed before Stage 5 closure
+## 16. Owner-side readiness reconciliation — 2026-10-03
 
-José should answer/confirm these four items only:
+José Antonio reported:
 
-1. **Submission access:** Can you currently open the Hack-Nation Team & Submission page while logged in, and does the project remain editable?
-2. **Backup form:** Can you open the official Google Form backup link from the participant surface?
-3. **Video production:** Do you have a working way tonight to make:
-   - a selfie/team-introduction clip,
-   - a screen recording with narration,
-   - an MP4/MOV export?
-4. **Recovery:** Do you have sufficient local storage and a practical network/power fallback to retain downloaded datasets, frozen model artifacts, and final videos until submission?
+### Submission access
 
-If any answer is no, Stage 5 should repair that readiness item before closure.
+- Hack-Nation Team & Submission login: **YES**;
+- project remains editable: **YES**.
+
+**Status: Verified by owner.**
+
+### Google Form backup
+
+- official Google Form backup link opens from the participant materials/platform: **YES**.
+
+The trailing slash in the owner's response is treated as punctuation, not as a contradictory answer.
+
+**Status: Verified by owner.**
+
+### Video production
+
+Owner state:
+
+- team-introduction recording: **available with a simple fallback, though not yet rehearsed**;
+- product/demo screen recording with narration: **YES**;
+- accepted-file export: **available with assistance; not yet rehearsed end to end**.
+
+Low-risk fallback procedure:
+
+1. **Team introduction:** record directly with the iPhone Camera app. The platform accepts MOV, so a clean direct MOV file is sufficient; sophisticated editing is not required.
+2. **If trimming is needed:** use the phone's built-in trim function and retain the original.
+3. **Demo / technical walkthrough:** use the owner's already-working screen-recording route with narration.
+4. **If the resulting file is not already MP4 or MOV:** convert/export once with a simple standard tool at production time; do not add a complex editing workflow.
+5. Before final upload, verify duration, playback, audio intelligibility, file extension, and file size.
+
+**Status: Ready with bounded fallback. Not a Stage 5 blocker.**
+
+### Recovery
+
+Owner reported:
+
+- sufficient local storage: **YES**;
+- stable internet plus practical backup: **YES**;
+- practical power contingency: **YES**.
+
+**Status: Verified by owner.**
+
+### Owner-side readiness verdict
+
+No owner-side Stage 5 blocker remains.
+
+The only remaining unverified items are intentionally assigned to later authorized gates, including:
+
+- exact BRACOL archive/hash/metadata inspection;
+- exact RoCoLe quarantine manifest;
+- real iPhone/Safari Home Screen PWA evidence;
+- final active-repository static deployment;
+- final video production;
+- final submission.
+
+Those are not Stage 5 closure blockers because Stage 5 has established an executable path and fallback for each without consuming protected evidence.
 
 ---
 
 ## 17. Stage 5 closure condition
 
-Stage 5 should close only after:
+The readiness verification and owner-side reconciliation are complete.
 
-- the four owner checks above are answered;
-- any resulting blocker is repaired or explicitly accepted with a fallback;
-- the readiness matrix remains consistent with Stage 3/4;
-- José explicitly authorizes Stage 5 closure.
+Stage 5 may now close only after José Antonio explicitly approves closure and guarded merge of PR #18.
 
-No Claude audit is currently required because this Stage 5 pass has not introduced a new material architecture, evaluation, safety, licensing or compliance decision.
+No Claude audit is required because this Stage 5 pass has not introduced a new material architecture, evaluation, safety, licensing or compliance decision. If a later stage reveals such a change, the applicable escalation rule remains in force.
 
-**Current Stage 5 status: In review — deliberate readiness verification complete; owner closure decision pending.**
+Until owner closure is granted:
+
+- PR #18 remains draft and unmerged;
+- Stage 6 remains not started;
+- Stage 7 remains not started and unauthorized.
+
+**Current Stage 5 status: In review — readiness verification and owner-side reconciliation complete; owner closure decision pending.**
