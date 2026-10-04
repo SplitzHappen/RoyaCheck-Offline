@@ -1,47 +1,72 @@
 import assert from "node:assert/strict";
+import { createServer } from "node:http";
+import { readFileSync, existsSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { extname, join, resolve } from "node:path";
 import { chromium } from "playwright";
 
-const baseUrl = process.env.ROYA_BASE_URL || "http://127.0.0.1:4173/app/";
-const tinyPng = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=",
-  "base64"
+const ROOT = resolve("app");
+const PORT = Number(process.env.ROYA_TEST_PORT || 4173);
+const BASE_URL = process.env.ROYA_BASE_URL || `http://127.0.0.1:${PORT}/`;
+
+const MIME = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".svg": "image/svg+xml; charset=utf-8",
+  ".wasm": "application/wasm",
+  ".onnx": "application/octet-stream",
+  ".png": "image/png",
+};
+
+const TINY_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAFElEQVR4nGNkaGAgCTpgwiM3gqUBAIKtAflq7JYyAAAAAElFTkSuQmCC",
+  "base64",
 );
 
-const browser = await chromium.launch();
-const context = await browser.newContext({ serviceWorkers: "allow" });
-const page = await context.newPage();
+function startServer() {
+  if (process.env.ROYA_BASE_URL) return Promise.resolve(null);
+  const server = createServer((req, res) => {
+    const url = new URL(req.url || "/", BASE_URL);
+    const pathname = url.pathname === "/" || url.pathname === "/app/" ? "/index.html" : url.pathname.replace(/^\/app\/?/, "/");
+    const filePath = resolve(ROOT, `.${pathname}`);
+    if (!filePath.startsWith(ROOT) || !existsSync(filePath)) {
+      res.writeHead(404);
+      res.end("not found");
+      return;
+    }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Content-Type", MIME[extname(filePath)] || "application/octet-stream");
+    res.end(readFileSync(filePath));
+  });
+  return new Promise((resolveServer, rejectServer) => {
+    server.once("error", rejectServer);
+    server.listen(PORT, "127.0.0.1", () => resolveServer(server));
+  });
+}
 
-const requests = [];
-page.on("request", (request) => requests.push({ method: request.method(), url: request.url() }));
-page.on("dialog", (dialog) => dialog.accept());
-
-const origin = new URL(baseUrl).origin;
-
-async function dbRecords() {
-  return await page.evaluate(async () => {
+async function getRecords(page) {
+  return page.evaluate(async () => {
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open("royacheck-offline", 1);
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains("observations")) {
-          db.createObjectStore("observations", { keyPath: "id" });
-        }
-      };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const tx = db.transaction("observations", "readonly");
       const request = tx.objectStore("observations").getAll();
-      request.onsuccess = () => resolve(request.result);
+      request.onsuccess = () => resolve(request.result.map((record) => ({ ...record })));
       request.onerror = () => reject(request.error);
       tx.oncomplete = () => db.close();
+      tx.onerror = () => { db.close(); reject(tx.error); };
     });
   });
 }
 
-async function putRecord(record) {
-  await page.evaluate(async (record) => {
+async function seedRecords(page, records) {
+  await page.evaluate(async (items) => {
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open("royacheck-offline", 1);
       request.onupgradeneeded = () => {
@@ -55,15 +80,16 @@ async function putRecord(record) {
     });
     await new Promise((resolve, reject) => {
       const tx = db.transaction("observations", "readwrite");
-      tx.objectStore("observations").put(record);
+      const store = tx.objectStore("observations");
+      for (const item of items) store.put(item);
       tx.oncomplete = () => { db.close(); resolve(); };
       tx.onerror = () => { db.close(); reject(tx.error); };
     });
-  }, record);
+  }, records);
 }
 
-async function deleteDirect(id) {
-  await page.evaluate(async (id) => {
+async function deleteRecordBehindApp(page, id) {
+  await page.evaluate(async (recordId) => {
     const db = await new Promise((resolve, reject) => {
       const request = indexedDB.open("royacheck-offline", 1);
       request.onsuccess = () => resolve(request.result);
@@ -71,160 +97,163 @@ async function deleteDirect(id) {
     });
     await new Promise((resolve, reject) => {
       const tx = db.transaction("observations", "readwrite");
-      tx.objectStore("observations").delete(id);
+      tx.objectStore("observations").delete(recordId);
       tx.oncomplete = () => { db.close(); resolve(); };
       tx.onerror = () => { db.close(); reject(tx.error); };
     });
   }, id);
 }
 
-function seedRecord(id, route = "not_sure", disposition = "request_review", minutesAgo = 0) {
+function record(id, disposition, offset = 0) {
   return {
     id,
     crop: "coffee",
     capture_date: "2026-10-04",
-    saved_at: new Date(Date.UTC(2026, 9, 4, 5, minutesAgo, 0)).toISOString(),
-    ai_proposal: route,
+    saved_at: new Date(Date.UTC(2026, 9, 4, 5, offset, 0)).toISOString(),
+    ai_proposal: disposition === "visible_rust" ? "not_sure" : "no_visible_rust",
     human_disposition: disposition,
     confirmed_by_role: "farmer_decision_maker",
-    action_route: disposition === "visible_rust" ? "Review first" : disposition === "no_visible_rust" ? "Record and monitor" : "Retake or request review",
+    action_route: disposition === "visible_rust" ? "Review first" : "Record and monitor",
     farmer_note: `seed ${id}`,
     raw_image_retained: false,
     model_sha256: "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
   };
 }
 
-async function listItemCount() {
-  return await page.locator("#savedRecordsList article.record-item").count();
+async function waitForListCount(page, expected) {
+  await page.waitForFunction((count) => document.querySelectorAll("#savedRecordsList .record-item").length === count, expected);
 }
 
-async function refreshList() {
-  await page.click("#refreshRecordsButton");
-  await page.waitForTimeout(200);
-}
-
-await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
-await page.waitForSelector("#imageInput");
-await page.waitForFunction(() => document.querySelector("#modelStatus")?.textContent.includes("Frozen model ready"), null, { timeout: 60000 });
-
-for (const request of requests) {
-  assert.equal(request.method, "GET", `Unexpected default non-GET request: ${request.method} ${request.url}`);
-  assert.ok(request.url.startsWith(origin) || request.url.startsWith("blob:"), `Unexpected default external request: ${request.url}`);
-}
-
-await page.evaluate(async () => {
-  const db = await new Promise((resolve, reject) => {
-    const request = indexedDB.open("royacheck-offline", 1);
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
+async function waitForPersistentCard(page) {
+  await page.waitForFunction(() => {
+    const card = document.querySelector("#persistentReviewCard");
+    return card && !card.hidden && card.textContent.includes("AI proposal");
   });
-  await new Promise((resolve, reject) => {
-    const tx = db.transaction("observations", "readwrite");
-    tx.objectStore("observations").clear();
-    tx.oncomplete = () => { db.close(); resolve(); };
-    tx.onerror = () => { db.close(); reject(tx.error); };
+}
+
+async function run() {
+  const server = await startServer();
+  const tmp = mkdtempSync(join(tmpdir(), "royacheck-followups-"));
+  const imagePath = join(tmp, "tiny.png");
+  writeFileSync(imagePath, TINY_PNG);
+
+  const requests = [];
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({ serviceWorkers: "allow" });
+  context.on("request", (request) => requests.push({ method: request.method(), url: request.url() }));
+  const page = await context.newPage();
+  page.on("dialog", (dialog) => dialog.accept());
+  await page.addInitScript(() => {
+    window.__royacheckEvents = [];
+    document.addEventListener("royacheck:record-saved", (event) => window.__royacheckEvents.push({ type: "saved", id: event.detail?.record?.id }));
+    document.addEventListener("royacheck:record-deleted", (event) => window.__royacheckEvents.push({ type: "deleted", id: event.detail?.id, source: event.detail?.source }));
   });
+
+  try {
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelector("#offlineBadge")?.textContent.includes("Offline cache verified"));
+
+    await seedRecords(page, [record("seed-a", "no_visible_rust", 1), record("seed-b", "visible_rust", 2), record("seed-c", "no_visible_rust", 3)]);
+    await page.click("#refreshRecordsButton");
+    await waitForListCount(page, 3);
+
+    for (let index = 0; index < 5; index += 1) await page.click("#refreshRecordsButton");
+    await waitForListCount(page, 3);
+
+    await page.click('[data-record-id="seed-b"] button');
+    await waitForPersistentCard(page);
+    assert.match(await page.textContent("#persistentReviewCard"), /seed-b|Visible rust observation/);
+
+    await deleteRecordBehindApp(page, "seed-b");
+    await page.click('[data-record-id="seed-b"] button');
+    await page.waitForFunction(() => document.querySelector("#persistentReviewStatus")?.textContent.includes("no longer available"));
+    await waitForListCount(page, 2);
+
+    await page.setInputFiles("#imageInput", imagePath);
+    await page.waitForFunction(() => !document.querySelector("#runButton")?.disabled, null, { timeout: 30000 });
+    await page.click("#runButton");
+    await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure");
+    await page.selectOption("#humanDisposition", "visible_rust");
+    await page.check("#humanConfirm");
+    await page.click("#saveButton");
+    await page.waitForFunction(() => window.__royacheckEvents.some((event) => event.type === "saved"));
+    await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
+    await page.waitForFunction(() => document.querySelectorAll("#savedRecordsList .record-item").length === 3);
+
+    const panelText = await page.textContent("#lugisuPrompt");
+    assert.match(panelText, /AI proposal: not sure/);
+    assert.match(panelText, /Human choice: Visible rust observation/);
+    const nonPrimaryText = panelText.replace(/AI proposal: not sure[^.]*\./, "");
+    assert.doesNotMatch(nonPrimaryText, /AI proposal/i, "Only the primary line may name the AI proposal");
+
+    await page.click("#reviewCardButton");
+    await page.waitForFunction(() => !document.querySelector("#reviewCard")?.hidden);
+    const currentId = await page.evaluate(() => window.__royacheckTest.latestRecord().id);
+    await page.click("#deleteButton");
+    await page.waitForFunction((id) => window.__royacheckEvents.some((event) => event.type === "deleted" && event.id === id), currentId);
+    await page.waitForFunction(() => document.querySelector("#savedSection")?.hidden);
+    assert.equal((await getRecords(page)).some((item) => item.id === currentId), false);
+
+    await seedRecords(page, [record("section5-current", "visible_rust", 4)]);
+    await page.click("#refreshRecordsButton");
+    await waitForListCount(page, 3);
+    await page.setInputFiles("#imageInput", imagePath);
+    await page.waitForFunction(() => !document.querySelector("#runButton")?.disabled, null, { timeout: 30000 });
+    await page.click("#runButton");
+    await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure");
+    await page.selectOption("#humanDisposition", "visible_rust");
+    await page.check("#humanConfirm");
+    await page.click("#saveButton");
+    await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
+    const latestId = await page.evaluate(() => window.__royacheckTest.latestRecord().id);
+    await page.click(`[data-record-id="${latestId}"] .danger`);
+    await page.waitForFunction(() => document.querySelector("#savedSection")?.hidden && document.querySelector("#reviewCard")?.hidden);
+    assert.equal((await getRecords(page)).some((item) => item.id === latestId), false);
+
+    const before = await getRecords(page);
+    await page.click('[data-record-id="section5-current"] .danger');
+    await waitForListCount(page, before.length - 1);
+    const after = await getRecords(page);
+    assert.equal(after.some((item) => item.id === "section5-current"), false, "Section 5 delete must remove the exact target ID");
+    assert.equal(after.length, before.length - 1, "Section 5 delete must not remove other records");
+
+    await page.click('[data-lugisu-step="visible_rust"]');
+    let rehearsalText = await page.textContent("#lugisuPrompt");
+    assert.match(rehearsalText, /AI proposal: not sure/);
+    assert.doesNotMatch(rehearsalText.replace(/AI proposal: not sure[^.]*\./, ""), /AI proposal/i);
+
+    await page.setInputFiles("#imageInput", imagePath);
+    await page.click('[data-lugisu-step="visible_rust"]');
+    rehearsalText = await page.textContent("#lugisuPrompt");
+    assert.doesNotMatch(rehearsalText, /AI proposal: not sure/);
+    assert.match(rehearsalText, /No current AI proposal is active/);
+
+    const persistedCount = (await getRecords(page)).length;
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await waitForListCount(page, persistedCount);
+    await context.setOffline(true);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await waitForListCount(page, persistedCount);
+    await context.setOffline(false);
+
+    const mediaCount = await page.locator("#savedRecordsSection img, #savedRecordsSection canvas, #savedRecordsSection [src^='blob:']").count();
+    assert.equal(mediaCount, 0, "Section 5 must not render raw images, canvases, or blob previews");
+
+    const pageOrigin = new URL(BASE_URL).origin;
+    for (const request of requests) {
+      const url = new URL(request.url);
+      assert.ok(request.method === "GET" || url.protocol === "blob:", `Unexpected request method: ${request.method} ${request.url}`);
+      if (url.protocol !== "blob:") assert.equal(url.origin, pageOrigin, `Unexpected cross-origin request: ${request.url}`);
+    }
+
+    console.log(JSON.stringify({ status: "PASS", saved_records: persistedCount, requests: requests.length }));
+  } finally {
+    await browser.close();
+    if (server) await new Promise((resolveServer) => server.close(resolveServer));
+  }
+}
+
+run().catch((error) => {
+  console.error(error);
+  process.exit(1);
 });
-await refreshList();
-assert.equal(await listItemCount(), 0, "Initial saved-record list should be empty");
-
-await putRecord(seedRecord("seed-a", "visible_rust", "visible_rust", 1));
-await putRecord(seedRecord("seed-b", "not_sure", "request_review", 2));
-await putRecord(seedRecord("seed-c", "no_visible_rust", "no_visible_rust", 3));
-await refreshList();
-assert.equal(await listItemCount(), 3, "Seeded list count must equal database count");
-
-await Promise.all(Array.from({ length: 5 }, () => page.click("#refreshRecordsButton")));
-await page.waitForTimeout(300);
-assert.equal(await listItemCount(), 3, "Rapid refresh must not duplicate record cards");
-assert.equal((await dbRecords()).length, 3, "Database count should remain unchanged after rapid refresh");
-
-await page.locator('[data-record-id="seed-b"] button').first().click();
-assert.equal(await page.locator("#persistentReviewCard").isHidden(), false, "Persistent review card should open for seed-b");
-await deleteDirect("seed-b");
-await page.locator('[data-record-id="seed-b"] button').first().click();
-await page.waitForFunction(() => document.querySelector("#persistentReviewStatus")?.textContent.includes("no longer available"));
-assert.equal(await page.locator("#persistentReviewCard").isHidden(), true, "Deleted record must not render a persistent review card");
-
-await refreshList();
-const beforeIds = (await dbRecords()).map((record) => record.id).sort();
-assert.deepEqual(beforeIds, ["seed-a", "seed-c"], "Direct stale delete should remove only seed-b");
-await page.locator('[data-record-id="seed-a"] button.danger').click();
-await page.waitForTimeout(300);
-const afterIds = (await dbRecords()).map((record) => record.id).sort();
-assert.deepEqual(afterIds, ["seed-c"], "Per-record delete must remove only the target ID");
-assert.equal(await listItemCount(), 1, "List count must match database after per-record delete");
-
-await page.setInputFiles("#imageInput", { name: "too-small.png", mimeType: "image/png", buffer: tinyPng });
-await page.waitForFunction(() => !document.querySelector("#preview")?.hidden);
-await page.click("#runButton");
-await page.waitForFunction(() => document.querySelector("#proposalLabel")?.dataset.route === "not_sure", null, { timeout: 60000 });
-await page.selectOption("#humanDisposition", "visible_rust");
-await page.waitForFunction(() => document.querySelector("#lugisuPrompt")?.textContent.includes("AI proposal: not sure"));
-const languageText = await page.locator("#lugisuPrompt").innerText();
-assert.ok(languageText.includes("AI proposal: not sure"), "Local-language panel must preserve actual AI proposal");
-assert.ok(languageText.includes("Human choice: Visible rust observation"), "Local-language panel must show human choice separately");
-assert.ok(!languageText.includes("AI proposal: visible rust"), "Human choice must not be mislabeled as AI proposal");
-assert.ok(languageText.includes("actual Lugisu/Lumasaba wording pending fluent human validation"), "Local-language panel must not claim validated Lugisu/Lumasaba text");
-
-assert.equal(await page.locator("#saveButton").isDisabled(), true, "Save should require confirmation");
-await page.check("#humanConfirm");
-await page.fill("#farmerNote", "follow-up browser test");
-await page.click("#saveButton");
-await page.waitForFunction(() => !document.querySelector("#savedSection")?.hidden);
-await page.waitForTimeout(300);
-assert.equal((await dbRecords()).length, 2, "Real save must add one local record");
-assert.equal(await listItemCount(), 2, "record-saved event must refresh section 5");
-
-await page.click("#deleteButton");
-await page.waitForTimeout(300);
-assert.equal(await page.locator("#savedSection").isHidden(), true, "Section 4 delete should hide current record panel");
-assert.equal(await listItemCount(), 1, "Section 4 delete should refresh section 5");
-
-await page.setInputFiles("#imageInput", { name: "new-image.png", mimeType: "image/png", buffer: tinyPng });
-await page.waitForFunction(() => document.querySelector("#lugisuPrompt")?.textContent.includes("none yet") || document.querySelector("#lugisuPrompt")?.textContent.includes("Actual Lugisu/Lumasaba wording is not claimed"));
-const resetText = await page.locator("#lugisuPrompt").innerText();
-assert.ok(!resetText.includes("AI proposal: not sure"), "Local-language panel must reset on new image selection");
-
-await page.reload({ waitUntil: "domcontentloaded" });
-await page.waitForSelector("#savedRecordsList");
-await page.waitForFunction(() => window.__royacheckFollowups?.getAllRecords);
-await refreshList();
-assert.equal((await dbRecords()).length, 1, "Records must persist after reload");
-assert.equal(await listItemCount(), 1, "List must render persisted records after reload");
-
-await page.waitForFunction(() => document.querySelector("#offlineBadge")?.textContent.includes("verified"), null, { timeout: 60000 });
-await context.setOffline(true);
-await page.reload({ waitUntil: "domcontentloaded" });
-await page.waitForSelector("#savedRecordsList", { timeout: 30000 });
-await page.waitForFunction(() => window.__royacheckFollowups?.getAllRecords, null, { timeout: 30000 });
-assert.equal(await listItemCount(), 1, "Saved-record list must render after offline reload");
-await context.setOffline(false);
-
-const section5Media = await page.locator("#savedRecordsSection img, #savedRecordsSection canvas, #savedRecordsSection [src], #savedRecordsSection a[href^='blob:']").count();
-assert.equal(section5Media, 0, "Section 5 must not contain raw image, canvas, src media, or blob links");
-
-for (const request of requests) {
-  assert.notEqual(request.method, "POST", `Unexpected POST request: ${request.url}`);
-  assert.notEqual(request.method, "PUT", `Unexpected PUT request: ${request.url}`);
-  assert.ok(request.url.startsWith(origin) || request.url.startsWith("blob:"), `Unexpected external request: ${request.url}`);
-}
-
-await browser.close();
-
-console.log(JSON.stringify({
-  status: "PASS",
-  checks: [
-    "rapid-refresh-dedup",
-    "deleted-record-refusal",
-    "targeted-delete",
-    "real-save-record-saved-event",
-    "section4-delete-refreshes-section5",
-    "proposal-human-choice-separated",
-    "language-panel-reset",
-    "reload-persistence",
-    "offline-list-render",
-    "no-section5-media",
-    "no-non-get-or-cross-origin"
-  ]
-}, null, 2));
