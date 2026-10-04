@@ -31,7 +31,7 @@ function startServer() {
   if (process.env.ROYA_BASE_URL) return Promise.resolve(null);
   const server = createServer((req, res) => {
     const url = new URL(req.url || "/", BASE_URL);
-    const pathname = url.pathname === "/" || url.pathname === "/app/" ? "/index.html" : url.pathname.replace(/^\/app\/?/, "/");
+    const pathname = url.pathname === "/" || url.pathname === "/app/" ? "/index.html" : url.pathname.replace(/^\/app\//, "/");
     const filePath = resolve(ROOT, `.${pathname}`);
     if (!filePath.startsWith(ROOT) || !existsSync(filePath)) {
       res.writeHead(404);

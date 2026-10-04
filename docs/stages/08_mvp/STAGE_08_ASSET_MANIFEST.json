@@ -1,14 +1,30 @@
 {
   "stage": "8_mvp_followup_asset_bundle",
-  "status": "stage8_followup_draft_validation_recorded",
-  "source_main_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+  "status": "stage8_evidence_consolidation_item36_guard_restored_candidate",
+  "branch": "chatgpt/stage-08-evidence-consolidation",
+  "base_main_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
+  "source_pr21_merge_commit": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
+  "source_pr22_squash_commit": "80eb5f3c6574c9b7ceb829792aef75e915122b01",
   "source_stage7d_artifact_id": 11292181113,
   "source_stage7d_artifact_name": "stage7d-a0-export-parity",
   "onnx_expected_sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+  "onnx_sha256_status": "Claude auditor independently recomputed the committed ONNX file SHA-256 at branch head f6e75c5 and confirmed it equals the frozen Stage 7D value. Static smoke guards the MODEL_SHA256 constant and the presence of the runtime hash-check path; it does not itself hash the committed binary.",
   "onnxruntime_web_version": "1.30.0",
   "cache_name": "royacheck-stage8-a0-4037c096-20261004-r2",
   "core_budget_bytes": 30000000,
   "core_budget_pass": true,
+  "core_assets_total_bytes_including_root_alias": 18102457,
+  "core_assets_hash_source": {
+    "sha256_values": "Claude auditor-recomputed at branch head f6e75c5a1402bda82b85ba23fafe38dad7d2a869",
+    "vale_recomputed_sha256": false,
+    "git_blob_sha_values": "connector-derived from Git tree metadata",
+    "byte_counts": "connector-derived from Git tree metadata",
+    "asset_hashes_recompute_required": false,
+    "notes": [
+      "Per-file SHA-256 values below are auditor-recomputed values supplied by Claude, not independently recomputed by Vale in this connector-only pass.",
+      "The ./ root cache entry is treated as an index-equivalent alias and therefore carries the same bytes, Git blob SHA, and SHA-256 as ./index.html."
+    ]
+  },
   "core_assets_expected": [
     "./",
     "./index.html",
@@ -22,6 +38,104 @@
     "./vendor/onnxruntime-web/ort.wasm.min.mjs",
     "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
     "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm"
+  ],
+  "core_assets": [
+    {
+      "cache_path": "./",
+      "repository_path": "app/index.html",
+      "bytes": 8718,
+      "git_blob_sha": "4778def1d508748b1016e78ddd5115b46b889e53",
+      "sha256": "96f5032f5c24405da1a3b1f1a18b36ff6b04b0d3537ac294bcba7ba8839db8e9",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./index.html",
+      "repository_path": "app/index.html",
+      "bytes": 8718,
+      "git_blob_sha": "4778def1d508748b1016e78ddd5115b46b889e53",
+      "sha256": "96f5032f5c24405da1a3b1f1a18b36ff6b04b0d3537ac294bcba7ba8839db8e9",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./styles.css",
+      "repository_path": "app/styles.css",
+      "bytes": 4026,
+      "git_blob_sha": "7d59eed3d3b878bb6912af66c6f03d6012d52506",
+      "sha256": "6d1d0ded057ef8431afbf4005621010ba16bbf4c900d28606a0ab0ce4c2f5d52",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./app.js",
+      "repository_path": "app/app.js",
+      "bytes": 16585,
+      "git_blob_sha": "430c2f5a7a0c886ed5d3ceafa98045c0223c36b1",
+      "sha256": "1f81430821e66c7eab689f0da24cb3f9e76ba0302e415af16b0461738890fed0",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./followups.js",
+      "repository_path": "app/followups.js",
+      "bytes": 13637,
+      "git_blob_sha": "4c3ab363e045cb234021b8515186339a8e5d9d61",
+      "sha256": "9dfd7b9724cfcaaf3ee40f10069758fc383cdc68de57f160d204e0c60d423cc8",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./preprocess.js",
+      "repository_path": "app/preprocess.js",
+      "bytes": 5346,
+      "git_blob_sha": "1de98733bfb164b9bf9a7fb0d942ca35135fa046",
+      "sha256": "cad381fbaf3d5fc61a0d47c4a32ce14a902456db0f0abc3256f09d94f61368a0",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./manifest.webmanifest",
+      "repository_path": "app/manifest.webmanifest",
+      "bytes": 435,
+      "git_blob_sha": "3e132b03d1c20fe6fa9e44997ad31a66a17b549d",
+      "sha256": "e8f7bff2df24eb7f7ec69eea68a4320fb64624c0e5de18fea19ebe39cde2c420",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./assets/icon.svg",
+      "repository_path": "app/assets/icon.svg",
+      "bytes": 542,
+      "git_blob_sha": "ea4a1071bfe8bb8bb1e033cd34ab18177c929411",
+      "sha256": "f808d1010d5c087feca52aa50b31f25d5a44294b0141f92ab6083014cf30dc4f",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./assets/model/royacheck_a0_fp32.onnx",
+      "repository_path": "app/assets/model/royacheck_a0_fp32.onnx",
+      "bytes": 3730046,
+      "git_blob_sha": "62141e02549f0bd778ce155529e411fc9436161f",
+      "sha256": "4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5_and_matches_stage7d_frozen_value"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort.wasm.min.mjs",
+      "repository_path": "app/vendor/onnxruntime-web/ort.wasm.min.mjs",
+      "bytes": 50126,
+      "git_blob_sha": "a099240fde7b95cbb088a1354d442927bbb200b6",
+      "sha256": "219e6a1fc8a9938268d18efca3c91d310bd2f4a59bbd13744df5b2b7fc6cee3b",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+      "repository_path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs",
+      "bytes": 24381,
+      "git_blob_sha": "00af19eee6b3c35453a9d6eaae64f591299334cc",
+      "sha256": "e13f7f94fc51b4ca72b12faeb1ee95f4ace6dfbc8939bc718aabdc0a27c4299b",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    },
+    {
+      "cache_path": "./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "repository_path": "app/vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm",
+      "bytes": 14239897,
+      "git_blob_sha": "6cd03bf4da35d8b53a554c5ff70bf781d427f14c",
+      "sha256": "3398c10d07d229bd91b364548e130e0e51a8e5704b88c7c083ebbeb78842dee2",
+      "sha256_source": "claude_auditor_recomputed_at_f6e75c5"
+    }
   ],
   "followup_repair": {
     "saved_record_list": true,
@@ -44,73 +158,34 @@
     "preprocessing_contract_change": false
   },
   "validation_status": {
-    "evidence_type": "claude_auditor_run_local_evidence_not_vale_run",
-    "tested_sha": "469486f390251e47a327f06b7a0f52d8f3148b77",
-    "npm_test": {
-      "status": "pass",
-      "command": "npm test",
-      "exit_code": 0,
-      "reported_by": "Claude auditor",
-      "notes": "Static smoke checks and preprocessing reference checks passed."
-    },
-    "browser_followups": {
-      "status": "pass",
-      "command": "npm run test:browser-followups",
-      "server_mode": "python3 -m http.server 4173 at repository root / documented serve:app",
-      "runs": "3/3 pass",
-      "reported_by": "Claude auditor"
-    },
-    "mutation_suite": {
-      "status": "partial_pass",
-      "frozen_contract_mutations_caught": "9/9",
-      "known_uncaught_gaps": [
-        "CSP connect-src * mutation",
-        "remote POST injected into JS on untested path",
-        "route-body mutation"
-      ],
-      "reported_by": "Claude auditor"
-    },
-    "frozen_core_compare": {
-      "status": "unchanged",
-      "compared_to": "751c99e9d16890ceb87ed2c4790f00c3289ceff5",
-      "reported_by": "Claude auditor"
-    },
-    "app_compare": {
-      "status": "byte_identical",
-      "compared_to": "c395889c180ef4a280f6ef4ba59e3643cdc23163",
-      "reported_by": "Claude auditor"
-    },
-    "browser_e2e_original": {
-      "status": "not_run",
-      "reason": "fixtures are not committed and no fixture generator exists"
-    },
-    "r1_to_r2_upgrade_probe": {
-      "status": "carried_forward_from_prior_claude_probe",
-      "reason": "app/ byte-identical to c395889, where prior probe passed"
-    },
-    "asset_hashes_recompute_required": true,
-    "hosted_clean_environment_run": false,
-    "vale_run": false
+    "npm_test_at_b1ac54b": "claude_auditor_run_failed_exit_1_due_exactly_two_item36_static_smoke_disclosure_guards_before_restoration",
+    "npm_test_after_item36_guard_restoration": "not_run_by_vale_in_connector_only_pass",
+    "preprocess_reference_at_b1ac54b": "claude_auditor_run_pass",
+    "browser_followups_external_server_at_b1ac54b": "claude_auditor_run_pass_one_harness_execution_reported_saved_records_2_requests_28",
+    "browser_followups_builtin_server_at_b1ac54b": "claude_auditor_run_pass_one_harness_execution_reported_saved_records_2_requests_28",
+    "old_harness_builtin_server_at_b1ac54b": "claude_auditor_reproduced_original_timeout_confirming_rewrite_fix",
+    "mutation_suite_frozen_contract": "claude_auditor_run_9_of_9_frozen_contract_mutations_caught_on_prior_repair_candidate",
+    "browser_e2e_original": "not_run_fixtures_unavailable_or_not_committed",
+    "r1_to_r2_upgrade_probe": "claude_auditor_local_evidence_only",
+    "app_byte_identical_to_c395889_at_pr22_verification": true,
+    "asset_hashes_recompute_required": false,
+    "sha256_evidence_sha": "f6e75c5a1402bda82b85ba23fafe38dad7d2a869",
+    "item36_guard_restored_in_pr23_after_b1ac54b": true,
+    "vale_ran_tests": false,
+    "vale_recomputed_sha256": false
   },
-  "validation_environment": {
-    "reported_by": "Claude auditor",
-    "environment_type": "local read-only clone",
-    "node": "22.22.0",
-    "playwright": "1.56.1",
-    "chromium": "headless Chromium 1194",
-    "source_export": "git archive export of 469486f in scratch directory",
-    "repository_writes_by_claude": false
-  },
-  "known_non_blocking_caveats": [
-    "Built-in server mode still fails because /app.js rewrites to /.js.",
-    "Static smoke does not yet catch CSP connect-src *, remote POST injected into JS, or route-body mutation.",
-    "Original browser-e2e.mjs was not run because fixtures are not committed and no fixture generator exists.",
-    "Per-file SHA-256 and byte records remain a merge/submission-grade evidence item.",
-    "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist."
+  "stage8_closure_blockers": [
+    "Run or regenerate current-head browser e2e/offline inference evidence.",
+    "Add no-upload and routing regression guards, including connect-src, non-GET request APIs, and routeFromProbabilities threshold cases.",
+    "Decide whether local-language compliance item 36 is completed with fluent validation or explicitly deferred/waived."
+  ],
+  "known_minor_items_after_repair": [
+    "r1-to-r2 upgrade evidence remains auditor-run local evidence unless a reproducible repository test is added later."
   ],
   "boundaries": {
     "deployment": false,
     "submission": false,
+    "video_production": false,
     "rocole_inference": false,
     "challenge_inference": false,
     "training_or_finetuning": false,
@@ -118,16 +193,14 @@
     "threshold_change": false,
     "class_order_change": false,
     "preprocessing_contract_change": false,
-    "claim_expansion": false,
     "treatment_recommendation": false,
     "field_validation_claim": false,
     "stage7_closure": false,
     "stage8_closure": false
   },
   "notes": [
-    "PR #22 remains draft until the owner separately authorizes Ready for Review.",
-    "Auditor-run local evidence supports Ready for Review if the owner accepts this evidence basis.",
-    "Compliance item 36 remains unresolved/deferred until validated Lugisu/Lumasaba strings exist.",
-    "Repository MIT licensing does not replace BRACOL attribution, pretrained-weight lineage, or model-artifact notices."
+    "PR #23 remains draft until separately authorized for Ready for Review.",
+    "This manifest records evidence readiness only and does not close Stage 8.",
+    "Compliance item 36 remains unresolved/deferred pending fluent Lugisu/Lumasaba validation or owner-approved deferral."
   ]
 }

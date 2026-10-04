@@ -1,117 +1,115 @@
-# Stage 8 — Follow-up Review-Later and Disclosure Repair
+# Stage 8 — Follow-up Review-Later and Evidence Consolidation
 
 ## Status
 
-PR #22 remains a **draft Stage 8 follow-up increment**. It does **not** close Stage 8.
+PR #21 and PR #22 are merged partial Stage 8 increments. Stage 8 remains **open**.
 
-Current repair candidate: `chatgpt/stage-08-followups` at tested SHA `469486f390251e47a327f06b7a0f52d8f3148b77`.
+PR #23 is an evidence-consolidation and audit-readiness increment only. It does not close Stage 8, does not deploy, does not submit, and does not expand claims.
 
-## Purpose
+## Merged implementation context
 
-This follow-up repairs the deferred review-later and disclosure work that remained after the merged PR #21 partial Stage 8 browser-local MVP increment.
+### PR #21 — browser-local MVP build
 
-The implemented scope is intentionally narrow:
+Merged as `751c99e9d16890ceb87ed2c4790f00c3289ceff5`.
 
-- saved-record / review-later list backed by local IndexedDB;
-- per-record text review card;
-- per-record local delete;
-- fixed-string local-language scaffold;
-- disclosure drafts for AI/tooling, supported browsers/offline limits, and third-party notices.
+Implemented the static browser-local MVP loop: self-hosted ONNX Runtime Web, the frozen Stage 7D A0 FP32 ONNX model, browser-local preprocessing/inference, no raw-image retention, human-final disposition before saving, current-session observation card, and service-worker/PWA cache verification.
 
-## Repair summary
+### PR #22 — review-later and disclosure follow-up
 
-### Review-later persistence
+Squash merged as `80eb5f3c6574c9b7ceb829792aef75e915122b01`.
 
-The saved-record list now:
+Implemented the saved-record/review-later list backed by local IndexedDB, per-record text review cards, per-record local delete, delete-path synchronization, latest-request-wins refresh logic, the English-only local-language scaffold, and submission disclosure drafts.
 
-- reads persisted observations from the existing `royacheck-offline` IndexedDB database;
-- uses latest-request-wins refresh logic to avoid duplicate rendering under rapid refresh;
-- builds refreshed content off-screen before replacing the visible list;
-- re-reads a record before rendering a review card;
-- clears current-session and persistent review cards when their record is deleted;
-- provides visible refresh/delete error reporting.
+PR #22 remained a partial Stage 8 follow-up increment. It did not close Stage 8.
 
-The record posture remains text-only. Raw images are not retained or displayed by the review-later list.
+## Frozen technical contract
 
-### Local-language scaffold
+The frozen contract remains:
+
+- model path: `app/assets/model/royacheck_a0_fp32.onnx`
+- model expected SHA-256: `4037c09663190b7caed0773e525e5da39bd05286992612537991358b7acfd041`
+- source Stage 7D artifact ID: `11292181113`
+- source Stage 7D artifact name: `stage7d-a0-export-parity`
+- ONNX Runtime Web version: `1.30.0`
+- thresholds: `T_RUST = 0.50`, `T_HEALTHY = 0.70`
+- class order: `healthy`, `rust_present`, `leaf_miner_no_rust`, `brown_leaf_spot_no_rust`, `cercospora_no_rust`
+- preprocessing: RGB decode; require both dimensions at least 224 px; preserve full frame; resize to 224 x 224; ImageNet normalization; no center crop.
+
+PR #23 is documentation/evidence plus one test-harness-only repair. It does not change product model behavior, thresholds, class order, or preprocessing.
+
+## Core asset evidence
+
+`STAGE_08_ASSET_MANIFEST.json` records the exact expected core asset list:
+
+1. `./`
+2. `./index.html`
+3. `./styles.css`
+4. `./app.js`
+5. `./followups.js`
+6. `./preprocess.js`
+7. `./manifest.webmanifest`
+8. `./assets/icon.svg`
+9. `./assets/model/royacheck_a0_fp32.onnx`
+10. `./vendor/onnxruntime-web/ort.wasm.min.mjs`
+11. `./vendor/onnxruntime-web/ort-wasm-simd-threaded.mjs`
+12. `./vendor/onnxruntime-web/ort-wasm-simd-threaded.wasm`
+
+The manifest records connector-derived byte counts and Git blob SHAs, plus Claude auditor-recomputed SHA-256 values at branch head `f6e75c5a1402bda82b85ba23fafe38dad7d2a869`.
+
+Total core asset size is `18,102,457` bytes, counting `./` as an index-equivalent root cache entry. This is within the 30 MB core asset budget.
+
+The committed ONNX file SHA-256 was independently recomputed by Claude and confirmed to match the frozen Stage 7D value. Static smoke guards the `MODEL_SHA256` constant and the presence of the runtime hash-check path; it does not itself hash the committed ONNX binary.
+
+## Local-language item 36 status
 
 The local-language item is **not fully complete**.
 
-The app now includes an English-only fixed-string scaffold showing where bounded local-language prompts would appear. Actual Lugisu/Lumasaba wording is pending fluent human validation and is not claimed in this build. The scaffold deliberately avoids:
+Current UI wording does not claim completed Lugisu/Lumasaba support. Actual Lugisu/Lumasaba strings remain pending fluent human validation, and `lang="myx"` remains excluded for unverified text. Compliance item 36 remains incomplete/deferred until either fluent-speaker validation completes or the owner explicitly approves a deferral/waiver as part of the Stage 8 closure criteria.
 
-- claiming current UI strings are Lugisu/Lumasaba;
-- using `lang="myx"` for unverified text;
-- presenting suspected wrong-language strings as Lugisu;
-- chatbot or free-form translation behavior.
+## Validation evidence
 
-The panel separates the actual AI proposal from the human choice. The first line is the only line that may name the AI proposal; human disposition is shown separately as human choice. This preserves the human-final design and avoids implying that the model made the human's choice.
+Claude auditor-run local evidence, not Vale-run evidence:
 
-Compliance item 36 remains unresolved/deferred until validated local-language strings exist.
+- At head `b1ac54b220171f48228b2361523983f8cb73b52f`, `npm test` failed with exit 1 because exactly two static-smoke item 36 disclosure guards failed: the missing `not fully complete` phrase and the missing `local_language_item_complete: false` manifest flag.
+- This repair restores those two guarded disclosures. Vale did not run `npm test` after this connector-only restoration pass.
+- `node tests/preprocess-reference.mjs`: PASS in Claude's audit at `b1ac54b`.
+- `npm run test:browser-followups` with `python3 -m http.server 4173` at repo root / documented `serve:app`: PASS in one Claude auditor-run harness execution, reporting 2 saved records and 28 same-origin GET requests.
+- `node tests/browser-followups.mjs` with no `ROYA_BASE_URL`: PASS in one Claude auditor-run built-in-mode harness execution, reporting 2 saved records and 28 same-origin GET requests.
+- Claude reproduced the old harness built-in-mode timeout, confirming that the rewrite fix addressed the original `/app.js` to `/.js` bug.
+- Scratch mutation suite from the prior repair candidate: 9/9 frozen-contract mutations caught.
+- Frozen core compared with `751c99e9d16890ceb87ed2c4790f00c3289ceff5`: unchanged at the time of Claude's audit.
+- `app/` compared with `c395889c180ef4a280f6ef4ba59e3643cdc23163`: byte-identical at the time of PR #22 verification.
+- Prior app-behaviour and r1-to-r2 upgrade probes were carried forward because `app/` was unchanged since that verification point.
 
-### Service-worker upgrade hardening
+Vale did not run tests or independently recompute SHA-256 values in this connector-only pass.
 
-The service worker now avoids the stale-code r1-to-r2 upgrade path identified by Claude:
+## Claude minor repairs applied in PR #23
 
-- install-time precache fetches core assets using `cache: "reload"`;
-- runtime network fetch uses `cache: "no-cache"` before falling back to cache;
-- static smoke checks guard cache-name parity, asset-list parity, and stale-cache-bypassing fetch behavior.
+After Claude returned `PASS WITH MINOR REPAIRS`, this branch applied the following minor repairs:
 
-A first-load transitional state can still occur under an already-controlling old service worker, but the r2 cache should not be populated with stale r1 scripts.
+- populated the manifest with Claude auditor-recomputed SHA-256 values for all 12 core cache entries;
+- clarified that SHA-256 values were auditor-recomputed, not Vale-recomputed;
+- corrected ONNX wording so it no longer implies static smoke hashes the committed ONNX binary;
+- clarified the browser-followups result as one harness execution rather than an ambiguous `3/3` claim;
+- fixed the built-in `tests/browser-followups.mjs` path-rewrite bug so `/app.js` is no longer rewritten to `/.js`.
 
-### Browser-test coverage
+## Claude major repair finding and restoration
 
-`tests/browser-followups.mjs` is intended to cover:
+Claude then returned `PASS WITH MAJOR REPAIRS` on head `b1ac54b220171f48228b2361523983f8cb73b52f` because `npm test` failed after the repair pass accidentally removed two static-guarded item 36 disclosure controls.
 
-- real save flow and `royacheck:record-saved`;
-- section 4 delete refreshing section 5;
-- section 5 delete clearing section 4 and its review card when the same record is displayed;
-- review-card refusal for deleted records;
-- exact-target deletion;
-- local-language panel separation of AI proposal from human choice;
-- local-language panel reset after a new image is selected;
-- reload persistence;
-- offline saved-list render;
-- absence of raw images, canvases, blob previews, non-GET requests, and cross-origin requests.
+This follow-up restoration:
 
-## Validation evidence recorded
+- restores `"local_language_item_complete": false` in the machine-readable manifest;
+- restores the phrase `not fully complete` in this item 36 discussion;
+- updates validation wording so the failed `npm test` result at `b1ac54b` is recorded honestly and not overwritten by a stale pass claim.
 
-Evidence below is **Claude auditor-run local evidence**, not Vale-run evidence. Vale did not execute the commands in this connector-only pass.
+## Remaining Stage 8 closure blockers
 
-Tested SHA: `469486f390251e47a327f06b7a0f52d8f3148b77`.
+PR #23 can proceed through review once its own test-guard restoration is confirmed, but Stage 8 closure-readiness still requires separate work or explicit owner decisions:
 
-Claude-reported environment:
-
-- local read-only clone;
-- Node `22.22.0`;
-- Playwright `1.56.1`;
-- headless Chromium `1194`;
-- `git archive` export of `469486f` in a scratch directory;
-- no repository writes by Claude.
-
-Claude-reported results:
-
-| Check | Result |
-|---|---|
-| `npm test` | PASS, exit 0; static smoke checks and preprocessing reference checks passed |
-| `npm run test:browser-followups` with `python3 -m http.server 4173` at repo root / documented `serve:app` | PASS, 3/3 |
-| Scratch mutation suite | 9/9 frozen-contract mutations caught |
-| Frozen core compared with `751c99e9d16890ceb87ed2c4790f00c3289ceff5` | unchanged |
-| `app/` compared with `c395889c180ef4a280f6ef4ba59e3643cdc23163` | byte-identical |
-| Prior app-behaviour and r1-to-r2 upgrade probes | carried forward because `app/` is unchanged since `c395889` |
-
-Claude-reported non-blocking caveats:
-
-- built-in server mode still fails because `/app.js` rewrites to `/.js`;
-- static smoke does not yet catch CSP `connect-src *`, remote POST injected into JS, or route-body mutation;
-- original `browser-e2e.mjs` was not run because fixtures are not committed and no fixture generator exists;
-- per-file SHA-256 and byte records remain a merge/submission-grade evidence item;
-- local-language compliance item 36 remains incomplete/deferred pending fluent Lumasaba/Lugisu validation.
-
-## Remaining validation posture
-
-The auditor-run evidence supports moving toward Ready for Review if the owner accepts local auditor-run validation evidence. It is not a hosted clean-environment run and it is not Vale-run evidence.
-
-Do not merge until merge-specific evidence and owner decisions are resolved.
+1. Current-head browser e2e/offline inference evidence is still needed. The original `browser-e2e.mjs` fixtures are unavailable or not committed.
+2. No-upload and routing regression guards are still needed for closure quality, including checks for `connect-src 'self'`, non-GET request APIs in JavaScript, and `routeFromProbabilities` threshold cases.
+3. Local-language compliance item 36 remains incomplete/deferred pending fluent Lumasaba/Lugisu validation or an explicit owner-approved deferral/waiver.
 
 ## Boundaries preserved
 
@@ -119,6 +117,7 @@ This PR does not perform or claim:
 
 - deployment;
 - submission;
+- video production;
 - RoCoLe inference;
 - challenge-set inference;
 - model retraining or fine-tuning;
