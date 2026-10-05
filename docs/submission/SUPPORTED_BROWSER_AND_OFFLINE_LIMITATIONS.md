@@ -1,16 +1,34 @@
-# Supported Browser and Offline Limitations Draft
+# Supported Browser and Offline Limitations
 
-This draft supports the Stage 8 follow-up PR and is not final submission copy.
+This notice documents the public MVP's browser, offline, storage, and localization limits. It is a limitation notice, not a claim of production readiness or complete cross-browser validation.
+
+## Canonical public demo
+
+The canonical public demo is:
+
+```text
+https://royacheck-offline-current.onrender.com
+```
+
+The repository is a static browser app, but the active public submission surface is the Render-hosted demo above. GitHub Pages is not the canonical deployment surface for this submission.
 
 ## Tested evidence status
 
-PR #21 browser smoke evidence covered the browser-local inference MVP at an earlier head. It did **not** cover PR #22's saved-record list, per-record delete, local-language scaffold, or r1-to-r2 service-worker upgrade behavior.
+Repository evidence supports a browser-local inference MVP and a static app flow. Evidence remains bounded to the recorded hackathon tests and browser/runtime checks.
 
-PR #22 now includes `tests/browser-followups.mjs`, but that test must still be run and recorded on the final candidate SHA before Ready for Review.
+The evidence does not establish:
+
+- field validation;
+- full mobile-device coverage;
+- full iOS Safari coverage;
+- full Firefox coverage;
+- low-end Android performance coverage;
+- validated Lugisu/Lumasaba localization;
+- coffee-leaf verification or general crop-diagnosis capability.
 
 ## Browser support
 
-Evidence so far is Chromium-based. iOS Safari, Firefox, and lower-end Android browsers remain untested unless later evidence is added.
+Evidence so far is primarily Chromium-based. iOS Safari, Firefox, and lower-end Android browsers remain untested unless later evidence is added.
 
 The app relies on browser features including:
 
@@ -28,22 +46,18 @@ The first load requires a network connection. After successful service-worker in
 
 Approximate first-load cached payload remains about 18.1 MB. This is material in low-connectivity environments.
 
-The current service worker attempts to reduce stale-code upgrade risk by:
-
-- fetching precache assets with `cache: "reload"`;
-- using `cache: "no-cache"` for runtime network fetches before cache fallback;
-- versioning the cache as `royacheck-stage8-a0-4037c096-20261004-r2`.
-
-The r1-to-r2 upgrade repair still requires a clean browser upgrade test before merge.
+Offline behavior is browser-dependent and can fail if service-worker installation fails, if the browser evicts storage, if a private/incognito profile is used, or if the device/browser disables required APIs.
 
 ## Local storage limits
 
-Saved observations are stored only in this browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, clearing site data, device storage pressure, or browser privacy policies.
+Saved observations are stored only in the current browser's IndexedDB. They may be removed by browser storage eviction, private/incognito browsing, clearing site data, device storage pressure, operating-system cleanup, or browser privacy policies.
 
-The MVP provides no cloud backup, export, synchronization, or recovery mechanism.
+The MVP provides no cloud backup, export, synchronization, account login, server recovery, or cross-device transfer mechanism.
 
-Raw images are not retained in the saved records.
+Raw images are not retained in saved records.
 
 ## Localization limits
 
 The app includes a fixed-string local-language scaffold, but actual Lugisu/Lumasaba wording is pending fluent human validation. Validated localized usability has not been established.
+
+The public submission should describe this as a local-language scaffold, not as verified Lugisu/Lumasaba localization.
