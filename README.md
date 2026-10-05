@@ -62,6 +62,16 @@ The selected image is processed locally for inference. In this MVP, saved observ
 
 RoyaCheck Offline is intentionally designed so that the model does not make the final decision. The model proposes; the human signs the record. The saved local observation is based on the human disposition, not automatic acceptance of the AI output.
 
+## Submission notices
+
+The public submission notices are maintained under `docs/submission/`:
+
+- `AI_TOOLING_DISCLOSURE.md`
+- `THIRD_PARTY_NOTICES.md`
+- `SUPPORTED_BROWSER_AND_OFFLINE_LIMITATIONS.md`
+
+The canonical public deployment is the Render-hosted live demo linked above. GitHub Pages is not the canonical deployment surface for this submission.
+
 ## Safety and claim boundaries
 
 This prototype does **not**:
